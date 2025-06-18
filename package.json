@@ -20,5 +20,8 @@
   "homepage": "https://github.com/FrontendWookiee187/Join#readme",
   "devDependencies": {
     "@angular/cli": "^19.2.15"
+  },
+  "dependencies": {
+    "@angular/fire": "^19.2.0"
   }
 }
