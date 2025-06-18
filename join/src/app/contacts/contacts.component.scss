@@ -46,7 +46,7 @@
         display: block;
         margin-top: 16px;
         margin-left: -24px;
-        width: calc(100% + 24px);
+        width: calc(100% + 10px);
         height: 1px;
         background: #e0e0e0;
     }
@@ -132,6 +132,10 @@ color: #007CEE;
     letter-spacing: 1px;
     margin: 8px 0;
     box-shadow: 0 2px 8px -4px #0001;
+}
+
+.listContent{
+    margin-left: 10%;
 }
 
 
