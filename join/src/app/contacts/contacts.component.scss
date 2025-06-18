@@ -106,6 +106,34 @@
     
 }
 
+.contactContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    padding-left: 8px;
+    align-items: center;
+}
+
+.contactMail{
+color: #007CEE;
+}
+
+.initials {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #ff8700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 1px;
+    margin: 8px 0;
+    box-shadow: 0 2px 8px -4px #0001;
+}
+
 
 
 
