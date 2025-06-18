@@ -8,6 +8,7 @@
   --bg-grey: #f0f0f0;
   --bg-white: #ffffff;
   --bg-dark-grey: #2a3647;
+  --color-black: #000000;
   --color-accent: #29abe2;
   --color-greyed-out: #cdcdcd;
 }
@@ -42,4 +43,25 @@ a {
 
 a:hover {
   cursor: pointer;
+}
+
+.component-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.component-header {
+  text-align: left;
+  color: var(--color-black);
+}
+
+.header-divider {
+  color: var(--color-accent);
+}
+
+.component-subtitle {
+  color: var(--bg-dark-grey);
 }
