@@ -19,10 +19,6 @@
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
     "firebase": "^11.9.1",
-<<<<<<< HEAD
-=======
-    "firebase-tools": "^13.35.1",
->>>>>>> main
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -39,16 +35,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
-<<<<<<< HEAD
   }
 }
-=======
-  },
-  "description": "This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.",
-  "main": "index.js",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs"
-}
->>>>>>> main
