@@ -58,6 +58,12 @@
     align-items: center;
     margin-bottom: 32px;
     margin-top: 8px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #fff;
+    /* Optional: Schatten für bessere Sichtbarkeit */
+    box-shadow: 0 2px 8px -8px #000;
 }
 
 .addNewContactBtn button {
