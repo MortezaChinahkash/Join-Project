@@ -51,3 +51,39 @@
         background: #e0e0e0;
     }
 }
+
+.addNewContactBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 32px;
+    margin-top: 8px;
+}
+
+.addNewContactBtn button {
+    background: #2d3a4a;
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: none;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #1e2835;
+    }
+}
+
+.addNewContactBtn button .icon {
+    width: 22px;
+    height: 22px;
+    margin-left: 6px;
+    filter: brightness(0) invert(1);
+    
+}
