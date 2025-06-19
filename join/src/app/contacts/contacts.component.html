@@ -365,7 +365,7 @@
                 />
                 <span class="input-icon"></span>
                 <div class="error-message" *ngIf="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched">
-                  Fill this out
+                  Please type in a name
                 </div>
               </div>
               <div class="input-group">
@@ -378,7 +378,7 @@
                 />
                 <span class="input-icon"></span>
                 <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched">
-                  Fill this out
+                  Please type in an email
                 </div>
                 <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched">
                   Enter a valid email
@@ -394,7 +394,7 @@
                 />
                 <span class="input-icon"></span>
                 <div class="error-message" *ngIf="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched">
-                  Fill this out
+                  Please type in a phone number
                 </div>
               </div>
               <div class="form-buttons">
