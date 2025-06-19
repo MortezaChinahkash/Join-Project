@@ -38,4 +38,11 @@ export class ContactsComponent {
       this.addContactForm.markAllAsTouched();
     }
   }
+
+  editContact() {
+    // Logic to edit a contact
+  }
+  deleteContact() {
+    // Logic to delete a contact
+  }
 }
