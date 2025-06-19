@@ -8,5 +8,18 @@ import { Component } from '@angular/core';
   styleUrl: './contacts.component.scss'
 })
 export class ContactsComponent {
+  showAddContactOverlay = false;
 
+  openAddContactOverlay() {
+    this.showAddContactOverlay = true;
+  }
+
+  closeAddContactOverlay() {
+    this.showAddContactOverlay = false;
+  }
+
+  onSubmitAddContact(event: Event) {
+    event.preventDefault();
+    this.closeAddContactOverlay();
+  }
 }
