@@ -346,6 +346,29 @@ form {
   background: #1a2532;
 }
 
+.input-error {
+  border-color: #ff3b3b !important;
+  background: #fff5f5 !important;
+}
+
+.error-message {
+  color: #ff3b3b;
+  font-size: 0.95rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  position: absolute;
+  left: 0;
+  bottom: -22px;
+}
+
+.create-button:disabled,
+.create-button.disabled {
+  background: #e0e0e0 !important;
+  color: #bcbcbc !important;
+  cursor: not-allowed !important;
+  border: none !important;
+}
+
 // ===================
 // Close Button (Modal)
 // ===================
