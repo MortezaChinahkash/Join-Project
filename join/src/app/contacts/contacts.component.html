@@ -341,8 +341,14 @@
             <div class="single-contact-name-block">
               <h2 class="single-contact-name">Test Name</h2>
               <div class="single-contact-edit-row">
-                <button class="edit-btn" (click)="editContact()">Edit</button>
-                <button class="delete-btn" (click)="deleteContact()">Delete</button>
+                <button class="edit-btn" (click)="editContact()">
+                  <img class="edit-icon" src="/assets/img/icon_todo.svg" />
+                  <span>Edit</span>
+                </button>
+                <button class="delete-btn" (click)="deleteContact()">
+                  <img class="delete-icon" src="/assets/img/icon_delete.svg" />
+                  <span>Delete</span>
+                </button>
               </div>
             </div>
           </div>
