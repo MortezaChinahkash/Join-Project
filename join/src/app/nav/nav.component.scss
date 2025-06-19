@@ -1,0 +1,180 @@
+
+:host{
+    display: flex;
+    flex-direction: column;
+
+    width: 25vw;
+    min-width: 150px;
+    max-width: 300px;
+    height: 100vh;
+
+    position: fixed;
+    
+    font-family: sans-serif;
+    font-weight: 100;
+
+    svg.logo{
+        path, 
+        rect{
+            fill: #fff
+        }
+    }
+
+     svg.icon{
+        path, 
+        rect{
+            fill: #fff
+        }
+    }
+
+    nav{
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        background: #2A3647;
+
+        width: 100%;
+        height: 100vh;
+
+        
+
+        > .logoContainer{
+            width: 50%;
+            padding: 15%;
+            margin: auto;
+        }
+
+        a{
+            font-size: clamp(1em, 2.25vw, 1.5em);
+            line-height: 0;
+
+            cursor: pointer;
+
+            display: block;
+            width: calc(100% - 30%);
+            height: 100%;
+
+            padding: 5% 15%;
+        }
+
+        ul{
+            list-style: none;
+            padding: 0;  
+
+            width: 100%;
+            height: 50%;
+            
+            color: #fff;
+
+            li{
+                
+            }
+
+            li:hover a{
+                background: #2A3D59;
+            }
+
+            li.active a{
+                background: #091931;
+            }
+
+        }
+
+        .icon{
+            width: 1em;
+            height: 1em;
+            vertical-align: text-top;
+            margin-right: 0.5em;
+        }
+
+    }
+
+    footer {
+        width: 100%;
+    }
+
+   
+
+}
+
+ /* === RESPONSIVE === */
+@media screen and (max-width: 800px) {
+
+    :host{
+        width: 100%;
+        max-width: 100%;
+
+        justify-content: flex-end;
+
+        .logoContainer{
+            display: none;
+        }
+
+        nav{
+            display: flex;
+            align-content: center;
+            flex-direction: column;
+            justify-content: center;
+
+            width: 100%;
+            max-width: 100%;
+            height: 10%;
+
+            margin: 0;
+
+            a{
+                border-radius: 1em;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 1em;
+            }
+
+            ul{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+
+                margin: 0;
+
+                li{
+                    width: 25%;
+                }
+            }
+
+            .icon{
+                margin-right: 0em;
+                margin-bottom: 1em;
+            }
+
+        }
+
+
+
+        footer {
+            display: none;
+        }
+    }
+}
+
+/* === RESPONSIVE === */
+@media screen and (max-width: 400px) {
+    :host{
+        nav{
+            a{
+                span{
+                    display: none;
+                }
+            }
+            .icon{
+                margin: 0em;
+            }
+        }
+    }
+
+}

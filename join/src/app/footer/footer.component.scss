@@ -1,0 +1,38 @@
+
+:host{
+
+
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 3em;
+
+    a{
+        font-size: clamp(1em, 2.25vw, 1.5em);
+        line-height: 0;
+
+        cursor: pointer;
+    }
+
+    a:hover{
+        color: #29ABE2;
+    }
+
+    ul{
+        list-style: none;
+        padding: 0;  
+
+        width: 100%;
+        
+        color: #fff;
+
+        li{
+            padding: 5% 15%;
+        }
+
+        li.active{
+            background: #091931;
+        }
+    }
+
+}
