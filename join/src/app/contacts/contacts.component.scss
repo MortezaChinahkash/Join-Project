@@ -388,3 +388,109 @@ form {
   cursor: pointer;
   border: none;
 }
+
+// ===================
+// Single contact
+// ===================
+
+.single-contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.single-contact-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.single-contact-initials {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ff8700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px -4px #0001;
+}
+
+.single-contact-name-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+}
+
+.single-contact-name {
+  text-align: left;
+}
+
+.single-contact-edit-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.single-ctc-edit-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.single-ctc-edit-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.single-ctc-edit-text {
+  text-align: left;
+}
+
+.single-contact-infoblock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+}
+
+.single-contact-info-title {
+text-align: left;
+padding-bottom: 8px;
+}
+
+.single-contact-info{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.single-contact-info-label {
+  text-align: left;
+  font-weight: bold;
+}
+
+.single-contact-info-value {
+  text-align: left;
+}
+
+.single-contact-info-email {
+  color: var(--color-accent);
+}
