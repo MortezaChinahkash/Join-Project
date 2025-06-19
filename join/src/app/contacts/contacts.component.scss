@@ -1,141 +1,164 @@
-.contacts-contents {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
+// ===================
+// Layout Containers
+// ===================
+
+.content-wrapper {
+  max-width: 1440px;
 }
 
-.content-wrapper{
-    max-width: 1440px;
+// Main horizontal layout for contacts page
+.contacts-contents {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
+
+// ===================
+// Sidebar & List
+// ===================
 
 .contacts-list {
-    width: 350px; 
-    height: 100vh; 
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: #fff;
-    border-right: 1px solid #e0e0e0;
-    padding: 24px 0 24px 0;
-    box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: #bdbdbd #f5f5f5;
+  width: 350px;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #fff;
+  border-right: 1px solid #e0e0e0;
+  padding: 24px 0 24px 0;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #bdbdbd #f5f5f5;
 
-    
-    &::-webkit-scrollbar {
-        width: 8px;
-        background: #f5f5f5;
-    }
-    &::-webkit-scrollbar-thumb {
-        background: #bdbdbd;
-        border-radius: 4px;
-    }
+  // Custom scrollbar for Webkit browsers
+  &::-webkit-scrollbar {
+    width: 8px;
+    background: #f5f5f5;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #bdbdbd;
+    border-radius: 4px;
+  }
 }
+
+// ===================
+// Contact List Letters
+// ===================
 
 .firstLetter {
-    font-size: 20px;
-    font-weight: 400;
-    margin: 24px 0 12px 24px;
-    
-    position: relative;
-    color: #222;
-    
-    &::after {
-        content: "";
-        display: block;
-        margin-top: 16px;
-        margin-left: -24px;
-        width: calc(100% + 10px);
-        height: 1px;
-        background: #e0e0e0;
-    }
+  font-size: 20px;
+  font-weight: 400;
+  margin: 24px 0 12px 24px;
+  color: #222;
+
+  // Divider line under each letter
+  &::after {
+    content: "";
+    display: block;
+    margin-top: 16px;
+    margin-left: -24px;
+    width: calc(100% + 10px);
+    height: 1px;
+    background: #e0e0e0;
+  }
 }
 
+// ===================
+// Add New Contact Button
+// ===================
+
 .addNewContactBtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 32px;
-    margin-top: 8px;
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: #fff;
-    
-    box-shadow: 0 2px 8px -8px #000;
-    
-    &::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: -24px;
-        width: 100%;
-        height: 24px;
-        background: linear-gradient(to bottom, #fff 100%, transparent 100%);
-        pointer-events: none;
-        z-index: 3;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px;
+  margin-top: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  box-shadow: 0 2px 8px -8px #000;
+
+  // Gradient overlay for sticky effect
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -24px;
+    width: 100%;
+    height: 24px;
+    background: linear-gradient(to bottom, #fff 100%, transparent 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
 }
 
 .addNewContactBtn button {
-    background: #2d3a4a;
-    color: #fff;
-    font-weight: 600;
-    font-size: 18px;
-    border: none;
-    border-radius: 12px;
-    padding: 14px 32px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-shadow: none;
-    transition: background 0.2s;
+  background: #2d3a4a;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: none;
+  transition: background 0.2s;
 
-    &:hover {
-        background: #1e2835;
-    }
+  &:hover {
+    background: #1e2835;
+  }
 }
 
 .addNewContactBtn button .icon {
-    width: 22px;
-    height: 22px;
-    margin-left: 6px;
-    filter: brightness(0) invert(1);
-    
+  width: 22px;
+  height: 22px;
+  margin-left: 6px;
+  filter: brightness(0) invert(1);
 }
 
-.contactContainer{
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    padding-left: 8px;
-    align-items: center;
+// ===================
+// Contact List Item
+// ===================
+
+.contactContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  padding-left: 8px;
+  align-items: center;
 }
 
-.contactMail{
-color: #007CEE;
+.contactMail {
+  color: #007CEE;
 }
 
 .initials {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    background: #ff8700;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 500;
-    font-size: 20px;
-    letter-spacing: 1px;
-    margin: 8px 0;
-    box-shadow: 0 2px 8px -4px #0001;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #ff8700;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 20px;
+  letter-spacing: 1px;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px -4px #0001;
 }
 
-.listContent{
-    margin-left: 10%;
+.listContent {
+  margin-left: 10%;
 }
+
+// ===================
+// Add Contact Overlay (Modal)
+// ===================
 
 .add-contact-overlay {
   position: fixed;
@@ -150,6 +173,7 @@ color: #007CEE;
   z-index: 1000;
 }
 
+// Main modal container
 .add-contact-container {
   display: flex;
   width: 90vw;
@@ -161,6 +185,10 @@ color: #007CEE;
   box-shadow: 0 8px 32px rgba(0,0,0,0.08);
 }
 
+// ===================
+// Add Contact Modal - Left (Branding)
+// ===================
+
 .add-contact-left {
   background: #2d3a4a;
   color: #fff;
@@ -169,7 +197,7 @@ color: #007CEE;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-    justify-content: center;
+  justify-content: center;
   position: relative;
 }
 
@@ -179,9 +207,10 @@ color: #007CEE;
   margin: 0;
 }
 
-.logo-placeholder{
-    margin: 0 0 24px 0;
+.logo-placeholder {
+  margin: 0 0 24px 0;
 }
+
 .add-contact-left .subtitle {
   font-size: 22px;
   margin-bottom: 12px;
@@ -193,16 +222,22 @@ color: #007CEE;
   background: #38b6ff;
   border-radius: 2px;
 }
-.add-contact-right{
-    width: 60%;
-    padding: 64px;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center; // Center content vertically
-    position: relative;
+
+// ===================
+// Add Contact Modal - Right (Form)
+// ===================
+
+.add-contact-right {
+  width: 60%;
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center; // Center content vertically
+  position: relative;
 }
 
+// Centers avatar and form together
 .add-contact-right-inner {
   width: 100%;
   height: 100%;
@@ -211,6 +246,7 @@ color: #007CEE;
   justify-content: center; // Center horizontally
 }
 
+// Avatar and form side by side
 .avatar-and-form {
   display: flex;
   flex-direction: row;
@@ -219,9 +255,12 @@ color: #007CEE;
   width: 100%;
   justify-content: center; // Center the whole group
 }
-.add-logo{
-    width: 100px;
+
+.add-logo {
+  width: 100px;
 }
+
+// Avatar circle
 .avatar-placeholder {
   width: 140px;
   height: 140px;
@@ -235,6 +274,10 @@ color: #007CEE;
   margin: 0;
 }
 
+// ===================
+// Add Contact Form
+// ===================
+
 form {
   width: 340px;
   display: flex;
@@ -243,6 +286,7 @@ form {
   align-items: flex-start; // Align form fields to the left
 }
 
+// Input group for each field
 .input-group {
   position: relative;
   width: 100%;
@@ -266,6 +310,9 @@ form {
   background: #fff;
 }
 
+// ===================
+// Form Buttons
+// ===================
 
 .form-buttons {
   display: flex;
@@ -298,6 +345,10 @@ form {
 .create-button:hover {
   background: #1a2532;
 }
+
+// ===================
+// Close Button (Modal)
+// ===================
 
 .close-btn {
   position: absolute;
