@@ -634,12 +634,9 @@
               [style.background]="
                 addContactForm.get('name')?.value
                   ? getInitialsColor(addContactForm.get('name')?.value)
-                  : 'rgb(237, 237, 237)'
-              "
-            >
+                  : 'rgb(237, 237, 237)'">
               <span
-                *ngIf="addContactForm.get('name')?.value; else defaultAvatar"
-              >
+                *ngIf="addContactForm.get('name')?.value; else defaultAvatar">
                 {{ getInitials(addContactForm.get("name")?.value) }}
               </span>
               <ng-template #defaultAvatar></ng-template>
