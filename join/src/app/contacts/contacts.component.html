@@ -381,7 +381,7 @@
           <span class="header-divider"> | </span
           ><span class="component-subtitle">Better with a team</span>
         </div>
-        <div class="single-contact-container" *ngIf="selectedContact">
+        <div class="single-contact-container" *ngIf="selectedContact" @slideInRight>
           <div class="single-contact-header">
             <div class="single-contact-initials"  [style.background]="getInitialsColor(selectedContact.name)" >{{ getInitials(selectedContact.name)}}</div>
             <div class="single-contact-name-block">

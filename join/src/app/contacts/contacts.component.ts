@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import{ trigger, transition, style, animate} from '@angular/animations';
 
 export interface Contact {
   name: string;
@@ -14,7 +15,18 @@ export interface Contact {
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.scss']
+  styleUrls: ['./contacts.component.scss'],
+  animations: [
+    trigger('slideInRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class ContactsComponent implements OnInit {
 
