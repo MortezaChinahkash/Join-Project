@@ -1,12 +1,11 @@
 
 :host{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
-    width: 25vw;
-    min-width: 150px;
-    max-width: 300px;
     height: 100vh;
+    width: 100%;
+    min-width: 320px;
 
     position: fixed;
     
@@ -20,7 +19,7 @@
         }
     }
 
-     svg.icon{
+    svg.icon{
         path, 
         rect{
             fill: #fff
@@ -36,12 +35,23 @@
 
         background: #2A3647;
 
-        width: 100%;
+        width: 25%;
         height: 100vh;
+        max-width: 300px;
 
-        
+        .top{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
 
-        > .logoContainer{
+            width: 100%;
+        }
+
+        .bottom{
+            width: 100%;
+        }
+
+        .logoContainer{
             width: 50%;
             padding: 15%;
             margin: auto;
@@ -65,7 +75,7 @@
             padding: 0;  
 
             width: 100%;
-            height: 50%;
+            
             
             color: #fff;
 
@@ -96,6 +106,13 @@
         width: 100%;
     }
 
+    header{
+        display: flex;
+        width: 100%;
+        height: 10%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
    
 
 }
@@ -106,8 +123,9 @@
     :host{
         width: 100%;
         max-width: 100%;
-
-        justify-content: flex-end;
+   
+        flex-direction: column-reverse;
+        justify-content: space-between;
 
         .logoContainer{
             display: none;
@@ -131,7 +149,9 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                padding: 1em;
+                padding: 1em 0.66em;
+
+                white-space: nowrap;
             }
 
             ul{
@@ -154,27 +174,14 @@
 
         }
 
-
-
         footer {
             display: none;
         }
-    }
-}
 
-/* === RESPONSIVE === */
-@media screen and (max-width: 400px) {
-    :host{
-        nav{
-            a{
-                span{
-                    display: none;
-                }
-            }
-            .icon{
-                margin: 0em;
-            }
+        header{
+            width: 100%;
         }
-    }
 
+    }
 }
+
