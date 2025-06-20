@@ -9,9 +9,9 @@ import { ContactsComponent } from '../contacts/contacts.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavComponent, ContactsComponent],
+  imports: [CommonModule, RouterOutlet, NavComponent, HeaderComponent,ContactsComponent],
   templateUrl: './main-content.component.html',
-  styleUrl: '../app.component.scss'
+  styleUrl: './main-content.component.scss'
 })
 export class MainContentComponent {
   title = 'Portfolio';

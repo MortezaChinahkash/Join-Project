@@ -1,0 +1,27 @@
+:host{
+
+    height: 100vh;
+    overflow: hidden;
+
+    .content{
+        display: flex;
+        flex-direction: row;
+    }
+
+    .page{
+        width: 100%;
+    }
+
+    .main{
+        height: 100vh;
+        overflow: auto;
+    }
+
+    /* === RESPONSIVE === */
+    @media screen and (max-width: 800px) {
+        .content{
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
+}
