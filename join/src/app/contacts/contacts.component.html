@@ -599,9 +599,9 @@
           <h3 class="single-contact-info-title">Contact Information</h3>
           <div class="single-contact-info">
             <p class="single-contact-info-label">Email</p>
-            <p class="single-contact-info-value single-contact-info-email">
+            <a class="single-contact-info-value single-contact-info-email" [href]="'mailto:' + selectedContact.email">
               {{ selectedContact.email }}
-            </p>
+            </a>
             <p class="single-contact-info-label">Phone</p>
             <p class="single-contact-info-value">{{ selectedContact.phone }}</p>
           </div>
