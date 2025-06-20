@@ -412,11 +412,11 @@ form {
 }
 
 .single-contact-initials {
-  width: 42px;
-  height: 42px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  background: #ff8700;
-  color: #fff;
+  background: var(--color-prio-medium);
+  color: var(--bg-white);
   display: flex;
   align-items: center;
   justify-content: center;
