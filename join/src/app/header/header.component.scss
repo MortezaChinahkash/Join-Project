@@ -12,7 +12,7 @@
         justify-content: space-between;
         align-items: center;
         cursor: default;
-        background-color: white;
+        background-color: var(--bg-white);
 
         .left{
 
@@ -35,21 +35,19 @@
                 margin: 0;
                 margin-left: 1em;
 
-                border: 2px solid #000;
+                border: 2px solid var(--color-black);
                 border-radius: 100%;
 
                 font-size: 1.25em;
                 font-weight: 500;
 
-                background-color: #fff;
-                color: #29ABE2;
+                background-color: var(--bg-white);
+                color: var(--color-accent);
             }
 
             .user:hover{
-                background-color: #e2e6ec;
+                background-color: var(--color-greyed-out);
             }
-
-            
 
             .help{
 
@@ -67,7 +65,7 @@
                     
                     path, 
                     rect{
-                        fill: #adadad
+                        fill: var(--color-greyed-out)
                     }
                 }
                 .icon:hover{
