@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-<div class="contacts-contents">
+  <div class="contacts-contents">
     <div class="contacts-list">
       <div class="addNewContactBtn">
         <button (click)="openAddContactOverlay()">
@@ -9,433 +9,664 @@
       </div>
       <div class="listContent">
         <div class="letterWrapperA" *ngIf="groupedContacts['A']?.length">
-  <div class="firstLetter">A</div>
-  <div class="contactsA">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['A']"
-     (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperB" *ngIf="groupedContacts['B']?.length">
-  <div class="firstLetter">B</div>
-  <div class="contactsB">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['B']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperC" *ngIf="groupedContacts['C']?.length">
-  <div class="firstLetter">C</div>
-  <div class="contactsC">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['C']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperD" *ngIf="groupedContacts['D']?.length">
-  <div class="firstLetter">D</div>
-  <div class="contactsD">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['D']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperE" *ngIf="groupedContacts['E']?.length">
-  <div class="firstLetter">E</div>
-  <div class="contactsE">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['E']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperF" *ngIf="groupedContacts['F']?.length">
-  <div class="firstLetter">F</div>
-  <div class="contactsF">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['F']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperG" *ngIf="groupedContacts['G']?.length">
-  <div class="firstLetter">G</div>
-  <div class="contactsG">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['G']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperH" *ngIf="groupedContacts['H']?.length">
-  <div class="firstLetter">H</div>
-  <div class="contactsH">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['H']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperI" *ngIf="groupedContacts['I']?.length">
-  <div class="firstLetter" >I</div>
-  <div class="contactsI">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['I']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperJ" *ngIf="groupedContacts['J']?.length">
-  <div class="firstLetter" >J</div>
-  <div class="contactsJ">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['J']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperK" *ngIf="groupedContacts['K']?.length">
-  <div class="firstLetter">K</div>
-  <div class="contactsK">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['K']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperL" *ngIf="groupedContacts['L']?.length">
-  <div class="firstLetter">L</div>
-  <div class="contactsL">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['L']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperM" *ngIf="groupedContacts['M']?.length">
-  <div class="firstLetter">M</div>
-  <div class="contactsM">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['M']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperN" *ngIf="groupedContacts['N']?.length">
-  <div class="firstLetter">N</div>
-  <div class="contactsN">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['N']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperO" *ngIf="groupedContacts['O']?.length">
-  <div class="firstLetter">O</div>
-  <div class="contactsO">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['O']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperP" *ngIf="groupedContacts['P']?.length">
-  <div class="firstLetter">P</div>
-  <div class="contactsP">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['P']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperQ" *ngIf="groupedContacts['Q']?.length">
-  <div class="firstLetter">Q</div>
-  <div class="contactsQ">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['Q']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperR" *ngIf="groupedContacts['R']?.length">
-  <div class="firstLetter">R</div>
-  <div class="contactsR">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['R']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperS" *ngIf="groupedContacts['S']?.length">
-  <div class="firstLetter" >S</div>
-  <div class="contactsS">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['S']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperT" *ngIf="groupedContacts['T']?.length">
-  <div class="firstLetter">T</div>
-  <div class="contactsT">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['T']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperU" *ngIf="groupedContacts['U']?.length">
-  <div class="firstLetter">U</div>
-  <div class="contactsU">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['U']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperV" *ngIf="groupedContacts['V']?.length">
-  <div class="firstLetter">V</div>
-  <div class="contactsV">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['V']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperW" *ngIf="groupedContacts['W']?.length">
-  <div class="firstLetter">W</div>
-  <div class="contactsW">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['W']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperX" *ngIf="groupedContacts['X']?.length">
-  <div class="firstLetter">X</div>
-  <div class="contactsX">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['X']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperY" *ngIf="groupedContacts['Y']?.length">
-  <div class="firstLetter">Y</div>
-  <div class="contactsY">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['Y']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-<div class="letterWrapperZ" *ngIf="groupedContacts['Z']?.length">
-  <div class="firstLetter">Z</div>
-  <div class="contactsZ">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['Z']"
-    (click)="selectContact(contact)">
-      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-      <div class="contactNameAndMail">
-        <div class="contactName">{{ contact.name }}</div>
-        <div class="contactMail">{{ contact.email }}</div>
-        
-      </div>
-    </div>
-  </div>
-</div>
-      </div>  
-</div>
-  
-
-      
-      <div class="contacts-right default-content-container">
-        <div class="component-header">
-          <h1 class="component-title">Contacts</h1>
-          <span class="header-divider"> | </span
-          ><span class="component-subtitle">Better with a team</span>
-        </div>
-        <div class="single-contact-container" *ngIf="selectedContact" @slideInRight>
-          <div class="single-contact-header">
-            <div class="single-contact-initials"  [style.background]="getInitialsColor(selectedContact.name)" >{{ getInitials(selectedContact.name)}}</div>
-            <div class="single-contact-name-block">
-              <h2 class="single-contact-name" >{{ selectedContact.name }}</h2>
-              <div class="single-contact-edit-row">
-                <div class="single-ctc-edit-btn" (click)="editContact()">
-                  <img class="single-ctc-edit-icon" src="/assets/img/icon_todo.svg" />
-                  <span class="single-ctc-edit-text">Edit</span>
-                </div>
-                <div class="single-ctc-edit-btn" (click)="deleteContact()">
-                  <img class="single-ctc-edit-icon" src="/assets/img/icon_delete.svg" />
-                  <span class="single-ctc-edit-text">Delete</span>
-                </div>
+          <div class="firstLetter">A</div>
+          <div class="contactsA">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['A']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
               </div>
             </div>
           </div>
-          <div class="single-contact-infoblock">
-            <h3 class="single-contact-info-title">Contact Information</h3>
-            <div class="single-contact-info">
-              <p class="single-contact-info-label">Email</p>
-              <p class="single-contact-info-value single-contact-info-email">{{ selectedContact.email }}</p>
-                <p class="single-contact-info-label">Phone</p>
-              <p class="single-contact-info-value">{{ selectedContact.phone }}</p>
+        </div>
+        <div class="letterWrapperB" *ngIf="groupedContacts['B']?.length">
+          <div class="firstLetter">B</div>
+          <div class="contactsB">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['B']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperC" *ngIf="groupedContacts['C']?.length">
+          <div class="firstLetter">C</div>
+          <div class="contactsC">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['C']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperD" *ngIf="groupedContacts['D']?.length">
+          <div class="firstLetter">D</div>
+          <div class="contactsD">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['D']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperE" *ngIf="groupedContacts['E']?.length">
+          <div class="firstLetter">E</div>
+          <div class="contactsE">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['E']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperF" *ngIf="groupedContacts['F']?.length">
+          <div class="firstLetter">F</div>
+          <div class="contactsF">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['F']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperG" *ngIf="groupedContacts['G']?.length">
+          <div class="firstLetter">G</div>
+          <div class="contactsG">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['G']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperH" *ngIf="groupedContacts['H']?.length">
+          <div class="firstLetter">H</div>
+          <div class="contactsH">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['H']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperI" *ngIf="groupedContacts['I']?.length">
+          <div class="firstLetter">I</div>
+          <div class="contactsI">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['I']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperJ" *ngIf="groupedContacts['J']?.length">
+          <div class="firstLetter">J</div>
+          <div class="contactsJ">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['J']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperK" *ngIf="groupedContacts['K']?.length">
+          <div class="firstLetter">K</div>
+          <div class="contactsK">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['K']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperL" *ngIf="groupedContacts['L']?.length">
+          <div class="firstLetter">L</div>
+          <div class="contactsL">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['L']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperM" *ngIf="groupedContacts['M']?.length">
+          <div class="firstLetter">M</div>
+          <div class="contactsM">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['M']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperN" *ngIf="groupedContacts['N']?.length">
+          <div class="firstLetter">N</div>
+          <div class="contactsN">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['N']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperO" *ngIf="groupedContacts['O']?.length">
+          <div class="firstLetter">O</div>
+          <div class="contactsO">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['O']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperP" *ngIf="groupedContacts['P']?.length">
+          <div class="firstLetter">P</div>
+          <div class="contactsP">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['P']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperQ" *ngIf="groupedContacts['Q']?.length">
+          <div class="firstLetter">Q</div>
+          <div class="contactsQ">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['Q']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperR" *ngIf="groupedContacts['R']?.length">
+          <div class="firstLetter">R</div>
+          <div class="contactsR">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['R']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperS" *ngIf="groupedContacts['S']?.length">
+          <div class="firstLetter">S</div>
+          <div class="contactsS">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['S']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperT" *ngIf="groupedContacts['T']?.length">
+          <div class="firstLetter">T</div>
+          <div class="contactsT">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['T']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperU" *ngIf="groupedContacts['U']?.length">
+          <div class="firstLetter">U</div>
+          <div class="contactsU">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['U']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperV" *ngIf="groupedContacts['V']?.length">
+          <div class="firstLetter">V</div>
+          <div class="contactsV">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['V']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperW" *ngIf="groupedContacts['W']?.length">
+          <div class="firstLetter">W</div>
+          <div class="contactsW">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['W']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperX" *ngIf="groupedContacts['X']?.length">
+          <div class="firstLetter">X</div>
+          <div class="contactsX">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['X']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperY" *ngIf="groupedContacts['Y']?.length">
+          <div class="firstLetter">Y</div>
+          <div class="contactsY">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['Y']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="letterWrapperZ" *ngIf="groupedContacts['Z']?.length">
+          <div class="firstLetter">Z</div>
+          <div class="contactsZ">
+            <div
+              class="contactContainer"
+              *ngFor="let contact of groupedContacts['Z']"
+              (click)="selectContact(contact)"
+            >
+              <div
+                class="initials"
+                [style.background]="getInitialsColor(contact.name)"
+              >
+                {{ getInitials(contact.name) }}
+              </div>
+              <div class="contactNameAndMail">
+                <div class="contactName">{{ contact.name }}</div>
+                <div class="contactMail">{{ contact.email }}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="contacts-right default-content-container">
+      <div class="component-header">
+        <h1 class="component-title">Contacts</h1>
+        <span class="header-divider"> | </span
+        ><span class="component-subtitle">Better with a team</span>
+      </div>
+      <div
+        class="single-contact-container"
+        *ngIf="selectedContact"
+        @slideInRight
+      >
+        <div class="single-contact-header">
+          <div
+            class="single-contact-initials"
+            [style.background]="getInitialsColor(selectedContact.name)"
+          >
+            {{ getInitials(selectedContact.name) }}
+          </div>
+          <div class="single-contact-name-block">
+            <h2 class="single-contact-name">{{ selectedContact.name }}</h2>
+            <div class="single-contact-edit-row">
+              <div class="single-ctc-edit-btn" (click)="editContact()">
+                <img
+                  class="single-ctc-edit-icon"
+                  src="/assets/img/icon_todo.svg"
+                />
+                <span class="single-ctc-edit-text">Edit</span>
+              </div>
+              <div class="single-ctc-edit-btn" (click)="deleteContact()">
+                <img
+                  class="single-ctc-edit-icon"
+                  src="/assets/img/icon_delete.svg"
+                />
+                <span class="single-ctc-edit-text">Delete</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="single-contact-infoblock">
+          <h3 class="single-contact-info-title">Contact Information</h3>
+          <div class="single-contact-info">
+            <p class="single-contact-info-label">Email</p>
+            <p class="single-contact-info-value single-contact-info-email">
+              {{ selectedContact.email }}
+            </p>
+            <p class="single-contact-info-label">Phone</p>
+            <p class="single-contact-info-value">{{ selectedContact.phone }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="add-contact-overlay" *ngIf="showAddContactOverlay">
     <div class="add-contact-container">
       <div class="add-contact-left">
         <div class="logo-placeholder">
-          <img class="add-logo" src="/assets/img/logo.svg" alt="">
+          <img class="add-logo" src="/assets/img/logo.svg" alt="" />
         </div>
         <h1>Add contact</h1>
         <p class="subtitle">Tasks are better with a team!</p>
         <div class="underline"></div>
       </div>
       <div class="add-contact-right">
-        <button class="close-btn" aria-label="Close" (click)="closeAddContactOverlay()">&#10005;</button>
+        <button
+          class="close-btn"
+          aria-label="Close"
+          (click)="closeAddContactOverlay()"
+        >
+          &#10005;
+        </button>
         <div class="add-contact-right-inner">
           <div class="avatar-and-form">
-            <div class="avatar-placeholder"></div>
-            <form [formGroup]="addContactForm" (ngSubmit)="onSubmitAddContact()">
+            <div
+              class="avatar-placeholder"
+              [style.background]="
+                addContactForm.get('name')?.value
+                  ? getInitialsColor(addContactForm.get('name')?.value)
+                  : 'rgb(237, 237, 237)'
+              "
+            >
+              <span
+                *ngIf="addContactForm.get('name')?.value; else defaultAvatar"
+              >
+                {{ getInitials(addContactForm.get("name")?.value) }}
+              </span>
+              <ng-template #defaultAvatar></ng-template>
+            </div>
+            <form
+              [formGroup]="addContactForm"
+              (ngSubmit)="onSubmitAddContact()"
+            >
               <div class="input-group">
                 <input
                   type="text"
                   placeholder="Name"
                   formControlName="name"
-                  [class.input-error]="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched"
+                  [class.input-error]="
+                    addContactForm.get('name')?.invalid &&
+                    addContactForm.get('name')?.touched
+                  "
                   autocomplete="off"
                 />
                 <span class="input-icon"></span>
-                <div class="error-message" *ngIf="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched">
+                <div
+                  class="error-message"
+                  *ngIf="
+                    addContactForm.get('name')?.invalid &&
+                    addContactForm.get('name')?.touched
+                  "
+                >
                   Please type in a name
                 </div>
               </div>
@@ -444,14 +675,23 @@
                   type="email"
                   placeholder="Email"
                   formControlName="email"
-                  [class.input-error]="addContactForm.get('email')?.invalid && addContactForm.get('email')?.touched"
+                  [class.input-error]="
+                    addContactForm.get('email')?.invalid &&
+                    addContactForm.get('email')?.touched
+                  "
                   autocomplete="off"
                 />
                 <span class="input-icon"></span>
-                <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched">
+                <div
+                  class="error-message"
+                  *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched"
+                >
                   Please type in an email
                 </div>
-                <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched">
+                <div
+                  class="error-message"
+                  *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched"
+                >
                   Enter a valid email
                 </div>
               </div>
@@ -460,16 +700,31 @@
                   type="tel"
                   placeholder="Phone"
                   formControlName="phone"
-                  [class.input-error]="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched"
+                  [class.input-error]="
+                    addContactForm.get('phone')?.invalid &&
+                    addContactForm.get('phone')?.touched
+                  "
                   autocomplete="off"
                 />
                 <span class="input-icon"></span>
-                <div class="error-message" *ngIf="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched">
+                <div
+                  class="error-message"
+                  *ngIf="
+                    addContactForm.get('phone')?.invalid &&
+                    addContactForm.get('phone')?.touched
+                  "
+                >
                   Please type in a phone number
                 </div>
               </div>
               <div class="form-buttons">
-                <button type="button" class="cancel-button" (click)="closeAddContactOverlay()">Cancel</button>
+                <button
+                  type="button"
+                  class="cancel-button"
+                  (click)="closeAddContactOverlay()"
+                >
+                  Cancel
+                </button>
                 <button
                   type="submit"
                   class="create-button"
