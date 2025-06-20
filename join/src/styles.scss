@@ -61,26 +61,34 @@ a:hover {
   align-items: flex-start;
   justify-content: flex-start;
   gap: 4px;
-  padding: 16px;
+  padding-top: 5rem;
+  padding-left: 3rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
 }
 
 .component-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 16px;
+  padding-bottom: 16px;
 }
 
-.component-header {
+.component-title {
   text-align: left;
   color: var(--color-black);
+  font-size: 3rem;
+  font-weight: 600;
 }
 
 .header-divider {
   color: var(--color-accent);
+   font-size: 3rem;
 }
 
 .component-subtitle {
+  text-align: left;
   color: var(--bg-dark-grey);
+  font-size: 2rem;
 }
