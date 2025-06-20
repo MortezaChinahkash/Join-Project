@@ -29,7 +29,7 @@
   box-sizing: border-box;
   scrollbar-width: thin;
   scrollbar-color: #bdbdbd #f5f5f5;
-   box-shadow: 0 4px 12px 0 #0001, 4px 0 12px 0 #0001;
+  box-shadow: 0 4px 12px 0 #0001, 4px 0 12px 0 #0001;
 
   // Custom scrollbar for Webkit browsers
   &::-webkit-scrollbar {
@@ -63,6 +63,7 @@
     background: #e0e0e0;
   }
 }
+
 
 // ===================
 // Add New Contact Button
@@ -131,6 +132,7 @@
   gap: 12px;
   padding-left: 8px;
   align-items: center;
+  margin-bottom: 32px;
 }
 
 .contactMail {
