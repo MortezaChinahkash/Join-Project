@@ -21,6 +21,8 @@ export class ContactsComponent implements OnInit {
   contacts: Contact[] = [];
   groupedContacts: { [key: string]: Contact[] } = {};
 
+  selectedContact: Contact | null = null;
+
   private firestore = inject(Firestore);
 
 
@@ -105,5 +107,9 @@ getInitialsColor(name: string): string {
   const index = letter.charCodeAt(0) - 65;
   return colors[index % colors.length];
 } 
+
+selectContact(contact: Contact) {
+  this.selectedContact = contact;
+}
 
 }

@@ -11,7 +11,8 @@
         <div class="letterWrapperA" *ngIf="groupedContacts['A']?.length">
   <div class="firstLetter">A</div>
   <div class="contactsA">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['A']">
+    <div class="contactContainer" *ngFor="let contact of groupedContacts['A']"
+     (click)="selectContact(contact)">
       <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
@@ -23,7 +24,8 @@
 <div class="letterWrapperB" *ngIf="groupedContacts['B']?.length">
   <div class="firstLetter">B</div>
   <div class="contactsB">
-    <div class="contactContainer" *ngFor="let contact of groupedContacts['B']">
+    <div class="contactContainer" *ngFor="let contact of groupedContacts['B']"
+    (click)="selectContact(contact)">
       <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
@@ -355,11 +357,11 @@
           <span class="header-divider"> | </span
           ><span class="component-subtitle">Better with a team</span>
         </div>
-        <div class="single-contact-container">
+        <div class="single-contact-container" *ngIf="selectedContact">
           <div class="single-contact-header">
-            <div class="single-contact-initials"></div>
+            <div class="single-contact-initials"  [style.background]="getInitialsColor(selectedContact.name)" >{{ getInitials(selectedContact.name)}}</div>
             <div class="single-contact-name-block">
-              <h2 class="single-contact-name">Test Name</h2>
+              <h2 class="single-contact-name" >{{ selectedContact.name }}</h2>
               <div class="single-contact-edit-row">
                 <div class="single-ctc-edit-btn" (click)="editContact()">
                   <img class="single-ctc-edit-icon" src="/assets/img/icon_todo.svg" />
@@ -376,9 +378,9 @@
             <h3 class="single-contact-info-title">Contact Information</h3>
             <div class="single-contact-info">
               <p class="single-contact-info-label">Email</p>
-              <p class="single-contact-info-value single-contact-info-email">test&#64;test.de</p>
+              <p class="single-contact-info-value single-contact-info-email">{{ selectedContact.email }}</p>
                 <p class="single-contact-info-label">Phone</p>
-              <p class="single-contact-info-value">+49 1111 111111</p>
+              <p class="single-contact-info-value">{{ selectedContact.phone }}</p>
             </div>
           </div>
         </div>
