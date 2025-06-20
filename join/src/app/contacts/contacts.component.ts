@@ -13,7 +13,7 @@ export class ContactsComponent {
 
   contacts = [
   { name: 'Anton Mayer',        email: 'anton.mayer@gmail.com',        phone: '+49 151 23456789' },
-  { name: 'Alfons Gärtner',      email: 'alfons.gaertner@gmail.com',    phone: '+49 151 9996661' },
+  { name: 'Alfons Gärtner',      email: 'alfons.gaertner@gmail.com',  phone: '+49 151 9996661' },
   { name: 'Benedikt Ziegler',   email: 'benedikt.ziegler@yahoo.de',    phone: '+49 176 98765432' },
   { name: 'Clara Schmidt',      email: 'clara.schmidt@web.de',         phone: '+49 172 11223344' },
   { name: 'David Eisenberg',    email: 'david.eisenberg@gmail.com',    phone: '+49 160 99887766' },
