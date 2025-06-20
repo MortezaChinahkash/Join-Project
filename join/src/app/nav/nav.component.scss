@@ -9,14 +9,14 @@
     svg.logo{
         path, 
         rect{
-            fill: #fff
+            fill: var(--bg-white);
         }
     }
 
     svg.icon{
         path, 
         rect{
-            fill: #fff
+            fill: var(--bg-white);
         }
     }
 
@@ -27,7 +27,7 @@
         justify-content: space-between;
         align-items: center;
 
-        background: #2A3647;
+        background: var(--bg-dark-grey);
 
         height: 100vh;
 
@@ -69,18 +69,18 @@
             width: 100%;
             
             
-            color: #fff;
+            color: var(--bg-white);
 
             li{
                 
             }
 
             li:hover a{
-                background: #2A3D59;
+                background: var(--nav-hover);
             }
 
             li.active a{
-                background: #091931;
+                background: var(--nav-current);
             }
 
         }
@@ -104,8 +104,6 @@
         height: 4rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-
-   
 
 }
 
