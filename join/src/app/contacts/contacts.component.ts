@@ -36,6 +36,21 @@ export class ContactsComponent {
   { name: 'Wilma Hartmann',     email: 'wilma.hartmann@gmx.de',        phone: '+49 176 13141516' }
 ];
 
+getInitialsColor(name: string): string {
+  if (!name) return '#888';
+  const colors = [
+    '#FFB900', '#D83B01', '#B50E0E', '#E81123', '#B4009E', '#5C2D91',
+    '#0078D7', '#00B4FF', '#008272', '#107C10', '#7FBA00', '#F7630C',
+    '#CA5010', '#EF6950', '#E74856', '#0099BC', '#7A7574', '#767676',
+    '#FF8C00', '#E3008C', '#68217A', '#00188F', '#00BCF2', '#00B294',
+    '#BAD80A', '#FFF100'
+  ];
+  // Erster Buchstabe als Index (A=0, B=1, ...)
+  const letter = name.trim()[0].toUpperCase();
+  const index = letter.charCodeAt(0) - 65;
+  return colors[index % colors.length];
+}
+
   groupedContacts: { [key: string]: any[] } = {};
 
 

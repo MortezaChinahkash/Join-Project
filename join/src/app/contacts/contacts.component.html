@@ -12,7 +12,7 @@
   <div class="firstLetter">A</div>
   <div class="contactsA">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['A']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -25,7 +25,7 @@
   <div class="firstLetter">B</div>
   <div class="contactsB">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['B']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -38,7 +38,7 @@
   <div class="firstLetter">C</div>
   <div class="contactsC">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['C']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -51,7 +51,7 @@
   <div class="firstLetter">D</div>
   <div class="contactsD">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['D']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -64,7 +64,7 @@
   <div class="firstLetter">E</div>
   <div class="contactsE">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['E']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -77,7 +77,7 @@
   <div class="firstLetter">F</div>
   <div class="contactsF">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['F']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -90,7 +90,7 @@
   <div class="firstLetter">G</div>
   <div class="contactsG">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['G']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -103,7 +103,7 @@
   <div class="firstLetter">H</div>
   <div class="contactsH">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['H']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -113,10 +113,10 @@
   </div>
 </div>
 <div class="letterWrapperI" *ngIf="groupedContacts['I']?.length">
-  <div class="firstLetter">I</div>
+  <div class="firstLetter" >I</div>
   <div class="contactsI">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['I']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -126,10 +126,10 @@
   </div>
 </div>
 <div class="letterWrapperJ" *ngIf="groupedContacts['J']?.length">
-  <div class="firstLetter">J</div>
+  <div class="firstLetter" >J</div>
   <div class="contactsJ">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['J']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -142,7 +142,7 @@
   <div class="firstLetter">K</div>
   <div class="contactsK">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['K']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -155,7 +155,7 @@
   <div class="firstLetter">L</div>
   <div class="contactsL">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['L']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -168,7 +168,7 @@
   <div class="firstLetter">M</div>
   <div class="contactsM">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['M']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -181,7 +181,7 @@
   <div class="firstLetter">N</div>
   <div class="contactsN">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['N']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -194,7 +194,7 @@
   <div class="firstLetter">O</div>
   <div class="contactsO">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['O']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -207,7 +207,7 @@
   <div class="firstLetter">P</div>
   <div class="contactsP">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['P']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -220,7 +220,7 @@
   <div class="firstLetter">Q</div>
   <div class="contactsQ">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['Q']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -233,7 +233,7 @@
   <div class="firstLetter">R</div>
   <div class="contactsR">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['R']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -243,10 +243,10 @@
   </div>
 </div>
 <div class="letterWrapperS" *ngIf="groupedContacts['S']?.length">
-  <div class="firstLetter">S</div>
+  <div class="firstLetter" >S</div>
   <div class="contactsS">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['S']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -259,7 +259,7 @@
   <div class="firstLetter">T</div>
   <div class="contactsT">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['T']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -272,7 +272,7 @@
   <div class="firstLetter">U</div>
   <div class="contactsU">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['U']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -285,7 +285,7 @@
   <div class="firstLetter">V</div>
   <div class="contactsV">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['V']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -298,7 +298,7 @@
   <div class="firstLetter">W</div>
   <div class="contactsW">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['W']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -311,7 +311,7 @@
   <div class="firstLetter">X</div>
   <div class="contactsX">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['X']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -324,7 +324,7 @@
   <div class="firstLetter">Y</div>
   <div class="contactsY">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['Y']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
@@ -337,7 +337,7 @@
   <div class="firstLetter">Z</div>
   <div class="contactsZ">
     <div class="contactContainer" *ngFor="let contact of groupedContacts['Z']">
-      <div class="initials">{{ getInitials(contact.name) }}</div>
+      <div class="initials" [style.background]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
       <div class="contactNameAndMail">
         <div class="contactName">{{ contact.name }}</div>
         <div class="contactMail">{{ contact.email }}</div>
