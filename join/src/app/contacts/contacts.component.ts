@@ -87,22 +87,22 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-   * Adds a new contact to Firestore.
-   * @param values The form values for the new contact.
-   * @returns A promise resolving to the created Contact.
-   */
-  private addContactToFirestore(values: any): Promise<Contact> {
-    return addDoc(collection(this.firestore, 'contacts'), {
-      name: values.name,
-      email: values.email,
-      phone: values.phone
-    }).then(docRef => ({
-      id: docRef.id,
-      name: values.name,
-      email: values.email,
-      phone: values.phone
-    }));
-  }
+     * Adds a new contact to Firestore.
+     * @param values The form values for the new contact.
+     * @returns A promise resolving to the created Contact.
+     */
+    private addContactToFirestore(values: { name: string; email: string; phone?: string }): Promise<Contact> {
+      return addDoc(collection(this.firestore, 'contacts'), {
+        name: values.name,
+        email: values.email,
+        phone: values.phone
+      }).then(docRef => ({
+        id: docRef.id,
+        name: values.name,
+        email: values.email,
+        phone: values.phone
+      }));
+    }
 
   /**
    * Handles the logic after a contact has been successfully added.
@@ -120,7 +120,7 @@ export class ContactsComponent implements OnInit {
    * Handles errors that occur when adding a contact.
    * @param error The error object.
    */
-  private handleAddContactError(error: any) {
+  private handleAddContactError(error: string): void {
     console.error('Error adding contact: ', error);
   }
 
@@ -165,7 +165,7 @@ export class ContactsComponent implements OnInit {
    * @param values The updated form values.
    * @returns A promise for the update operation.
    */
-  private updateContactInFirestore(contactId: string, values: any) {
+  private updateContactInFirestore(contactId: string, values: Contact): Promise<void> {
     return updateDoc(doc(this.firestore, 'contacts', contactId), {
       name: values.name,
       email: values.email,
@@ -177,7 +177,7 @@ export class ContactsComponent implements OnInit {
    * Updates the selected contact in the local contacts array.
    * @param values The updated values.
    */
-  private updateSelectedContact(values: any) {
+  private updateSelectedContact(values: string | Contact) {
     if (this.selectedContact) {
       Object.assign(this.selectedContact, values);
     }
