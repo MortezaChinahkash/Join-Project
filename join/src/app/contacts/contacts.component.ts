@@ -18,7 +18,7 @@ export interface Contact {
   styleUrls: ['./contacts.component.scss'],
   animations: [
     trigger('slideInRight', [
-      transition(':enter', [
+      transition('* => *', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
       ]),
