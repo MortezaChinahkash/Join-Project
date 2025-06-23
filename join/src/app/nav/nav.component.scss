@@ -135,6 +135,8 @@
             margin: 0;
 
             a{
+                font-size: 1em;
+
                 border-radius: 1em;
                 display: flex;
                 flex-direction: column;
@@ -153,8 +155,13 @@
 
                 margin: 0;
 
+                height: 4em;
+
                 li{
                     width: 25%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
                 }
             }
 
