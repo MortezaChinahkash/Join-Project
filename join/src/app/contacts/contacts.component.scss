@@ -85,7 +85,7 @@
   top: 0;
   z-index: 2;
   background: #fff;
-  box-shadow: 0 2px 8px -8px #000;
+  box-shadow: none;
 
   // Gradient overlay for sticky effect
   &::before {
@@ -117,7 +117,8 @@
   transition: background 0.2s;
 
   &:hover {
-    background: #1e2835;
+    background: #29abe2;;
+     box-shadow: 0 4px 12px 0 rgba(41, 171, 226, 0.25);
   }
 }
 
@@ -160,10 +161,27 @@
   letter-spacing: 1px;
   margin: 8px 0;
   box-shadow: 0 2px 8px -4px #0001;
+  border: 2px solid #fff;
+  box-sizing: border-box;
 }
 
 .listContent {
   margin-left: 10%;
+}
+
+.contactContainer.active {
+  background: #2d3a4a;
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px 0 rgba(41, 171, 226, 0.10);
+}
+
+.contactContainer.active .initials {
+  border-color: #2d3a4a;
+}
+
+.contactContainer.active .contactMail {
+  color: #fff;
 }
 
 // ===================
@@ -506,3 +524,5 @@ padding-bottom: 8px;
 .single-contact-info-email {
   color: var(--color-accent);
 }
+
+
