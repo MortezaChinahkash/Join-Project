@@ -120,10 +120,11 @@ export class ContactsComponent implements OnInit {
 
   deleteContact() {
     if (this.selectedContact && this.selectedContact.id) { // <-- id muss vorhanden sein!
-      deleteDoc(doc(this.firestore, 'contacts', this.selectedContact.id)).then(() => {
-        this.contacts = this.contacts.filter(c => c !== this.selectedContact);
+      const contactId = this.selectedContact.id; // Store id before clearing selectedContact
+      this.selectedContact = null; // Clear selected contact after deletion
+      deleteDoc(doc(this.firestore, 'contacts', contactId)).then(() => {
+        this.contacts = this.contacts.filter(c => c.id !== contactId);
         this.groupContacts();
-        this.selectedContact = null; // Clear selected contact after deletion
         this.showSuccessMessage('Contact successfully deleted!');
       }).catch(error => {
         console.error('Error deleting contact: ', error);
