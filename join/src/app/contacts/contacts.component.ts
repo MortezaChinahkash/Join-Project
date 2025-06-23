@@ -113,7 +113,7 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteContact() {
-    if (this.selectedContact) {
+    if (this.selectedContact && this.selectedContact.id) { // <-- id muss vorhanden sein!
       deleteDoc(doc(this.firestore, 'contacts', this.selectedContact.id)).then(() => {
         this.contacts = this.contacts.filter(c => c !== this.selectedContact);
         this.groupContacts();
