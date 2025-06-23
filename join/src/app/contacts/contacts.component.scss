@@ -177,7 +177,7 @@
 }
 
 .contactContainer.active .initials {
-  border-color: #2d3a4a;
+  border-color: white;
 }
 
 .contactContainer.active .contactMail {
@@ -454,7 +454,9 @@ form {
   font-size: 32px;
   letter-spacing: 1px;
   margin: 8px 0;
-  box-shadow: 0 2px 8px -4px #0001;
+  box-shadow: 0 2px 8px -4px #0001;  
+  border-color: white;
+  border: 4px solid #fff;
 }
 
 .single-contact-name-block {
