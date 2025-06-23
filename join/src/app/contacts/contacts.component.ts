@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, addDoc } from '@angular/fire/firestore';
 import{ trigger, transition, style, animate} from '@angular/animations';
+import { setDoc } from 'firebase/firestore';
 
 export interface Contact {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
 }
 
 @Component({
@@ -62,19 +63,24 @@ export class ContactsComponent implements OnInit {
 
   onSubmitAddContact() {
     if (this.addContactForm.valid) {
-      
-
-
-
-
-
-
-      
+      addDoc(collection(this.firestore, 'contacts'), {
+        name: this.addContactForm.value.name,
+        email: this.addContactForm.value.email,
+        phone: this.addContactForm.value.phone
+      }).then(() => {
+        // Optionally, you can update the local contacts array
+        this.contacts.push(this.addContactForm.value);
+        this.groupContacts();
+      }).catch(error => {
+        console.error('Error adding contact: ', error);
+      });
       this.closeAddContactOverlay();
       this.showSuccessMessage('Contact successfully created!');
+      this.selectContact(this.addContactForm.value); // Set the newly added contact as selected
     } else {
       this.addContactForm.markAllAsTouched();
     }
+
   }
 
   onSubmitUpdateContact() {
