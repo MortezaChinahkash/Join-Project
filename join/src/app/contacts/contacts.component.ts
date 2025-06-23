@@ -7,7 +7,7 @@ import{ trigger, transition, style, animate} from '@angular/animations';
 export interface Contact {
   name: string;
   email: string;
-  phone?: string;
+  phone: string;
 }
 
 @Component({
@@ -47,6 +47,7 @@ export class ContactsComponent implements OnInit {
     this.addContactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
+      phone: ['']
     });
   }
 
