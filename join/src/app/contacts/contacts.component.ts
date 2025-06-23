@@ -29,7 +29,8 @@ export interface Contact {
   ]
 })
 export class ContactsComponent implements OnInit {
-
+  contactSuccessMessageOverlay: boolean = false;
+  contactSuccessMessageText: string = 'Contact successfully created!';
   contacts: Contact[] = [];
   groupedContacts: { [key: string]: Contact[] } = {};
 
@@ -38,8 +39,8 @@ export class ContactsComponent implements OnInit {
   private firestore = inject(Firestore);
 
 
-  showAddContactOverlay = false;
-  showEditContactOverlay = false;
+  showAddContactOverlay: boolean = false;
+  showEditContactOverlay: boolean = false;
   addContactForm: FormGroup;
   // editContactForm: FormGroup;
 
@@ -62,16 +63,19 @@ export class ContactsComponent implements OnInit {
 
   onSubmitAddContact() {
     if (this.addContactForm.valid) {
-      // Handle form submission logic here
+      // ...Kontakt speichern...
       this.closeAddContactOverlay();
+      this.showSuccessMessage('Contact successfully created!');
     } else {
       this.addContactForm.markAllAsTouched();
     }
   }
+
   onSubmitUpdateContact() {
     if (this.addContactForm.valid) {
-      // Handle form submission logic here
+      // ...Kontakt aktualisieren...
       this.closeEditContactOverlay();
+      this.showSuccessMessage('Contact successfully updated!');
     } else {
       this.addContactForm.markAllAsTouched();
     }
@@ -143,5 +147,11 @@ getInitialsColor(name: string): string {
 selectContact(contact: Contact) {
   this.selectedContact = contact;
 }
-
+showSuccessMessage(message: string){
+  this.contactSuccessMessageText = message;
+  this.contactSuccessMessageOverlay = true;
+  setTimeout(() => {
+    this.contactSuccessMessageOverlay = false;
+  }, 3000); // Nachricht nach 3 Sekunden ausblenden
+}
 }
