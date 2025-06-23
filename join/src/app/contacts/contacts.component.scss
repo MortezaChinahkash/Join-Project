@@ -486,6 +486,13 @@ form {
   justify-content: flex-start;
   gap: 4px;
   cursor: pointer;
+
+  &:hover {
+    .single-ctc-edit-text{
+      color: var(--color-accent);
+      font-weight: bold;
+    }
+  }
 }
 
 .single-ctc-edit-icon {
