@@ -67,20 +67,29 @@ export class ContactsComponent implements OnInit {
 
   onSubmitAddContact() {
     if (this.addContactForm.valid) {
+        if (this.addContactForm.value.phone === "") {
+        this.addContactForm.value.phone = "N/A";
+      }
       addDoc(collection(this.firestore, 'contacts'), {
         name: this.addContactForm.value.name,
         email: this.addContactForm.value.email,
         phone: this.addContactForm.value.phone
-      }).then(() => {
+      }).then((docRef) => {
         // Optionally, you can update the local contacts array
-        this.contacts.push(this.addContactForm.value);
+        const newContact: Contact = {
+          id: docRef.id,
+          name: this.addContactForm.value.name,
+          email: this.addContactForm.value.email,
+          phone: this.addContactForm.value.phone
+        };
+        this.contacts.push(newContact);
         this.groupContacts();
+        this.closeAddContactOverlay();
+        this.showSuccessMessage('Contact successfully created!');
+        this.selectContact(newContact); // Set the newly added contact as selected
       }).catch(error => {
         console.error('Error adding contact: ', error);
       });
-      this.closeAddContactOverlay();
-      this.showSuccessMessage('Contact successfully created!');
-      this.selectContact(this.addContactForm.value); // Set the newly added contact as selected
     } else {
       this.addContactForm.markAllAsTouched();
     }
@@ -88,6 +97,9 @@ export class ContactsComponent implements OnInit {
   }
 
   onSubmitUpdateContact() {
+    if (this.addContactForm.value.phone === "") {
+        this.addContactForm.value.phone = "N/A";
+      }
     if (this.addContactForm.valid && this.selectedContact && this.selectedContact.id) {
       updateDoc(doc(this.firestore, 'contacts', this.selectedContact.id), {
         name: this.addContactForm.value.name,
