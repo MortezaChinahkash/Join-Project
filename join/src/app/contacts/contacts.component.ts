@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, collectionData, collection, addDoc } from '@angular/fire/firestore';
+import { Firestore, collectionData, collection, addDoc, doc } from '@angular/fire/firestore';
 import{ trigger, transition, style, animate} from '@angular/animations';
-import { setDoc } from 'firebase/firestore';
+import { deleteDoc, setDoc } from 'firebase/firestore';
 
 export interface Contact {
+  id?: string; // Optional ID for local tracking
   name: string;
   email: string;
   phone?: string;
@@ -112,7 +113,16 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteContact() {
-    // Logic to delete a contact
+    if (this.selectedContact && this.selectedContact.id) { // <-- id muss vorhanden sein!
+      deleteDoc(doc(this.firestore, 'contacts', this.selectedContact.id)).then(() => {
+        this.contacts = this.contacts.filter(c => c !== this.selectedContact);
+        this.groupContacts();
+        this.showSuccessMessage('Contact successfully deleted!');
+        this.selectedContact = null; // Clear selected contact after deletion
+      }).catch(error => {
+        console.error('Error deleting contact: ', error);
+      });
+    }
   }
 
   ngOnInit() {
