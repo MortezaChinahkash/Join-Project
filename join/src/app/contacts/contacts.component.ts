@@ -68,11 +68,26 @@ export class ContactsComponent implements OnInit {
       this.addContactForm.markAllAsTouched();
     }
   }
+  onSubmitUpdateContact() {
+    if (this.addContactForm.valid) {
+      // Handle form submission logic here
+      this.closeEditContactOverlay();
+    } else {
+      this.addContactForm.markAllAsTouched();
+    }
+  }
   closeEditContactOverlay() {
     this.showEditContactOverlay = false;
   }
-  editContact() {
+  openEditContactOverlay(contact: Contact) {
     this.showEditContactOverlay = true;
+    this.selectedContact = contact;
+    // Patch the form with the selected contact's data
+    this.addContactForm.patchValue({
+      name: contact.name,
+      email: contact.email,
+      phone: contact.phone
+    });
   }
 
   deleteContact() {
@@ -87,7 +102,7 @@ export class ContactsComponent implements OnInit {
         this.contacts = contacts as Contact[];
         this.groupContacts();
       });
-}
+  }
 
 groupContacts() {
   this.groupedContacts = {};
