@@ -66,40 +66,43 @@ export class ContactsComponent implements OnInit {
   }
 
   onSubmitAddContact() {
-    if (this.addContactForm.valid) {
-        if (this.addContactForm.value.phone === "") {
-        this.addContactForm.value.phone = "N/A";
-      }
-      addDoc(collection(this.firestore, 'contacts'), {
+  // Prüfe auf leeren String, null oder undefined
+  const phoneValue = this.addContactForm.get('phone')?.value;
+  if (!phoneValue || phoneValue.trim() === "") {
+    this.addContactForm.get('phone')?.setValue("N/A");
+    this.addContactForm.get('phone')?.updateValueAndValidity();
+  }
+  if (this.addContactForm.valid) {
+    addDoc(collection(this.firestore, 'contacts'), {
+      name: this.addContactForm.value.name,
+      email: this.addContactForm.value.email,
+      phone: this.addContactForm.value.phone
+    }).then((docRef) => {
+      const newContact: Contact = {
+        id: docRef.id,
         name: this.addContactForm.value.name,
         email: this.addContactForm.value.email,
         phone: this.addContactForm.value.phone
-      }).then((docRef) => {
-        // Optionally, you can update the local contacts array
-        const newContact: Contact = {
-          id: docRef.id,
-          name: this.addContactForm.value.name,
-          email: this.addContactForm.value.email,
-          phone: this.addContactForm.value.phone
-        };
-        this.contacts.push(newContact);
-        this.groupContacts();
-        this.closeAddContactOverlay();
-        this.showSuccessMessage('Contact successfully created!');
-        this.selectContact(newContact); // Set the newly added contact as selected
-      }).catch(error => {
-        console.error('Error adding contact: ', error);
-      });
-    } else {
-      this.addContactForm.markAllAsTouched();
-    }
-
+      };
+      this.contacts.push(newContact);
+      this.groupContacts();
+      this.closeAddContactOverlay();
+      this.showSuccessMessage('Contact successfully created!');
+      this.selectContact(newContact);
+    }).catch(error => {
+      console.error('Error adding contact: ', error);
+    });
+  } else {
+    this.addContactForm.markAllAsTouched();
   }
+}
 
   onSubmitUpdateContact() {
-    if (this.addContactForm.value.phone === "") {
-        this.addContactForm.value.phone = "N/A";
-      }
+  const phoneValue = this.addContactForm.get('phone')?.value;
+  if (!phoneValue || phoneValue.trim() === "") {
+    this.addContactForm.get('phone')?.setValue("N/A");
+    this.addContactForm.get('phone')?.updateValueAndValidity();
+  }
     if (this.addContactForm.valid && this.selectedContact && this.selectedContact.id) {
       updateDoc(doc(this.firestore, 'contacts', this.selectedContact.id), {
         name: this.addContactForm.value.name,
