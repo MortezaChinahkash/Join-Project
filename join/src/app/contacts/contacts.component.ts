@@ -6,7 +6,7 @@ import{ trigger, transition, style, animate} from '@angular/animations';
 import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export interface Contact {
-  id?: string; // Optional ID for local tracking
+  id?: string; 
   name: string;
   email: string;
   phone?: string;
@@ -66,28 +66,43 @@ export class ContactsComponent implements OnInit {
   }
 
   onSubmitAddContact() {
-    if (this.addContactForm.valid) {
-      addDoc(collection(this.firestore, 'contacts'), {
+  // Prüfe auf leeren String, null oder undefined
+  const phoneValue = this.addContactForm.get('phone')?.value;
+  if (!phoneValue || phoneValue.trim() === "") {
+    this.addContactForm.get('phone')?.setValue("N/A");
+    this.addContactForm.get('phone')?.updateValueAndValidity();
+  }
+  if (this.addContactForm.valid) {
+    addDoc(collection(this.firestore, 'contacts'), {
+      name: this.addContactForm.value.name,
+      email: this.addContactForm.value.email,
+      phone: this.addContactForm.value.phone
+    }).then((docRef) => {
+      const newContact: Contact = {
+        id: docRef.id,
         name: this.addContactForm.value.name,
         email: this.addContactForm.value.email,
         phone: this.addContactForm.value.phone
-      }).then(() => {
-        // Optionally, you can update the local contacts array
-        this.contacts.push(this.addContactForm.value);
-        this.groupContacts();
-      }).catch(error => {
-        console.error('Error adding contact: ', error);
-      });
+      };
+      this.contacts.push(newContact);
+      this.groupContacts();
       this.closeAddContactOverlay();
       this.showSuccessMessage('Contact successfully created!');
-      this.selectContact(this.addContactForm.value); // Set the newly added contact as selected
-    } else {
-      this.addContactForm.markAllAsTouched();
-    }
-
+      this.selectContact(newContact);
+    }).catch(error => {
+      console.error('Error adding contact: ', error);
+    });
+  } else {
+    this.addContactForm.markAllAsTouched();
   }
+}
 
   onSubmitUpdateContact() {
+  const phoneValue = this.addContactForm.get('phone')?.value;
+  if (!phoneValue || phoneValue.trim() === "") {
+    this.addContactForm.get('phone')?.setValue("N/A");
+    this.addContactForm.get('phone')?.updateValueAndValidity();
+  }
     if (this.addContactForm.valid && this.selectedContact && this.selectedContact.id) {
       updateDoc(doc(this.firestore, 'contacts', this.selectedContact.id), {
         name: this.addContactForm.value.name,
