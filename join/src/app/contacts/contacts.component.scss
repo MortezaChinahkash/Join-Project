@@ -1044,3 +1044,14 @@ body, .content-wrapper {
 }
 
 
+// INPUT ICONS 
+  .input-icon {
+    position: absolute;
+    height: 1em;
+    right: 1em;
+    
+    pointer-events: none;;
+  }
+  .input-icon svg path{
+     fill: var(--color-greyed-out);
+  }
