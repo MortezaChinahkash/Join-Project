@@ -94,3 +94,21 @@ a:hover {
   color: var(--bg-dark-grey);
   font-size: 1.5rem;
 }
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
