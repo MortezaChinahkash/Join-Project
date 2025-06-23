@@ -117,7 +117,7 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit() {
   const contactsCollection = collection(this.firestore, 'contacts');
-    collectionData(contactsCollection, { idField: 'id' }) // gibt Observable<any[]>
+    collectionData(contactsCollection, { idField: 'id' }) 
       .subscribe((contacts) => {
         // Typumwandlung auf Contact[]
         this.contacts = contacts as Contact[];
