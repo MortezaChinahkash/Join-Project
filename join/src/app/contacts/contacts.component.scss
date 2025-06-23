@@ -486,11 +486,15 @@ form {
   justify-content: flex-start;
   gap: 4px;
   cursor: pointer;
+  min-width: 60px;
 
   &:hover {
     .single-ctc-edit-text{
       color: var(--color-accent);
       font-weight: bold;
+    }
+    .single-ctc-edit-icon {
+      filter: invert(69%) sepia(8%) saturate(6862%) hue-rotate(166deg) brightness(87%) contrast(106%);
     }
   }
 }
