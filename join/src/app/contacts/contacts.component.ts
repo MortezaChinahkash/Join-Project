@@ -42,7 +42,6 @@ export class ContactsComponent implements OnInit {
   showAddContactOverlay: boolean = false;
   showEditContactOverlay: boolean = false;
   addContactForm: FormGroup;
-  // editContactForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.addContactForm = this.fb.group({
@@ -63,7 +62,14 @@ export class ContactsComponent implements OnInit {
 
   onSubmitAddContact() {
     if (this.addContactForm.valid) {
-      // ...Kontakt speichern...
+      
+
+
+
+
+
+
+      
       this.closeAddContactOverlay();
       this.showSuccessMessage('Contact successfully created!');
     } else {
@@ -73,7 +79,12 @@ export class ContactsComponent implements OnInit {
 
   onSubmitUpdateContact() {
     if (this.addContactForm.valid) {
-      // ...Kontakt aktualisieren...
+      
+
+
+
+
+
       this.closeEditContactOverlay();
       this.showSuccessMessage('Contact successfully updated!');
     } else {
