@@ -508,3 +508,341 @@ padding-bottom: 8px;
 .single-contact-info-email {
   color: var(--color-accent);
 }
+
+// ===================
+// Contact Overlay (Modal) - shared for add/edit
+// ===================
+
+.contact-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #81818165;
+  z-index: 1000;
+}
+
+.contact-container {
+  display: flex;
+  width: 90vw;
+  max-width: 1200px;
+  height: 600px;
+  background: #fff;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+.contact-left {
+  background: #2d3a4a;
+  color: #fff;
+  width: 40%;
+  padding: 64px 0 64px 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+}
+
+.contact-left h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.contact-left .subtitle {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.contact-left .underline {
+  width: 60px;
+  height: 4px;
+  background: #38b6ff;
+  border-radius: 2px;
+}
+
+.contact-right {
+  width: 60%;
+  padding: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  position: relative;
+}
+
+.contact-right-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Centers avatar and form together
+.add-contact-right-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center; // Center avatar and form vertically
+  justify-content: center; // Center horizontally
+}
+
+// Avatar and form side by side
+.avatar-and-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center; // Center avatar and form on the same line
+  gap: 48px;
+  width: 100%;
+  justify-content: center; // Center the whole group
+}
+
+.add-logo {
+  width: 100px;
+}
+
+// Avatar circle
+.avatar-placeholder {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #ededed;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 8px #0001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: white;
+}
+
+// ===================
+// Add Contact Form
+// ===================
+
+form {
+  width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start; // Align form fields to the left
+}
+
+// Input group for each field
+.input-group {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 44px 14px 18px;
+  border: 2px solid #ededed;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  background: #fafafa;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.input-group input:focus {
+  border: 2px solid #38b6ff;
+  background: #fff;
+}
+
+// ===================
+// Form Buttons
+// ===================
+
+.form-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.cancel-button, .create-button {
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  border: 2px solid #2d3a4a;
+  background: #fff;
+  color: #2d3a4a;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.create-button {
+  background: #2d3a4a;
+  color: #fff;
+  border: none;
+}
+
+.cancel-button:hover {
+  background: #f5f5f5;
+}
+
+.create-button:hover {
+  background: #1a2532;
+}
+
+.input-error {
+  border-color: #ff3b3b !important;
+  background: #fff5f5 !important;
+}
+
+.error-message {
+  color: #ff3b3b;
+  font-size: 0.95rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  position: absolute;
+  left: 0;
+  bottom: -22px;
+}
+
+.create-button:disabled,
+.create-button.disabled {
+  background: #e0e0e0 !important;
+  color: #bcbcbc !important;
+  cursor: not-allowed !important;
+  border: none !important;
+}
+
+// ===================
+// Close Button (Modal)
+// ===================
+
+.close-btn {
+  position: absolute;
+  top: 32px;
+  right: 32px;
+  background: #fff;
+  border-radius: 6px;
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+// ===================
+// Single contact
+// ===================
+
+.single-contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  
+}
+
+.single-contact-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.single-contact-initials {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-prio-medium);
+  color: var(--bg-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: 1px;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px -4px #0001;
+}
+
+.single-contact-name-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.single-contact-name {
+  text-align: left;
+}
+
+.single-contact-edit-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.single-ctc-edit-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+}
+
+.single-ctc-edit-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.single-ctc-edit-text {
+  text-align: left;
+}
+
+.single-contact-infoblock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.single-contact-info-title {
+text-align: left;
+padding-bottom: 8px;
+}
+
+.single-contact-info{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.single-contact-info-label {
+  text-align: left;
+  font-weight: bold;
+}
+
+.single-contact-info-value {
+  text-align: left;
+}
+
+.single-contact-info-email {
+  color: var(--color-accent);
+}
