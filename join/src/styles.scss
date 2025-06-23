@@ -67,6 +67,13 @@ a:hover {
   padding-left: 3rem;
   padding-right: 2rem;
   padding-bottom: 2rem;
+
+  @media (max-width: 768px) {
+    padding-top: 3rem;
+    padding-left: 2rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+  }
 }
 
 .component-header {
@@ -82,17 +89,29 @@ a:hover {
   color: var(--color-black);
   font-size: 3rem;
   font-weight: 600;
+
+  @media (max-width: 768px) {
+    font-size: 2.4rem;
+  }
 }
 
 .header-divider {
   color: var(--color-accent);
-   font-size: 2.8rem;
+  font-size: 2.8rem;
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
+  }
 }
 
 .component-subtitle {
   text-align: left;
   color: var(--bg-dark-grey);
   font-size: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
 }
 
 @media (min-width: 769px) {
