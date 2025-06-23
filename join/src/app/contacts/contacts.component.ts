@@ -91,17 +91,18 @@ export class ContactsComponent implements OnInit {
      * @param values The form values for the new contact.
      * @returns A promise resolving to the created Contact.
      */
-    private addContactToFirestore(values: { name: string; email: string; phone?: string }): Promise<Contact> {
-      return addDoc(collection(this.firestore, 'contacts'), {
+    private async addContactToFirestore(values: { name: string; email: string; phone?: string }): Promise<Contact> {
+      const docRef = await addDoc(collection(this.firestore, 'contacts'), {
         name: values.name,
         email: values.email,
         phone: values.phone
-      }).then(docRef => ({
+      });
+      return ({
         id: docRef.id,
         name: values.name,
         email: values.email,
         phone: values.phone
-      }));
+      });
     }
 
   /**
