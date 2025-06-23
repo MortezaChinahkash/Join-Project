@@ -409,6 +409,7 @@ form {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  gap: 8px;
   
 }
 
@@ -417,14 +418,14 @@ form {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding-top: 8px;
   padding-bottom: 8px;
 }
 
 .single-contact-initials {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: var(--color-prio-medium);
   color: var(--bg-white);
@@ -432,7 +433,7 @@ form {
   align-items: center;
   justify-content: center;
   font-weight: 500;
-  font-size: 20px;
+  font-size: 32px;
   letter-spacing: 1px;
   margin: 8px 0;
   box-shadow: 0 2px 8px -4px #0001;
@@ -443,7 +444,7 @@ form {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
 }
 
 .single-contact-name {
@@ -454,7 +455,7 @@ form {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 8px;
+  gap: 12px;
 }
 
 .single-ctc-edit-btn {
@@ -479,7 +480,7 @@ form {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 4px;
+  gap: 8px;
 }
 
 .single-contact-info-title {
@@ -492,6 +493,7 @@ padding-bottom: 8px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  gap: 8px;
 }
 
 .single-contact-info-label {
