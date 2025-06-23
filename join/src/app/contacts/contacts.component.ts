@@ -19,16 +19,18 @@ export interface Contact {
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss'],
   animations: [
-    trigger('slideInRight', [
-      transition('* => *', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
-        animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
-      ])
+  trigger('slideInRight', [
+    transition('* => suppress', []), // Keine Enter-Animation wenn suppress
+    transition('suppress => void', []), // Keine Leave-Animation wenn suppress
+    transition('* => *', [
+      style({ transform: 'translateX(100%)', opacity: 0 }),
+      animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+    ]),
+    transition(':leave', [
+      animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
     ])
-  ]
+  ])
+]
 })
 export class ContactsComponent implements OnInit {
   contactSuccessMessageOverlay: boolean = false;
@@ -37,6 +39,7 @@ export class ContactsComponent implements OnInit {
   groupedContacts: { [key: string]: Contact[] } = {};
 
   selectedContact: Contact | null = null;
+  suppressAnimation = false;
 
   private firestore = inject(Firestore);
 
@@ -119,18 +122,24 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteContact() {
-    if (this.selectedContact && this.selectedContact.id) { // <-- id muss vorhanden sein!
-      const contactId = this.selectedContact.id; // Store id before clearing selectedContact
-      this.selectedContact = null; // Clear selected contact after deletion
-      deleteDoc(doc(this.firestore, 'contacts', contactId)).then(() => {
-        this.contacts = this.contacts.filter(c => c.id !== contactId);
-        this.groupContacts();
-        this.showSuccessMessage('Contact successfully deleted!');
-      }).catch(error => {
-        console.error('Error deleting contact: ', error);
-      });
-    }
+  this.suppressAnimation = true;
+  if (this.selectedContact && this.selectedContact.id) {
+    const contactId = this.selectedContact.id;
+    deleteDoc(doc(this.firestore, 'contacts', contactId)).then(() => {
+      this.contacts = this.contacts.filter(c => c.id !== contactId);
+      this.groupContacts();
+      this.showSuccessMessage('Contact successfully deleted!');
+      // Jetzt selectedContact asynchron entfernen
+      setTimeout(() => {
+        this.selectedContact = null;
+        this.suppressAnimation = false;
+      }, 0);
+    }).catch(error => {
+      console.error('Error deleting contact: ', error);
+      this.suppressAnimation = false;
+    });
   }
+}
 
   ngOnInit() {
   const contactsCollection = collection(this.firestore, 'contacts');
