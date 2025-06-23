@@ -3,7 +3,7 @@ import { Component, inject, Inject, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, collectionData, collection, addDoc, doc } from '@angular/fire/firestore';
 import{ trigger, transition, style, animate} from '@angular/animations';
-import { deleteDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export interface Contact {
   id?: string; // Optional ID for local tracking
@@ -85,17 +85,24 @@ export class ContactsComponent implements OnInit {
   }
 
   onSubmitUpdateContact() {
-    if (this.addContactForm.valid) {
-      
-
-
-
-
+    if (this.addContactForm.valid && this.selectedContact && this.selectedContact.id) {
+      updateDoc(doc(this.firestore, 'contacts', this.selectedContact.id), {
+        name: this.addContactForm.value.name,
+        email: this.addContactForm.value.email,
+        phone: this.addContactForm.value.phone
+      }).then(() => {
+        Object.assign(this.selectedContact!, this.addContactForm.value);
+      }).catch(error => {
+        console.error('Error updating contact: ', error);
+      });
 
       this.closeEditContactOverlay();
       this.showSuccessMessage('Contact successfully updated!');
     } else {
       this.addContactForm.markAllAsTouched();
+      if (!this.selectedContact?.id) {
+        console.error('No contact id for update!');
+      }
     }
   }
   closeEditContactOverlay() {
@@ -104,7 +111,6 @@ export class ContactsComponent implements OnInit {
   openEditContactOverlay(contact: Contact) {
     this.showEditContactOverlay = true;
     this.selectedContact = contact;
-    // Patch the form with the selected contact's data
     this.addContactForm.patchValue({
       name: contact.name,
       email: contact.email,
@@ -117,8 +123,8 @@ export class ContactsComponent implements OnInit {
       deleteDoc(doc(this.firestore, 'contacts', this.selectedContact.id)).then(() => {
         this.contacts = this.contacts.filter(c => c !== this.selectedContact);
         this.groupContacts();
-        this.showSuccessMessage('Contact successfully deleted!');
         this.selectedContact = null; // Clear selected contact after deletion
+        this.showSuccessMessage('Contact successfully deleted!');
       }).catch(error => {
         console.error('Error deleting contact: ', error);
       });
