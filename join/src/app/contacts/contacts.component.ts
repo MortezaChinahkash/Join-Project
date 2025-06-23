@@ -37,13 +37,9 @@ export class ContactsComponent implements OnInit {
   contactSuccessMessageText: string = 'Contact successfully created!';
   contacts: Contact[] = [];
   groupedContacts: { [key: string]: Contact[] } = {};
-
   selectedContact: Contact | null = null;
   suppressAnimation = false;
-
   private firestore = inject(Firestore);
-
-
   showAddContactOverlay: boolean = false;
   showEditContactOverlay: boolean = false;
   addContactForm: FormGroup;
@@ -66,56 +62,57 @@ export class ContactsComponent implements OnInit {
   }
 
   onSubmitAddContact() {
-  // Prüfe auf leeren String, null oder undefined
-  const phoneValue = this.addContactForm.get('phone')?.value;
-  if (!phoneValue || phoneValue.trim() === "") {
-    this.addContactForm.get('phone')?.setValue("N/A");
-    this.addContactForm.get('phone')?.updateValueAndValidity();
+    this.ensurePhoneValue();
+    if (this.addContactForm.valid) {
+      this.addContactToFirestore(this.addContactForm.value)
+        .then((newContact) => {
+          this.handleContactAdded(newContact);
+        })
+        .catch(error => {
+          this.handleAddContactError(error);
+        });
+    } else {
+      this.addContactForm.markAllAsTouched();
+    }
   }
-  if (this.addContactForm.valid) {
-    addDoc(collection(this.firestore, 'contacts'), {
-      name: this.addContactForm.value.name,
-      email: this.addContactForm.value.email,
-      phone: this.addContactForm.value.phone
-    }).then((docRef) => {
-      const newContact: Contact = {
-        id: docRef.id,
-        name: this.addContactForm.value.name,
-        email: this.addContactForm.value.email,
-        phone: this.addContactForm.value.phone
-      };
-      this.contacts.push(newContact);
-      this.groupContacts();
-      this.closeAddContactOverlay();
-      this.showSuccessMessage('Contact successfully created!');
-      this.selectContact(newContact);
-    }).catch(error => {
-      console.error('Error adding contact: ', error);
-    });
-  } else {
-    this.addContactForm.markAllAsTouched();
+
+  private addContactToFirestore(values: any): Promise<Contact> {
+    return addDoc(collection(this.firestore, 'contacts'), {
+      name: values.name,
+      email: values.email,
+      phone: values.phone
+    }).then(docRef => ({
+      id: docRef.id,
+      name: values.name,
+      email: values.email,
+      phone: values.phone
+    }));
   }
-}
+
+  private handleContactAdded(newContact: Contact) {
+    this.contacts.push(newContact);
+    this.groupContacts();
+    this.closeAddContactOverlay();
+    this.showSuccessMessage('Contact successfully created!');
+    this.selectContact(newContact);
+  }
+
+  private handleAddContactError(error: any) {
+    console.error('Error adding contact: ', error);
+  }
 
   onSubmitUpdateContact() {
-  const phoneValue = this.addContactForm.get('phone')?.value;
-  if (!phoneValue || phoneValue.trim() === "") {
-    this.addContactForm.get('phone')?.setValue("N/A");
-    this.addContactForm.get('phone')?.updateValueAndValidity();
-  }
+    this.ensurePhoneValue();
     if (this.addContactForm.valid && this.selectedContact && this.selectedContact.id) {
-      updateDoc(doc(this.firestore, 'contacts', this.selectedContact.id), {
-        name: this.addContactForm.value.name,
-        email: this.addContactForm.value.email,
-        phone: this.addContactForm.value.phone
-      }).then(() => {
-        Object.assign(this.selectedContact!, this.addContactForm.value);
-      }).catch(error => {
-        console.error('Error updating contact: ', error);
-      });
-
-      this.closeEditContactOverlay();
-      this.showSuccessMessage('Contact successfully updated!');
+      this.updateContactInFirestore(this.selectedContact.id, this.addContactForm.value)
+        .then(() => {
+          this.updateSelectedContact(this.addContactForm.value);
+          this.closeEditContactOverlay();
+          this.showSuccessMessage('Contact successfully updated!');
+        })
+        .catch(error => {
+          console.error('Error updating contact: ', error);
+        });
     } else {
       this.addContactForm.markAllAsTouched();
       if (!this.selectedContact?.id) {
@@ -123,9 +120,32 @@ export class ContactsComponent implements OnInit {
       }
     }
   }
+
+  private ensurePhoneValue() {
+    const phoneValue = this.addContactForm.get('phone')?.value;
+    if (!phoneValue || phoneValue.trim() === "") {
+      this.addContactForm.get('phone')?.setValue("N/A");
+      this.addContactForm.get('phone')?.updateValueAndValidity();
+    }
+  }
+
+  private updateContactInFirestore(contactId: string, values: any) {
+    return updateDoc(doc(this.firestore, 'contacts', contactId), {
+      name: values.name,
+      email: values.email,
+      phone: values.phone
+    });
+  }
+
+  private updateSelectedContact(values: any) {
+    if (this.selectedContact) {
+      Object.assign(this.selectedContact, values);
+    }
+  }
   closeEditContactOverlay() {
     this.showEditContactOverlay = false;
   }
+
   openEditContactOverlay(contact: Contact) {
     this.showEditContactOverlay = true;
     this.selectedContact = contact;
@@ -216,6 +236,7 @@ getInitialsColor(name: string): string {
 selectContact(contact: Contact) {
   this.selectedContact = contact;
 }
+
 showSuccessMessage(message: string){
   this.contactSuccessMessageText = message;
   this.contactSuccessMessageOverlay = true;
@@ -223,4 +244,5 @@ showSuccessMessage(message: string){
     this.contactSuccessMessageOverlay = false;
   }, 3000); // Nachricht nach 3 Sekunden ausblenden
 }
+
 }
