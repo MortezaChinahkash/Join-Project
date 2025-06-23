@@ -137,24 +137,35 @@ export class ContactsComponent implements OnInit {
   }
 
   deleteContact() {
-  this.suppressAnimation = true;
-  if (this.selectedContact && this.selectedContact.id) {
-    const contactId = this.selectedContact.id;
+    this.suppressAnimation = true;
+    if (this.selectedContact && this.selectedContact.id) {
+      const contactId = this.selectedContact.id;
+      this.performDeleteContact(contactId);
+    }
+  }
+
+  private performDeleteContact(contactId: string) {
     deleteDoc(doc(this.firestore, 'contacts', contactId)).then(() => {
-      this.contacts = this.contacts.filter(c => c.id !== contactId);
+      this.removeContactFromList(contactId);
       this.groupContacts();
       this.showSuccessMessage('Contact successfully deleted!');
-      // Jetzt selectedContact asynchron entfernen
-      setTimeout(() => {
-        this.selectedContact = null;
-        this.suppressAnimation = false;
-      }, 0);
+      this.clearSelectedContactAsync();
     }).catch(error => {
       console.error('Error deleting contact: ', error);
       this.suppressAnimation = false;
     });
   }
-}
+
+  private removeContactFromList(contactId: string) {
+    this.contacts = this.contacts.filter(c => c.id !== contactId);
+  }
+
+  private clearSelectedContactAsync() {
+    setTimeout(() => {
+      this.selectedContact = null;
+      this.suppressAnimation = false;
+    }, 0);
+  }
 
   ngOnInit() {
   const contactsCollection = collection(this.firestore, 'contacts');
