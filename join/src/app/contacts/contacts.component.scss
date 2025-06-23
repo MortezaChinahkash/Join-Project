@@ -141,7 +141,12 @@
   padding-left: 8px;
   align-items: center;
   margin-bottom: 32px;
-  cursor: pointer;
+  cursor: pointer;  
+}
+
+.contactContainer:hover {
+  background-color: var(--bg-grey);
+  border-radius: 12px;
 }
 
 .contactMail {
@@ -568,6 +573,9 @@ padding-bottom: 8px;
   border-radius: 32px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    .hover{
+      color: var(--bg-grey);
+    }
 }
 
 .contact-left {
@@ -788,16 +796,7 @@ form {
   z-index: 1000;
 }
 
-.contact-container {
-  display: flex;
-  width: 90vw;
-  max-width: 1200px;
-  height: 600px;
-  background: #fff;
-  border-radius: 32px;
-  overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-}
+
 
 .contact-left {
   background: #2d3a4a;
