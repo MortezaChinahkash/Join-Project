@@ -6,7 +6,7 @@ import{ trigger, transition, style, animate} from '@angular/animations';
 import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export interface Contact {
-  id?: string; // Optional ID for local tracking
+  id?: string; 
   name: string;
   email: string;
   phone?: string;
