@@ -39,7 +39,9 @@ export class ContactsComponent implements OnInit {
 
 
   showAddContactOverlay = false;
+  showEditContactOverlay = false;
   addContactForm: FormGroup;
+  // editContactForm: FormGroup;
 
   constructor(private fb: FormBuilder) {
     this.addContactForm = this.fb.group({
@@ -66,10 +68,13 @@ export class ContactsComponent implements OnInit {
       this.addContactForm.markAllAsTouched();
     }
   }
-
-  editContact() {
-    // Logic to edit a contact
+  closeEditContactOverlay() {
+    this.showEditContactOverlay = false;
   }
+  editContact() {
+    this.showEditContactOverlay = true;
+  }
+
   deleteContact() {
     // Logic to delete a contact
   }
