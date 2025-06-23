@@ -593,6 +593,7 @@
         class="single-contact-container"
         *ngIf="selectedContact"
         @slideInRight
+        [@slideInRight]="selectedContact?.email"
       >
         <div class="single-contact-header">
           <div
