@@ -7,7 +7,7 @@ import{ trigger, transition, style, animate} from '@angular/animations';
 export interface Contact {
   name: string;
   email: string;
-  phone: string;
+  phone?: string;
 }
 
 @Component({
