@@ -1,705 +1,1155 @@
-<h1>Impressum</h1>
-<h2>Informationen über den Diensteanbieter</h2>
-<p>
-  Morteza Chinahkash<br />
-  Foorthkamp 15,<br />
-  22419 Hamburg,<br />
-  Deutschland<br />
-  Tel.: 017622508589
-</p>
+<div class="legal-notice-container">
+  <!-- Language Selection -->
+  <div class="language-selector">
+    <button 
+      class="language-btn" 
+      [class.active]="selectedLanguage === 'de'" 
+      (click)="setLanguage('de')">
+      🇩🇪 Deutsch
+    </button>
+    <button 
+      class="language-btn" 
+      [class.active]="selectedLanguage === 'en'" 
+      (click)="setLanguage('en')">
+      🇬🇧 English
+    </button>
+  </div>
 
-<h2>Weitere Ansprechpartner</h2>
-<p>
-  Joshua Brunke<br />
-  Über der Kieckwiese 3<br />
-  38729 Langelsheim<br />
-  E-Mail: joshuabrunke1&#64;gmail.com<br />
-  Tel.: +49 (5383) 9079151
-</p>
-<p>
-  Daniel Grabowski<br />
-  Am Mühlenweg 3C<br />
-  14669 Ketzin/Havel<br />
-  E-Mail: rasen_karotte27&#64;icloud.com<br />
-  Tel.: +49 173 7941017
-</p>
-<p>
-  Gary Angelone<br />
-  Söflingerstr. 169<br />
-  89077 Ulm<br />
-  E-Mail: gmangelone&#64;gmail.com<br />
-  Tel.: +49 0176 51806951
-</p>
+  <!-- German Version -->
+  <div class="content-section" *ngIf="selectedLanguage === 'de'">
+    <div class="header-section">
+      <h1>Impressum</h1>
+      <p class="subtitle">Rechtliche Informationen und Datenschutzerklärung</p>
+    </div>    <div class="info-card">
+      <h2>Informationen über den Diensteanbieter</h2>
+      <div class="contact-grid">        <div class="contact-person">
+          <h3>Morteza Chinahkash</h3>
+          <p>
+            Foorthkamp 15<br />
+            22419 Hamburg<br />
+            Deutschland<br />
+            <span class="contact-item">
+              📧 E-Mail: <a href="mailto:kontakt@m-chinahkash.de">kontakt&#64;m-chinahkash.de</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Tel.: <a href="tel:+4917622508589">017622508589</a>
+            </span>
+          </p>
+        </div>
 
-<h2>EU-Streitschlichtung</h2>
-<p>
-  Gemäß Verordnung über Online-Streitbeilegung in Verbraucherangelegenheiten
-  (ODR-Verordnung) möchten wir Sie über die Online-Streitbeilegungsplattform
-  (OS-Plattform) informieren.<br />
-  Verbraucher haben die Möglichkeit, Beschwerden an die Online
-  Streitbeilegungsplattform der Europäischen Kommission unter
-  <a
-    href="https://ec.europa.eu/consumers/odr/main/index.cfm?event=main.home2.show&amp;lng=DE"
-    >https://ec.europa.eu/consumers/odr/main/index.cfm?event=main.home2.show&amp;lng=DE</a
-  >
-  zu richten.<br />
-  Die dafür notwendigen Kontaktdaten finden Sie oberhalb in unserem
-  Impressum.<br />
-  Wir möchten Sie jedoch darauf hinweisen, dass wir nicht bereit oder
-  verpflichtet sind, an Streitbeilegungsverfahren vor einer
-  Verbraucherschlichtungsstelle teilzunehmen.
-</p>
+        <div class="contact-person">
+          <h3>Joshua Brunke</h3>
+          <p>
+            Über der Kieckwiese 3<br />
+            38729 Langelsheim<br />
+            <span class="contact-item">
+              📧 E-Mail: <a href="mailto:joshuabrunke1@gmail.com">joshuabrunke1&#64;gmail.com</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Tel.: <a href="tel:+4953839079151">+49 (5383) 9079151</a>
+            </span>
+          </p>
+        </div>
 
-<p>
-  Alle Texte sind urheberrechtlich geschützt.<br />
-  Quelle: Erstellt mit dem Impressum Generator von AdSimple
-</p>
+        <div class="contact-person">
+          <h3>Daniel Grabowski</h3>
+          <p>
+            Am Mühlenweg 3C<br />
+            14669 Ketzin/Havel<br />
+            <span class="contact-item">
+              📧 E-Mail: <a href="mailto:rasen_karotte27@icloud.com">rasen_karotte27&#64;icloud.com</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Tel.: <a href="tel:+491737941017">+49 173 7941017</a>
+            </span>
+          </p>
+        </div>
 
-<h1>Datenschutzerklärung</h1>
+        <div class="contact-person">
+          <h3>Gary Angelone</h3>
+          <p>
+            Söflingerstr. 169<br />
+            89077 Ulm<br />
+            <span class="contact-item">
+              📧 E-Mail: <a href="mailto:gmangelone@gmail.com">gmangelone&#64;gmail.com</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Tel.: <a href="tel:+4917651806951">+49 0176 51806951</a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
 
-<h2>Inhaltsverzeichnis</h2>
-<ul>
-  <li>Einleitung und Überblick</li>
-  <li>Anwendungsbereich</li>
-  <li>Rechtsgrundlagen</li>
-  <li>Speicherdauer</li>
-  <li>Rechte laut Datenschutz-Grundverordnung</li>
-  <li>Cookies</li>
-  <li>Single-Sign-On-Anmeldungen Einleitung</li>
-  <li>Schlusswort</li>
-</ul>
+    <div class="info-card">
+      <h2>EU-Streitschlichtung</h2>
+      <p>
+        Gemäß Verordnung über Online-Streitbeilegung in Verbraucherangelegenheiten
+        (ODR-Verordnung) möchten wir Sie über die Online-Streitbeilegungsplattform
+        (OS-Plattform) informieren.
+      </p>
+      <p>
+        Verbraucher haben die Möglichkeit, Beschwerden an die Online
+        Streitbeilegungsplattform der Europäischen Kommission unter
+        <a
+          href="https://ec.europa.eu/consumers/odr/main/index.cfm?event=main.home2.show&amp;lng=DE"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="external-link">
+          https://ec.europa.eu/consumers/odr/main/index.cfm?event=main.home2.show&amp;lng=DE
+        </a>
+        zu richten.
+      </p>
+      <p>
+        Die dafür notwendigen Kontaktdaten finden Sie oberhalb in unserem Impressum.
+        Wir möchten Sie jedoch darauf hinweisen, dass wir nicht bereit oder
+        verpflichtet sind, an Streitbeilegungsverfahren vor einer
+        Verbraucherschlichtungsstelle teilzunehmen.
+      </p>
+    </div>
 
-<h2>Einleitung und Überblick</h2>
-<p>
-  Wir haben diese Datenschutzerklärung (Fassung 24.06.2025-323017699) verfasst,
-  um Ihnen gemäß der Vorgaben der Datenschutz-Grundverordnung (EU) 2016/679 und
-  anwendbaren nationalen Gesetzen zu erklären, welche personenbezogenen Daten
-  (kurz Daten) wir als Verantwortliche – und die von uns beauftragten
-  Auftragsverarbeiter (z. B. Provider) – verarbeiten, zukünftig verarbeiten
-  werden und welche rechtmäßigen Möglichkeiten Sie haben. Die verwendeten
-  Begriffe sind geschlechtsneutral zu verstehen.<br />
-  Kurz gesagt: Wir informieren Sie umfassend über Daten, die wir über Sie
-  verarbeiten.
-</p>
-<p>
-  Datenschutzerklärungen klingen für gewöhnlich sehr technisch und verwenden
-  juristische Fachbegriffe. Diese Datenschutzerklärung soll Ihnen hingegen die
-  wichtigsten Dinge so einfach und transparent wie möglich beschreiben. Soweit
-  es der Transparenz förderlich ist, werden technische Begriffe leserfreundlich
-  erklärt, Links zu weiterführenden Informationen geboten und Grafiken zum
-  Einsatz gebracht. Wir informieren damit in klarer und einfacher Sprache, dass
-  wir im Rahmen unserer Geschäftstätigkeiten nur dann personenbezogene Daten
-  verarbeiten, wenn eine entsprechende gesetzliche Grundlage gegeben ist. Das
-  ist sicher nicht möglich, wenn man möglichst knappe, unklare und
-  juristisch-technische Erklärungen abgibt, so wie sie im Internet oft Standard
-  sind, wenn es um Datenschutz geht. Ich hoffe, Sie finden die folgenden
-  Erläuterungen interessant und informativ und vielleicht ist die eine oder
-  andere Information dabei, die Sie noch nicht kannten.
-</p>
-<p>
-  Wenn trotzdem Fragen bleiben, möchten wir Sie bitten, sich an die unten bzw.
-  im Impressum genannte verantwortliche Stelle zu wenden, den vorhandenen Links
-  zu folgen und sich weitere Informationen auf Drittseiten anzusehen. Unsere
-  Kontaktdaten finden Sie selbstverständlich auch im Impressum.
-</p>
+    <div class="info-card">
+      <h2>Datenschutzerklärung</h2>
 
-<h2>Anwendungsbereich</h2>
-<p>
-  Diese Datenschutzerklärung gilt für alle von uns im Unternehmen verarbeiteten
-  personenbezogenen Daten und für alle personenbezogenen Daten, die von uns
-  beauftragte Firmen (Auftragsverarbeiter) verarbeiten. Mit personenbezogenen
-  Daten meinen wir Informationen im Sinne des Art. 4 Nr. 1 DSGVO wie zum
-  Beispiel Name, E-Mail-Adresse und postalische Anschrift einer Person. Die
-  Verarbeitung personenbezogener Daten sorgt dafür, dass wir unsere
-  Dienstleistungen und Produkte anbieten und abrechnen können, sei es online
-  oder offline. Der Anwendungsbereich dieser Datenschutzerklärung umfasst:
-</p>
-<ul>
-  <li>alle Onlineauftritte (Websites, Onlineshops), die wir betreiben</li>
-  <li>Social Media Auftritte und E-Mail-Kommunikation</li>
-  <li>mobile Apps für Smartphones und andere Geräte</li>
-</ul>
-<p>
-  Kurz gesagt: Die Datenschutzerklärung gilt für alle Bereiche, in denen
-  personenbezogene Daten im Unternehmen über die genannten Kanäle strukturiert
-  verarbeitet werden. Sollten wir außerhalb dieser Kanäle mit Ihnen in
-  Rechtsbeziehungen eintreten, werden wir Sie gegebenenfalls gesondert
-  informieren.
-</p>
+      <h3>Inhaltsverzeichnis</h3>
+      <ul>
+        <li>Einleitung und Überblick</li>
+        <li>Anwendungsbereich</li>
+        <li>Rechtsgrundlagen</li>
+        <li>Speicherdauer</li>
+        <li>Rechte laut Datenschutz-Grundverordnung</li>
+        <li>Cookies</li>
+        <li>Single-Sign-On-Anmeldungen Einleitung</li>
+        <li>Schlusswort</li>
+      </ul>
 
-<h2>Rechtsgrundlagen</h2>
-<p>
-  In der folgenden Datenschutzerklärung geben wir Ihnen transparente
-  Informationen zu den rechtlichen Grundsätzen und Vorschriften, also den
-  Rechtsgrundlagen der Datenschutz-Grundverordnung, die uns ermöglichen,
-  personenbezogene Daten zu verarbeiten. Was das EU-Recht betrifft, beziehen wir
-  uns auf die VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES
-  vom 27. April 2016. Diese Datenschutz-Grundverordnung der EU können Sie
-  selbstverständlich online auf EUR-Lex, dem Zugang zum EU-Recht, unter
-  <a
-    href="https://eur-lex.europa.eu/legal-content/DE/ALL/?uri=celex%3A32016R0679"
-    >https://eur-lex.europa.eu/legal-content/DE/ALL/?uri=celex%3A32016R0679</a
-  >
-  nachlesen.
-</p>
-<p>
-  Wir verarbeiten Ihre Daten nur, wenn mindestens eine der folgenden Bedingungen
-  zutrifft:
-</p>
-<ul>
-  <li>
-    <b>Einwilligung (Artikel 6 Absatz 1 lit. a DSGVO):</b> Sie haben uns Ihre
-    Einwilligung gegeben, Daten zu einem bestimmten Zweck zu verarbeiten. Ein
-    Beispiel wäre die Speicherung Ihrer eingegebenen Daten eines
-    Kontaktformulars.
-  </li>
-  <li>
-    <b>Vertrag (Artikel 6 Absatz 1 lit. b DSGVO):</b> Um einen Vertrag oder
-    vorvertragliche Verpflichtungen mit Ihnen zu erfüllen, verarbeiten wir Ihre
-    Daten. Wenn wir zum Beispiel einen Kaufvertrag mit Ihnen abschließen,
-    benötigen wir vorab personenbezogene Informationen.
-  </li>
-  <li>
-    <b>Rechtliche Verpflichtung (Artikel 6 Absatz 1 lit. c DSGVO):</b> Wenn wir
-    einer rechtlichen Verpflichtung unterliegen, verarbeiten wir Ihre Daten. Zum
-    Beispiel sind wir gesetzlich verpflichtet Rechnungen für die Buchhaltung
-    aufzuheben. Diese enthalten in der Regel personenbezogene Daten.
-  </li>
-  <li>
-    <b>Berechtigte Interessen (Artikel 6 Absatz 1 lit. f DSGVO):</b> Im Falle
-    berechtigter Interessen, die Ihre Grundrechte nicht einschränken, behalten
-    wir uns die Verarbeitung personenbezogener Daten vor. Wir müssen zum
-    Beispiel gewisse Daten verarbeiten, um unsere Website sicher und
-    wirtschaftlich effizient betreiben zu können. Diese Verarbeitung ist somit
-    ein berechtigtes Interesse.
-  </li>
-</ul>
-<p>
-  Weitere Bedingungen wie die Wahrnehmung von Aufnahmen im öffentlichen
-  Interesse und Ausübung öffentlicher Gewalt sowie dem Schutz lebenswichtiger
-  Interessen treten bei uns in der Regel nicht auf. Soweit eine solche
-  Rechtsgrundlage doch einschlägig sein sollte, wird diese an der entsprechenden
-  Stelle ausgewiesen.
-</p>
-<p>
-  Zusätzlich zu der EU-Verordnung gelten auch noch nationale Gesetze:<br />
-  In Österreich ist dies das Bundesgesetz zum Schutz natürlicher Personen bei
-  der Verarbeitung personenbezogener Daten (Datenschutzgesetz), kurz DSG.<br />
-  In Deutschland gilt das Bundesdatenschutzgesetz, kurz BDSG.<br />
-  Sofern weitere regionale oder nationale Gesetze zur Anwendung kommen,
-  informieren wir Sie in den folgenden Abschnitten darüber.
-</p>
+      <h3>Einleitung und Überblick</h3>
+      <p>
+        Wir haben diese Datenschutzerklärung (Fassung 24.06.2025-323017699) verfasst,
+        um Ihnen gemäß der Vorgaben der Datenschutz-Grundverordnung (EU) 2016/679 und
+        anwendbaren nationalen Gesetzen zu erklären, welche personenbezogenen Daten
+        (kurz Daten) wir als Verantwortliche – und die von uns beauftragten
+        Auftragsverarbeiter (z. B. Provider) – verarbeiten, zukünftig verarbeiten
+        werden und welche rechtmäßigen Möglichkeiten Sie haben. Die verwendeten
+        Begriffe sind geschlechtsneutral zu verstehen.<br />
+        Kurz gesagt: Wir informieren Sie umfassend über Daten, die wir über Sie
+        verarbeiten.
+      </p>
+      <p>
+        Datenschutzerklärungen klingen für gewöhnlich sehr technisch und verwenden
+        juristische Fachbegriffe. Diese Datenschutzerklärung soll Ihnen hingegen die
+        wichtigsten Dinge so einfach und transparent wie möglich beschreiben. Soweit
+        es der Transparenz förderlich ist, werden technische Begriffe leserfreundlich
+        erklärt, Links zu weiterführenden Informationen geboten und Grafiken zum
+        Einsatz gebracht. Wir informieren damit in klarer und einfacher Sprache, dass
+        wir im Rahmen unserer Geschäftstätigkeiten nur dann personenbezogene Daten
+        verarbeiten, wenn eine entsprechende gesetzliche Grundlage gegeben ist. Das
+        ist sicher nicht möglich, wenn man möglichst knappe, unklare und
+        juristisch-technische Erklärungen abgibt, so wie sie im Internet oft Standard
+        sind, wenn es um Datenschutz geht. Ich hoffe, Sie finden die folgenden
+        Erläuterungen interessant und informativ und vielleicht ist die eine oder
+        andere Information dabei, die Sie noch nicht kannten.
+      </p>
+      <p>
+        Wenn trotzdem Fragen bleiben, möchten wir Sie bitten, sich an die unten bzw.
+        im Impressum genannte verantwortliche Stelle zu wenden, den vorhandenen Links
+        zu folgen und sich weitere Informationen auf Drittseiten anzusehen. Unsere
+        Kontaktdaten finden Sie selbstverständlich auch im Impressum.
+      </p>
 
-<h2>Speicherdauer</h2>
-<p>
-  Dass wir personenbezogene Daten nur so lange speichern, wie es für die
-  Bereitstellung unserer Dienstleistungen und Produkte unbedingt notwendig ist,
-  gilt als generelles Kriterium bei uns. Das bedeutet, dass wir personenbezogene
-  Daten löschen, sobald der Grund für die Datenverarbeitung nicht mehr vorhanden
-  ist. In einigen Fällen sind wir gesetzlich dazu verpflichtet, bestimmte Daten
-  auch nach Wegfall des ursprüngliches Zwecks zu speichern, zum Beispiel zu
-  Zwecken der Buchführung.<br />
-  Sollten Sie die Löschung Ihrer Daten wünschen oder die Einwilligung zur
-  Datenverarbeitung widerrufen, werden die Daten so rasch wie möglich und soweit
-  keine Pflicht zur Speicherung besteht, gelöscht.<br />
-  Über die konkrete Dauer der jeweiligen Datenverarbeitung informieren wir Sie
-  weiter unten, sofern wir weitere Informationen dazu haben.
-</p>
+      <h3>Anwendungsbereich</h3>
+      <p>
+        Diese Datenschutzerklärung gilt für alle von uns im Unternehmen verarbeiteten
+        personenbezogenen Daten und für alle personenbezogenen Daten, die von uns
+        beauftragte Firmen (Auftragsverarbeiter) verarbeiten. Mit personenbezogenen
+        Daten meinen wir Informationen im Sinne des Art. 4 Nr. 1 DSGVO wie zum
+        Beispiel Name, E-Mail-Adresse und postalische Anschrift einer Person. Die
+        Verarbeitung personenbezogener Daten sorgt dafür, dass wir unsere
+        Dienstleistungen und Produkte anbieten und abrechnen können, sei es online
+        oder offline. Der Anwendungsbereich dieser Datenschutzerklärung umfasst:
+      </p>
+      <ul>
+        <li>alle Onlineauftritte (Websites, Onlineshops), die wir betreiben</li>
+        <li>Social Media Auftritte und E-Mail-Kommunikation</li>
+        <li>mobile Apps für Smartphones und andere Geräte</li>
+      </ul>
+      <p>
+        Kurz gesagt: Die Datenschutzerklärung gilt für alle Bereiche, in denen
+        personenbezogene Daten im Unternehmen über die genannten Kanäle strukturiert
+        verarbeitet werden. Sollten wir außerhalb dieser Kanäle mit Ihnen in
+        Rechtsbeziehungen eintreten, werden wir Sie gegebenenfalls gesondert
+        informieren.
+      </p>
 
-<h2>Rechte laut Datenschutz-Grundverordnung</h2>
-<p>
-  Gemäß Artikel 13, 14 DSGVO informieren wir Sie über die folgenden Rechte, die
-  Ihnen zustehen, damit es zu einer fairen und transparenten Verarbeitung von
-  Daten kommt:
-</p>
-<ul>
-  <li>
-    Sie haben laut Artikel 15 DSGVO ein Auskunftsrecht darüber, ob wir Daten von
-    Ihnen verarbeiten. Sollte das zutreffen, haben Sie Recht darauf eine Kopie
-    der Daten zu erhalten und die folgenden Informationen zu erfahren:
-    <ul>
-      <li>zu welchem Zweck wir die Verarbeitung durchführen;</li>
-      <li>die Kategorien, also die Arten von Daten, die verarbeitet werden;</li>
-      <li>
-        wer diese Daten erhält und wenn die Daten an Drittländer übermittelt
-        werden, wie die Sicherheit garantiert werden kann;
-      </li>
-      <li>wie lange die Daten gespeichert werden;</li>
-      <li>
-        das Bestehen des Rechts auf Berichtigung, Löschung oder Einschränkung
-        der Verarbeitung und dem Widerspruchsrecht gegen die Verarbeitung;
-      </li>
-      <li>
-        dass Sie sich bei einer Aufsichtsbehörde beschweren können (Links zu
-        diesen Behörden finden Sie weiter unten);
-      </li>
-      <li>
-        die Herkunft der Daten, wenn wir sie nicht bei Ihnen erhoben haben;
-      </li>
-      <li>
-        ob Profiling durchgeführt wird, ob also Daten automatisch ausgewertet
-        werden, um zu einem persönlichen Profil von Ihnen zu gelangen.
-      </li>
-    </ul>
-  </li>
-  <li>
-    Sie haben laut Artikel 16 DSGVO ein Recht auf Berichtigung der Daten, was
-    bedeutet, dass wir Daten richtig stellen müssen, falls Sie Fehler finden.
-  </li>
-  <li>
-    Sie haben laut Artikel 17 DSGVO das Recht auf Löschung („Recht auf
-    Vergessenwerden“), was konkret bedeutet, dass Sie die Löschung Ihrer Daten
-    verlangen dürfen.
-  </li>
-  <li>
-    Sie haben laut Artikel 18 DSGVO das Recht auf Einschränkung der
-    Verarbeitung, was bedeutet, dass wir die Daten nur mehr speichern dürfen
-    aber nicht weiter verwenden.
-  </li>
-  <li>
-    Sie haben laut Artikel 20 DSGVO das Recht auf Datenübertragbarkeit, was
-    bedeutet, dass wir Ihnen auf Anfrage Ihre Daten in einem gängigen Format zur
-    Verfügung stellen.
-  </li>
-  <li>
-    Sie haben laut Artikel 21 DSGVO ein Widerspruchsrecht, welches nach
-    Durchsetzung eine Änderung der Verarbeitung mit sich bringt.
-    <ul>
-      <li>
-        Wenn die Verarbeitung Ihrer Daten auf Artikel 6 Abs. 1 lit. e
-        (öffentliches Interesse, Ausübung öffentlicher Gewalt) oder Artikel 6
-        Abs. 1 lit. f (berechtigtes Interesse) basiert, können Sie gegen die
-        Verarbeitung Widerspruch einlegen. Wir prüfen danach so rasch wie
-        möglich, ob wir diesem Widerspruch rechtlich nachkommen können.
-      </li>
-      <li>
-        Werden Daten verwendet, um Direktwerbung zu betreiben, können Sie
-        jederzeit gegen diese Art der Datenverarbeitung widersprechen. Wir
-        dürfen Ihre Daten danach nicht mehr für Direktmarketing verwenden.
-      </li>
-      <li>
-        Werden Daten verwendet, um Profiling zu betreiben, können Sie jederzeit
-        gegen diese Art der Datenverarbeitung widersprechen. Wir dürfen Ihre
-        Daten danach nicht mehr für Profiling verwenden.
-      </li>
-    </ul>
-  </li>
-  <li>
-    Sie haben laut Artikel 22 DSGVO unter Umständen das Recht, nicht einer
-    ausschließlich auf einer automatisierten Verarbeitung (zum Beispiel
-    Profiling) beruhenden Entscheidung unterworfen zu werden.
-  </li>
-  <li>
-    Sie haben laut Artikel 77 DSGVO das Recht auf Beschwerde. Das heißt, Sie
-    können sich jederzeit bei der Datenschutzbehörde beschweren, wenn Sie der
-    Meinung sind, dass die Datenverarbeitung von personenbezogenen Daten gegen
-    die DSGVO verstößt.
-  </li>
-</ul>
-<p>
-  Kurz gesagt: Sie haben Rechte – zögern Sie nicht, die oben gelistete
-  verantwortliche Stelle bei uns zu kontaktieren!
-</p>
-<p>
-  Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht
-  verstößt oder Ihre datenschutzrechtlichen Ansprüche in sonst einer Weise
-  verletzt worden sind, können Sie sich bei der Aufsichtsbehörde beschweren.
-  Diese ist für Österreich die Datenschutzbehörde, deren Website Sie unter
-  <a href="https://www.dsb.gv.at/">https://www.dsb.gv.at/</a> finden. In
-  Deutschland gibt es für jedes Bundesland einen Datenschutzbeauftragten. Für
-  nähere Informationen können Sie sich an die Bundesbeauftragte für den
-  Datenschutz und die Informationsfreiheit (BfDI) wenden. Für unser Unternehmen
-  ist die folgende lokale Datenschutzbehörde zuständig:
-</p>
+      <h3>Rechtsgrundlagen</h3>
+      <p>
+        In der folgenden Datenschutzerklärung geben wir Ihnen transparente
+        Informationen zu den rechtlichen Grundsätzen und Vorschriften, also den
+        Rechtsgrundlagen der Datenschutz-Grundverordnung, die uns ermöglichen,
+        personenbezogene Daten zu verarbeiten. Was das EU-Recht betrifft, beziehen wir
+        uns auf die VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES
+        vom 27. April 2016. Diese Datenschutz-Grundverordnung der EU können Sie
+        selbstverständlich online auf EUR-Lex, dem Zugang zum EU-Recht, unter  <a
+          href="https://eur-lex.europa.eu/legal-content/DE/ALL/?uri=celex%3A32016R0679"
+          target="_blank"
+          rel="noopener noreferrer"
+          >https://eur-lex.europa.eu/legal-content/DE/ALL/?uri=celex%3A32016R0679</a
+        >
+        nachlesen.
+      </p>
+      <p>
+        Wir verarbeiten Ihre Daten nur, wenn mindestens eine der folgenden Bedingungen
+        zutrifft:
+      </p>
+      <ul>
+        <li>
+          <b>Einwilligung (Artikel 6 Absatz 1 lit. a DSGVO):</b> Sie haben uns Ihre
+          Einwilligung gegeben, Daten zu einem bestimmten Zweck zu verarbeiten. Ein
+          Beispiel wäre die Speicherung Ihrer eingegebenen Daten eines
+          Kontaktformulars.
+        </li>
+        <li>
+          <b>Vertrag (Artikel 6 Absatz 1 lit. b DSGVO):</b> Um einen Vertrag oder
+          vorvertragliche Verpflichtungen mit Ihnen zu erfüllen, verarbeiten wir Ihre
+          Daten. Wenn wir zum Beispiel einen Kaufvertrag mit Ihnen abschließen,
+          benötigen wir vorab personenbezogene Informationen.
+        </li>
+        <li>
+          <b>Rechtliche Verpflichtung (Artikel 6 Absatz 1 lit. c DSGVO):</b> Wenn wir
+          einer rechtlichen Verpflichtung unterliegen, verarbeiten wir Ihre Daten. Zum
+          Beispiel sind wir gesetzlich verpflichtet Rechnungen für die Buchhaltung
+          aufzuheben. Diese enthalten in der Regel personenbezogene Daten.
+        </li>
+        <li>
+          <b>Berechtigte Interessen (Artikel 6 Absatz 1 lit. f DSGVO):</b> Im Falle
+          berechtigter Interessen, die Ihre Grundrechte nicht einschränken, behalten
+          wir uns die Verarbeitung personenbezogener Daten vor. Wir müssen zum
+          Beispiel gewisse Daten verarbeiten, um unsere Website sicher und
+          wirtschaftlich effizient betreiben zu können. Diese Verarbeitung ist somit
+          ein berechtigtes Interesse.
+        </li>
+      </ul>
+      <p>
+        Weitere Bedingungen wie die Wahrnehmung von Aufnahmen im öffentlichen
+        Interesse und Ausübung öffentlicher Gewalt sowie dem Schutz lebenswichtiger
+        Interessen treten bei uns in der Regel nicht auf. Soweit eine solche
+        Rechtsgrundlage doch einschlägig sein sollte, wird diese an der entsprechenden
+        Stelle ausgewiesen.
+      </p>
+      <p>
+        Zusätzlich zu der EU-Verordnung gelten auch noch nationale Gesetze:<br />
+        In Österreich ist dies das Bundesgesetz zum Schutz natürlicher Personen bei
+        der Verarbeitung personenbezogener Daten (Datenschutzgesetz), kurz DSG.<br />
+        In Deutschland gilt das Bundesdatenschutzgesetz, kurz BDSG.<br />
+        Sofern weitere regionale oder nationale Gesetze zur Anwendung kommen,
+        informieren wir Sie in den folgenden Abschnitten darüber.
+      </p>
 
-<h2>Cookies</h2>
-<p>
-  <b>Cookies Zusammenfassung</b><br />
-  Betroffene: Besucher der Website<br />
-  Zweck: abhängig vom jeweiligen Cookie. Mehr Details dazu finden Sie weiter
-  unten bzw. beim Hersteller der Software, der das Cookie setzt.<br />
-  Verarbeitete Daten: Abhängig vom jeweils eingesetzten Cookie. Mehr Details
-  dazu finden Sie weiter unten bzw. beim Hersteller der Software, der das Cookie
-  setzt.<br />
-  Speicherdauer: abhängig vom jeweiligen Cookie, kann von Stunden bis hin zu
-  Jahren variieren<br />
-  Rechtsgrundlagen: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung), Art. 6 Abs. 1
-  lit.f DSGVO (Berechtigte Interessen)
-</p>
-<h3>Was sind Cookies?</h3>
-<p>
-  Unsere Website verwendet HTTP-Cookies, um nutzerspezifische Daten zu
-  speichern. Im Folgenden erklären wir, was Cookies sind und warum Sie genutzt
-  werden, damit Sie die folgende Datenschutzerklärung besser verstehen.
-</p>
-<p>
-  Immer wenn Sie durch das Internet surfen, verwenden Sie einen Browser.
-  Bekannte Browser sind beispielsweise Chrome, Safari, Firefox, Internet
-  Explorer und Microsoft Edge. Die meisten Websites speichern kleine
-  Text-Dateien in Ihrem Browser. Diese Dateien nennt man Cookies.
-</p>
-<p>
-  Eines ist nicht von der Hand zu weisen: Cookies sind echt nützliche
-  Helferlein. Fast alle Websites verwenden Cookies. Genauer gesprochen sind es
-  HTTP-Cookies, da es auch noch andere Cookies für andere Anwendungsbereiche
-  gibt. HTTP-Cookies sind kleine Dateien, die von unserer Website auf Ihrem
-  Computer gespeichert werden. Diese Cookie-Dateien werden automatisch im
-  Cookie-Ordner, quasi dem “Hirn” Ihres Browsers, untergebracht. Ein Cookie
-  besteht aus einem Namen und einem Wert. Bei der Definition eines Cookies
-  müssen zusätzlich ein oder mehrere Attribute angegeben werden.
-</p>
-<p>
-  Cookies speichern gewisse Nutzerdaten von Ihnen, wie beispielsweise Sprache
-  oder persönliche Seiteneinstellungen. Wenn Sie unsere Seite wieder aufrufen,
-  übermittelt Ihr Browser die „userbezogenen“ Informationen an unsere Seite
-  zurück. Dank der Cookies weiß unsere Website, wer Sie sind und bietet Ihnen
-  die Einstellung, die Sie gewohnt sind. In einigen Browsern hat jedes Cookie
-  eine eigene Datei, in anderen wie beispielsweise Firefox sind alle Cookies in
-  einer einzigen Datei gespeichert.
-</p>
-<p>
-  Die folgende Grafik zeigt eine mögliche Interaktion zwischen einem Webbrowser
-  wie z. B. Chrome und dem Webserver. Dabei fordert der Webbrowser eine Website
-  an und erhält vom Server ein Cookie zurück, welches der Browser erneut
-  verwendet, sobald eine andere Seite angefordert wird.
-</p>
-<p>
-  Es gibt sowohl Erstanbieter Cookies als auch Drittanbieter-Cookies.
-  Erstanbieter-Cookies werden direkt von unserer Seite erstellt,
-  Drittanbieter-Cookies werden von Partner-Websites (z.B. Google Analytics)
-  erstellt. Jedes Cookie ist individuell zu bewerten, da jedes Cookie andere
-  Daten speichert. Auch die Ablaufzeit eines Cookies variiert von ein paar
-  Minuten bis hin zu ein paar Jahren. Cookies sind keine Software-Programme und
-  enthalten keine Viren, Trojaner oder andere „Schädlinge“. Cookies können auch
-  nicht auf Informationen Ihres PCs zugreifen.
-</p>
-<p>
-  So können zum Beispiel Cookie-Daten aussehen:<br />
-  Name: _ga<br />
-  Wert: GA1.2.1326744211.152323017699-9<br />
-  Verwendungszweck: Unterscheidung der Websitebesucher<br />
-  Ablaufdatum: nach 2 Jahren
-</p>
-<p>
-  Diese Mindestgrößen sollte ein Browser unterstützen können:<br />
-  Mindestens 4096 Bytes pro Cookie<br />
-  Mindestens 50 Cookies pro Domain<br />
-  Mindestens 3000 Cookies insgesamt
-</p>
-<h3>Welche Arten von Cookies gibt es?</h3>
-<p>
-  Die Frage welche Cookies wir im Speziellen verwenden, hängt von den
-  verwendeten Diensten ab und wird in den folgenden Abschnitten der
-  Datenschutzerklärung geklärt. An dieser Stelle möchten wir kurz auf die
-  verschiedenen Arten von HTTP-Cookies eingehen.
-</p>
-<p>Man kann 4 Arten von Cookies unterscheiden:</p>
-<ul>
-  <li>
-    Unerlässliche Cookies: Diese Cookies sind nötig, um grundlegende Funktionen
-    der Website sicherzustellen. Zum Beispiel braucht es diese Cookies, wenn ein
-    User ein Produkt in den Warenkorb legt, dann auf anderen Seiten weitersurft
-    und später erst zur Kasse geht. Durch diese Cookies wird der Warenkorb nicht
-    gelöscht, selbst wenn der User sein Browserfenster schließt.
-  </li>
-  <li>
-    Zweckmäßige Cookies: Diese Cookies sammeln Infos über das Userverhalten und
-    ob der User etwaige Fehlermeldungen bekommt. Zudem werden mithilfe dieser
-    Cookies auch die Ladezeit und das Verhalten der Website bei verschiedenen
-    Browsern gemessen.
-  </li>
-  <li>
-    Zielorientierte Cookies: Diese Cookies sorgen für eine bessere
-    Nutzerfreundlichkeit. Beispielsweise werden eingegebene Standorte,
-    Schriftgrößen oder Formulardaten gespeichert.
-  </li>
-  <li>
-    Werbe-Cookies: Diese Cookies werden auch Targeting-Cookies genannt. Sie
-    dienen dazu dem User individuell angepasste Werbung zu liefern. Das kann
-    sehr praktisch, aber auch sehr nervig sein.
-  </li>
-</ul>
-<p>
-  Üblicherweise werden Sie beim erstmaligen Besuch einer Website gefragt, welche
-  dieser Cookiearten Sie zulassen möchten. Und natürlich wird diese Entscheidung
-  auch in einem Cookie gespeichert.
-</p>
-<p>
-  Wenn Sie mehr über Cookies wissen möchten und technische Dokumentationen nicht
-  scheuen, empfehlen wir
-  <a href="https://datatracker.ietf.org/doc/html/rfc6265"
-    >https://datatracker.ietf.org/doc/html/rfc6265</a
-  >, dem Request for Comments der Internet Engineering Task Force (IETF) namens
-  “HTTP State Management Mechanism”.
-</p>
-<h3>Zweck der Verarbeitung über Cookies</h3>
-<p>
-  Der Zweck ist letztendlich abhängig vom jeweiligen Cookie. Mehr Details dazu
-  finden Sie weiter unten bzw. beim Hersteller der Software, die das Cookie
-  setzt.
-</p>
-<h3>Welche Daten werden verarbeitet?</h3>
-<p>
-  Cookies sind kleine Gehilfen für eine viele verschiedene Aufgaben. Welche
-  Daten in Cookies gespeichert werden, kann man leider nicht verallgemeinern,
-  aber wir werden Sie im Rahmen der folgenden Datenschutzerklärung über die
-  verarbeiteten bzw. gespeicherten Daten informieren.
-</p>
-<h3>Speicherdauer von Cookies</h3>
-<p>
-  Die Speicherdauer hängt vom jeweiligen Cookie ab und wird weiter unter
-  präzisiert. Manche Cookies werden nach weniger als einer Stunde gelöscht,
-  andere können mehrere Jahre auf einem Computer gespeichert bleiben.<br />
-  Sie haben außerdem selbst Einfluss auf die Speicherdauer. Sie können über
-  ihren Browser sämtliche Cookies jederzeit manuell löschen (siehe auch unten
-  “Widerspruchsrecht”). Ferner werden Cookies, die auf einer Einwilligung
-  beruhen, spätestens nach Widerruf Ihrer Einwilligung gelöscht, wobei die
-  Rechtmäßigkeit der Speicherung bis dahin unberührt bleibt.
-</p>
-<h3>Widerspruchsrecht – wie kann ich Cookies löschen?</h3>
-<p>
-  Wie und ob Sie Cookies verwenden wollen, entscheiden Sie selbst. Unabhängig
-  von welchem Service oder welcher Website die Cookies stammen, haben Sie immer
-  die Möglichkeit Cookies zu löschen, zu deaktivieren oder nur teilweise
-  zuzulassen. Zum Beispiel können Sie Cookies von Drittanbietern blockieren,
-  aber alle anderen Cookies zulassen.
-</p>
-<p>
-  Wenn Sie feststellen möchten, welche Cookies in Ihrem Browser gespeichert
-  wurden, wenn Sie Cookie-Einstellungen ändern oder löschen wollen, können Sie
-  dies in Ihren Browser-Einstellungen finden:<br />
-  Chrome:
-  <a href="https://support.google.com/chrome/answer/95647?tid=323017699"
-    >Cookies in Chrome löschen, aktivieren und verwalten</a
-  ><br />
-  Safari:
-  <a
-    href="https://support.apple.com/de-at/guide/safari/sfri11471/mac?tid=323017699"
-    >Verwalten von Cookies und Websitedaten mit Safari</a
-  ><br />
-  Firefox:
-  <a
-    href="https://support.mozilla.org/de/kb/cookies-und-website-daten-in-firefox-loschen?tid=323017699"
-    >Cookies löschen, um Daten zu entfernen, die Websites auf Ihrem Computer
-    abgelegt haben</a
-  ><br />
-  Internet Explorer:
-  <a
-    href="https://support.microsoft.com/de-de/windows/l%C3%B6schen-und-verwalten-von-cookies-168dab11-0753-043d-7c16-ede5947fc64d?tid=323017699"
-    >Löschen und Verwalten von Cookies</a
-  ><br />
-  Microsoft Edge:
-  <a
-    href="https://support.microsoft.com/de-de/microsoft-edge/cookies-in-microsoft-edge-l%C3%B6schen-63947406-40ac-c3b8-57b9-2a946a29ae09?tid=323017699"
-    >Löschen und Verwalten von Cookies</a
-  >
-</p>
-<p>
-  Falls Sie grundsätzlich keine Cookies haben wollen, können Sie Ihren Browser
-  so einrichten, dass er Sie immer informiert, wenn ein Cookie gesetzt werden
-  soll. So können Sie bei jedem einzelnen Cookie entscheiden, ob Sie das Cookie
-  erlauben oder nicht. Die Vorgangsweise ist je nach Browser verschieden. Am
-  besten Sie suchen die Anleitung in Google mit dem Suchbegriff “Cookies löschen
-  Chrome” oder “Cookies deaktivieren Chrome” im Falle eines Chrome Browsers.
-</p>
-<h3>Rechtsgrundlage</h3>
-<p>
-  Seit 2009 gibt es die sogenannten „Cookie-Richtlinien“. Darin ist
-  festgehalten, dass das Speichern von Cookies eine Einwilligung (Artikel 6 Abs.
-  1 lit. a DSGVO) von Ihnen verlangt. Innerhalb der EU-Länder gibt es allerdings
-  noch sehr unterschiedliche Reaktionen auf diese Richtlinien. In Österreich
-  erfolgte aber die Umsetzung dieser Richtlinie in § 165 Abs. 3 des
-  Telekommunikationsgesetzes (2021). In Deutschland wurden die
-  Cookie-Richtlinien nicht als nationales Recht umgesetzt. Stattdessen erfolgte
-  die Umsetzung dieser Richtlinie weitgehend in § 15 Abs. 3 des
-  Telemediengesetzes (TMG), welches seit Mai 2024 durch das
-  Digitale-Dienste-Gesetz (DDG) ersetzt wurde.
-</p>
-<p>
-  Für unbedingt notwendige Cookies, auch soweit keine Einwilligung vorliegt,
-  bestehen berechtigte Interessen (Artikel 6 Abs. 1 lit. f DSGVO), die in den
-  meisten Fällen wirtschaftlicher Natur sind. Wir möchten den Besuchern der
-  Website eine angenehme Benutzererfahrung bescheren und dafür sind bestimmte
-  Cookies oft unbedingt notwendig.
-</p>
-<p>
-  Soweit nicht unbedingt erforderliche Cookies zum Einsatz kommen, geschieht
-  dies nur im Falle Ihrer Einwilligung. Rechtsgrundlage ist insoweit Art. 6 Abs.
-  1 lit. a DSGVO.<br />
-  In den folgenden Abschnitten werden Sie genauer über den Einsatz von Cookies
-  informiert, sofern eingesetzte Software Cookies verwendet.
-</p>
+      <h3>Speicherdauer</h3>
+      <p>
+        Dass wir personenbezogene Daten nur so lange speichern, wie es für die
+        Bereitstellung unserer Dienstleistungen und Produkte unbedingt notwendig ist,
+        gilt als generelles Kriterium bei uns. Das bedeutet, dass wir personenbezogene
+        Daten löschen, sobald der Grund für die Datenverarbeitung nicht mehr vorhanden
+        ist. In einigen Fällen sind wir gesetzlich dazu verpflichtet, bestimmte Daten
+        auch nach Wegfall des ursprüngliches Zwecks zu speichern, zum Beispiel zu
+        Zwecken der Buchführung.<br />
+        Sollten Sie die Löschung Ihrer Daten wünschen oder die Einwilligung zur
+        Datenverarbeitung widerrufen, werden die Daten so rasch wie möglich und soweit
+        keine Pflicht zur Speicherung besteht, gelöscht.<br />
+        Über die konkrete Dauer der jeweiligen Datenverarbeitung informieren wir Sie
+        weiter unten, sofern wir weitere Informationen dazu haben.
+      </p>
 
-<h2>Single-Sign-On-Anmeldungen Einleitung</h2>
-<p>
-  <b>Single-Sign-On-Anmeldungen Datenschutzerklärung Zusammenfassung</b><br />
-  Betroffene: Besucher der Website<br />
-  Zweck: Vereinfachung des Authentifizierungsprozesses<br />
-  Verarbeitete Daten: Ist stark vom jeweiligen Anbieter abhängig, meist können
-  E-Mail-Adresse und Benutzername gespeichert werden. Mehr Details dazu finden
-  Sie beim jeweils eingesetzten Tool.<br />
-  Speicherdauer: abhängig von den verwendeten Tools<br />
-  Rechtsgrundlagen: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung), Artikel 6 Absatz
-  1 lit. b DSGVO (Vertragserfüllung), Art. 6 Abs. 1 lit. f DSGVO (Berechtigte
-  Interessen)
-</p>
-<h3>Was sind Single-Sign-On-Anmeldungen?</h3>
-<p>
-  Auf unserer Website haben Sie die Möglichkeit sich über ein Userkonto eines
-  anderen Anbieters (z.B. über Facebook) schnell und einfach für unser
-  Onlineservice anzumelden. Dieses Authentifizierungs-Verfahren nennt man unter
-  anderem „Single-Sign-On-Anmeldung“. Dieses Anmeldeverfahren funktioniert
-  natürlich nur, wenn Sie bei dem anderen Anbieter registriert sind bzw. ein
-  Nutzerkonto haben und die entsprechenden Zugangsdaten in das Onlineformular
-  eingeben. In vielen Fällen sind Sie auch schon angemeldet, die Zugangsdaten
-  werden automatisch ins Formular eingetragen und Sie müssen nur noch über einen
-  Button die Single-Sign-On-Anmeldung bestätigen. Im Zuge dieser Anmeldung
-  können auch personenbezogenen Daten von Ihnen verarbeitet und gespeichert
-  werden. In diesem Datenschutztext gehen wir allgemein auf die
-  Datenverarbeitung durch Single-Sign-On-Anmeldungen ein. Nähere Informationen
-  finden Sie in den Datenschutzerklärungen der jeweiligen Anbieter.
-</p>
-<h3>Warum verwenden wir Single-Sign-On-Anmeldungen?</h3>
-<p>
-  Wir wollen Ihnen das Leben auf unserer Website so einfach und angenehm wie
-  möglich gestalten. Daher bieten wir auch Single-Sign-On-Anmeldungen an. So
-  ersparen Sie sich wertvolle Zeit, weil Sie nur eine Authentifizierung
-  benötigen. Da Sie sich nur ein Passwort merken müssen und es nur einmal
-  übertragen wird, erhöht sich auch die Sicherheit. In vielen Fällen haben Sie
-  Ihr Passwort mithilfe von Cookies auch schon automatisch gespeichert und der
-  Anmeldeprozess auf unserer Website dauert daher nur ein paar Sekunden.
-</p>
-<h3>Welche Daten werden durch Single-Sign-On-Anmeldungen gespeichert?</h3>
-<p>
-  Obwohl Sie sich über dieses spezielle Anmeldeverfahren auf unserer Website
-  anmelden, erfolgt die eigentliche Authentifizierung beim entsprechenden
-  Single-Sign-On-Anbieter. Wir als Websitebetreiber erhalten in Zuge der
-  Authentifizierung eine Nutzer-ID. Darin wird festgehalten, dass Sie unter
-  dieser ID beim entsprechenden Anbieter angemeldet sind. Diese ID kann für
-  keine anderen Zwecke verwendet werden. Es können uns auch andere Daten
-  übermittelt werden, das hängt aber von den verwendeten
-  Single-Sign-On-Anbietern ab. Ebenso hängt es davon ab, welche Daten Sie
-  während des Authentifizierungsprozesses freiwillig zur Verfügung stellen und
-  welche Daten Sie grundsätzlich in Ihren Einstellungen bei dem Anbieter
-  freigeben. Meistens handelt es sich um Daten wie Ihre E-Mail-Adresse und Ihrem
-  Benutzernamen. Ihr Passwort, das für die Anmeldung nötig ist, kennen wir nicht
-  und wird auch nicht bei uns gespeichert. Für Sie ist es noch wichtig zu
-  wissen, dass bei uns gespeicherte Daten durch das Anmeldeverfahren automatisch
-  mit den Daten des jeweiligen Nutzerkontos abgeglichen werden können.
-</p>
-<h3>Dauer der Datenverarbeitung</h3>
-<p>
-  Über die Dauer der Datenverarbeitung informieren wir Sie weiter unten, sofern
-  wir weitere Informationen dazu haben. Beispielsweise speichert die
-  Social-Media-Plattform Facebook Daten, bis sie für den eigenen Zweck nicht
-  mehr benötigt werden. Kundendaten, die mit den eigenen Userdaten abgeglichen
-  werden, werden aber schon innerhalb von zwei Tagen gelöscht. Generell
-  verarbeiten wir personenbezogene Daten nur so lange wie es für die
-  Bereitstellung unserer Dienstleistungen und Produkte unbedingt notwendig ist.
-</p>
-<h3>Widerspruchsrecht</h3>
-<p>
-  Sie haben auch jederzeit das Recht und die Möglichkeit Ihre Einwilligung zur
-  Verwendung von Single-Sign-On-Anmeldungen zu widerrufen. Das funktioniert
-  meist über Opt-Out-Funktionen des Anbieters. Wenn vorhanden, finden Sie in
-  unseren Datenschutztexten zu den einzelnen Tools auch Links zu den
-  entsprechenden Opt-Out-Funktionen.
-</p>
-<h3>Rechtsgrundlage</h3>
-<p>
-  Wenn es mit Ihnen vereinbart wurde und dies im Rahmen der Vertragserfüllung
-  (Artikel 6 Absatz 1 lit. b DSGVO) und der Einwilligung (Artikel 6 Absatz 1
-  lit. a DSGVO) erfolgt, können wir das Single-Sign-On-Verfahren auf deren
-  Rechtsgrundlagen einsetzen.<br />
-  Zusätzlich zur Einwilligung besteht von unserer Seite ein berechtigtes
-  Interesse darin, Ihnen ein schnelles und einfaches Anmeldeverfahren zu bieten.
-  Die Rechtsgrundlage dafür ist Art. 6 Abs. 1 lit. f DSGVO (Berechtigte
-  Interessen). Wir setzen die Single-Sign-On-Anmeldung gleichwohl nur ein,
-  soweit Sie eine Einwilligung erteilt haben.<br />
-  Wenn Sie diese Verknüpfung zu dem Anbieter mit der Single-Sign-On-Anmeldung
-  nicht mehr haben wollen, lösen Sie bitte diese in Ihrem Userkonto bei dem
-  jeweiligen Anbieter auf. Falls Sie auch Daten bei uns löschen wollen, ist eine
-  Kündigung Ihrer Registrierung notwendig.
-</p>
-<h3>Google Single-Sign-On Datenschutzerklärung</h3>
-<p>
-  Wir nutzen für die Anmeldung auf unserer Website auch den
-  Authentifizierungsdienst Google Single-Sign-On. Dienstanbieter ist das
-  amerikanische Unternehmen Facebook Inc. Für den europäischen Raum ist das
-  Unternehmen Google Ireland Limited (Gordon House, Barrow Street Dublin 4,
-  Irland) für alle Google-Dienste verantwortlich.<br />
-  Google verarbeitet Daten von Ihnen u.a. auch in den USA. Google ist aktiver
-  Teilnehmer des EU-US Data Privacy Frameworks, wodurch der korrekte und sichere
-  Datentransfer personenbezogener Daten von EU-Bürgern in die USA geregelt wird.
-  Mehr Informationen dazu finden Sie auf
-  <a
-    href="https://commission.europa.eu/document/fa09cbad-dd7d-4684-ae60-be03fcb0fddf_en"
-    >https://commission.europa.eu/document/fa09cbad-dd7d-4684-ae60-be03fcb0fddf_en</a
-  >.<br />
-  Zudem verwendet Google sogenannte Standardvertragsklauseln (= Art. 46. Abs. 2
-  und 3 DSGVO). Standardvertragsklauseln (Standard Contractual Clauses – SCC)
-  sind von der EU-Kommission bereitgestellte Mustervorlagen und sollen
-  sicherstellen, dass Ihre Daten auch dann den europäischen Datenschutzstandards
-  entsprechen, wenn diese in Drittländer (wie beispielsweise in die USA)
-  überliefert und dort gespeichert werden. Durch das EU-US Data Privacy
-  Framework und durch die Standardvertragsklauseln verpflichtet sich Google, bei
-  der Verarbeitung Ihrer relevanten Daten, das europäische Datenschutzniveau
-  einzuhalten, selbst wenn die Daten in den USA gespeichert, verarbeitet und
-  verwaltet werden. Diese Klauseln basieren auf einem Durchführungsbeschluss der
-  EU-Kommission. Sie finden den Beschluss und die entsprechenden
-  Standardvertragsklauseln u.a. hier:
-  <a href="https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj?locale=de"
-    >https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj?locale=de</a
-  >
-</p>
-<p>
-  Die Google Ads Datenverarbeitungsbedingungen (Google Ads Data Processing
-  Terms), welche auf die Standardvertragsklauseln verweisen, finden Sie unter
-  <a href="https://business.safety.google/intl/de/adsprocessorterms/"
-    >https://business.safety.google/intl/de/adsprocessorterms/</a
-  >.<br />
-  Bei Google können Sie unter
-  <a href="https://adssettings.google.com/authenticated"
-    >https://adssettings.google.com/authenticated</a
-  >
-  Ihre Einwilligung zur Verwendung von Single-Sign-On-Anmeldungen per
-  Opt-Out-Funktion widerrufen. Mehr über die Daten, die durch die Verwendung von
-  Google Single-Sign-On verarbeitet werden, erfahren Sie in der Privacy Policy
-  auf
-  <a href="https://policies.google.com/privacy?hl=de"
-    >https://policies.google.com/privacy?hl=de</a
-  >.
-</p>
+      <h3>Rechte laut Datenschutz-Grundverordnung</h3>
+      <p>
+        Gemäß Artikel 13, 14 DSGVO informieren wir Sie über die folgenden Rechte, die
+        Ihnen zustehen, damit es zu einer fairen und transparenten Verarbeitung von
+        Daten kommt:
+      </p>
+      <ul>
+        <li>
+          Sie haben laut Artikel 15 DSGVO ein Auskunftsrecht darüber, ob wir Daten von
+          Ihnen verarbeiten. Sollte das zutreffen, haben Sie Recht darauf eine Kopie
+          der Daten zu erhalten und die folgenden Informationen zu erfahren:
+          <ul>
+            <li>zu welchem Zweck wir die Verarbeitung durchführen;</li>
+            <li>die Kategorien, also die Arten von Daten, die verarbeitet werden;</li>
+            <li>
+              wer diese Daten erhält und wenn die Daten an Drittländer übermittelt
+              werden, wie die Sicherheit garantiert werden kann;
+            </li>
+            <li>wie lange die Daten gespeichert werden;</li>
+            <li>
+              das Bestehen des Rechts auf Berichtigung, Löschung oder Einschränkung
+              der Verarbeitung und dem Widerspruchsrecht gegen die Verarbeitung;
+            </li>
+            <li>
+              dass Sie sich bei einer Aufsichtsbehörde beschweren können (Links zu
+              diesen Behörden finden Sie weiter unten);
+            </li>
+            <li>
+              die Herkunft der Daten, wenn wir sie nicht bei Ihnen erhoben haben;
+            </li>
+            <li>
+              ob Profiling durchgeführt wird, ob also Daten automatisch ausgewertet
+              werden, um zu einem persönlichen Profil von Ihnen zu gelangen.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Sie haben laut Artikel 16 DSGVO ein Recht auf Berichtigung der Daten, was
+          bedeutet, dass wir Daten richtig stellen müssen, falls Sie Fehler finden.
+        </li>
+        <li>
+          Sie haben laut Artikel 17 DSGVO das Recht auf Löschung („Recht auf
+          Vergessenwerden“), was konkret bedeutet, dass Sie die Löschung Ihrer Daten
+          verlangen dürfen.
+        </li>
+        <li>
+          Sie haben laut Artikel 18 DSGVO das Recht auf Einschränkung der
+          Verarbeitung, was bedeutet, dass wir die Daten nur mehr speichern dürfen
+          aber nicht weiter verwenden.
+        </li>
+        <li>
+          Sie haben laut Artikel 20 DSGVO das Recht auf Datenübertragbarkeit, was
+          bedeutet, dass wir Ihnen auf Anfrage Ihre Daten in einem gängigen Format zur
+          Verfügung stellen.
+        </li>
+        <li>
+          Sie haben laut Artikel 21 DSGVO ein Widerspruchsrecht, welches nach
+          Durchsetzung eine Änderung der Verarbeitung mit sich bringt.
+          <ul>
+            <li>
+              Wenn die Verarbeitung Ihrer Daten auf Artikel 6 Abs. 1 lit. e
+              (öffentliches Interesse, Ausübung öffentlicher Gewalt) oder Artikel 6
+              Abs. 1 lit. f (berechtigtes Interesse) basiert, können Sie gegen die
+              Verarbeitung Widerspruch einlegen. Wir prüfen danach so rasch wie
+              möglich, ob wir diesem Widerspruch rechtlich nachkommen können.
+            </li>
+            <li>
+              Werden Daten verwendet, um Direktwerbung zu betreiben, können Sie
+              jederzeit gegen diese Art der Datenverarbeitung widersprechen. Wir
+              dürfen Ihre Daten danach nicht mehr für Direktmarketing verwenden.
+            </li>
+            <li>
+              Werden Daten verwendet, um Profiling zu betreiben, können Sie jederzeit
+              gegen diese Art der Datenverarbeitung widersprechen. Wir dürfen Ihre
+              Daten danach nicht mehr für Profiling verwenden.
+            </li>
+          </ul>
+        </li>
+        <li>
+          Sie haben laut Artikel 22 DSGVO unter Umständen das Recht, nicht einer
+          ausschließlich auf einer automatisierten Verarbeitung (zum Beispiel
+          Profiling) beruhenden Entscheidung unterworfen zu werden.
+        </li>
+        <li>
+          Sie haben laut Artikel 77 DSGVO das Recht auf Beschwerde. Das heißt, Sie
+          können sich jederzeit bei der Datenschutzbehörde beschweren, wenn Sie der
+          Meinung sind, dass die Datenverarbeitung von personenbezogenen Daten gegen
+          die DSGVO verstößt.
+        </li>
+      </ul>
+      <p>
+        Kurz gesagt: Sie haben Rechte – zögern Sie nicht, die oben gelistete
+        verantwortliche Stelle bei uns zu kontaktieren!
+      </p>
+      <p>
+        Wenn Sie glauben, dass die Verarbeitung Ihrer Daten gegen das Datenschutzrecht
+        verstößt oder Ihre datenschutzrechtlichen Ansprüche in sonst einer Weise
+        verletzt worden sind, können Sie sich bei der Aufsichtsbehörde beschweren.
+        Diese ist für Österreich die Datenschutzbehörde, deren Website Sie unter
+        <a href="https://www.dsb.gv.at/" target="_blank" rel="noopener noreferrer">https://www.dsb.gv.at/</a> finden. In
+        Deutschland gibt es für jedes Bundesland einen Datenschutzbeauftragten. Für
+        nähere Informationen können Sie sich an die Bundesbeauftragte für den
+        Datenschutz und die Informationsfreiheit (BfDI) wenden. Für unser Unternehmen
+        ist die folgende lokale Datenschutzbehörde zuständig:
+      </p>
 
-<h2>Schlusswort</h2>
-<p>
-  Herzlichen Glückwunsch! Wenn Sie diese Zeilen lesen, haben Sie sich wirklich
-  durch unsere gesamte Datenschutzerklärung „gekämpft“ oder zumindest bis hier
-  hin gescrollt. Wie Sie am Umfang unserer Datenschutzerklärung sehen, nehmen
-  wir den Schutz Ihrer persönlichen Daten, alles andere als auf die leichte
-  Schulter.<br />
-  Uns ist es wichtig, Sie nach bestem Wissen und Gewissen über die Verarbeitung
-  personenbezogener Daten zu informieren. Dabei wollen wir Ihnen aber nicht nur
-  mitteilen, welche Daten verarbeitet werden, sondern auch die Beweggründe für
-  die Verwendung diverser Softwareprogramme näherbringen. In der Regel klingen
-  Datenschutzerklärung sehr technisch und juristisch. Da die meisten von Ihnen
-  aber keine Webentwickler oder Juristen sind, wollten wir auch sprachlich einen
-  anderen Weg gehen und den Sachverhalt in einfacher und klarer Sprache
-  erklären.
-</p>
-<p>
-  Immer ist dies natürlich aufgrund der Thematik nicht möglich. Daher werden die
-  wichtigsten Begriffe am Ende der Datenschutzerklärung näher erläutert.<br />
-  Bei Fragen zum Thema Datenschutz auf unserer Website zögern Sie bitte nicht,
-  uns oder die verantwortliche Stelle zu kontaktieren. Wir wünschen Ihnen noch
-  eine schöne Zeit und hoffen, Sie auf unserer Website bald wieder begrüßen zu
-  dürfen.
-</p>
-<p>
-  Alle Texte sind urheberrechtlich geschützt.<br />
-  Quelle: Datenschutzerklärung erstellt mit dem Datenschutz Generator für
-  Deutschland von AdSimple<br />
-  <a href="https://www.adsimple.de/datenschutz-generator/"
-    >https://www.adsimple.de/datenschutz-generator/</a
-  >
-</p>
+      <h3>Cookies</h3>
+      <p>
+        <b>Cookies Zusammenfassung</b><br />
+        Betroffene: Besucher der Website<br />
+        Zweck: abhängig vom jeweiligen Cookie. Mehr Details dazu finden Sie weiter
+        unten bzw. beim Hersteller der Software, der das Cookie setzt.<br />
+        Verarbeitete Daten: Abhängig vom jeweils eingesetzten Cookie. Mehr Details
+        dazu finden Sie weiter unten bzw. beim Hersteller der Software, der das Cookie
+        setzt.<br />
+        Speicherdauer: abhängig vom jeweiligen Cookie, kann von Stunden bis hin zu
+        Jahren variieren<br />
+        Rechtsgrundlagen: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung), Art. 6 Abs. 1
+        lit.f DSGVO (Berechtigte Interessen)
+      </p>
+      <h4>Was sind Cookies?</h4>
+      <p>
+        Unsere Website verwendet HTTP-Cookies, um nutzerspezifische Daten zu
+        speichern. Im Folgenden erklären wir, was Cookies sind und warum Sie genutzt
+        werden, damit Sie die folgende Datenschutzerklärung besser verstehen.
+      </p>
+      <p>
+        Immer wenn Sie durch das Internet surfen, verwenden Sie einen Browser.
+        Bekannte Browser sind beispielsweise Chrome, Safari, Firefox, Internet
+        Explorer und Microsoft Edge. Die meisten Websites speichern kleine
+        Text-Dateien in Ihrem Browser. Diese Dateien nennt man Cookies.
+      </p>
+      <p>
+        Eines ist nicht von der Hand zu weisen: Cookies sind echt nützliche
+        Helferlein. Fast alle Websites verwenden Cookies. Genauer gesprochen sind es
+        HTTP-Cookies, da es auch noch andere Cookies für andere Anwendungsbereiche
+        gibt. HTTP-Cookies sind kleine Dateien, die von unserer Website auf Ihrem
+        Computer gespeichert werden. Diese Cookie-Dateien werden automatisch im
+        Cookie-Ordner, quasi dem “Hirn” Ihres Browsers, untergebracht. Ein Cookie
+        besteht aus einem Namen und einem Wert. Bei der Definition eines Cookies
+        müssen zusätzlich ein oder mehrere Attribute angegeben werden.
+      </p>
+      <p>
+        Cookies speichern gewisse Nutzerdaten von Ihnen, wie beispielsweise Sprache
+        oder persönliche Seiteneinstellungen. Wenn Sie unsere Seite wieder aufrufen,
+        übermittelt Ihr Browser die „userbezogenen“ Informationen an unsere Seite
+        zurück. Dank der Cookies weiß unsere Website, wer Sie sind und bietet Ihnen
+        die Einstellung, die Sie gewohnt sind. In einigen Browsern hat jedes Cookie
+        eine eigene Datei, in anderen wie beispielsweise Firefox sind alle Cookies in
+        einer einzigen Datei gespeichert.
+      </p>
+      <p>
+        Die folgende Grafik zeigt eine mögliche Interaktion zwischen einem Webbrowser
+        wie z. B. Chrome und dem Webserver. Dabei fordert der Webbrowser eine Website
+        an und erhält vom Server ein Cookie zurück, welches der Browser erneut
+        verwendet, sobald eine andere Seite angefordert wird.
+      </p>
+      <p>
+        Es gibt sowohl Erstanbieter Cookies als auch Drittanbieter-Cookies.
+        Erstanbieter-Cookies werden direkt von unserer Seite erstellt,
+        Drittanbieter-Cookies werden von Partner-Websites (z.B. Google Analytics)
+        erstellt. Jedes Cookie ist individuell zu bewerten, da jedes Cookie andere
+        Daten speichert. Auch die Ablaufzeit eines Cookies variiert von ein paar
+        Minuten bis hin zu ein paar Jahren. Cookies sind keine Software-Programme und
+        enthalten keine Viren, Trojaner oder andere „Schädlinge“. Cookies können auch
+        nicht auf Informationen Ihres PCs zugreifen.
+      </p>
+      <p>
+        So können zum Beispiel Cookie-Daten aussehen:<br />
+        Name: _ga<br />
+        Wert: GA1.2.1326744211.152323017699-9<br />
+        Verwendungszweck: Unterscheidung der Websitebesucher<br />
+        Ablaufdatum: nach 2 Jahren
+      </p>
+      <p>
+        Diese Mindestgrößen sollte ein Browser unterstützen können:<br />
+        Mindestens 4096 Bytes pro Cookie<br />
+        Mindestens 50 Cookies pro Domain<br />
+        Mindestens 3000 Cookies insgesamt
+      </p>
+      <h4>Welche Arten von Cookies gibt es?</h4>
+      <p>
+        Die Frage welche Cookies wir im Speziellen verwenden, hängt von den
+        verwendeten Diensten ab und wird in den folgenden Abschnitten der
+        Datenschutzerklärung geklärt. An dieser Stelle möchten wir kurz auf die
+        verschiedenen Arten von HTTP-Cookies eingehen.
+      </p>
+      <p>Man kann 4 Arten von Cookies unterscheiden:</p>
+      <ul>
+        <li>
+          Unerlässliche Cookies: Diese Cookies sind nötig, um grundlegende Funktionen
+          der Website sicherzustellen. Zum Beispiel braucht es diese Cookies, wenn ein
+          User ein Produkt in den Warenkorb legt, dann auf anderen Seiten weitersurft
+          und später erst zur Kasse geht. Durch diese Cookies wird der Warenkorb nicht
+          gelöscht, selbst wenn der User sein Browserfenster schließt.
+        </li>
+        <li>
+          Zweckmäßige Cookies: Diese Cookies sammeln Infos über das Userverhalten und
+          ob der User etwaige Fehlermeldungen bekommt. Zudem werden mithilfe dieser
+          Cookies auch die Ladezeit und das Verhalten der Website bei verschiedenen
+          Browsern gemessen.
+        </li>
+        <li>
+          Zielorientierte Cookies: Diese Cookies sorgen für eine bessere
+          Nutzerfreundlichkeit. Beispielsweise werden eingegebene Standorte,
+          Schriftgrößen oder Formulardaten gespeichert.
+        </li>
+        <li>
+          Werbe-Cookies: Diese Cookies werden auch Targeting-Cookies genannt. Sie
+          dienen dazu dem User individuell angepasste Werbung zu liefern. Das kann
+          sehr praktisch, aber auch sehr nervig sein.
+        </li>
+      </ul>
+      <p>
+        Üblicherweise werden Sie beim erstmaligen Besuch einer Website gefragt, welche
+        dieser Cookiearten Sie zulassen möchten. Und natürlich wird diese Entscheidung
+        auch in einem Cookie gespeichert.
+      </p>
+      <p>
+        Wenn Sie mehr über Cookies wissen möchten und technische Dokumentationen nicht
+        scheuen, empfehlen wir  <a href="https://datatracker.ietf.org/doc/html/rfc6265" target="_blank" rel="noopener noreferrer"
+          >https://datatracker.ietf.org/doc/html/rfc6265</a
+        >, dem Request for Comments der Internet Engineering Task Force (IETF) namens
+        “HTTP State Management Mechanism”.
+      </p>
+      <h4>Zweck der Verarbeitung über Cookies</h4>
+      <p>
+        Der Zweck ist letztendlich abhängig vom jeweiligen Cookie. Mehr Details dazu
+        finden Sie weiter unten bzw. beim Hersteller der Software, die das Cookie
+        setzt.
+      </p>
+      <h4>Welche Daten werden verarbeitet?</h4>
+      <p>
+        Cookies sind kleine Gehilfen für eine viele verschiedene Aufgaben. Welche
+        Daten in Cookies gespeichert werden, kann man leider nicht verallgemeinern,
+        aber wir werden Sie im Rahmen der folgenden Datenschutzerklärung über die
+        verarbeiteten bzw. gespeicherten Daten informieren.
+      </p>
+      <h4>Speicherdauer von Cookies</h4>
+      <p>
+        Die Speicherdauer hängt vom jeweiligen Cookie ab und wird weiter unter
+        präzisiert. Manche Cookies werden nach weniger als einer Stunde gelöscht,
+        andere können mehrere Jahre auf einem Computer gespeichert bleiben.<br />
+        Sie haben außerdem selbst Einfluss auf die Speicherdauer. Sie können über
+        ihren Browser sämtliche Cookies jederzeit manuell löschen (siehe auch unten
+        “Widerspruchsrecht”). Ferner werden Cookies, die auf einer Einwilligung
+        beruhen, spätestens nach Widerruf Ihrer Einwilligung gelöscht, wobei die
+        Rechtmäßigkeit der Speicherung bis dahin unberührt bleibt.
+      </p>
+      <h4>Widerspruchsrecht – wie kann ich Cookies löschen?</h4>
+      <p>
+        Wie und ob Sie Cookies verwenden wollen, entscheiden Sie selbst. Unabhängig
+        von welchem Service oder welcher Website die Cookies stammen, haben Sie immer
+        die Möglichkeit Cookies zu löschen, zu deaktivieren oder nur teilweise
+        zuzulassen. Zum Beispiel können Sie Cookies von Drittanbietern blockieren,
+        aber alle anderen Cookies zulassen.
+      </p>
+      <p>
+        Wenn Sie feststellen möchten, welche Cookies in Ihrem Browser gespeichert
+        wurden, wenn Sie Cookie-Einstellungen ändern oder löschen wollen, können Sie
+        dies in Ihren Browser-Einstellungen finden:<br />  Chrome:
+        <a href="https://support.google.com/chrome/answer/95647?tid=323017699" target="_blank" rel="noopener noreferrer"
+          >Cookies in Chrome löschen, aktivieren und verwalten</a
+        ><br />
+        Safari:
+        <a
+          href="https://support.apple.com/de-at/guide/safari/sfri11471/mac?tid=323017699"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Verwalten von Cookies und Websitedaten mit Safari</a
+        ><br />
+        Firefox:
+        <a
+          href="https://support.mozilla.org/de/kb/cookies-und-website-daten-in-firefox-loschen?tid=323017699"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Cookies löschen, um Daten zu entfernen, die Websites auf Ihrem Computer
+          abgelegt haben</a
+        ><br />
+        Internet Explorer:
+        <a
+          href="https://support.microsoft.com/de-de/windows/l%C3%B6schen-und-verwalten-von-cookies-168dab11-0753-043d-7c16-ede5947fc64d?tid=323017699"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Löschen und Verwalten von Cookies</a
+        ><br />
+        Microsoft Edge:
+        <a
+          href="https://support.microsoft.com/de-de/microsoft-edge/cookies-in-microsoft-edge-l%C3%B6schen-63947406-40ac-c3b8-57b9-2a946a29ae09?tid=323017699"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Löschen und Verwalten von Cookies</a
+        >
+      </p>
+      <p>
+        Falls Sie grundsätzlich keine Cookies haben wollen, können Sie Ihren Browser
+        so einrichten, dass er Sie immer informiert, wenn ein Cookie gesetzt werden
+        soll. So können Sie bei jedem einzelnen Cookie entscheiden, ob Sie das Cookie
+        erlauben oder nicht. Die Vorgangsweise ist je nach Browser verschieden. Am
+        besten Sie suchen die Anleitung in Google mit dem Suchbegriff “Cookies löschen
+        Chrome” oder “Cookies deaktivieren Chrome” im Falle eines Chrome Browsers.
+      </p>
+      <h4>Rechtsgrundlage</h4>
+      <p>
+        Seit 2009 gibt es die sogenannten „Cookie-Richtlinien“. Darin ist
+        festgehalten, dass das Speichern von Cookies eine Einwilligung (Artikel 6 Abs.
+        1 lit. a DSGVO) von Ihnen verlangt. Innerhalb der EU-Länder gibt es allerdings
+        noch sehr unterschiedliche Reaktionen auf diese Richtlinien. In Österreich
+        erfolgte aber die Umsetzung dieser Richtlinie in § 165 Abs. 3 des
+        Telekommunikationsgesetzes (2021). In Deutschland wurden die
+        Cookie-Richtlinien nicht als nationales Recht umgesetzt. Stattdessen erfolgte
+        die Umsetzung dieser Richtlinie weitgehend in § 15 Abs. 3 des
+        Telemediengesetzes (TMG), welches seit Mai 2024 durch das
+        Digitale-Dienste-Gesetz (DDG) ersetzt wurde.
+      </p>
+      <p>
+        Für unbedingt notwendige Cookies, auch soweit keine Einwilligung vorliegt,
+        bestehen berechtigte Interessen (Artikel 6 Abs. 1 lit. f DSGVO), die in den
+        meisten Fällen wirtschaftlicher Natur sind. Wir möchten den Besuchern der
+        Website eine angenehme Benutzererfahrung bescheren und dafür sind bestimmte
+        Cookies oft unbedingt notwendig.
+      </p>
+      <p>
+        Soweit nicht unbedingt erforderliche Cookies zum Einsatz kommen, geschieht
+        dies nur im Falle Ihrer Einwilligung. Rechtsgrundlage ist insoweit Art. 6 Abs.
+        1 lit. a DSGVO.<br />
+        In den folgenden Abschnitten werden Sie genauer über den Einsatz von Cookies
+        informiert, sofern eingesetzte Software Cookies verwendet.
+      </p>
+
+      <h3>Single-Sign-On-Anmeldungen Einleitung</h3>
+      <p>
+        <b>Single-Sign-On-Anmeldungen Datenschutzerklärung Zusammenfassung</b><br />
+        Betroffene: Besucher der Website<br />
+        Zweck: Vereinfachung des Authentifizierungsprozesses<br />
+        Verarbeitete Daten: Ist stark vom jeweiligen Anbieter abhängig, meist können
+        E-Mail-Adresse und Benutzername gespeichert werden. Mehr Details dazu finden
+        Sie beim jeweils eingesetzten Tool.<br />
+        Speicherdauer: abhängig von den verwendeten Tools<br />
+        Rechtsgrundlagen: Art. 6 Abs. 1 lit. a DSGVO (Einwilligung), Artikel 6 Absatz
+        1 lit. b DSGVO (Vertragserfüllung), Art. 6 Abs. 1 lit. f DSGVO (Berechtigte
+        Interessen)
+      </p>
+      <h4>Was sind Single-Sign-On-Anmeldungen?</h4>
+      <p>
+        Auf unserer Website haben Sie die Möglichkeit sich über ein Userkonto eines
+        anderen Anbieters (z.B. über Facebook) schnell und einfach für unser
+        Onlineservice anzumelden. Dieses Authentifizierungs-Verfahren nennt man unter
+        anderem „Single-Sign-On-Anmeldung“. Dieses Anmeldeverfahren funktioniert
+        natürlich nur, wenn Sie bei dem anderen Anbieter registriert sind bzw. ein
+        Nutzerkonto haben und die entsprechenden Zugangsdaten in das Onlineformular
+        eingeben. In vielen Fällen sind Sie auch schon angemeldet, die Zugangsdaten
+        werden automatisch ins Formular eingetragen und Sie müssen nur noch über einen
+        Button die Single-Sign-On-Anmeldung bestätigen. Im Zuge dieser Anmeldung
+        können auch personenbezogenen Daten von Ihnen verarbeitet und gespeichert
+        werden. In diesem Datenschutztext gehen wir allgemein auf die
+        Datenverarbeitung durch Single-Sign-On-Anmeldungen ein. Nähere Informationen
+        finden Sie in den Datenschutzerklärungen der jeweiligen Anbieter.
+      </p>
+      <h4>Warum verwenden wir Single-Sign-On-Anmeldungen?</h4>
+      <p>
+        Wir wollen Ihnen das Leben auf unserer Website so einfach und angenehm wie
+        möglich gestalten. Daher bieten wir auch Single-Sign-On-Anmeldungen an. So
+        ersparen Sie sich wertvolle Zeit, weil Sie nur eine Authentifizierung
+        benötigen. Da Sie sich nur ein Passwort merken müssen und es nur einmal
+        übertragen wird, erhöht sich auch die Sicherheit. In vielen Fällen haben Sie
+        Ihr Passwort mithilfe von Cookies auch schon automatisch gespeichert und der
+        Anmeldeprozess auf unserer Website dauert daher nur ein paar Sekunden.
+      </p>
+      <h4>Welche Daten werden durch Single-Sign-On-Anmeldungen gespeichert?</h4>
+      <p>
+        Obwohl Sie sich über dieses spezielle Anmeldeverfahren auf unserer Website
+        anmelden, erfolgt die eigentliche Authentifizierung beim entsprechenden
+        Single-Sign-On-Anbieter. Wir als Websitebetreiber erhalten in Zuge der
+        Authentifizierung eine Nutzer-ID. Darin wird festgehalten, dass Sie unter
+        dieser ID beim entsprechenden Anbieter angemeldet sind. Diese ID kann für
+        keine anderen Zwecke verwendet werden. Es können uns auch andere Daten
+        übermittelt werden, das hängt aber von den verwendeten
+        Single-Sign-On-Anbietern ab. Ebenso hängt es davon ab, welche Daten Sie
+        während des Authentifizierungsprozesses freiwillig zur Verfügung stellen und
+        welche Daten Sie grundsätzlich in Ihren Einstellungen bei dem Anbieter
+        freigeben. Meistens handelt es sich um Daten wie Ihre E-Mail-Adresse und Ihrem
+        Benutzernamen. Ihr Passwort, das für die Anmeldung nötig ist, kennen wir nicht
+        und wird auch nicht bei uns gespeichert. Für Sie ist es noch wichtig zu
+        wissen, dass bei uns gespeicherte Daten durch das Anmeldeverfahren automatisch
+        mit den Daten des jeweiligen Nutzerkontos abgeglichen werden können.
+      </p>
+      <h4>Dauer der Datenverarbeitung</h4>
+      <p>
+        Über die Dauer der Datenverarbeitung informieren wir Sie weiter unten, sofern
+        wir weitere Informationen dazu haben. Beispielsweise speichert die
+        Social-Media-Plattform Facebook Daten, bis sie für den eigenen Zweck nicht
+        mehr benötigt werden. Kundendaten, die mit den eigenen Userdaten abgeglichen
+        werden, werden aber schon innerhalb von zwei Tagen gelöscht. Generell
+        verarbeiten wir personenbezogene Daten nur so lange wie es für die
+        Bereitstellung unserer Dienstleistungen und Produkte unbedingt notwendig ist.
+      </p>
+      <h4>Widerspruchsrecht</h4>
+      <p>
+        Sie haben auch jederzeit das Recht und die Möglichkeit Ihre Einwilligung zur
+        Verwendung von Single-Sign-On-Anmeldungen zu widerrufen. Das funktioniert
+        meist über Opt-Out-Funktionen des Anbieters. Wenn vorhanden, finden Sie in
+        unseren Datenschutztexten zu den einzelnen Tools auch Links zu den
+        entsprechenden Opt-Out-Funktionen.
+      </p>
+      <h4>Rechtsgrundlage</h4>
+      <p>
+        Wenn es mit Ihnen vereinbart wurde und dies im Rahmen der Vertragserfüllung
+        (Artikel 6 Absatz 1 lit. b DSGVO) und der Einwilligung (Artikel 6 Absatz 1
+        lit. a DSGVO) erfolgt, können wir das Single-Sign-On-Verfahren auf deren
+        Rechtsgrundlagen einsetzen.<br />
+        Zusätzlich zur Einwilligung besteht von unserer Seite ein berechtigtes
+        Interesse darin, Ihnen ein schnelles und einfaches Anmeldeverfahren zu bieten.
+        Die Rechtsgrundlage dafür ist Art. 6 Abs. 1 lit. f DSGVO (Berechtigte
+        Interessen). Wir setzen die Single-Sign-On-Anmeldung gleichwohl nur ein,
+        soweit Sie eine Einwilligung erteilt haben.<br />
+        Wenn Sie diese Verknüpfung zu dem Anbieter mit der Single-Sign-On-Anmeldung
+        nicht mehr haben wollen, lösen Sie bitte diese in Ihrem Userkonto bei dem
+        jeweiligen Anbieter auf. Falls Sie auch Daten bei uns löschen wollen, ist eine
+        Kündigung Ihrer Registrierung notwendig.
+      </p>
+      <h4>Google Single-Sign-On Datenschutzerklärung</h4>
+      <p>
+        Wir nutzen für die Anmeldung auf unserer Website auch den
+        Authentifizierungsdienst Google Single-Sign-On. Dienstanbieter ist das
+        amerikanische Unternehmen Facebook Inc. Für den europäischen Raum ist das
+        Unternehmen Google Ireland Limited (Gordon House, Barrow Street Dublin 4,
+        Irland) für alle Google-Dienste verantwortlich.<br />
+        Google verarbeitet Daten von Ihnen u.a. auch in den USA. Google ist aktiver
+        Teilnehmer des EU-US Data Privacy Frameworks, wodurch der korrekte und sichere
+        Datentransfer personenbezogener Daten von EU-Bürgern in die USA geregelt wird.
+        Mehr Informationen dazu finden Sie auf  <a
+          href="https://commission.europa.eu/document/fa09cbad-dd7d-4684-ae60-be03fcb0fddf_en"
+          target="_blank"
+          rel="noopener noreferrer"
+          >https://commission.europa.eu/document/fa09cbad-dd7d-4684-ae60-be03fcb0fddf_en</a
+        >.<br />
+        Zudem verwendet Google sogenannte Standardvertragsklauseln (= Art. 46. Abs. 2
+        und 3 DSGVO). Standardvertragsklauseln (Standard Contractual Clauses – SCC)
+        sind von der EU-Kommission bereitgestellte Mustervorlagen und sollen
+        sicherstellen, dass Ihre Daten auch dann den europäischen Datenschutzstandards
+        entsprechen, wenn diese in Drittländer (wie beispielsweise in die USA)
+        überliefert und dort gespeichert werden. Durch das EU-US Data Privacy
+        Framework und durch die Standardvertragsklauseln verpflichtet sich Google, bei
+        der Verarbeitung Ihrer relevanten Daten, das europäische Datenschutzniveau
+        einzuhalten, selbst wenn die Daten in den USA gespeichert, verarbeitet und
+        verwaltet werden. Diese Klauseln basieren auf einem Durchführungsbeschluss der
+        EU-Kommission. Sie finden den Beschluss und die entsprechenden
+        Standardvertragsklauseln u.a. hier:  <a href="https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj?locale=de" target="_blank" rel="noopener noreferrer"
+          >https://eur-lex.europa.eu/eli/dec_impl/2021/914/oj?locale=de</a
+        >
+      </p>
+      <p>
+        Die Google Ads Datenverarbeitungsbedingungen (Google Ads Data Processing
+        Terms), welche auf die Standardvertragsklauseln verweisen, finden Sie unter  <a href="https://business.safety.google/intl/de/adsprocessorterms/" target="_blank" rel="noopener noreferrer"
+          >https://business.safety.google/intl/de/adsprocessorterms/</a
+        >.<br />
+        Bei Google können Sie unter
+        <a href="https://adssettings.google.com/authenticated" target="_blank" rel="noopener noreferrer"
+          >https://adssettings.google.com/authenticated</a
+        >
+        Ihre Einwilligung zur Verwendung von Single-Sign-On-Anmeldungen per
+        Opt-Out-Funktion widerrufen. Mehr über die Daten, die durch die Verwendung von
+        Google Single-Sign-On verarbeitet werden, erfahren Sie in der Privacy Policy
+        auf  <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer"
+          >https://policies.google.com/privacy?hl=de</a
+        >.
+      </p>
+
+      <h3>Schlusswort</h3>
+      <p>
+        Herzlichen Glückwunsch! Wenn Sie diese Zeilen lesen, haben Sie sich wirklich
+        durch unsere gesamte Datenschutzerklärung „gekämpft“ oder zumindest bis hier
+        hin gescrollt. Wie Sie am Umfang unserer Datenschutzerklärung sehen, nehmen
+        wir den Schutz Ihrer persönlichen Daten, alles andere als auf die leichte
+        Schulter.<br />
+        Uns ist es wichtig, Sie nach bestem Wissen und Gewissen über die Verarbeitung
+        personenbezogener Daten zu informieren. Dabei wollen wir Ihnen aber nicht nur
+        mitteilen, welche Daten verarbeitet werden, sondern auch die Beweggründe für
+        die Verwendung diverser Softwareprogramme näherbringen. In der Regel klingen
+        Datenschutzerklärung sehr technisch und juristisch. Da die meisten von Ihnen
+        aber keine Webentwickler oder Juristen sind, wollten wir auch sprachlich einen
+        anderen Weg gehen und den Sachverhalt in einfacher und klarer Sprache
+        erklären.
+      </p>
+      <p>
+        Immer ist dies natürlich aufgrund der Thematik nicht möglich. Daher werden die
+        wichtigsten Begriffe am Ende der Datenschutzerklärung näher erläutert.<br />
+        Bei Fragen zum Thema Datenschutz auf unserer Website zögern Sie bitte nicht,
+        uns oder die verantwortliche Stelle zu kontaktieren. Wir wünschen Ihnen noch
+        eine schöne Zeit und hoffen, Sie auf unserer Website bald wieder begrüßen zu
+        dürfen.
+      </p>
+      <p>
+        Alle Texte sind urheberrechtlich geschützt.<br />
+        Quelle: Datenschutzerklärung erstellt mit dem Datenschutz Generator für
+        Deutschland von AdSimple<br />  <a href="https://www.adsimple.de/datenschutz-generator/" target="_blank" rel="noopener noreferrer"
+          >https://www.adsimple.de/datenschutz-generator/</a
+        >
+      </p>
+    </div>
+
+    <div class="footer-info">
+      <p>
+        <small>
+          Alle Texte sind urheberrechtlich geschützt.<br />
+          Quelle: Erstellt mit dem Impressum Generator von AdSimple
+        </small>
+      </p>
+    </div>
+  </div>
+
+  <!-- English Version -->
+  <div class="content-section" *ngIf="selectedLanguage === 'en'">
+    <div class="header-section">
+      <h1>Legal Notice</h1>
+      <p class="subtitle">Legal Information and Privacy Policy</p>
+    </div>    <div class="info-card">
+      <h2>Service Provider Information</h2>
+      <div class="contact-grid">        <div class="contact-person">
+          <h3>Morteza Chinahkash</h3>
+          <p>
+            Foorthkamp 15<br />
+            22419 Hamburg<br />
+            Germany<br />
+            <span class="contact-item">
+              📧 Email: <a href="mailto:kontakt@m-chinahkash.de">kontakt&#64;m-chinahkash.de</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Phone: <a href="tel:+4917622508589">017622508589</a>
+            </span>
+          </p>
+        </div>
+
+        <div class="contact-person">
+          <h3>Joshua Brunke</h3>
+          <p>
+            Über der Kieckwiese 3<br />
+            38729 Langelsheim<br />
+            Germany<br />
+            <span class="contact-item">
+              📧 Email: <a href="mailto:joshuabrunke1@gmail.com">joshuabrunke1&#64;gmail.com</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Phone: <a href="tel:+4953839079151">+49 (5383) 9079151</a>
+            </span>
+          </p>
+        </div>
+
+        <div class="contact-person">
+          <h3>Daniel Grabowski</h3>
+          <p>
+            Am Mühlenweg 3C<br />
+            14669 Ketzin/Havel<br />
+            Germany<br />
+            <span class="contact-item">
+              📧 Email: <a href="mailto:rasen_karotte27@icloud.com">rasen_karotte27&#64;icloud.com</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Phone: <a href="tel:+491737941017">+49 173 7941017</a>
+            </span>
+          </p>
+        </div>
+
+        <div class="contact-person">
+          <h3>Gary Angelone</h3>
+          <p>
+            Söflingerstr. 169<br />
+            89077 Ulm<br />
+            Germany<br />
+            <span class="contact-item">
+              📧 Email: <a href="mailto:gmangelone@gmail.com">gmangelone&#64;gmail.com</a>
+            </span><br />
+            <span class="contact-item">
+              📞 Phone: <a href="tel:+4917651806951">+49 0176 51806951</a>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h2>EU Dispute Resolution</h2>
+      <p>
+        In accordance with the Regulation on Online Dispute Resolution in Consumer Affairs 
+        (ODR Regulation), we would like to inform you about the Online Dispute Resolution 
+        Platform (OS Platform).
+      </p>
+      <p>
+        Consumers have the opportunity to submit complaints to the Online Dispute Resolution 
+        Platform of the European Commission at
+        <a
+          href="https://ec.europa.eu/consumers/odr/main/index.cfm?event=main.home2.show&amp;lng=EN"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="external-link">
+          https://ec.europa.eu/consumers/odr/main/index.cfm?event=main.home2.show&amp;lng=EN
+        </a>
+      </p>
+      <p>
+        The necessary contact information can be found above in our legal notice. 
+        However, we would like to point out that we are not willing or obligated to 
+        participate in dispute resolution proceedings before a consumer arbitration board.
+      </p>
+    </div>    <div class="info-card">
+      <h2>Privacy Policy</h2>
+
+      <h3>Table of Contents</h3>
+      <ul>
+        <li>Introduction and Overview</li>
+        <li>Scope of Application</li>
+        <li>Legal Basis</li>
+        <li>Storage Duration</li>
+        <li>Rights under the General Data Protection Regulation</li>
+        <li>Cookies</li>
+        <li>Single Sign-On Logins Introduction</li>
+        <li>Conclusion</li>
+      </ul>
+
+      <h3>Introduction and Overview</h3>
+      <p>
+        We have created this privacy policy (version 24.06.2025-323017699) to explain to you, 
+        in accordance with the requirements of the General Data Protection Regulation (EU) 2016/679 
+        and applicable national laws, what personal data (data for short) we as data controllers – 
+        and the processors commissioned by us (e.g. providers) – process, will process in the future, 
+        and what lawful options you have. The terms used are to be understood as gender-neutral.<br />
+        In short: We provide you with comprehensive information about data that we process about you.
+      </p>
+      <p>
+        Privacy policies usually sound very technical and use legal jargon. This privacy policy, 
+        on the other hand, is intended to describe the most important things to you as simply and 
+        transparently as possible. As far as it promotes transparency, technical terms are explained 
+        in a reader-friendly way, links to further information are provided and graphics are used. 
+        We thus inform in clear and simple language that we only process personal data in the course 
+        of our business activities when there is a corresponding legal basis. This is certainly not 
+        possible if one gives the most concise, unclear and legal-technical explanations possible, 
+        as they are often standard on the Internet when it comes to data protection. I hope you 
+        find the following explanations interesting and informative and maybe there is some 
+        information that you did not know yet.
+      </p>
+      <p>
+        If questions still remain, we would like to ask you to contact the responsible body 
+        mentioned below or in the legal notice, to follow the existing links and to look at 
+        further information on third-party sites. Our contact details can of course also be 
+        found in the legal notice.
+      </p>
+
+      <h3>Scope of Application</h3>
+      <p>
+        This privacy policy applies to all personal data processed by us in the company and 
+        to all personal data processed by companies commissioned by us (processors). By personal 
+        data, we mean information within the meaning of Art. 4 No. 1 GDPR such as the name, 
+        email address and postal address of a person. The processing of personal data ensures 
+        that we can offer and bill our services and products, whether online or offline. 
+        The scope of this privacy policy includes:
+      </p>
+      <ul>
+        <li>all online presences (websites, online shops) that we operate</li>
+        <li>Social media presences and email communication</li>
+        <li>mobile apps for smartphones and other devices</li>
+      </ul>
+      <p>
+        In short: The privacy policy applies to all areas in which personal data is processed 
+        in a structured manner in the company via the channels mentioned. Should we enter into 
+        legal relationships with you outside of these channels, we will inform you separately 
+        if necessary.
+      </p>
+
+      <h3>Legal Basis</h3>
+      <p>
+        In the following privacy policy, we provide you with transparent information about the 
+        legal principles and regulations, i.e. the legal bases of the General Data Protection 
+        Regulation, which enable us to process personal data. As far as EU law is concerned, 
+        we refer to REGULATION (EU) 2016/679 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 
+        27 April 2016. You can of course read this General Data Protection Regulation of the EU 
+        online on EUR-Lex, the gateway to EU law, at 
+        <a href="https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=celex%3A32016R0679" 
+           target="_blank" rel="noopener noreferrer">
+          https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=celex%3A32016R0679
+        </a>.
+      </p>
+      <p>We only process your data if at least one of the following conditions applies:</p>
+      <ul>
+        <li>
+          <b>Consent (Article 6 paragraph 1 lit. a GDPR):</b> You have given us your consent 
+          to process data for a specific purpose. An example would be the storage of your 
+          entered data from a contact form.
+        </li>
+        <li>
+          <b>Contract (Article 6 paragraph 1 lit. b GDPR):</b> In order to fulfill a contract 
+          or pre-contractual obligations with you, we process your data. For example, if we 
+          conclude a purchase contract with you, we need personal information in advance.
+        </li>
+        <li>
+          <b>Legal obligation (Article 6 paragraph 1 lit. c GDPR):</b> If we are subject to 
+          a legal obligation, we process your data. For example, we are legally obliged to 
+          keep invoices for accounting purposes. These usually contain personal data.
+        </li>
+        <li>
+          <b>Legitimate interests (Article 6 paragraph 1 lit. f GDPR):</b> In the case of 
+          legitimate interests that do not restrict your fundamental rights, we reserve the 
+          right to process personal data. For example, we must process certain data in order 
+          to operate our website securely and economically efficiently. This processing is 
+          therefore a legitimate interest.
+        </li>
+      </ul>
+      <p>
+        Other conditions such as the performance of recordings in the public interest and 
+        exercise of public authority as well as the protection of vital interests do not 
+        usually occur with us. If such a legal basis should nevertheless be relevant, this 
+        will be shown at the appropriate place.
+      </p>
+      <p>
+        In addition to the EU regulation, national laws also apply:<br />
+        In Austria, this is the Federal Act on the Protection of Natural Persons with regard 
+        to the Processing of Personal Data (Data Protection Act), DSG for short.<br />
+        In Germany, the Federal Data Protection Act (BDSG) applies.<br />
+        If other regional or national laws apply, we will inform you about this in the 
+        following sections.
+      </p>
+
+      <h3>Storage Duration</h3>
+      <p>
+        The fact that we only store personal data for as long as it is absolutely necessary 
+        for the provision of our services and products applies as a general criterion for us. 
+        This means that we delete personal data as soon as the reason for data processing no 
+        longer exists. In some cases, we are legally obliged to store certain data even after 
+        the original purpose has ceased to exist, for example for accounting purposes.<br />
+        Should you wish to have your data deleted or revoke your consent to data processing, 
+        the data will be deleted as quickly as possible and insofar as there is no obligation 
+        to store it.<br />
+        We will inform you about the specific duration of the respective data processing below, 
+        provided we have further information about it.
+      </p>
+
+      <h3>Rights under the General Data Protection Regulation</h3>
+      <p>
+        In accordance with Articles 13, 14 GDPR, we inform you of the following rights that 
+        you have so that fair and transparent processing of data takes place:
+      </p>
+      <ul>
+        <li>
+          According to Article 15 GDPR, you have a right of access as to whether we process 
+          data from you. If this is the case, you have the right to receive a copy of the data 
+          and to learn the following information:
+          <ul>
+            <li>for what purpose we carry out the processing;</li>
+            <li>the categories, i.e. the types of data, that are processed;</li>
+            <li>who receives this data and if the data is transferred to third countries, how security can be guaranteed;</li>
+            <li>how long the data is stored;</li>
+            <li>the existence of the right to rectification, erasure or restriction of processing and the right to object to processing;</li>
+            <li>that you can complain to a supervisory authority (links to these authorities can be found below);</li>
+            <li>the origin of the data if we did not collect it from you;</li>
+            <li>whether profiling is carried out, i.e. whether data is automatically evaluated in order to arrive at a personal profile of you.</li>
+          </ul>
+        </li>
+        <li>
+          According to Article 16 GDPR, you have a right to rectification of data, which means 
+          that we must correct data if you find errors.
+        </li>
+        <li>
+          According to Article 17 GDPR, you have the right to erasure ("right to be forgotten"), 
+          which specifically means that you may request the deletion of your data.
+        </li>
+        <li>
+          According to Article 18 GDPR, you have the right to restriction of processing, 
+          which means that we may only store the data but not use it further.
+        </li>
+        <li>
+          According to Article 20 GDPR, you have the right to data portability, which means 
+          that we will provide you with your data in a common format upon request.
+        </li>
+        <li>
+          According to Article 21 GDPR, you have a right to object, which, after enforcement, 
+          entails a change in processing.
+          <ul>
+            <li>If the processing of your data is based on Article 6 para. 1 lit. e (public interest, exercise of public authority) or Article 6 para. 1 lit. f (legitimate interest), you can object to the processing. We will then check as quickly as possible whether we can legally comply with this objection.</li>
+            <li>If data is used to conduct direct marketing, you can object to this type of data processing at any time. We may then no longer use your data for direct marketing.</li>
+            <li>If data is used to conduct profiling, you can object to this type of data processing at any time. We may then no longer use your data for profiling.</li>
+          </ul>
+        </li>
+        <li>
+          According to Article 22 GDPR, under certain circumstances you have the right not to 
+          be subject to a decision based solely on automated processing (for example profiling).
+        </li>
+        <li>
+          According to Article 77 GDPR, you have the right to lodge a complaint. This means 
+          you can complain to the data protection authority at any time if you believe that 
+          the processing of personal data violates the GDPR.
+        </li>
+      </ul>
+      <p>
+        In short: You have rights – do not hesitate to contact the responsible body listed 
+        above with us!
+      </p>
+
+      <h3>Cookies</h3>
+      <p>
+        <b>Cookies Summary</b><br />
+        Affected: Visitors to the website<br />
+        Purpose: depends on the respective cookie. More details can be found below or with 
+        the manufacturer of the software that sets the cookie.<br />
+        Processed data: Depends on the cookie used. More details can be found below or with 
+        the manufacturer of the software that sets the cookie.<br />
+        Storage duration: depends on the respective cookie, can vary from hours to years<br />
+        Legal basis: Art. 6 para. 1 lit. a GDPR (consent), Art. 6 para. 1 lit. f GDPR (legitimate interests)
+      </p>
+
+      <h4>What are cookies?</h4>
+      <p>
+        Our website uses HTTP cookies to store user-specific data. Below we explain what cookies 
+        are and why they are used so that you can better understand the following privacy policy.
+      </p>
+      <p>
+        Whenever you surf the Internet, you use a browser. Well-known browsers are, for example, 
+        Chrome, Safari, Firefox, Internet Explorer and Microsoft Edge. Most websites store small 
+        text files in your browser. These files are called cookies.
+      </p>
+      <p>
+        One thing cannot be denied: Cookies are really useful helpers. Almost all websites use 
+        cookies. More precisely, they are HTTP cookies, as there are also other cookies for other 
+        areas of application. HTTP cookies are small files that are stored on your computer by our 
+        website. These cookie files are automatically placed in the cookie folder, which is like 
+        the "brain" of your browser. A cookie consists of a name and a value. When defining a 
+        cookie, one or more attributes must also be specified.
+      </p>
+
+      <h3>Single Sign-On Logins Introduction</h3>
+      <p>
+        <b>Single Sign-On Logins Privacy Policy Summary</b><br />
+        Affected: Visitors to the website<br />
+        Purpose: Simplification of the authentication process<br />
+        Processed data: Depends heavily on the respective provider, usually email address and 
+        username can be stored. More details can be found with the tool used in each case.<br />
+        Storage duration: depends on the tools used<br />
+        Legal basis: Art. 6 para. 1 lit. a GDPR (consent), Article 6 paragraph 1 lit. b GDPR 
+        (contract fulfillment), Art. 6 para. 1 lit. f GDPR (legitimate interests)
+      </p>
+
+      <h4>What are Single Sign-On logins?</h4>
+      <p>
+        On our website, you have the option of quickly and easily registering for our online 
+        service via a user account from another provider (e.g. via Facebook). This authentication 
+        procedure is called, among other things, "single sign-on login". This login procedure 
+        naturally only works if you are registered with the other provider or have a user account 
+        and enter the corresponding access data in the online form. In many cases, you are already 
+        logged in, the access data is automatically entered in the form and you only have to 
+        confirm the single sign-on login with a button. In the course of this login, personal 
+        data from you can also be processed and stored. In this privacy text, we generally deal 
+        with data processing through single sign-on logins. You can find more detailed information 
+        in the privacy policies of the respective providers.
+      </p>
+
+      <h3>Conclusion</h3>
+      <p>
+        Congratulations! If you are reading these lines, you have really "fought" your way 
+        through our entire privacy policy or at least scrolled down to here. As you can see 
+        from the scope of our privacy policy, we do not take the protection of your personal 
+        data lightly.<br />
+        It is important to us to inform you about the processing of personal data to the best 
+        of our knowledge and belief. We don't just want to tell you what data is processed, 
+        but also want to bring you closer to the reasons for using various software programs. 
+        As a rule, privacy policies sound very technical and legal. Since most of you are not 
+        web developers or lawyers, we also wanted to take a different linguistic approach and 
+        explain the facts in simple and clear language.
+      </p>
+      <p>
+        Of course, this is not always possible due to the subject matter. Therefore, the most 
+        important terms are explained in more detail at the end of the privacy policy.<br />
+        If you have any questions about data protection on our website, please do not hesitate 
+        to contact us or the responsible body. We wish you a wonderful time and hope to welcome 
+        you to our website again soon.
+      </p>
+      <p>
+        All texts are protected by copyright.<br />
+        Source: Privacy policy created with the Privacy Policy Generator for Germany by AdSimple<br />
+        <a href="https://www.adsimple.de/datenschutz-generator/" target="_blank" rel="noopener noreferrer">
+          https://www.adsimple.de/datenschutz-generator/
+        </a>
+      </p>
+    </div>
+
+    <div class="footer-info">
+      <p>
+        <small>
+          All texts are protected by copyright.<br />
+          Source: Created with the Legal Notice Generator by AdSimple
+        </small>
+      </p>
+    </div>
+  </div>
+</div>
