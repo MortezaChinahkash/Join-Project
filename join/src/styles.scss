@@ -116,15 +116,26 @@ a:hover {
     padding-left: 2rem;
     padding-right: 1rem;
     padding-bottom: 1rem;
+    gap: 1.5rem;
+  }
+
+  .component-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
   .component-title {
     font-size: 2.4rem;
   }
 
-  .header-divider {
-    font-size: 2.2rem;
-  }
+.header-divider {
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  line-height: 1;
+  font-size: 3rem;
+}
+
 
   .component-subtitle {
     font-size: 1.4rem;
