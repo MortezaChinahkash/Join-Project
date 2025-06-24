@@ -132,9 +132,17 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-openMoreMenu(): void {
-    // Implement the logic to open a dropdown menu for more options
-    console.log('Open more options menu');
+/** Controls visibility of the mobile “more” menu */
+  showMobileMoreMenu = false;
+
+  /** Called when FAB is tapped in “single contact” mode */
+  openMoreMenu(): void {
+    this.showMobileMoreMenu = true;
+  }
+
+  /** Close the mobile more‐menu */
+  closeMoreMenu(): void {
+    this.showMobileMoreMenu = false;
   }
 
   /**
@@ -433,6 +441,7 @@ openMoreMenu(): void {
   backToList() {
     this.showMobileSingleContact = false;
     this.selectedContact = null;
+    this.closeMoreMenu();
   }
 
   /**
