@@ -116,28 +116,35 @@ a:hover {
     padding-left: 2rem;
     padding-right: 1rem;
     padding-bottom: 1rem;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
   .component-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+
+  .component-title-bar {
+    order: 1;
   }
 
   .component-title {
     font-size: 2.4rem;
   }
 
+    .component-subtitle {
+    font-size: 1.4rem;
+    order: 2;
+  }
+
 .header-divider {
   transform: rotate(-90deg);
   transform-origin: left top;
-  line-height: 1;
-  font-size: 3rem;
+line-height: 6rem;
+  font-size: 5rem;
+  order: 3;
 }
 
-
-  .component-subtitle {
-    font-size: 1.4rem;
-  }
 }
