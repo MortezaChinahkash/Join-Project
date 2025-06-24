@@ -1081,6 +1081,120 @@ body,
   object-fit: contain;
 }
 
+@media (max-width: 800px) {
+  .contact-container {
+    flex-direction: column;
+    width: 95vw;
+    max-width: 420px;
+    height: auto;
+    min-height: unset;
+    border-radius: 20px;
+    padding: 0;
+    box-shadow: 0 4px 24px #0002;
+  }
+
+  .contact-left {
+    width: 100%;
+    padding: 32px 0 0 0;
+    min-height: unset;
+    border-radius: 20px 20px 0 0;
+    align-items: center;
+    justify-content: flex-start;
+    background: #2d3a4a;
+    text-align: center;
+  }
+
+  .contact-left .logo-placeholder {
+    margin: 0 0 16px 0;
+  }
+
+  .contact-left h1 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+
+  .contact-left .underline {
+    margin: 0 auto 8px auto;
+  }
+
+  .contact-right {
+    width: 100%;
+    padding: 24px 16px 32px 16px;
+    border-radius: 0 0 20px 20px;
+    min-height: unset;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  .contact-right-inner {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+  }
+
+  .avatar-and-form {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .avatar-placeholder {
+    margin: 0 0 16px 0;
+    width: 110px;
+    height: 110px;
+    font-size: 2rem;
+  }
+
+  form {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .close-btn {
+    display: none;
+  }
+
+    .mobile-only {
+    display: flex !important;
+  }
+  .desktop-only {
+    display: none !important;
+  }
+  .contact-left {
+    position: relative;
+  }
+  .close-btn.mobile-only {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    font-size: 22px;
+    background: transparent;
+    color: #fff;
+    border: none;
+    box-shadow: none;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 801px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: flex !important;
+  }
+}
+
+
+
 @media (min-width: 769px) {
   .mobile-only {
     display: none;
