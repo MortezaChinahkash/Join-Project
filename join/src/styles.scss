@@ -1,14 +1,7 @@
 @font-face {
   font-family: "Inter";
-  src: url("/assets/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("/assets/fonts/Inter-VariableFont_opsz.ttf") format("truetype");
 }
-
-@font-face {
-  font-family: "Inter";
-  src: url("https://join-3-1181.developerakademie.net/Join/assets/fonts/Inter-VariableFont_opsz%2Cwght.ttf") format("truetype");
-}
-
-
 
 :root {
   --font-main: "Inter", sans-serif;
@@ -74,13 +67,6 @@ a:hover {
   padding-left: 3rem;
   padding-right: 2rem;
   padding-bottom: 2rem;
-
-  @media (max-width: 768px) {
-    padding-top: 3rem;
-    padding-left: 2rem;
-    padding-right: 1rem;
-    padding-bottom: 1rem;
-  }
 }
 
 .component-header {
@@ -95,29 +81,17 @@ a:hover {
   color: var(--color-black);
   font-size: 4rem;
   font-weight: 600;
-
-  @media (max-width: 768px) {
-    font-size: 2.4rem;
-  }
 }
 
 .header-divider {
   color: var(--color-accent);
   font-size: 3.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-  }
 }
 
 .component-subtitle {
   text-align: left;
   color: var(--bg-dark-grey);
   font-size: 1.8rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.2rem;
-  }
 }
 
 @media (min-width: 769px) {
@@ -135,5 +109,24 @@ a:hover {
   }
   .desktop-only {
     display: none;
+  }
+
+  .default-content-container {
+    padding-top: 3rem;
+    padding-left: 2rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .component-title {
+    font-size: 2.4rem;
+  }
+
+  .header-divider {
+    font-size: 2.2rem;
+  }
+
+  .component-subtitle {
+    font-size: 1.4rem;
   }
 }
