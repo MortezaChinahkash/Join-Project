@@ -6,12 +6,21 @@ import{ trigger, transition, style, animate} from '@angular/animations';
 import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 export interface Contact {
+  /** Unique identifier for the contact */
   id?: string; 
+  /** Contact's full name */
   name: string;
+  /** Contact's email address */
   email: string;
+  /** Contact's phone number (optional) */
   phone?: string;
 }
 
+/**
+ * Component for managing contacts with full CRUD operations
+ * Supports adding, editing, deleting, and viewing contacts
+ * Includes responsive design for mobile and desktop views
+ */
 @Component({
   selector: 'app-contacts',
   standalone: true,
@@ -33,20 +42,31 @@ export interface Contact {
 ]
 })
 export class ContactsComponent implements OnInit {
+  /** Controls visibility of the success message overlay */
   contactSuccessMessageOverlay: boolean = false;
+  /** Text content for the success message */
   contactSuccessMessageText: string = 'Contact successfully created!';
+  /** Array of all contacts */
   contacts: Contact[] = [];
+  /** Contacts grouped by first letter of name */
   groupedContacts: { [key: string]: Contact[] } = {};
+  /** Currently selected contact for viewing/editing */
   selectedContact: Contact | null = null;
+  /** Flag to suppress animations during operations */
   suppressAnimation = false;
+  /** Firestore database instance */
   private firestore = inject(Firestore);
+  /** Controls visibility of the add contact overlay */
   showAddContactOverlay: boolean = false;
+  /** Controls visibility of the edit contact overlay */
   showEditContactOverlay: boolean = false;
+  /** Reactive form for adding/editing contacts */
   addContactForm: FormGroup;
   
+  /** Flag indicating if the current view is mobile */
   isMobileView = false;
+  /** Controls mobile single contact view visibility */
   showMobileSingleContact = false;
-
   constructor(private fb: FormBuilder) {
     this.addContactForm = this.fb.group({
       name: ['', Validators.required],
@@ -56,23 +76,21 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-   * Opens the overlay for adding a new contact and resets the form.
+   * Opens the overlay for adding a new contact and resets the form
    */
   openAddContactOverlay() {
     this.showAddContactOverlay = true;
     this.addContactForm.reset();
   }
-
   /**
-   * Closes the overlay for adding a new contact.
+   * Closes the overlay for adding a new contact
    */
   closeAddContactOverlay() {
     this.showAddContactOverlay = false;
   }
-
   /**
-   * Handles the submission of the add contact form.
-   * Validates the form and adds the contact to Firestore if valid.
+   * Handles the submission of the add contact form
+   * Validates the form and adds the contact to Firestore if valid
    */
   onSubmitAddContact() {
     this.ensurePhoneValue();
@@ -264,10 +282,13 @@ ngOnInit() {
   const contactsCollection = collection(this.firestore, 'contacts');
   collectionData(contactsCollection, { idField: 'id' }).subscribe((contacts) => {
     this.contacts = contacts as Contact[];
-    this.groupContacts();
-  });
+    this.groupContacts();  });
 }
 
+/**
+ * Updates the mobile view status based on window width
+ * Resets mobile single contact view when switching back to desktop
+ */
 updateMobileViewStatus() {
   this.isMobileView = window.innerWidth <= 768;
   if (!this.isMobileView) {
@@ -332,10 +353,13 @@ updateMobileViewStatus() {
 selectContact(contact: Contact) {
   this.selectedContact = contact;
   if (this.isMobileView) {
-    this.showMobileSingleContact = true;
-  }
+    this.showMobileSingleContact = true;  }
 }
 
+/**
+ * Navigates back to the contact list view on mobile devices
+ * Clears the selected contact and hides the single contact view
+ */
 backToList() {
   this.showMobileSingleContact = false;
   this.selectedContact = null;
