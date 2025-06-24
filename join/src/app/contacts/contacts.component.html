@@ -4,7 +4,7 @@
       class="contacts-list"
       *ngIf="!isMobileView || !showMobileSingleContact"
     >
-      <div class="addNewContactBtn">
+      <div class="addNewContactBtn desktop-only">
         <button (click)="openAddContactOverlay()">
           Add new contact
           <img src="./assets/img/icon_person_add.svg" alt="Add" class="icon" />
