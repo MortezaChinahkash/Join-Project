@@ -43,6 +43,9 @@ export class ContactsComponent implements OnInit {
   showAddContactOverlay: boolean = false;
   showEditContactOverlay: boolean = false;
   addContactForm: FormGroup;
+  
+  isMobileView = false;
+  showMobileSingleContact = false;
 
   constructor(private fb: FormBuilder) {
     this.addContactForm = this.fb.group({
@@ -254,15 +257,24 @@ export class ContactsComponent implements OnInit {
    * Angular lifecycle hook that initializes the component.
    * Loads contacts from Firestore and groups them.
    */
-  ngOnInit() {
-    const contactsCollection = collection(this.firestore, 'contacts');
-    collectionData(contactsCollection, { idField: 'id' }) 
-      .subscribe((contacts) => {
-        // Typumwandlung auf Contact[]
-        this.contacts = contacts as Contact[];
-        this.groupContacts();
-      });
+ngOnInit() {
+  this.updateMobileViewStatus();
+  window.addEventListener('resize', this.updateMobileViewStatus.bind(this));
+
+  const contactsCollection = collection(this.firestore, 'contacts');
+  collectionData(contactsCollection, { idField: 'id' }).subscribe((contacts) => {
+    this.contacts = contacts as Contact[];
+    this.groupContacts();
+  });
+}
+
+updateMobileViewStatus() {
+  this.isMobileView = window.innerWidth <= 768;
+  if (!this.isMobileView) {
+    this.showMobileSingleContact = false; // reset when going back to desktop
   }
+}
+
 
   /**
    * Groups contacts by the first letter of their name.
@@ -317,9 +329,18 @@ export class ContactsComponent implements OnInit {
    * Selects a contact as the currently active contact.
    * @param contact The contact to select.
    */
-  selectContact(contact: Contact) {
-    this.selectedContact = contact;
+selectContact(contact: Contact) {
+  this.selectedContact = contact;
+  if (this.isMobileView) {
+    this.showMobileSingleContact = true;
   }
+}
+
+backToList() {
+  this.showMobileSingleContact = false;
+  this.selectedContact = null;
+}
+
 
   /**
    * Shows a success message overlay with the given message for 3 seconds.
