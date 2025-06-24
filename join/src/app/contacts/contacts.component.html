@@ -657,6 +657,13 @@
   <div class="contact-overlay" *ngIf="showAddContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
+        <button
+          class="close-btn mobile-only"
+          aria-label="Close"
+          (click)="closeAddContactOverlay()"
+        >
+          &#10005;
+        </button>
         <div class="logo-placeholder">
           <svg
             class="add-logo"
