@@ -2,7 +2,6 @@ import { Component, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  imports: [RouterModule],
   selector: 'app-header',
   standalone: true,
   imports: [RouterModule],
