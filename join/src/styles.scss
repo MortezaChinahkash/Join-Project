@@ -69,7 +69,7 @@ a:hover {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 3rem;
   padding-top: 5rem;
   padding-left: 3rem;
   padding-right: 2rem;
@@ -87,14 +87,13 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 16px;
-  padding-bottom: 16px;
+  gap: 2rem;
 }
 
 .component-title {
   text-align: left;
   color: var(--color-black);
-  font-size: 3rem;
+  font-size: 4rem;
   font-weight: 600;
 
   @media (max-width: 768px) {
@@ -104,7 +103,7 @@ a:hover {
 
 .header-divider {
   color: var(--color-accent);
-  font-size: 2.8rem;
+  font-size: 3.5rem;
 
   @media (max-width: 768px) {
     font-size: 2.2rem;
@@ -114,7 +113,7 @@ a:hover {
 .component-subtitle {
   text-align: left;
   color: var(--bg-dark-grey);
-  font-size: 1.5rem;
+  font-size: 1.8rem;
 
   @media (max-width: 768px) {
     font-size: 1.2rem;
