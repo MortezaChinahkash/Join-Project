@@ -931,7 +931,7 @@ form {
 }
 
 .cancel-button,
-.create-button {
+.create-button{
   padding: 12px 24px;
   border-radius: 10px;
   font-size: 1.1rem;
@@ -941,6 +941,20 @@ form {
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
+}
+
+.cancel-button-edit,
+.create-button-edit{
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  border: 2px solid #2d3a4a;
+  background: #fff;
+  color: #2d3a4a;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  display: none;
 }
 
 .create-button {
@@ -1265,6 +1279,8 @@ body,
     transition: background 0.2s, color 0.2s;
 
   }
+
+  
   
 }
 
