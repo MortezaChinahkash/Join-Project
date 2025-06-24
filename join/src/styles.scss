@@ -117,13 +117,16 @@ a:hover {
 
   .default-content-container {
     padding-top: 3rem;
-    padding-left: 2rem;
-    padding-right: 1rem;
+    padding-left: 2.5rem;
+    padding-right: 1.5rem;
     padding-bottom: 1rem;
     gap: 0.5rem;
   }
 
+
   .component-header {
+    width: 100%;
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -150,5 +153,21 @@ a:hover {
     border: none;
     border-bottom: 2px solid var(--color-accent);
     margin: 0;
+  }
+}
+
+// Very narrow screens (320px - 480px)
+@media (max-width: 480px) {
+  .default-content-container {
+    padding-left: 1.5rem;
+    padding-right: 1rem;
+  }
+}
+
+// Extra narrow screens (320px)
+@media (max-width: 360px) {
+  .default-content-container {
+    padding-left: 1rem;
+    padding-right: 0.75rem;
   }
 }
