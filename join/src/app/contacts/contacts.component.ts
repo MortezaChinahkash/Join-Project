@@ -126,9 +126,9 @@ export class ContactsComponent implements OnInit {
 
   handleFabClick(): void {
     if (this.showMobileSingleContact) {
-      this.openMoreMenu(); // You can define this to open the dropdown
+      this.openMoreMenu(); 
     } else {
-      this.openAddContactOverlay(); // Already existing
+      this.openAddContactOverlay(); 
     }
   }
 
