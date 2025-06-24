@@ -1,14 +1,7 @@
 @font-face {
   font-family: "Inter";
-  src: url("/assets/fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  src: url("/assets/fonts/Inter-VariableFont_opsz.ttf") format("truetype");
 }
-
-@font-face {
-  font-family: "Inter";
-  src: url("https://join-3-1181.developerakademie.net/Join/assets/fonts/Inter-VariableFont_opsz%2Cwght.ttf") format("truetype");
-}
-
-
 
 :root {
   --font-main: "Inter", sans-serif;
