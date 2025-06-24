@@ -1,6 +1,6 @@
 <div class="content-wrapper">
   <div class="contacts-contents">
-    <div class="contacts-list">
+    <div class="contacts-list" *ngIf="!isMobileView || !showMobileSingleContact">
       <div class="addNewContactBtn">
         <button (click)="openAddContactOverlay()">
           Add new contact
@@ -583,7 +583,13 @@
       </div>
     </div>
 
-    <div class="contacts-right default-content-container">
+    <div class="contacts-right default-content-container" *ngIf="selectedContact && (!isMobileView || showMobileSingleContact)">
+        <button *ngIf="isMobileView"
+          class="back-btn"
+          (click)="backToList()"
+          aria-label="Back to contact list">
+    <img src="./assets/img/back-arrow.png">
+  </button>
       <div class="component-header">
         <h1 class="component-title">Contacts</h1>
         <span class="header-divider"> | </span
