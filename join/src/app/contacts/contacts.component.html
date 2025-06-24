@@ -1197,6 +1197,7 @@
 <!-- Mobile FAB, shows "add" or "menu" icon depending on view -->
 <button 
   class="mobile-fab mobile-only" 
+  *ngIf="!showAddContactOverlay && !showEditContactOverlay"
   [ngClass]="showMobileSingleContact ? 'menu' : 'add'"
   (click)="handleFabClick()"
   aria-label="Floating action button">
@@ -1206,8 +1207,4 @@
     class="fab-icon"
   />
 </button>
-
-
-
-
 </div>
