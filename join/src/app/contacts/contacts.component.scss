@@ -1057,3 +1057,53 @@ body, .content-wrapper {
   .input-icon svg path{
      fill: var(--color-greyed-out);
   }
+
+  @media (max-width: 768px) {
+  .contacts-contents {
+    flex-direction: column;
+  }
+
+  .contacts-list,
+  .contacts-right {
+    width: 100%;
+    padding: 1rem;
+    box-shadow: none;
+    border: none;
+  }
+
+  .contacts-list {
+    height: auto;
+  }
+
+  .back-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--color-accent);
+    padding: 0.5rem 0;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+
+  .single-contact-container {
+    padding: 1rem;
+  }
+
+  .component-header {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .component-title {
+    font-size: 2rem;
+  }
+
+  .header-divider {
+    font-size: 1.5rem;
+  }
+
+  .component-subtitle {
+    font-size: 1.2rem;
+  }
+}
