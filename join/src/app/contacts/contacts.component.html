@@ -1186,4 +1186,14 @@
   <div class="success-message" *ngIf="contactSuccessMessageOverlay">
     {{ contactSuccessMessageText }}
   </div>
+
+  <!-- Mobile FAB, shown conditionally -->
+<button 
+  class="mobile-fab mobile-only" 
+  (click)="handleFabClick()"
+  aria-label="Floating action button">
+  <ng-container *ngIf="!showMobileSingleContact">+</ng-container>
+  <ng-container *ngIf="showMobileSingleContact">⋮</ng-container>
+</button>
+
 </div>

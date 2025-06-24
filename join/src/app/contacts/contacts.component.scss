@@ -1058,6 +1058,15 @@ body,
   fill: var(--color-greyed-out);
 }
 
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: block;
+  }
+}
+
 @media (max-width: 768px) {
   .mobile-only {
     display: block;
