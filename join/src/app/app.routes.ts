@@ -12,7 +12,8 @@ export const routes: Routes = [
     component: MainContentComponent,
     children: [
       { path: '', component: SummaryComponent },
-      { path: 'contacts', component: ContactsComponent }
+      { path: 'contacts', component: ContactsComponent },
+      { path: 'summary', component: SummaryComponent }
     ]
   }
 
