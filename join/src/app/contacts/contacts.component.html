@@ -4,7 +4,7 @@
       class="contacts-list"
       *ngIf="!isMobileView || !showMobileSingleContact"
     >
-      <div class="addNewContactBtn">
+      <div class="addNewContactBtn desktop-only">
         <button (click)="openAddContactOverlay()">
           Add new contact
           <img src="./assets/img/icon_person_add.svg" alt="Add" class="icon" />
@@ -1194,13 +1194,20 @@
     {{ contactSuccessMessageText }}
   </div>
 
-  <!-- Mobile FAB, shown conditionally -->
+<!-- Mobile FAB, shows "add" or "menu" icon depending on view -->
 <button 
   class="mobile-fab mobile-only" 
+  [ngClass]="showMobileSingleContact ? 'menu' : 'add'"
   (click)="handleFabClick()"
   aria-label="Floating action button">
-  <ng-container *ngIf="!showMobileSingleContact">+</ng-container>
-  <ng-container *ngIf="showMobileSingleContact">⋮</ng-container>
+  <img 
+    [src]="showMobileSingleContact ? 'assets/img/mobile-contact-more-btn.png' : 'assets/img/mobile-add-contact-btn.png'" 
+    alt=""
+    class="fab-icon"
+  />
 </button>
+
+
+
 
 </div>
