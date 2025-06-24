@@ -4,6 +4,7 @@ import { Routes } from '@angular/router';
 import { MainContentComponent } from './main-content/main-content';
 import { SummaryComponent } from './summary/summary.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 
 export const routes: Routes = [
 
@@ -13,7 +14,8 @@ export const routes: Routes = [
     children: [
       { path: '', component: SummaryComponent },
       { path: 'contacts', component: ContactsComponent },
-      { path: 'summary', component: SummaryComponent }
+      { path: 'summary', component: SummaryComponent },
+      { path: 'imprint', component: LegalNoticeComponent }
     ]
   }
 
