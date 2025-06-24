@@ -1209,6 +1209,7 @@ body,
     width: 100%;
     max-width: 320px;
     margin: 0 auto;
+    align-items: center;
   }
 
   .close-btn {
@@ -1244,6 +1245,27 @@ body,
   .create-button{
     display: none;
   }
+
+  .create-button.mobile-only{
+    display: flex ;
+    gap: 8px;
+    width: 180px;
+    max-width: 270px;
+    margin: 24px auto 0 auto;
+    justify-content: center;
+    align-items: center;
+    background: #2d3a4a;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 14px 0;
+    box-shadow: none;
+    transition: background 0.2s, color 0.2s;
+
+  }
+  
 }
 
 @media (min-width: 801px) {
