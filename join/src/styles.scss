@@ -103,13 +103,13 @@ a:hover {
     display: none;
   }
   .desktop-only {
-    display: block;
+    display: flex;
   }
 }
 
 @media (max-width: 768px) {
   .mobile-only {
-    display: block;
+    display: flex;
   }
   .desktop-only {
     display: none;
