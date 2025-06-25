@@ -936,6 +936,13 @@
   <div class="contact-overlay" *ngIf="showEditContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
+        <button
+        class="close-btn mobile-only"
+        aria-label="Close"
+        (click)="closeEditContactOverlay()"
+      >
+        &#10005;
+      </button>
         <div class="logo-placeholder">
           <svg
             class="add-logo"
@@ -1193,15 +1200,16 @@
                 <button
                   type="button"
                   class="cancel-button mobile-only"
-                  (click)="closeEditContactOverlay()"
+                  (click)="deleteContact()"
                 >
-                  Cancel
+                  Delete
+                  
                 </button>
                 <button
                   type="submit"
                   class="create-button mobile-only"                  
                 >
-                  Save changes
+                  Save <img src="/assets/img/icon_check.svg" alt="">
                 </button>
               </div>
             </form>
@@ -1214,7 +1222,6 @@
     {{ contactSuccessMessageText }}
   </div>
 
-<!-- Mobile FAB, shows "add" or "menu" icon depending on view -->
 <button 
   class="mobile-fab mobile-only" 
   *ngIf="!showAddContactOverlay && !showEditContactOverlay"
@@ -1228,14 +1235,12 @@
   />
 </button>
 
-<!-- MOBILE MORE MENU BACKDROP -->
 <div 
   class="mobile-more-backdrop mobile-only" 
   *ngIf="showMobileMoreMenu" 
   (click)="closeMoreMenu()"
 ></div>
 
-<!-- MOBILE MORE MENU -->
 <div 
   class="mobile-more-menu mobile-only" 
   *ngIf="showMobileMoreMenu" 
