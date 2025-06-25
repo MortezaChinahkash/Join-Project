@@ -6,7 +6,6 @@
   max-width: 1440px;
 }
 
-// Main horizontal layout for contacts page
 .contacts-contents {
   display: flex;
   flex-direction: row;
@@ -1141,7 +1140,6 @@ body,
   filter: none; 
 }
 
-
 @media (max-width: 1000px) {
   
   .logo-placeholder{
@@ -1226,15 +1224,18 @@ body,
     display: none;
   }
 
-    .mobile-only {
+  .mobile-only {
     display: flex !important;
   }
+
   .desktop-only {
     display: none !important;
   }
+
   .contact-left {
     position: relative;
   }
+
   .close-btn.mobile-only {
     position: absolute;
     top: 16px;
@@ -1309,8 +1310,6 @@ body,
     display: flex !important;
   }
 }
-
-
 
 @media (min-width: 1001px) {
   .mobile-only {
