@@ -46,6 +46,9 @@
   gap: 2px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 // ===================
@@ -138,6 +141,8 @@
   align-items: center;
   margin-bottom: 32px;
   cursor: pointer;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .contactContainer:hover {
@@ -147,6 +152,10 @@
 
 .contactMail {
   color: #007cee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .initials {
