@@ -1308,6 +1308,12 @@ body,
   .mobile-only {
     display: flex;
   }
+  .contacts-list{
+    width: 100%;
+    padding: 16px;
+    box-shadow: none;
+    height: calc(100vh - 128px);
+  }
   .desktop-only {
     display: none;
   }
