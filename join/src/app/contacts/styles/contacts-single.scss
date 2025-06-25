@@ -1,0 +1,122 @@
+// ===================
+// Single Contact View
+// ===================
+
+.single-contact-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.single-contact-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.single-contact-initials {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-prio-medium);
+  color: var(--bg-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 32px;
+  letter-spacing: 1px;
+  margin: 8px 0;
+  box-shadow: 0 2px 8px -4px #0001;
+  border-color: white;
+  border: 4px solid #fff;
+}
+
+.single-contact-name-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.single-contact-name {
+  text-align: left;
+}
+
+.single-contact-edit-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.single-ctc-edit-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
+  cursor: pointer;
+  min-width: 60px;
+
+  &:hover {
+    .single-ctc-edit-text {
+      color: var(--color-accent);
+      font-weight: bold;
+    }
+    .single-ctc-edit-icon {
+      filter: invert(69%) sepia(8%) saturate(6862%) hue-rotate(166deg)
+        brightness(87%) contrast(106%);
+    }
+  }
+}
+
+.single-ctc-edit-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.single-ctc-edit-text {
+  text-align: left;
+}
+
+.single-contact-infoblock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.single-contact-info-title {
+  text-align: left;
+  padding-bottom: 8px;
+}
+
+.single-contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 8px;
+}
+
+.single-contact-info-label {
+  text-align: left;
+  font-weight: 500;
+}
+
+.single-contact-info-value {
+  text-align: left;
+}
+
+.single-contact-info-email {
+  color: var(--color-accent);
+}
