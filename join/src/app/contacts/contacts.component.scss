@@ -1314,6 +1314,9 @@ body,
     box-shadow: none;
     height: calc(100vh - 128px);
   }
+  .listContent {
+    margin-left: 0;
+  }
   .desktop-only {
     display: none;
   }
