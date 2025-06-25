@@ -936,6 +936,13 @@
   <div class="contact-overlay" *ngIf="showEditContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
+        <button
+        class="close-btn mobile-only"
+        aria-label="Close"
+        (click)="closeEditContactOverlay()"
+      >
+        &#10005;
+      </button>
         <div class="logo-placeholder">
           <svg
             class="add-logo"
