@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges, Renderer2, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SvgLoaderService } from './svg-loader.service';
 
 @Directive({
@@ -10,7 +10,6 @@ export class InlineSvgDirective implements OnChanges {
   constructor(
     private el: ElementRef,
     private svgLoader: SvgLoaderService,
-    private renderer: Renderer2
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
