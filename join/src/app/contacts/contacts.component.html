@@ -1215,7 +1215,6 @@
     {{ contactSuccessMessageText }}
   </div>
 
-<!-- Mobile FAB, shows "add" or "menu" icon depending on view -->
 <button 
   class="mobile-fab mobile-only" 
   *ngIf="!showAddContactOverlay && !showEditContactOverlay"
@@ -1229,14 +1228,12 @@
   />
 </button>
 
-<!-- MOBILE MORE MENU BACKDROP -->
 <div 
   class="mobile-more-backdrop mobile-only" 
   *ngIf="showMobileMoreMenu" 
   (click)="closeMoreMenu()"
 ></div>
 
-<!-- MOBILE MORE MENU -->
 <div 
   class="mobile-more-menu mobile-only" 
   *ngIf="showMobileMoreMenu" 
