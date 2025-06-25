@@ -1,21 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, OnInit } from '@angular/core';
-import {
-  ReactiveFormsModule,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  Firestore,
-  collectionData,
-  collection,
-  addDoc,
-  doc,
-} from '@angular/fire/firestore';
+import {ReactiveFormsModule, FormBuilder, FormGroup, Validators,} from '@angular/forms';
+import {Firestore, collectionData, collection, addDoc, doc,} from '@angular/fire/firestore';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { deleteDoc, setDoc, updateDoc } from 'firebase/firestore';
-
 export interface Contact {
   /** Unique identifier for the contact */
   id?: string;
@@ -390,32 +378,13 @@ export class ContactsComponent implements OnInit {
   getInitialsColor(name: string): string {
     if (!name) return '#888';
     const colors = [
-      '#FFB900',
-      '#D83B01',
-      '#B50E0E',
-      '#E81123',
-      '#B4009E',
-      '#5C2D91',
-      '#0078D7',
-      '#00B4FF',
-      '#008272',
-      '#107C10',
-      '#7FBA00',
-      '#F7630C',
-      '#CA5010',
-      '#EF6950',
-      '#E74856',
-      '#0099BC',
-      '#7A7574',
-      '#767676',
-      '#FF8C00',
-      '#E3008C',
-      '#68217A',
-      '#00188F',
-      '#00BCF2',
-      '#00B294',
-      '#BAD80A',
-      '#FFF100',
+      '#FFB900', '#D83B01','#B50E0E', '#E81123',
+      '#B4009E', '#5C2D91','#0078D7', '#00B4FF',
+      '#008272', '#107C10','#7FBA00', '#F7630C',
+      '#CA5010', '#EF6950','#E74856', '#0099BC',
+      '#7A7574', '#767676','#FF8C00', '#E3008C',
+      '#68217A', '#00188F','#00BCF2', '#00B294',
+      '#BAD80A', '#FFF100',
     ];
     // Erster Buchstabe als Index (A=0, B=1, ...)
     const letter = name.trim()[0].toUpperCase();
