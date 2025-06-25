@@ -99,9 +99,6 @@ a:hover {
   font-size: 1.8rem;
 }
 
-
-
-
 @media (min-width: 1001px) {
   .mobile-only {
     display: none;
@@ -127,7 +124,6 @@ a:hover {
     gap: 0.5rem;
     width: 100%;
   }
-
 
   .component-header {
     width: 100%;
@@ -161,15 +157,12 @@ a:hover {
   }
 }
 
-// Very narrow screens (320px - 480px)
 @media (max-width: 480px) {
   .default-content-container {
     padding-left: 1.5rem;
     padding-right: 1rem;
   }
 }
-
-// Extra narrow screens (320px)
 @media (max-width: 360px) {
   .default-content-container {
     padding-left: 1rem;
