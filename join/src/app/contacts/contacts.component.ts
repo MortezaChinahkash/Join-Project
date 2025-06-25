@@ -347,7 +347,7 @@ export class ContactsComponent implements OnInit {
    * Resets mobile single contact view when switching back to desktop
    */
   updateMobileViewStatus() {
-    this.isMobileView = window.innerWidth <= 768;
+    this.isMobileView = window.innerWidth <= 1000;
     if (!this.isMobileView) {
       this.showMobileSingleContact = false; // reset when going back to desktop
     }

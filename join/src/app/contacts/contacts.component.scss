@@ -1295,7 +1295,7 @@ body,
 
 
 
-@media (min-width: 769px) {
+@media (min-width: 1001px) {
   .mobile-only {
     display: none;
   }
@@ -1304,7 +1304,7 @@ body,
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .mobile-only {
     display: flex;
   }
