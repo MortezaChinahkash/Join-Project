@@ -1159,7 +1159,7 @@ body,
     padding: 32px 0 0 0;
     min-height: 230px;
     border-radius: 20px 20px 0 0;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     background: #2d3a4a;
     text-align: center;
@@ -1174,9 +1174,6 @@ body,
     margin-bottom: 8px;
   }
 
-  .contact-left .underline {
-    margin: 0 auto 8px auto;
-  }
 
   .contact-right {
     width: calc(100% - 30px);
@@ -1237,7 +1234,7 @@ body,
   .close-btn.mobile-only {
     position: absolute;
     top: 16px;
-    right: 16px;
+    right: 50px;
     width: 28px;
     height: 28px;
     font-size: 22px;
@@ -1353,7 +1350,7 @@ body,
 }
 @media (max-height: 850px) {
   .contact-left {
-    padding: 32px 0 46px 0;
+    padding: 32px 16px 46px 16px;
     min-height: auto;
     h1{
       margin-top: 25px;
