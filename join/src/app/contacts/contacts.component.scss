@@ -1095,7 +1095,6 @@ body,
   object-fit: contain;
 }
 
-/* backdrop to catch clicks outside */
 .mobile-more-backdrop {
   position: fixed;
   inset: 0;
@@ -1103,7 +1102,6 @@ body,
   z-index: 4;
 }
 
-/* the little white card */
 .mobile-more-menu {
   position: fixed;
   bottom: 5rem;       
@@ -1120,7 +1118,6 @@ body,
   z-index: 1000;
 }
 
-/* each line */
 .mobile-more-item {
   display: flex;
   align-items: center;
@@ -1138,7 +1135,6 @@ body,
   border-top: 1px solid #e0e0e0;
 }
 
-/* icon size */
 .mobile-more-icon {
   width: 1.25rem;
   height: 1.25rem;
