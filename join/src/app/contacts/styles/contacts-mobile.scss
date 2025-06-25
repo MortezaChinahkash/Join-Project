@@ -4,7 +4,7 @@
 
 @media (max-width: 1000px) {
   
-  .logo-placeholder{
+  .logo-placeholder .add-logo{
     display: none;
   }
   
@@ -37,6 +37,7 @@
   .contact-left h1 {
     font-size: 2rem;
     margin-bottom: 8px;
+    display: block !important; // Sicherstellen dass die Überschrift sichtbar ist
   }
 
   .contact-right {
