@@ -15,6 +15,8 @@ export interface Contact {
   phone?: string;
 }
 
+import { InlineSvgDirective } from '../inline-svg.directive';
+
 /**
  * Component for managing contacts with full CRUD operations
  * Supports adding, editing, deleting, and viewing contacts
@@ -23,7 +25,7 @@ export interface Contact {
 @Component({
   selector: 'app-contacts',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, InlineSvgDirective],
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss'],
   animations: [
