@@ -26,7 +26,7 @@ import { InlineSvgDirective } from '../inline-svg.directive';
   selector: 'app-contacts',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, InlineSvgDirective],
-  templateUrl: './contacts.component.html',
+  templateUrl: './contacts.component.reduced.html',
   styleUrls: ['./contacts.component.scss'],
   animations: [
     trigger('slideInRight', [
