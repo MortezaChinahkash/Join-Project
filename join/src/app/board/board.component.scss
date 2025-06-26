@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-    width: 100%;
+  width: 100%;
 }
 
 .component-title-bar {
@@ -30,6 +30,38 @@
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
+}
+
+.board-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 0;
+}
+
+.board-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 1rem;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
 }
 
 .addTaskOverlay {
@@ -89,23 +121,21 @@
           .date-input-wrapper {
             position: relative;
             display: inline-block;
+            width: 100%;          .date-input {
+            padding-right: 3rem;
             width: 100%;
+          }
 
-            .date-input {
-              padding-right: 3rem; // Platz für das Icon
-              width: 100%;
-            }
-
-            .date-icon {
-              position: absolute;
-              right: 0.75rem; // Innerhalb des Input-Feldes
-              top: 50%;
-              transform: translateY(-50%);
-              width: 20px;
-              height: 20px;
-              pointer-events: none;
-              cursor: pointer;
-            }
+          .date-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            cursor: pointer;
+          }
           }
         }
       }
@@ -129,7 +159,6 @@
   }
 }
 
-
 @media (min-width: 1001px) {
   .mobile-only {
     display: none;
@@ -146,118 +175,143 @@
   .desktop-only {
     display: none;
   }
+  
+  .board-container {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+  
+  .board-column {
+    flex: none;
+    width: 100%;
+    min-width: auto;
+    padding: 1rem;
+  }
 }
 
-  .rightSide {
-    padding: 2rem;
-    flex: 1;
-    
-    .priority {
-      margin-bottom: 2rem;
-      
-      label {
-        font-size: 1rem;
-        font-weight: 400;
+@media (max-width: 480px) {
+  .board-container {
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+  }
+  
+  .board-column {
+    padding: 0.75rem;
+  }
+}
+
+.rightSide {
+  padding: 2rem;
+  flex: 1;
+
+  .priority {
+    margin-bottom: 2rem;
+
+    label {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #2a3647;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .priority-buttons {
+      display: flex;
+      gap: 1rem;
+
+      .priority-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #d1d7db;
+        border-radius: 10px;
+        background-color: white;
         color: #2a3647;
-        margin-bottom: 0.5rem;
-        display: block;
-      }
-      
-      .priority-buttons {
+        cursor: pointer;
+        font-size: 1rem;
         display: flex;
-        gap: 1rem;
-        
-        .priority-btn {
-          padding: 0.5rem 1rem;
-          border: 1px solid #d1d7db;
-          border-radius: 10px;
-          background-color: white;
-          color: #2a3647;
-          cursor: pointer;
-          font-size: 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          
-          &:hover {
-            background-color: #f8f9fa;
-          }
-          
-          &.active {
-            background-color: #ff8c00;
-            color: white;
-            border-color: #ff8c00;
-          }
-          
-          .priority-icon {
-            font-size: 0.8rem;
-          }
+        align-items: center;
+        gap: 0.5rem;
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+
+        &.active {
+          background-color: #ff8c00;
+          color: white;
+          border-color: #ff8c00;
+        }
+
+        .priority-icon {
+          font-size: 0.8rem;
         }
       }
     }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-      
-      label {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #2a3647;
-        margin-bottom: 0.5rem;
-        display: block;
-        
-        .required {
-          color: #ff8190;
-          margin-left: 2px;
-        }
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+
+    label {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #2a3647;
+      margin-bottom: 0.5rem;
+      display: block;
+
+      .required {
+        color: #ff8190;
+        margin-left: 2px;
       }
-      
-      .form-select {
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #d1d7db;
+      border-radius: 10px;
+      font-size: 1rem;
+      color: #2a3647;
+      background-color: white;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+        border-color: #29abe2;
+      }
+    }
+
+    .subtasks-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .subtask-input {
         width: 100%;
-        padding: 0.75rem 1rem;
+        padding: 0.75rem 3rem 0.75rem 1rem;
         border: 1px solid #d1d7db;
         border-radius: 10px;
         font-size: 1rem;
         color: #2a3647;
         background-color: white;
-        cursor: pointer;
-        
+
+        &::placeholder {
+          color: #d1d7db;
+        }
+
         &:focus {
           outline: none;
           border-color: #29abe2;
         }
       }
-      
-      .subtasks-input-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        
-        .subtask-input {
-          width: 100%;
-          padding: 0.75rem 3rem 0.75rem 1rem;
-          border: 1px solid #d1d7db;
-          border-radius: 10px;
-          font-size: 1rem;
-          color: #2a3647;
-          background-color: white;
-          
-          &::placeholder {
-            color: #d1d7db;
-          }
-          
-          &:focus {
-            outline: none;
-            border-color: #29abe2;
-          }
-        }
-        
-        .subtask-add-icon {
-          position: absolute;
-          right: 0.75rem;
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
-        }
+
+      .subtask-add-icon {
+        position: absolute;
+        right: 0.75rem;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
       }
-    }}
+    }
+  }
+}

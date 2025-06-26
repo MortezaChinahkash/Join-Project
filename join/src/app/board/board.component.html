@@ -10,78 +10,149 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div class="addTaskOverlay">       
-      <div class="leftSide">
-        <form class="task-form">
-          <div class="form-group">
-            <label for="title">Title<span class="required">*</span></label>
-            <input type="text"id="title" name="title" placeholder="Enter a title" class="form-input" required/>
+      <div class="board-container">
+        <div class="board-column">
+          <div class="column-header">
+            <h2 class="column-title">To Do</h2>
+            <button class="add-task-button">+</button>
           </div>
-
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description"name="description" placeholder="Enter a Description" class="form-textarea" rows="4"></textarea>
+          <div class="task-list"></div>
+        </div>
+        <div class="board-column">
+          <div class="column-header">
+            <h2 class="column-title">In Progress</h2>
+            <button class="add-task-button">+</button>
           </div>
+          <div class="task-list"></div>
+        </div>
+        <div class="board-column">
+          <div class="column-header">
+            <h2 class="column-title">Awaiting feedback</h2>
+            <button class="add-task-button">+</button>
+          </div>
+          <div class="task-list"></div>
+        </div>
+        <div class="board-column">
+          <div class="column-header">
+            <h2 class="column-title">Done</h2>
+            <button class="add-task-button">+</button>
+          </div>
+          <div class="task-list"></div>
+        </div>
+      </div>
 
-          <div class="form-group date-group">
-            <label for="dueDate">Due date<span class="required">*</span></label>
-            <div class="date-input-wrapper">
-              <input type="text" id="dueDate" name="dueDate" placeholder="dd/mm/yyyy" class="form-input date-input" required/>
-              <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
+      <div class="addTaskOverlay">
+        <div class="leftSide">
+          <form class="task-form">
+            <div class="form-group">
+              <label for="title">Title<span class="required">*</span></label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="Enter a title"
+                class="form-input"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea
+                id="description"
+                name="description"
+                placeholder="Enter a Description"
+                class="form-textarea"
+                rows="4"
+              ></textarea>
+            </div>
+
+            <div class="form-group date-group">
+              <label for="dueDate"
+                >Due date<span class="required">*</span></label
+              >
+              <div class="date-input-wrapper">
+                <input
+                  type="text"
+                  id="dueDate"
+                  name="dueDate"
+                  placeholder="dd/mm/yyyy"
+                  class="form-input date-input"
+                  required
+                />
+                <img
+                  src="./assets/img/icon_calendar.svg"
+                  alt="Calendar"
+                  class="date-icon"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="devider"></div>
+        <div class="rightSide">
+          <div class="priority">
+            <label>Priority</label>
+            <div class="priority-buttons">
+              <button class="priority-btn urgent">
+                Urgent <span class="priority-icon">🔺</span>
+              </button>
+              <button class="priority-btn medium active">
+                Medium <span class="priority-icon">🟰</span>
+              </button>
+              <button class="priority-btn low">
+                Low <span class="priority-icon">🔻</span>
+              </button>
             </div>
           </div>
-        </form>
-      </div>
-      <div class="devider"></div>
-      <div class="rightSide">
-        <div class="priority">
-          <label>Priority</label>
-          <div class="priority-buttons">
-            <button class="priority-btn urgent">Urgent <span class="priority-icon">🔺</span></button>
-            <button class="priority-btn medium active">Medium <span class="priority-icon">🟰</span></button>
-            <button class="priority-btn low">Low <span class="priority-icon">🔻</span></button>
+
+          <div class="form-group">
+            <label for="assignedTo">Assigned to</label>
+            <select id="assignedTo" name="assignedTo" class="form-select">
+              <option value="">Select contacts to assign</option>
+              <option value="user1">John Doe</option>
+              <option value="user2">Jane Smith</option>
+              <option value="user3">Mike Johnson</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="category"
+              >Category<span class="required">*</span></label
+            >
+            <select id="category" name="category" class="form-select" required>
+              <option value="">Select task category</option>
+              <option value="technical">Technical Task</option>
+              <option value="user-story">User Story</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Subtasks</label>
+            <div class="subtasks-input-wrapper">
+              <input
+                type="text"
+                placeholder="Add new subtask"
+                class="form-input subtask-input"
+              />
+              <img
+                src="./assets/img/icon_plus.svg"
+                alt="Add"
+                class="subtask-add-icon"
+              />
+            </div>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="assignedTo">Assigned to</label>
-          <select id="assignedTo" name="assignedTo" class="form-select">
-            <option value="">Select contacts to assign</option>
-            <option value="user1">John Doe</option>
-            <option value="user2">Jane Smith</option>
-            <option value="user3">Mike Johnson</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="category">Category<span class="required">*</span></label>
-          <select id="category" name="category" class="form-select" required>
-            <option value="">Select task category</option>
-            <option value="technical">Technical Task</option>
-            <option value="user-story">User Story</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Subtasks</label>
-          <div class="subtasks-input-wrapper">
-            <input type="text" placeholder="Add new subtask" class="form-input subtask-input">
-            <img src="./assets/img/icon_plus.svg" alt="Add" class="subtask-add-icon">
-          </div>
+        <div class="buttonArea">
+          <span>This field is required</span>
+          <button class="cancelBtn">cancel</button>
+          <button class="createBtn">
+            Create Task <img src="./assets/img/icon_done.svg" alt="" />
+          </button>
         </div>
       </div>
-    
-
-    <div class="buttonArea">
-      <span>This field is required</span>
-      <button class="cancelBtn">cancel</button>
-      <button class="createBtn">
-        Create Task <img src="./assets/img/icon_done.svg" alt="" />
-      </button>
     </div>
   </div>
 </div>
-
