@@ -8,20 +8,15 @@
         </button>
       </div>
       <div class="listContent">
-        <ng-container *ngFor="let bstabe of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')">
-          <div class="letterWrapper{{bstabe}}" *ngIf="groupedContacts[bstabe]?.length">
-            <div class="firstLetter">{{bstabe}}</div>
-            <div class="contacts{{bstabe}}">
+        <ng-container *ngFor="let letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')">
+          <div class="letterWrapper{{letter}}" *ngIf="groupedContacts[letter]?.length">
+            <div class="firstLetter">{{letter}}</div>
+            <div class="contacts{{letter}}">
               <div
-                class="contactContainer"
-                *ngFor="let contact of groupedContacts[bstabe]"
-                (click)="selectContact(contact)"
-                [ngClass]="{ active: selectedContact === contact }"
+                class="contactContainer" *ngFor="let contact of groupedContacts[letter]"
+                (click)="selectContact(contact)" [ngClass]="{ active: selectedContact === contact }"
               >
-                <div
-                  class="initials"
-                  [style.background]="getInitialsColor(contact.name)"
-                >
+                <div  class="initials" [style.background]="getInitialsColor(contact.name)" >
                   {{ getInitials(contact.name) }}
                 </div>
                 <div class="contactNameAndMail">
