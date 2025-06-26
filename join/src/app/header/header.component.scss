@@ -176,6 +176,12 @@
     .titleBar .right .help{
             display: none !important;
         }
+
+        .helpResponsive{
+            display: block;
+        }
+
+
 }
 
 @media (min-width: 1001px){
@@ -184,6 +190,10 @@
     }
 
     .responsiveLogo{
+        display: none;
+    }
+
+    .helpResponsive{
         display: none;
     }
 }
