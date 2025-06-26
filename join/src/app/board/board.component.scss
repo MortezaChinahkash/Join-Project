@@ -55,6 +55,31 @@
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
+  color: var(--bg-dark-grey);
+    font-size: 1rem;
+}
+
+
+.board-add-task-button {
+color: var(--bg-dark-grey);
+  background-color: transparent;
+  border: solid 1px var(--bg-dark-grey);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    color: var(--bg-blue);
+  }
+
+  img {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+  }
 }
 
 .task-list {
@@ -371,5 +396,10 @@
   }
   .desktop-only {
     display: none;
+  }
+
+  .board-container {
+    display: flex;
+    flex-direction: column;
   }
 }
