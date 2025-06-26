@@ -1,6 +1,10 @@
 .addTaskOverlay {
+    background-color: white;
+    display: flex;
+
   .leftSide {
     padding: 2rem;
+    flex:1;
     
     .task-form {
       display: flex;
@@ -70,6 +74,21 @@
           }
         }
       }
+    }
+  }
+  .devider {
+    width: 1px;
+    background-color: #d1d7db;
+    margin: 2rem 0;
+    flex-shrink: 0;
+  }
+
+  .rightSide {
+    padding: 2rem;
+    flex: 1;
+    
+    .priority, .taskProperties {
+      margin-bottom: 2rem;
     }
   }
 }
