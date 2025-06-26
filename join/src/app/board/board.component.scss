@@ -102,12 +102,13 @@
           &.date-group {
             .date-input-wrapper {
               position: relative;
-              display: inline-block;
+              display: block;
               width: 100%;
 
               .date-input {
                 padding-right: 3rem; // Platz für das Icon
                 width: 100%;
+                box-sizing: border-box;
               }
 
               .date-icon {
