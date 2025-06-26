@@ -9,6 +9,13 @@
   justify-content: flex-start;
 }
 
+.component-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+    width: 100%;
+}
+
 .component-title-bar {
   display: flex;
   flex-direction: row;

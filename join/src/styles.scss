@@ -136,10 +136,10 @@ a:hover {
 
   .component-title-bar {
     display: flex;
+    order: 1;
   }
 
   .component-title {
-    order: 1;
     font-size: 2.4rem;
   }
 
