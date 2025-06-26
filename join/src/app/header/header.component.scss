@@ -13,6 +13,10 @@
         justify-content: space-between;
         align-items: center;        cursor: default;
         background-color: var(--bg-white);
+        background-color: var(--bg-white);
+        box-shadow: 0 4px 4px -1px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 10;
 
         .right{
             display: flex;
