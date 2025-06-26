@@ -356,6 +356,13 @@ export class ContactsComponent implements OnInit {
       }
       this.groupedContacts[firstLetter].push(contact);
     }
+    
+    // Sortiere die Kontakte innerhalb jeder Gruppe alphabetisch
+    for (const letter in this.groupedContacts) {
+      this.groupedContacts[letter].sort((a, b) => {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      });
+    }
   }
 
   /**
