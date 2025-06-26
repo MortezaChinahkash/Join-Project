@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="addTaskOverlay">    
+  <div class="addTaskOverlay">       
       <div class="leftSide">
         <form class="task-form">
           <div class="form-group">
@@ -38,8 +38,41 @@
       </div>
       <div class="devider"></div>
       <div class="rightSide">
-        <div class="priority"></div>
-        <div class="taskProperties"></div>
+        <div class="priority">
+          <label>Priority</label>
+          <div class="priority-buttons">
+            <button class="priority-btn urgent">Urgent <span class="priority-icon">🔺</span></button>
+            <button class="priority-btn medium active">Medium <span class="priority-icon">🟰</span></button>
+            <button class="priority-btn low">Low <span class="priority-icon">🔻</span></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="assignedTo">Assigned to</label>
+          <select id="assignedTo" name="assignedTo" class="form-select">
+            <option value="">Select contacts to assign</option>
+            <option value="user1">John Doe</option>
+            <option value="user2">Jane Smith</option>
+            <option value="user3">Mike Johnson</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category<span class="required">*</span></label>
+          <select id="category" name="category" class="form-select" required>
+            <option value="">Select task category</option>
+            <option value="technical">Technical Task</option>
+            <option value="user-story">User Story</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Subtasks</label>
+          <div class="subtasks-input-wrapper">
+            <input type="text" placeholder="Add new subtask" class="form-input subtask-input">
+            <img src="./assets/img/icon_plus.svg" alt="Add" class="subtask-add-icon">
+          </div>
+        </div>
       </div>
     
 
