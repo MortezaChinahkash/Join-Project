@@ -3,10 +3,10 @@
 }
 
 .board-contents {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .component-title-bar {
@@ -26,86 +26,70 @@
   gap: 0.5rem;
 }
 
-@media (min-width: 1001px) {
-  .mobile-only {
-    display: none;
-  }
-  .desktop-only {
-    display: flex;
-  }
-}
-
-@media (max-width: 1000px) {
-  .mobile-only {
-    display: flex;
-  }
-  .desktop-only {
-    display: none;
-  }
-}
 .addTaskOverlay {
-    background-color: white;
-    display: flex;
+  background-color: white;
+  display: flex;
 
   .leftSide {
     padding: 2rem;
-    flex:1;
-    
+    flex: 1;
+
     .task-form {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-      
+
       .form-group {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        
+
         label {
           font-size: 1rem;
           font-weight: 400;
           color: #2a3647;
-          
+
           .required {
             color: #ff8190;
             margin-left: 2px;
           }
         }
-        
-        .form-input, .form-textarea {
+
+        .form-input,
+        .form-textarea {
           padding: 0.75rem 1rem;
           border: 1px solid #d1d7db;
           border-radius: 10px;
           font-size: 1rem;
           color: #2a3647;
           background-color: white;
-          
+
           &::placeholder {
             color: #d1d7db;
           }
-          
+
           &:focus {
             outline: none;
             border-color: #29abe2;
           }
         }
-        
+
         .form-textarea {
           resize: vertical;
           min-height: 100px;
         }
-        
+
         &.date-group {
           .date-input-wrapper {
             position: relative;
             display: inline-block;
             width: 100%;
-            
+
             .date-input {
               padding-right: 3rem; // Platz für das Icon
               width: 100%;
             }
-            
+
             .date-icon {
               position: absolute;
               right: 0.75rem; // Innerhalb des Input-Feldes
@@ -131,9 +115,28 @@
   .rightSide {
     padding: 2rem;
     flex: 1;
-    
-    .priority, .taskProperties {
+
+    .priority,
+    .taskProperties {
       margin-bottom: 2rem;
     }
+  }
+}
+
+@media (min-width: 1001px) {
+  .mobile-only {
+    display: none;
+  }
+  .desktop-only {
+    display: flex;
+  }
+}
+
+@media (max-width: 1000px) {
+  .mobile-only {
+    display: flex;
+  }
+  .desktop-only {
+    display: none;
   }
 }
