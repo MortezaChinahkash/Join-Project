@@ -6,6 +6,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { BoardComponent } from './board/board.component';
 
 export const routes: Routes = [
 
@@ -18,6 +19,7 @@ export const routes: Routes = [
       { path: 'summary', component: SummaryComponent },
       { path: 'imprint', component: LegalNoticeComponent },
       { path: 'privacy', component: PrivacyPolicyComponent },
+      { path: 'board', component: BoardComponent },
     ]
   }
 
