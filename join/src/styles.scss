@@ -135,10 +135,11 @@ a:hover {
   }
 
   .component-title-bar {
-    order: 1;
+    display: flex;
   }
 
   .component-title {
+    order: 1;
     font-size: 2.4rem;
   }
 
