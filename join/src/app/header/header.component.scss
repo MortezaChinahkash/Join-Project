@@ -151,11 +151,31 @@
 
 }
 
+.responsiveLogo {
+            width: 32px;
+            height: 39px;
+            object-fit: contain;
+        }
+
 /* === RESPONSIVE === */
 @media screen and (max-width: 1000px) {
     :host{
         .gap{
             display: none;
         }
+    }
+
+    .windowTitle{
+        display: none;
+    }
+}
+
+@media (min-width: 1001px){
+    .windowTitle{
+        display: flex;
+    }
+
+    .responsiveLogo{
+        display: none;
     }
 }
