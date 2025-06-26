@@ -28,25 +28,161 @@
 .addTaskOverlay {
   background-color: white;
   display: flex;
+  flex-direction: column; // Hauptcontainer: vertikal
+  min-height: 600px;
 
-  .leftSide {
-    padding: 2rem;
+  h2 {
+    padding: 2rem 2rem 0;
+    margin: 0;
+    font-size: 1.5rem;
+    color: #2a3647;
+  }
+
+  .taskProperties {
+    display: flex;
+    flex-direction: row; // Nebeneinander: leftSide | devider | rightSide
     flex: 1;
 
-    .task-form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+    .leftSide {
+      padding: 2rem;
+      flex: 1;
 
-      .form-group {
+      .task-form {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 1.5rem;
+
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          label {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #2a3647;
+
+            .required {
+              color: #ff8190;
+              margin-left: 2px;
+            }
+          }
+
+          .form-input,
+          .form-textarea {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d7db;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #2a3647;
+            background-color: white;
+
+            &::placeholder {
+              color: #d1d7db;
+            }
+
+            &:focus {
+              outline: none;
+              border-color: #29abe2;
+            }
+          }
+
+          .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+          }
+
+          &.date-group {
+            .date-input-wrapper {
+              position: relative;
+              display: inline-block;
+              width: 100%;
+
+              .date-input {
+                padding-right: 3rem; // Platz für das Icon
+                width: 100%;
+              }
+
+              .date-icon {
+                position: absolute;
+                right: 0.75rem; // Innerhalb des Input-Feldes
+                top: 50%;
+                transform: translateY(-50%);
+                width: 20px;
+                height: 20px;
+                pointer-events: none;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .devider {
+      width: 1px;
+      background-color: #d1d7db;
+      margin: 2rem 0;
+      flex-shrink: 0;
+    }
+
+    .rightSide {
+      padding: 2rem;
+      flex: 1;
+
+      .priority {
+        margin-bottom: 2rem;
 
         label {
           font-size: 1rem;
           font-weight: 400;
           color: #2a3647;
+          margin-bottom: 0.5rem;
+          display: block;
+        }
+
+        .priority-buttons {
+          display: flex;
+          gap: 1rem;
+
+          .priority-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d7db;
+            border-radius: 10px;
+            background-color: white;
+            color: #2a3647;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            &:hover {
+              background-color: #f8f9fa;
+            }
+
+            &.active {
+              background-color: #ff8c00;
+              color: white;
+              border-color: #ff8c00;
+            }
+
+            .priority-icon {
+              font-size: 0.8rem;
+            }
+          }
+        }
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+
+        label {
+          font-size: 1rem;
+          font-weight: 400;
+          color: #2a3647;
+          margin-bottom: 0.5rem;
+          display: block;
 
           .required {
             color: #ff8190;
@@ -54,18 +190,15 @@
           }
         }
 
-        .form-input,
-        .form-textarea {
+        .form-select {
+          width: 100%;
           padding: 0.75rem 1rem;
           border: 1px solid #d1d7db;
           border-radius: 10px;
           font-size: 1rem;
           color: #2a3647;
           background-color: white;
-
-          &::placeholder {
-            color: #d1d7db;
-          }
+          cursor: pointer;
 
           &:focus {
             outline: none;
@@ -73,55 +206,115 @@
           }
         }
 
-        .form-textarea {
-          resize: vertical;
-          min-height: 100px;
-        }
+        .subtasks-input-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
 
-        &.date-group {
-          .date-input-wrapper {
-            position: relative;
-            display: inline-block;
+          .subtask-input {
             width: 100%;
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            border: 1px solid #d1d7db;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #2a3647;
+            background-color: white;
 
-            .date-input {
-              padding-right: 3rem; // Platz für das Icon
-              width: 100%;
+            &::placeholder {
+              color: #d1d7db;
             }
 
-            .date-icon {
-              position: absolute;
-              right: 0.75rem; // Innerhalb des Input-Feldes
-              top: 50%;
-              transform: translateY(-50%);
-              width: 20px;
-              height: 20px;
-              pointer-events: none;
-              cursor: pointer;
+            &:focus {
+              outline: none;
+              border-color: #29abe2;
             }
+          }
+
+          .subtask-add-icon {
+            position: absolute;
+            right: 0.75rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
           }
         }
       }
     }
   }
-  .devider {
-    width: 1px;
-    background-color: #d1d7db;
-    margin: 2rem 0;
-    flex-shrink: 0;
-  }
 
-  .rightSide {
+  .buttonArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 2rem;
-    flex: 1;
+    background-color: white;
+    border-top: 1px solid #d1d7db;
+    margin-top: auto; // Schiebt Button Area nach unten
 
-    .priority,
-    .taskProperties {
-      margin-bottom: 2rem;
+    span {
+      color: #ff8190;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .cancelBtn {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid #2a3647;
+      border-radius: 10px;
+      background-color: white;
+      color: #2a3647;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f8f9fa;
+        border-color: #1a2532;
+      }
+
+      &:active {
+        background-color: #e9ecef;
+      }
+    }
+
+    .createBtn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #2a3647;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #1a2532;
+        box-shadow: 0 4px 12px rgba(42, 54, 71, 0.25);
+      }
+
+      &:active {
+        background-color: #0f1419;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
+      }
     }
   }
 }
-
 
 @media (min-width: 1001px) {
   .mobile-only {
@@ -140,117 +333,3 @@
     display: none;
   }
 }
-
-  .rightSide {
-    padding: 2rem;
-    flex: 1;
-    
-    .priority {
-      margin-bottom: 2rem;
-      
-      label {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #2a3647;
-        margin-bottom: 0.5rem;
-        display: block;
-      }
-      
-      .priority-buttons {
-        display: flex;
-        gap: 1rem;
-        
-        .priority-btn {
-          padding: 0.5rem 1rem;
-          border: 1px solid #d1d7db;
-          border-radius: 10px;
-          background-color: white;
-          color: #2a3647;
-          cursor: pointer;
-          font-size: 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          
-          &:hover {
-            background-color: #f8f9fa;
-          }
-          
-          &.active {
-            background-color: #ff8c00;
-            color: white;
-            border-color: #ff8c00;
-          }
-          
-          .priority-icon {
-            font-size: 0.8rem;
-          }
-        }
-      }
-    }
-    
-    .form-group {
-      margin-bottom: 1.5rem;
-      
-      label {
-        font-size: 1rem;
-        font-weight: 400;
-        color: #2a3647;
-        margin-bottom: 0.5rem;
-        display: block;
-        
-        .required {
-          color: #ff8190;
-          margin-left: 2px;
-        }
-      }
-      
-      .form-select {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #d1d7db;
-        border-radius: 10px;
-        font-size: 1rem;
-        color: #2a3647;
-        background-color: white;
-        cursor: pointer;
-        
-        &:focus {
-          outline: none;
-          border-color: #29abe2;
-        }
-      }
-      
-      .subtasks-input-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        
-        .subtask-input {
-          width: 100%;
-          padding: 0.75rem 3rem 0.75rem 1rem;
-          border: 1px solid #d1d7db;
-          border-radius: 10px;
-          font-size: 1rem;
-          color: #2a3647;
-          background-color: white;
-          
-          &::placeholder {
-            color: #d1d7db;
-          }
-          
-          &:focus {
-            outline: none;
-            border-color: #29abe2;
-          }
-        }
-        
-        .subtask-add-icon {
-          position: absolute;
-          right: 0.75rem;
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
-        }
-      }
-    }}
