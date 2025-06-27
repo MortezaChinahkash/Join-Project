@@ -408,6 +408,11 @@
               background-color: #2a3647;
               color: white;
               border-color: #2a3647;
+              
+              // Medium Icon wird weiß wenn Button aktiv ist
+              .medium-icon {
+                filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(198deg) brightness(104%) contrast(102%);
+              }
             }
 
             .priority-icon {
@@ -764,10 +769,7 @@
   filter: invert(89%) sepia(30%) saturate(1542%) hue-rotate(35deg)
     brightness(99%) contrast(79%);
 }
-.medium-icon {
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(198deg)
-    brightness(104%) contrast(102%);
-}
+
 .urgent-icon {
   filter: invert(28%) sepia(73%) saturate(3774%) hue-rotate(6deg)
     brightness(104%) contrast(106%);
