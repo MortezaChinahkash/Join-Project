@@ -19,11 +19,12 @@ export class BoardComponent implements OnInit {
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
 
-  // Arrays für die verschiedenen Spalten
-  todoTasks: any[] = [];
-  inProgressTasks: any[] = [];
-  awaitingFeedbackTasks: any[] = [];
-  doneTasks: any[] = [];
+  contacts: Contact[] = [];
+  private firestore = inject(Firestore);
+
+    isDropdownOpen = false;
+
+  
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
@@ -42,6 +43,21 @@ export class BoardComponent implements OnInit {
 
     // Lokale Arrays initialisieren
     this.updateLocalArrays();
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+   selectContact(contact: Contact) {
+    this.taskForm.patchValue({ assignedTo: contact.id });
+    this.isDropdownOpen = false;
+  }
+  
+  getSelectedContact(): Contact | null {
+    const selectedId = this.taskForm.get('assignedTo')?.value;
+    if (!selectedId) return null;
+    return this.contacts.find(c => c.id === selectedId) || null;
   }
 
   openAddTaskOverlay(column: TaskColumn = 'todo') {
