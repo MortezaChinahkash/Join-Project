@@ -34,11 +34,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -67,11 +69,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -100,11 +104,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -133,11 +139,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -238,9 +246,13 @@
             <label for="assignedTo">Assigned to</label>
             <select id="assignedTo" formControlName="assignedTo" class="form-select">
               <option value="">Select contacts to assign</option>
-              <option value="user1">John Doe</option>
-              <option value="user2">Jane Smith</option>
-              <option value="user3">Mike Johnson</option>
+              <option value="John Doe">John Doe</option>
+              <option value="Jane Smith">Jane Smith</option>
+              <option value="Mike Johnson">Mike Johnson</option>
+              <option value="Anna Schmidt">Anna Schmidt</option>
+              <option value="Ben Zeller">Ben Zeller</option>
+              <option value="Emily Foster">Emily Foster</option>
+              <option value="Sarah Miller">Sarah Miller</option>
             </select>
           </div>
 
