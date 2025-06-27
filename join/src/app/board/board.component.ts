@@ -22,15 +22,42 @@ export class BoardComponent implements OnInit {
   contacts: Contact[] = [];
   private firestore = inject(Firestore);
 
-    isDropdownOpen = false;
-    selectedContacts: Contact[] = []; // Array für ausgewählte Kontakte
+  isDropdownOpen = false;
+  selectedContacts: Contact[] = []; // Array für ausgewählte Kontakte
 
-  
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   awaitingFeedbackTasks: Task[] = [];
   doneTasks: Task[] = [];
+
+  // Board columns configuration
+  boardColumns = [
+    {
+      id: 'todo' as TaskColumn,
+      title: 'To Do',
+      tasks: () => this.todoTasks,
+      showAddButton: true
+    },
+    {
+      id: 'inprogress' as TaskColumn,
+      title: 'In Progress',
+      tasks: () => this.inProgressTasks,
+      showAddButton: true
+    },
+    {
+      id: 'awaiting' as TaskColumn,
+      title: 'Awaiting feedback',
+      tasks: () => this.awaitingFeedbackTasks,
+      showAddButton: true
+    },
+    {
+      id: 'done' as TaskColumn,
+      title: 'Done',
+      tasks: () => this.doneTasks,
+      showAddButton: false
+    }
+  ];
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
@@ -110,6 +137,7 @@ export class BoardComponent implements OnInit {
   resetForm() {
     this.taskForm.reset();
     this.selectedPriority = '';
+    this.selectedContacts = []; // Reset selected contacts
   }
 
   onSubmit() {
@@ -122,7 +150,7 @@ export class BoardComponent implements OnInit {
         description: this.taskForm.value.description,
         dueDate: this.taskForm.value.dueDate,
         priority: this.selectedPriority,
-        assignedTo: this.taskForm.value.assignedTo,
+        assignedTo: this.selectedContacts.map(contact => contact.name), // Use selected contacts
         category: this.taskForm.value.category,
         subtasks: []
       };
@@ -189,18 +217,6 @@ export class BoardComponent implements OnInit {
     return task.subtasks.filter(subtask => subtask.completed).length;
   }
 
-  getAvatarColor(assignedTo: string): string {
-    if (!assignedTo) return '#999999';
-    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#A55EEA', '#FF9FF3', '#26D0CE'];
-    const index = assignedTo.charCodeAt(0) % colors.length;
-    return colors[index];
-  }
-
-  // getInitials(name: string): string {
-  //   if (!name) return '';
-  //   return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  // }
-
   getPriorityIcon(priority: Task['priority']): string {
     switch (priority) {
       case 'urgent':
@@ -256,6 +272,29 @@ getSelectedContactsText(): string {
     } else {
       return `${this.selectedContacts[0].name} +${this.selectedContacts.length - 1} more`;
     }
+  }
+
+  // New methods for displaying up to 4 avatars with "+N" indicator
+  getDisplayedContacts(assignedTo: string[]): string[] {
+    if (!assignedTo || assignedTo.length === 0) return [];
+    return assignedTo.slice(0, 4);
+  }
+
+  getRemainingContactsCount(assignedTo: string[]): number {
+    if (!assignedTo || assignedTo.length <= 4) return 0;
+    return assignedTo.length - 4;
+  }
+
+  hasRemainingContacts(assignedTo: string[]): boolean {
+    return assignedTo && assignedTo.length > 4;
+  }
+
+  hasMultipleContacts(assignedTo: string[]): boolean {
+    return assignedTo && assignedTo.length > 1;
+  }
+
+  getContactCount(assignedTo: string[]): number {
+    return assignedTo ? assignedTo.length : 0;
   }
 
 }
