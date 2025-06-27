@@ -147,6 +147,24 @@ taskCollection: string = "tasks"
     this.taskForm.reset();
     this.selectedPriority = '';
     this.selectedContacts = []; // Reset selected contacts
+    
+    // Set today's date as default for due date and medium priority as default
+    const today = this.getTodayDateString();
+    this.taskForm.patchValue({
+      dueDate: today,
+      priority: 'medium'
+    });
+    
+    // Set medium as default selected priority
+    this.selectedPriority = 'medium';
+  }
+
+  private getTodayDateString(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   async onSubmit() {
