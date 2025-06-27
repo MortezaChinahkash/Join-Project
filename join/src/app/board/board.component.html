@@ -24,6 +24,11 @@
             <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
           </div>
           <div class="task-list">
+            <!-- Empty state when no tasks -->
+            <div class="empty-state" *ngIf="column.tasks().length === 0">
+              <span class="empty-message">{{ column.emptyMessage }}</span>
+            </div>
+            <!-- Tasks -->
             <div class="task-card" *ngFor="let task of column.tasks()">
               <div class="task-category-tag" [ngClass]="'category-' + task.category">{{ task.category === "technical" ? "Technical Task" : "User Story" }}</div>
               <h3 class="task-title">{{ task.title }}</h3>

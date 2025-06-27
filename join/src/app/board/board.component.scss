@@ -103,6 +103,24 @@
   flex-direction: column;
   gap: 1rem;
   width: 100%;
+
+  .empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    border: 2px dashed #d1d7db;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    min-height: 100px;
+
+    .empty-message {
+      color: #a8a8a8;
+      font-size: 1rem;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
 }
 
 .task-card {

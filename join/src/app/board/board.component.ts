@@ -37,25 +37,29 @@ export class BoardComponent implements OnInit {
       id: 'todo' as TaskColumn,
       title: 'To Do',
       tasks: () => this.todoTasks,
-      showAddButton: true
+      showAddButton: true,
+      emptyMessage: 'No tasks to do'
     },
     {
       id: 'inprogress' as TaskColumn,
       title: 'In Progress',
       tasks: () => this.inProgressTasks,
-      showAddButton: true
+      showAddButton: true,
+      emptyMessage: 'No tasks in progress'
     },
     {
       id: 'awaiting' as TaskColumn,
       title: 'Awaiting feedback',
       tasks: () => this.awaitingFeedbackTasks,
-      showAddButton: true
+      showAddButton: true,
+      emptyMessage: 'No tasks awaiting feedback'
     },
     {
       id: 'done' as TaskColumn,
       title: 'Done',
       tasks: () => this.doneTasks,
-      showAddButton: false
+      showAddButton: false,
+      emptyMessage: 'No tasks done'
     }
   ];
 
