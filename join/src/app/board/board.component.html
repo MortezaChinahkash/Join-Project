@@ -1,60 +1,92 @@
-<div class="content-wrapper">  
+<div class="content-wrapper">
   <div class="board-contents">
     <div class="default-content-container">
-<div class="component-header">
-  <div class="component-title-bar">
-    <h1 class="component-title">Board</h1>
+      <div class="component-header">
+        <div class="component-title-bar">
+          <h1 class="component-title">Board</h1>
 
-    <!-- Desktop version: search + text-button -->
-    <div class="search-add-box desktop-only">
-      <input type="text" class="search-input" placeholder="Find task" />
-      <button class="add-button" (click)="openAddTaskOverlay()">Add task +</button>
-    </div>
+          <!-- Desktop version: search + text-button -->
+          <div class="search-add-box desktop-only">
+            <input type="text" class="search-input" placeholder="Find task" />
+            <button class="add-button" (click)="openAddTaskOverlay()">
+              Add task +
+            </button>
+          </div>
 
-    <!-- Mobile version: icon-only button -->
-    <div class="mobile-only add-icon-box">
-      <button class="add-task-button" (click)="openAddTaskOverlay()">+</button>
-    </div>
-  </div>
+          <!-- Mobile version: icon-only button -->
+          <div class="mobile-only add-icon-box">
+            <button class="add-task-button" (click)="openAddTaskOverlay()">
+              +
+            </button>
+          </div>
+        </div>
 
-  <!-- Mobile search, full-width under title bar -->
-  <div class="mobile-only mobile-search-box">
-    <input type="text" class="search-input" placeholder="Find task" />
-  </div>
-</div>
-
+        <div class="mobile-only mobile-search-box">
+          <input type="text" class="search-input" placeholder="Find task" />
+        </div>
+      </div>
 
       <div class="board-container">
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">To Do</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay('todo')">+</button>
+            <button
+              class="board-add-task-button"
+              (click)="openAddTaskOverlay('todo')"
+            >
+              +
+            </button>
           </div>
           <div class="task-list">
             <div class="task-card" *ngFor="let task of todoTasks">
-              <div class="task-category-tag" [ngClass]="'category-' + task.category">
-                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              <div
+                class="task-category-tag"
+                [ngClass]="'category-' + task.category"
+              >
+                {{
+                  task.category === "technical"
+                    ? "Technical Task"
+                    : "User Story"
+                }}
               </div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
-              
-              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+
+              <div
+                class="task-progress"
+                *ngIf="task.subtasks && task.subtasks.length > 0"
+              >
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="getTaskProgress(task)"
+                  ></div>
                 </div>
-                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+                <span class="progress-text"
+                  >{{ getCompletedSubtasks(task) }}/{{
+                    task.subtasks.length
+                  }}
+                  Subtasks</span
+                >
               </div>
-              
+
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
                   <div class="avatar-group">
-                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    <div
+                      class="avatar"
+                      [style.background-color]="getAvatarColor(task.assignedTo)"
+                    >
                       {{ getInitials(task.assignedTo) }}
                     </div>
                   </div>
                 </div>
                 <div class="task-priority" *ngIf="task.priority">
-                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                  <img
+                    [src]="getPriorityIcon(task.priority)"
+                    [alt]="task.priority"
+                    class="priority-icon"
+                  />
                 </div>
               </div>
             </div>
@@ -63,33 +95,63 @@
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">In Progress</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay('inprogress')">+</button>
+            <button
+              class="board-add-task-button"
+              (click)="openAddTaskOverlay('inprogress')"
+            >
+              +
+            </button>
           </div>
           <div class="task-list">
             <div class="task-card" *ngFor="let task of inProgressTasks">
-              <div class="task-category-tag" [ngClass]="'category-' + task.category">
-                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              <div
+                class="task-category-tag"
+                [ngClass]="'category-' + task.category"
+              >
+                {{
+                  task.category === "technical"
+                    ? "Technical Task"
+                    : "User Story"
+                }}
               </div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
-              
-              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+
+              <div
+                class="task-progress"
+                *ngIf="task.subtasks && task.subtasks.length > 0"
+              >
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="getTaskProgress(task)"
+                  ></div>
                 </div>
-                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+                <span class="progress-text"
+                  >{{ getCompletedSubtasks(task) }}/{{
+                    task.subtasks.length
+                  }}
+                  Subtasks</span
+                >
               </div>
-              
+
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
                   <div class="avatar-group">
-                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    <div
+                      class="avatar"
+                      [style.background-color]="getAvatarColor(task.assignedTo)"
+                    >
                       {{ getInitials(task.assignedTo) }}
                     </div>
                   </div>
                 </div>
                 <div class="task-priority" *ngIf="task.priority">
-                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                  <img
+                    [src]="getPriorityIcon(task.priority)"
+                    [alt]="task.priority"
+                    class="priority-icon"
+                  />
                 </div>
               </div>
             </div>
@@ -98,33 +160,63 @@
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">Awaiting feedback</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay('awaiting')">+</button>
+            <button
+              class="board-add-task-button"
+              (click)="openAddTaskOverlay('awaiting')"
+            >
+              +
+            </button>
           </div>
           <div class="task-list">
             <div class="task-card" *ngFor="let task of awaitingFeedbackTasks">
-              <div class="task-category-tag" [ngClass]="'category-' + task.category">
-                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              <div
+                class="task-category-tag"
+                [ngClass]="'category-' + task.category"
+              >
+                {{
+                  task.category === "technical"
+                    ? "Technical Task"
+                    : "User Story"
+                }}
               </div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
-              
-              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+
+              <div
+                class="task-progress"
+                *ngIf="task.subtasks && task.subtasks.length > 0"
+              >
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="getTaskProgress(task)"
+                  ></div>
                 </div>
-                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+                <span class="progress-text"
+                  >{{ getCompletedSubtasks(task) }}/{{
+                    task.subtasks.length
+                  }}
+                  Subtasks</span
+                >
               </div>
-              
+
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
                   <div class="avatar-group">
-                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    <div
+                      class="avatar"
+                      [style.background-color]="getAvatarColor(task.assignedTo)"
+                    >
                       {{ getInitials(task.assignedTo) }}
                     </div>
                   </div>
                 </div>
                 <div class="task-priority" *ngIf="task.priority">
-                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                  <img
+                    [src]="getPriorityIcon(task.priority)"
+                    [alt]="task.priority"
+                    class="priority-icon"
+                  />
                 </div>
               </div>
             </div>
@@ -136,29 +228,54 @@
           </div>
           <div class="task-list">
             <div class="task-card" *ngFor="let task of doneTasks">
-              <div class="task-category-tag" [ngClass]="'category-' + task.category">
-                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              <div
+                class="task-category-tag"
+                [ngClass]="'category-' + task.category"
+              >
+                {{
+                  task.category === "technical"
+                    ? "Technical Task"
+                    : "User Story"
+                }}
               </div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
-              
-              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+
+              <div
+                class="task-progress"
+                *ngIf="task.subtasks && task.subtasks.length > 0"
+              >
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="getTaskProgress(task)"
+                  ></div>
                 </div>
-                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+                <span class="progress-text"
+                  >{{ getCompletedSubtasks(task) }}/{{
+                    task.subtasks.length
+                  }}
+                  Subtasks</span
+                >
               </div>
-              
+
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
                   <div class="avatar-group">
-                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    <div
+                      class="avatar"
+                      [style.background-color]="getAvatarColor(task.assignedTo)"
+                    >
                       {{ getInitials(task.assignedTo) }}
                     </div>
                   </div>
                 </div>
                 <div class="task-priority" *ngIf="task.priority">
-                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                  <img
+                    [src]="getPriorityIcon(task.priority)"
+                    [alt]="task.priority"
+                    class="priority-icon"
+                  />
                 </div>
               </div>
             </div>
@@ -166,148 +283,188 @@
         </div>
       </div>
 
-  <div class="addTaskOverlay" *ngIf="showAddTaskOverlay">
-    <div class="addTaskOverlay-content">
-      <h2>Add Task</h2>
-      <div class="taskProperties">     
-        <div class="leftSide">
-          <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
-            <div class="form-group">
-              <label for="title">Title<span class="required">*</span></label>
-              <input 
-                type="text"
-                id="title" 
-                formControlName="title"
-                [placeholder]="isFieldInvalid('title') ? 'This field is required' : 'Enter a title'" 
-                class="form-input"
-                [class.error]="isFieldInvalid('title')"
-                (blur)="taskForm.get('title')?.markAsTouched()"
-              />
-            </div>
+      <div class="addTaskOverlay" *ngIf="showAddTaskOverlay">
+        <div class="addTaskOverlay-content">
+          <h2>Add Task</h2>
+          <div class="taskProperties">
+            <div class="leftSide">
+              <form
+                [formGroup]="taskForm"
+                (ngSubmit)="onSubmit()"
+                class="task-form"
+              >
+                <div class="form-group">
+                  <label for="title"
+                    >Title<span class="required">*</span></label
+                  >
+                  <input
+                    type="text"
+                    id="title"
+                    formControlName="title"
+                    [placeholder]="
+                      isFieldInvalid('title')
+                        ? 'This field is required'
+                        : 'Enter a title'
+                    "
+                    class="form-input"
+                    [class.error]="isFieldInvalid('title')"
+                    (blur)="taskForm.get('title')?.markAsTouched()"
+                  />
+                </div>
 
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea
-                id="description"
-                formControlName="description"
-                placeholder="Enter a Description"
-                class="form-textarea"
-                rows="4"
-              ></textarea>
-            </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea
+                    id="description"
+                    formControlName="description"
+                    placeholder="Enter a Description"
+                    class="form-textarea"
+                    rows="4"
+                  ></textarea>
+                </div>
 
-            <div class="form-group date-group">
-              <label for="dueDate">Due date<span class="required">*</span></label>
-              <div class="date-input-wrapper">
-                <input
-                  type="date"
-                  id="dueDate"
-                  formControlName="dueDate"
-                  class="form-input date-input"
-                  [class.error]="isFieldInvalid('dueDate')"
-                  (change)="taskForm.get('dueDate')?.markAsTouched()"
-                />
-                <img
-                  src="./assets/img/icon_calendar.svg"
-                  alt="Calendar"
-                  class="date-icon"
-                />
-              </div>
-              <div *ngIf="isFieldInvalid('dueDate')" class="error-message">
-                This field is required
-              </div>
+                <div class="form-group date-group">
+                  <label for="dueDate"
+                    >Due date<span class="required">*</span></label
+                  >
+                  <div class="date-input-wrapper">
+                    <input
+                      type="date"
+                      id="dueDate"
+                      formControlName="dueDate"
+                      class="form-input date-input"
+                      [class.error]="isFieldInvalid('dueDate')"
+                      (change)="taskForm.get('dueDate')?.markAsTouched()"
+                    />
+                    <img
+                      src="./assets/img/icon_calendar.svg"
+                      alt="Calendar"
+                      class="date-icon"
+                    />
+                  </div>
+                  <div *ngIf="isFieldInvalid('dueDate')" class="error-message">
+                    This field is required
+                  </div>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-        <div class="devider"></div>
-        <div class="rightSide">
-          <div class="form-group">
-            <label>Priority</label>
-            <div class="priority-buttons">
-              <button 
-                type="button"
-                class="priority-btn"
-                [class.active]="selectedPriority === 'urgent'"
-                (click)="selectPriority('urgent')"
-              >
-                Urgent 
-                <span class="priority-icon">🔺</span>
-              </button>
-              <button 
-                type="button"
-                class="priority-btn"
-                [class.active]="selectedPriority === 'medium'"
-                (click)="selectPriority('medium')"
-              >
-                Medium 
-                <span class="priority-icon">🟰</span>
-              </button>
-              <button 
-                type="button"
-                class="priority-btn"
-                [class.active]="selectedPriority === 'low'"
-                (click)="selectPriority('low')"
-              >
-                Low 
-                <span class="priority-icon">🔻</span>
-              </button>
+            <div class="devider"></div>
+            <div class="rightSide">
+              <div class="form-group">
+                <label>Priority</label>
+                <div class="priority-buttons">
+                  <button
+                    type="button"
+                    class="priority-btn"
+                    [class.active]="selectedPriority === 'urgent'"
+                    (click)="selectPriority('urgent')"
+                  >
+                    Urgent
+                    <span class="priority-icon">🔺</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="priority-btn"
+                    [class.active]="selectedPriority === 'medium'"
+                    (click)="selectPriority('medium')"
+                  >
+                    Medium
+                    <span class="priority-icon">🟰</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="priority-btn"
+                    [class.active]="selectedPriority === 'low'"
+                    (click)="selectPriority('low')"
+                  >
+                    Low
+                    <span class="priority-icon">🔻</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group" [formGroup]="taskForm">
+                <label for="assignedTo">Assigned to</label>
+                <select
+                  id="assignedTo"
+                  formControlName="assignedTo"
+                  class="form-select"
+                >
+                  <option value="">Select contacts to assign</option>
+                  <option value="John Doe">John Doe</option>
+                  <option value="Jane Smith">Jane Smith</option>
+                  <option value="Mike Johnson">Mike Johnson</option>
+                  <option value="Anna Schmidt">Anna Schmidt</option>
+                  <option value="Ben Zeller">Ben Zeller</option>
+                  <option value="Emily Foster">Emily Foster</option>
+                  <option value="Sarah Miller">Sarah Miller</option>
+                </select>
+              </div>
+
+              <div class="form-group" [formGroup]="taskForm">
+                <label for="category"
+                  >Category<span class="required">*</span></label
+                >
+                <select
+                  id="category"
+                  formControlName="category"
+                  class="form-select"
+                  [class.error]="isFieldInvalid('category')"
+                  (change)="onCategoryChange($event); debugCategoryStatus()"
+                >
+                  <option value="">Select task category</option>
+                  <option value="technical">Technical Task</option>
+                  <option value="user-story">User Story</option>
+                </select>
+                <div *ngIf="isFieldInvalid('category')" class="error-message">
+                  This field is required
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Subtasks</label>
+                <div class="subtasks-input-wrapper">
+                  <input
+                    type="text"
+                    placeholder="Add new subtask"
+                    class="form-input subtask-input"
+                  />
+                  <img
+                    src="./assets/img/icon_plus.svg"
+                    alt="Add"
+                    class="subtask-add-icon"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="form-group" [formGroup]="taskForm">
-            <label for="assignedTo">Assigned to</label>
-            <select id="assignedTo" formControlName="assignedTo" class="form-select">
-              <option value="">Select contacts to assign</option>
-              <option value="John Doe">John Doe</option>
-              <option value="Jane Smith">Jane Smith</option>
-              <option value="Mike Johnson">Mike Johnson</option>
-              <option value="Anna Schmidt">Anna Schmidt</option>
-              <option value="Ben Zeller">Ben Zeller</option>
-              <option value="Emily Foster">Emily Foster</option>
-              <option value="Sarah Miller">Sarah Miller</option>
-            </select>
-          </div>
-
-          <div class="form-group" [formGroup]="taskForm">
-            <label for="category">Category<span class="required">*</span></label>
-            <select 
-              id="category" 
-              formControlName="category" 
-              class="form-select"
-              [class.error]="isFieldInvalid('category')"
-              (change)="onCategoryChange($event); debugCategoryStatus()"
+          <div class="buttonArea">
+            <span
+              *ngIf="
+                taskForm.invalid &&
+                taskForm.touched &&
+                (isFieldInvalid('title') ||
+                  isFieldInvalid('dueDate') ||
+                  isFieldInvalid('category'))
+              "
+              >This field is required</span
             >
-              <option value="">Select task category</option>
-              <option value="technical">Technical Task</option>
-              <option value="user-story">User Story</option>
-            </select>
-            <div *ngIf="isFieldInvalid('category')" class="error-message">
-              This field is required
+            <div class="button-group">
+              <button
+                type="button"
+                class="cancelBtn"
+                (click)="closeAddTaskOverlay()"
+              >
+                Cancel
+              </button>
+              <button type="button" class="createBtn" (click)="onSubmit()">
+                Create Task <img src="./assets/img/icon_done.svg" alt="" />
+              </button>
             </div>
           </div>
-
-          <div class="form-group">
-            <label>Subtasks</label>
-            <div class="subtasks-input-wrapper">
-              <input type="text" placeholder="Add new subtask" class="form-input subtask-input">
-              <img src="./assets/img/icon_plus.svg" alt="Add" class="subtask-add-icon">
-            </div>
-          </div>
-        </div>
-      </div>  
-
-      <div class="buttonArea">
-        <span *ngIf="taskForm.invalid && taskForm.touched && (isFieldInvalid('title') || isFieldInvalid('dueDate') || isFieldInvalid('category'))">This field is required</span>
-        <div class="button-group">
-          <button type="button" class="cancelBtn" (click)="closeAddTaskOverlay()">Cancel</button>
-          <button type="button" class="createBtn" (click)="onSubmit()">
-            Create Task <img src="./assets/img/icon_done.svg" alt="" />
-          </button>
         </div>
       </div>
     </div>
   </div>
 </div>
-
-
-

@@ -32,30 +32,12 @@
   gap: 0.5rem;
 }
 
-/* Icon-only add button on mobile */
-.add-icon-button {
-  background: transparent;
-  border: none;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  img {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
-}
-
-/* Mobile-only search row */
 .mobile-search-box {
   width: 100%;
-  padding: 0.5rem 1rem;
   box-sizing: border-box;
 
   .search-input {
-    width: 24rem;
+    width: 16rem;
   }
 }
 
@@ -571,7 +553,11 @@
   .desktop-only {
     display: none;
   }
-  
+
+  .component-title {
+    order: 1;
+  }
+
   .board-container {
     display: flex;
     flex-direction: column;
