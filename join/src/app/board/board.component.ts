@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Contact, ContactsComponent } from '../contacts/contacts.component';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Task, TaskColumn } from '../interfaces/task.interface';
@@ -16,6 +16,9 @@ import { TaskService } from '../services/task.service';
 export class BoardComponent implements OnInit {
   taskForm: FormGroup;
   showAddTaskOverlay = false;
+  showTaskDetailsOverlay = false;
+  selectedTask: Task | null = null;
+  isEditingTask = false;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
   taskCollection: string = "tasks"
@@ -72,7 +75,8 @@ export class BoardComponent implements OnInit {
       dueDate: ['', Validators.required],
       priority: [''], // Priority ist optional, wird über Buttons gesetzt
       assignedTo: [''],
-      category: ['', Validators.required]
+      category: ['', Validators.required],
+      subtasks: this.fb.array([])
     });
 
     // Lokale Arrays initialisieren
@@ -144,6 +148,24 @@ export class BoardComponent implements OnInit {
     this.taskForm.reset();
     this.selectedPriority = '';
     this.selectedContacts = []; // Reset selected contacts
+    
+    // Set today's date as default for due date and medium priority as default
+    const today = this.getTodayDateString();
+    this.taskForm.patchValue({
+      dueDate: today,
+      priority: 'medium'
+    });
+    
+    // Set medium as default selected priority
+    this.selectedPriority = 'medium';
+  }
+
+  private getTodayDateString(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   async onSubmit() {
@@ -402,4 +424,180 @@ getSelectedContactsText(): string {
     );
   }
 
+  // Task Details Overlay Methods
+  openTaskDetails(task: Task) {
+    this.selectedTask = task;
+    this.showTaskDetailsOverlay = true;
+    this.isEditingTask = false;
+  }
+
+  closeTaskDetailsOverlay() {
+    this.showTaskDetailsOverlay = false;
+    this.selectedTask = null;
+    this.isEditingTask = false;
+    this.showAssignedContactsDropdown = false; // Reset dropdown state
+    this.resetForm();
+  }
+
+  editTask() {
+    if (!this.selectedTask) return;
+    
+    // Close task details overlay and open edit overlay
+    this.showTaskDetailsOverlay = false;
+    this.isEditingTask = true;
+    
+    // Clear existing subtasks
+    while (this.subtasksFormArray.length !== 0) {
+      this.subtasksFormArray.removeAt(0);
+    }
+    
+    // Populate form with selected task data
+    this.taskForm.patchValue({
+      title: this.selectedTask.title,
+      description: this.selectedTask.description,
+      dueDate: this.selectedTask.dueDate,
+      priority: this.selectedTask.priority,
+      category: this.selectedTask.category
+    });
+    
+    this.selectedPriority = this.selectedTask.priority || '';
+    
+    // Set selected contacts
+    this.selectedContacts = this.selectedTask.assignedTo ? 
+      this.contacts.filter(contact => this.selectedTask!.assignedTo!.includes(contact.name)) : [];
+      
+    // Load subtasks
+    if (this.selectedTask.subtasks) {
+      this.selectedTask.subtasks.forEach(subtask => {
+        const subtaskGroup = this.fb.group({
+          title: [subtask.title, Validators.required],
+          completed: [subtask.completed]
+        });
+        this.subtasksFormArray.push(subtaskGroup);
+      });
+    }
+  }
+
+  cancelEditTask() {
+    this.isEditingTask = false;
+    this.showTaskDetailsOverlay = true;
+    this.resetForm();
+  }
+
+  async saveTaskChanges() {
+    if (!this.selectedTask || !this.taskForm.valid) return;
+
+    try {
+      const updatedTask: Task = {
+        ...this.selectedTask,
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        dueDate: this.taskForm.value.dueDate,
+        priority: this.selectedPriority as any,
+        category: this.taskForm.value.category,
+        assignedTo: this.selectedContacts.map(contact => contact.name),
+        subtasks: this.taskForm.value.subtasks || []
+      };
+
+      await this.taskService.updateTaskInFirebase(updatedTask);
+      
+      // Update local tasks array
+      const taskIndex = this.tasks.findIndex(t => t.id === updatedTask.id);
+      if (taskIndex !== -1) {
+        this.tasks[taskIndex] = updatedTask;
+        this.sortTasksIntoColumns();
+      }
+
+      this.selectedTask = updatedTask;
+      this.isEditingTask = false;
+      this.showTaskDetailsOverlay = true; // Return to task details overlay
+      console.log('✅ Task updated successfully');
+    } catch (error) {
+      console.error('❌ Error updating task:', error);
+    }
+  }
+
+  async deleteTask() {
+    if (!this.selectedTask || !this.selectedTask.id) return;
+
+    const confirmDelete = confirm(`Are you sure you want to delete the task "${this.selectedTask.title}"?`);
+    if (!confirmDelete) return;
+
+    try {
+      await this.taskService.deleteTaskFromFirebase(this.selectedTask.id);
+      
+      // Remove from local arrays
+      this.tasks = this.tasks.filter(t => t.id !== this.selectedTask!.id);
+      this.sortTasksIntoColumns();
+
+      this.closeTaskDetailsOverlay();
+      console.log('✅ Task deleted successfully');
+    } catch (error) {
+      console.error('❌ Error deleting task:', error);
+    }
+  }
+
+  getSubtaskProgress(): number {
+    if (!this.selectedTask?.subtasks || this.selectedTask.subtasks.length === 0) {
+      return 0;
+    }
+    const completed = this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+    return (completed / this.selectedTask.subtasks.length) * 100;
+  }
+
+  getCompletedSubtasksCount(): number {
+    if (!this.selectedTask?.subtasks) return 0;
+    return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+  }
+
+  toggleSubtask(subtaskIndex: number) {
+    if (!this.selectedTask?.subtasks) return;
+    
+    this.selectedTask.subtasks[subtaskIndex].completed = !this.selectedTask.subtasks[subtaskIndex].completed;
+    
+    // Auto-save subtask changes
+    this.saveTaskChanges();
+  }
+
+  showAssignedContactsDropdown = false; // Controls dropdown visibility for assigned contacts in task details
+
+  // Methods for assigned contacts dropdown in task details
+  getDisplayedAssignedContacts(): string[] {
+    if (!this.selectedTask?.assignedTo) return [];
+    return this.selectedTask.assignedTo.slice(0, 2);
+  }
+
+  hasMoreAssignedContacts(): boolean {
+    return this.selectedTask?.assignedTo ? this.selectedTask.assignedTo.length > 2 : false;
+  }
+
+  getRemainingAssignedContactsCount(): number {
+    if (!this.selectedTask?.assignedTo || this.selectedTask.assignedTo.length <= 2) return 0;
+    return this.selectedTask.assignedTo.length - 2;
+  }
+
+  getRemainingAssignedContacts(): string[] {
+    if (!this.selectedTask?.assignedTo) return [];
+    return this.selectedTask.assignedTo.slice(2);
+  }
+
+  toggleAssignedContactsDropdown(): void {
+    this.showAssignedContactsDropdown = !this.showAssignedContactsDropdown;
+  }
+
+  get subtasksFormArray(): FormArray {
+    return this.taskForm.get('subtasks') as FormArray;
+  }
+
+  addSubtask() {
+    const subtaskGroup = this.fb.group({
+      title: ['', Validators.required],
+      completed: [false]
+    });
+    this.subtasksFormArray.push(subtaskGroup);
+  }
+
+  removeSubtask(index: number) {
+    this.subtasksFormArray.removeAt(index);
+  }
 }

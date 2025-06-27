@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, addDoc, collection } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, updateDoc, deleteDoc, doc } from '@angular/fire/firestore';
 import { Task, TaskColumn, Subtask } from '../interfaces/task.interface';
 
 @Injectable({
@@ -138,5 +138,41 @@ export class TaskService {
       }
     }
     return false;
+  }
+
+  // Firebase update task
+  async updateTaskInFirebase(task: Task): Promise<void> {
+    try {
+      if (!task.id) {
+        throw new Error('Task ID is required for update');
+      }
+      
+      console.log('🔥 Updating task in Firebase:', task.id);
+      
+      const taskRef = doc(this.firestore, this.taskCollection, task.id);
+      const { id, ...taskData } = task; // Remove ID from data to update
+      
+      await updateDoc(taskRef, taskData);
+      
+      console.log('✅ Task updated successfully in Firebase');
+    } catch (error) {
+      console.error('❌ Error updating task in Firebase:', error);
+      throw error;
+    }
+  }
+
+  // Firebase delete task
+  async deleteTaskFromFirebase(taskId: string): Promise<void> {
+    try {
+      console.log('🔥 Deleting task from Firebase:', taskId);
+      
+      const taskRef = doc(this.firestore, this.taskCollection, taskId);
+      await deleteDoc(taskRef);
+      
+      console.log('✅ Task deleted successfully from Firebase');
+    } catch (error) {
+      console.error('❌ Error deleting task from Firebase:', error);
+      throw error;
+    }
   }
 }
