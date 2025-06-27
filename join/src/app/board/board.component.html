@@ -1,15 +1,30 @@
 <div class="content-wrapper">  
   <div class="board-contents">
     <div class="default-content-container">
-      <div class="component-header">
-        <div class="component-title-bar">
-          <h1 class="component-title">Board</h1>
-          <div class="search-add-box">
-            <input type="text" class="search-input" placeholder="Find task" />
-            <button class="add-button" (click)="openAddTaskOverlay('todo')">Add task</button>
-          </div>
-        </div>
-      </div>
+<div class="component-header">
+  <div class="component-title-bar">
+    <h1 class="component-title">Board</h1>
+
+    <!-- Desktop version: search + text-button -->
+    <div class="search-add-box desktop-only">
+      <input type="text" class="search-input" placeholder="Find task" />
+      <button class="add-button" (click)="openAddTaskOverlay()">Add task +</button>
+    </div>
+
+    <!-- Mobile version: icon-only button -->
+    <div class="mobile-only add-icon-box">
+      <button class="add-icon-button" (click)="openAddTaskOverlay()">
+        <img src="./assets/img/icon_plus.svg" alt="Add task">
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile search, full-width under title bar -->
+  <div class="mobile-only mobile-search-box">
+    <input type="text" class="search-input" placeholder="Find task" />
+  </div>
+</div>
+
 
       <div class="board-container">
         <div class="board-column">
@@ -120,7 +135,6 @@
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">Done</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay('done')">+</button>
           </div>
           <div class="task-list">
             <div class="task-card" *ngFor="let task of doneTasks">

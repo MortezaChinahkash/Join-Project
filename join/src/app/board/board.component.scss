@@ -32,6 +32,33 @@
   gap: 0.5rem;
 }
 
+/* Icon-only add button on mobile */
+.add-icon-button {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  img {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+/* Mobile-only search row */
+.mobile-search-box {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  box-sizing: border-box;
+
+  .search-input {
+    width: 24rem;
+  }
+}
+
 .board-container {
   display: flex;
   flex-direction: row;
@@ -545,6 +572,15 @@
     display: none;
   }
 
+    .component-title-bar {
+    /* make sure items align nicely on mobile */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
   .board-container {
     display: flex;
     flex-direction: column;
