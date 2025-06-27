@@ -377,20 +377,11 @@
 
               <div class="form-group" [formGroup]="taskForm">
                 <label for="assignedTo">Assigned to</label>
-
-                <!-- Custom Dropdown -->
+                
                 <div class="custom-select-wrapper">
                   <div class="custom-select" (click)="toggleDropdown()">
-                    <div
-                      class="selected-option"
-                      *ngIf="getSelectedContact(); else placeholder"
-                    >
-                      <div
-                        class="contact-avatar"
-                        [style.background-color]="
-                          getInitialsColor(getSelectedContact()!.name)
-                        "
-                      >
+                    <div class="selected-option" *ngIf="getSelectedContact(); else placeholder">
+                      <div class="contact-avatar" [style.background-color]="getInitialsColor(getSelectedContact()!.name)">
                         {{ getInitials(getSelectedContact()!.name) }}
                       </div>
                       <span>{{ getSelectedContact()!.name }}</span>
@@ -398,36 +389,29 @@
                     <ng-template #placeholder>
                       <span class="placeholder">Select contacts to assign</span>
                     </ng-template>
-                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">
-                      ▼
+                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
+                  </div>
+                  
+                  <div class="dropdown-options" *ngIf="isDropdownOpen">
+                    <div class="dropdown-option" 
+                         *ngFor="let contact of contacts" 
+                         (click)="toggleContactSelection(contact, $event)">
+                      <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">
+                        {{ getInitials(contact.name) }}
+                      </div>
+                      <span class="contact-name">{{ contact.name }}</span>
+                      <div class="checkbox-wrapper">
+                        <input type="checkbox" 
+                               [id]="'contact-' + contact.id"
+                               [checked]="isContactSelected(contact)"
+                               (click)="$event.stopPropagation()">
+                        <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
+                      </div>
                     </div>
                   </div>
-                  <span>{{ getSelectedContact()!.name }}</span>
                 </div>
-                <ng-template #placeholder>
-                  <span class="placeholder">Select contacts to assign</span>
-                </ng-template>
-                <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
               </div>
               
-              <div class="dropdown-options" *ngIf="isDropdownOpen">
-                <div class="dropdown-option" 
-                     *ngFor="let contact of contacts" 
-                     (click)="toggleContactSelection(contact, $event)">
-                  <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">
-                    {{ getInitials(contact.name) }}
-                  </div>
-                  <span class="contact-name">{{ contact.name }}</span>
-                  <div class="checkbox-wrapper">
-                    <input type="checkbox" 
-                           [id]="'contact-' + contact.id"
-                           [checked]="isContactSelected(contact)"
-                           (click)="$event.stopPropagation()">
-                    <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
-                  </div>
-                </div>
-              </div>
-
               <div class="form-group" [formGroup]="taskForm">
                 <label for="category"
                   >Category<span class="required">*</span></label
