@@ -82,10 +82,28 @@
 }
 
 .addTaskOverlay {
-  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
   display: flex;
-  flex-direction: column; // Hauptcontainer: vertikal
-  min-height: 600px;
+  align-items: center;
+  justify-content: center;
+
+  .addTaskOverlay-content {
+    background-color: white;
+    border-radius: 30px;
+    max-width: 1200px;
+    width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
 
   h2 {
     padding: 2rem 2rem 0;
@@ -96,7 +114,7 @@
 
   .taskProperties {
     display: flex;
-    flex-direction: row; // Nebeneinander: leftSide | devider | rightSide
+    flex-direction: row;
     flex: 1;
 
     .leftSide {
@@ -141,11 +159,25 @@
               outline: none;
               border-color: #29abe2;
             }
+
+            &.error {
+              border-color: #ff8190;
+              
+              &::placeholder {
+                color: #ff8190;
+              }
+            }
           }
 
           .form-textarea {
             resize: vertical;
             min-height: 100px;
+          }
+
+          .error-message {
+            color: #ff8190;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
           }
 
           &.date-group {
@@ -155,14 +187,29 @@
               width: 100%;
 
               .date-input {
-                padding-right: 3rem; // Platz für das Icon
+                padding-right: 3rem;
                 width: 100%;
                 box-sizing: border-box;
+                
+                // Hide default calendar icon
+                &::-webkit-calendar-picker-indicator {
+                  opacity: 0;
+                  position: absolute;
+                  right: 0.75rem;
+                  width: 20px;
+                  height: 20px;
+                  cursor: pointer;
+                }
+                
+                &::-webkit-inner-spin-button,
+                &::-webkit-clear-button {
+                  display: none;
+                }
               }
 
               .date-icon {
                 position: absolute;
-                right: 0.75rem; // Innerhalb des Input-Feldes
+                right: 0.75rem;
                 top: 50%;
                 transform: translateY(-50%);
                 width: 20px;
@@ -187,50 +234,6 @@
       padding: 2rem;
       flex: 1;
 
-      .priority {
-        margin-bottom: 2rem;
-
-        label {
-          font-size: 1rem;
-          font-weight: 400;
-          color: #2a3647;
-          margin-bottom: 0.5rem;
-          display: block;
-        }
-
-        .priority-buttons {
-          display: flex;
-          gap: 1rem;
-
-          .priority-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid #d1d7db;
-            border-radius: 10px;
-            background-color: white;
-            color: #2a3647;
-            cursor: pointer;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-
-            &:hover {
-              background-color: #f8f9fa;
-            }
-
-            &.active {
-              background-color: #ff8c00;
-              color: white;
-              border-color: #ff8c00;
-            }
-
-            .priority-icon {
-              font-size: 0.8rem;
-            }
-          }
-        }
-      }
-
       .form-group {
         margin-bottom: 1.5rem;
 
@@ -244,6 +247,40 @@
           .required {
             color: #ff8190;
             margin-left: 2px;
+          }
+        }
+
+        .priority-buttons {
+          display: flex;
+          gap: 1rem;
+
+          .priority-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #d1d7db;
+            border-radius: 10px;
+            background-color: white;
+            color: #2a3647;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+
+            &:hover {
+              background-color: #f8f9fa;
+              border-color: #c1c7cb;
+            }
+
+            &.active {
+              background-color: #2a3647;
+              color: white;
+              border-color: #2a3647;
+            }
+
+            .priority-icon {
+              font-size: 1rem;
+            }
           }
         }
 
@@ -261,6 +298,16 @@
             outline: none;
             border-color: #29abe2;
           }
+
+          &.error {
+            border-color: #ff8190;
+          }
+        }
+
+        .error-message {
+          color: #ff8190;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
         }
 
         .subtasks-input-wrapper {
