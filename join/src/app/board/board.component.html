@@ -7,20 +7,9 @@
 
           <div class="search-add-box desktop-only">
             <input type="text" class="search-input" placeholder="Find task" />
-            <button
-              class="desktop-header-add-button header-add-task-button"
-              (click)="openAddTaskOverlay()"
-            >
-              Add task +
-            </button>
+            <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task +</button>
           </div>
-
-          <button
-            class="mobile-header-add-button header-add-task-button mobile-only"
-            (click)="openAddTaskOverlay()"
-          >
-            +
-          </button>
+          <button class="mobile-header-add-button header-add-task-button mobile-only" (click)="openAddTaskOverlay()">+</button>
         </div>
 
         <div class="mobile-only mobile-search-box">
@@ -32,73 +21,28 @@
         <div class="board-column" *ngFor="let column of boardColumns">
           <div class="column-header">
             <h2 class="column-title">{{ column.title }}</h2>
-            <button
-              class="board-add-task-button"
-              *ngIf="column.showAddButton"
-              (click)="openAddTaskOverlay(column.id)"
-            >
-              +
-            </button>
+            <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
           </div>
           <div class="task-list">
             <div class="task-card" *ngFor="let task of column.tasks()">
-              <div
-                class="task-category-tag"
-                [ngClass]="'category-' + task.category"
-              >
-                {{
-                  task.category === "technical"
-                    ? "Technical Task"
-                    : "User Story"
-                }}
-              </div>
+              <div class="task-category-tag" [ngClass]="'category-' + task.category">{{ task.category === "technical" ? "Technical Task" : "User Story" }}</div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
-
-              <div
-                class="task-progress"
-                *ngIf="task.subtasks && task.subtasks.length > 0"
-              >
+              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
                 <div class="progress-bar">
-                  <div
-                    class="progress-fill"
-                    [style.width.%]="getTaskProgress(task)"
-                  ></div>
+                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
                 </div>
-                <span class="progress-text"
-                  >{{ getCompletedSubtasks(task) }}/{{
-                    task.subtasks.length
-                  }}
-                  Subtasks</span
-                >
+                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
               </div>
-
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo && task.assignedTo.length > 0">
                   <div class="avatar-group">
-                    <div
-                      class="avatar"
-                      *ngFor="let contact of getDisplayedContacts(task.assignedTo); let i = index"
-                      [style.background-color]="getInitialsColor(contact)"
-                      [style.z-index]="getDisplayedContacts(task.assignedTo).length - i + 1"
-                    >
-                      {{ getInitials(contact) }}
-                    </div>
-                    <div
-                      class="remaining-contacts"
-                      *ngIf="hasRemainingContacts(task.assignedTo)"
-                      [style.z-index]="1"
-                    >
-                      +{{ getRemainingContactsCount(task.assignedTo) }}
-                    </div>
+                    <div class="avatar" *ngFor="let contact of getDisplayedContacts(task.assignedTo); let i = index" [style.background-color]="getInitialsColor(contact)" [style.z-index]="getDisplayedContacts(task.assignedTo).length - i + 1">{{ getInitials(contact) }}</div>
+                    <div class="remaining-contacts" *ngIf="hasRemainingContacts(task.assignedTo)" [style.z-index]="1">+{{ getRemainingContactsCount(task.assignedTo) }}</div>
                   </div>
                 </div>
                 <div class="task-priority" *ngIf="task.priority">
-                  <img
-                    [src]="getPriorityIcon(task.priority)"
-                    [alt]="task.priority"
-                    class="priority-icon"
-                  />
+                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon" />
                 </div>
               </div>
             </div>
@@ -111,63 +55,22 @@
           <h2>Add Task</h2>
           <div class="taskProperties">
             <div class="leftSide">
-              <form
-                [formGroup]="taskForm"
-                (ngSubmit)="onSubmit()"
-                class="task-form"
-              >
+              <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
                 <div class="form-group">
-                  <label for="title"
-                    >Title<span class="required">*</span></label
-                  >
-                  <input
-                    type="text"
-                    id="title"
-                    formControlName="title"
-                    [placeholder]="
-                      isFieldInvalid('title')
-                        ? 'This field is required'
-                        : 'Enter a title'
-                    "
-                    class="form-input"
-                    [class.error]="isFieldInvalid('title')"
-                    (blur)="taskForm.get('title')?.markAsTouched()"
-                  />
+                  <label for="title">Title<span class="required">*</span></label>
+                  <input type="text" id="title" formControlName="title" [placeholder]="isFieldInvalid('title') ? 'This field is required' : 'Enter a title'" class="form-input" [class.error]="isFieldInvalid('title')" (blur)="taskForm.get('title')?.markAsTouched()" />
                 </div>
-
                 <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea
-                    id="description"
-                    formControlName="description"
-                    placeholder="Enter a Description"
-                    class="form-textarea"
-                    rows="4"
-                  ></textarea>
+                  <textarea id="description" formControlName="description" placeholder="Enter a Description" class="form-textarea" rows="4"></textarea>
                 </div>
-
                 <div class="form-group date-group">
-                  <label for="dueDate"
-                    >Due date<span class="required">*</span></label
-                  >
+                  <label for="dueDate">Due date<span class="required">*</span></label>
                   <div class="date-input-wrapper">
-                    <input
-                      type="date"
-                      id="dueDate"
-                      formControlName="dueDate"
-                      class="form-input date-input"
-                      [class.error]="isFieldInvalid('dueDate')"
-                      (change)="taskForm.get('dueDate')?.markAsTouched()"
-                    />
-                    <img
-                      src="./assets/img/icon_calendar.svg"
-                      alt="Calendar"
-                      class="date-icon"
-                    />
+                    <input type="date" id="dueDate" formControlName="dueDate" class="form-input date-input" [class.error]="isFieldInvalid('dueDate')" (change)="taskForm.get('dueDate')?.markAsTouched()" />
+                    <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
                   </div>
-                  <div *ngIf="isFieldInvalid('dueDate')" class="error-message">
-                    This field is required
-                  </div>
+                  <div *ngIf="isFieldInvalid('dueDate')" class="error-message">This field is required</div>
                 </div>
               </form>
             </div>
@@ -176,101 +79,39 @@
               <div class="form-group">
                 <label>Priority</label>
                 <div class="priority-buttons">
-                  <button
-                    type="button"
-                    class="priority-btn"
-                    [class.active]="selectedPriority === 'urgent'"
-                    (click)="selectPriority('urgent')"
-                  >
-                    Urgent
-                    <img
-                      src="assets/img/icon_priority_urgent.svg"
-                      alt="Urgent"
-                      class="priority-icon-overlay urgent-icon"
-                    />
+                  <button type="button" class="priority-btn" [class.active]="selectedPriority === 'urgent'" (click)="selectPriority('urgent')">
+                    Urgent<img src="assets/img/icon_priority_urgent.svg" alt="Urgent" class="priority-icon-overlay urgent-icon" />
                   </button>
-                  <button
-                    type="button"
-                    class="priority-btn"
-                    [class.active]="selectedPriority === 'medium'"
-                    (click)="selectPriority('medium')"
-                  >
-                    Medium
-                    <img
-                      src="assets/img/icon_priority_medium.svg"
-                      alt="Medium"
-                      class="priority-icon-overlay medium-icon"
-                    />
+                  <button type="button" class="priority-btn" [class.active]="selectedPriority === 'medium'" (click)="selectPriority('medium')">
+                    Medium<img src="assets/img/icon_priority_medium.svg" alt="Medium" class="priority-icon-overlay medium-icon" />
                   </button>
-                  <button
-                    type="button"
-                    class="priority-btn"
-                    [class.active]="selectedPriority === 'low'"
-                    (click)="selectPriority('low')"
-                  >
-                    Low
-                    <img
-                      src="assets/img/icon_priority_low.svg"
-                      alt="Low"
-                      class="priority-icon-overlay low-icon"
-                    />
+                  <button type="button" class="priority-btn" [class.active]="selectedPriority === 'low'" (click)="selectPriority('low')">
+                    Low<img src="assets/img/icon_priority_low.svg" alt="Low" class="priority-icon-overlay low-icon" />
                   </button>
                 </div>
               </div>
 
               <div class="form-group" [formGroup]="taskForm">
                 <label for="assignedTo">Assigned to</label>
-
                 <div class="custom-select-wrapper">
                   <div class="custom-select" (click)="toggleDropdown()">
-                    <!-- Ausgewählte Kontakte anzeigen -->
                     <div class="selected-contacts" *ngIf="selectedContacts.length > 0; else placeholder">
                       <div class="selected-contact-avatars">
-                        <div class="contact-avatar" 
-                             *ngFor="let contact of selectedContacts.slice(0, 4)" 
-                             [style.background-color]="getInitialsColor(contact.name)">
-                          {{ getInitials(contact.name) }}
-                        </div>
-                        <div class="more-contacts" *ngIf="selectedContacts.length > 4">
-                          +{{ selectedContacts.length - 4 }}
-                        </div>
+                        <div class="contact-avatar" *ngFor="let contact of selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
+                        <div class="more-contacts" *ngIf="selectedContacts.length > 4">+{{ selectedContacts.length - 4 }}</div>
                       </div>
                       <span class="selected-text">{{ getSelectedContactsText() }}</span>
                     </div>
-                    <ng-template #placeholder>
-                      <span class="placeholder">Select contacts to assign</span>
-                    </ng-template>
-                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">
-                      ▼
-                    </div>
+                    <ng-template #placeholder><span class="placeholder">Select contacts to assign</span></ng-template>
+                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
                   </div>
-
                   <div class="dropdown-options" *ngIf="isDropdownOpen">
-                    <div
-                      class="dropdown-option"
-                      *ngFor="let contact of contacts"
-                      (click)="toggleContactSelection(contact, $event)"
-                    >
-                      <div
-                        class="contact-avatar"
-                        [style.background-color]="
-                          getInitialsColor(contact.name)
-                        "
-                      >
-                        {{ getInitials(contact.name) }}
-                      </div>
+                    <div class="dropdown-option" *ngFor="let contact of contacts" (click)="toggleContactSelection(contact, $event)">
+                      <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
                       <span class="contact-name">{{ contact.name }}</span>
                       <div class="checkbox-wrapper">
-                        <input
-                          type="checkbox"
-                          [id]="'contact-' + contact.id"
-                          [checked]="isContactSelected(contact)"
-                          (click)="$event.stopPropagation()"
-                        />
-                        <label
-                          [for]="'contact-' + contact.id"
-                          class="checkbox-label"
-                        ></label>
+                        <input type="checkbox" [id]="'contact-' + contact.id" [checked]="isContactSelected(contact)" (click)="$event.stopPropagation()" />
+                        <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
                       </div>
                     </div>
                   </div>
@@ -278,38 +119,20 @@
               </div>
 
               <div class="form-group" [formGroup]="taskForm">
-                <label for="category"
-                  >Category<span class="required">*</span></label
-                >
-                <select
-                  id="category"
-                  formControlName="category"
-                  class="form-select"
-                  [class.error]="isFieldInvalid('category')"
-                  (change)="onCategoryChange($event); debugCategoryStatus()"
-                >
+                <label for="category">Category<span class="required">*</span></label>
+                <select id="category" formControlName="category" class="form-select" [class.error]="isFieldInvalid('category')" (change)="onCategoryChange($event); debugCategoryStatus()">
                   <option value="">Select task category</option>
                   <option value="technical">Technical Task</option>
                   <option value="user-story">User Story</option>
                 </select>
-                <div *ngIf="isFieldInvalid('category')" class="error-message">
-                  This field is required
-                </div>
+                <div *ngIf="isFieldInvalid('category')" class="error-message">This field is required</div>
               </div>
 
               <div class="form-group">
                 <label>Subtasks</label>
                 <div class="subtasks-input-wrapper">
-                  <input
-                    type="text"
-                    placeholder="Add new subtask"
-                    class="form-input subtask-input"
-                  />
-                  <img
-                    src="./assets/img/icon_plus.svg"
-                    alt="Add"
-                    class="subtask-add-icon"
-                  />
+                  <input type="text" placeholder="Add new subtask" class="form-input subtask-input" />
+                  <img src="./assets/img/icon_plus.svg" alt="Add" class="subtask-add-icon" />
                 </div>
               </div>
             </div>
@@ -318,16 +141,8 @@
           <div class="buttonArea">
             <span>*This field is required</span>
             <div class="button-group">
-              <button
-                type="button"
-                class="cancelBtn"
-                (click)="closeAddTaskOverlay()"
-              >
-                Cancel
-              </button>
-              <button type="button" class="createBtn" (click)="onSubmit()">
-                Create Task <img src="./assets/img/icon_done.svg" alt="" />
-              </button>
+              <button type="button" class="cancelBtn" (click)="closeAddTaskOverlay()">Cancel</button>
+              <button type="button" class="createBtn" (click)="onSubmit()">Create Task <img src="./assets/img/icon_done.svg" alt="" /></button>
             </div>
           </div>
         </div>
