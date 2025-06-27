@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Contact } from '../contacts/contacts.component';
+import { Contact, ContactsComponent } from '../contacts/contacts.component';
 import { Firestore, collectionData, collection, DocumentData } from '@angular/fire/firestore';
 import { Task } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
@@ -82,14 +82,16 @@ export class AddTaskComponent implements OnInit {
   /**
    * Toggles contact selection
    */
-  toggleContactSelection(contact: Contact): void {
+  toggleContactSelection(contact: Contact, event: Event): void {
+    event.stopPropagation();
+    
     const index = this.selectedContacts.findIndex(c => c.id === contact.id);
     if (index > -1) {
       this.selectedContacts.splice(index, 1);
     } else {
       this.selectedContacts.push(contact);
     }
-      this.taskForm.patchValue({ assignedTo: this.selectedContacts.map(c => c.id || '') });
+    this.taskForm.patchValue({ assignedTo: this.selectedContacts.map(c => c.id || '') });
   }
 
   /**
@@ -97,6 +99,30 @@ export class AddTaskComponent implements OnInit {
    */
   isContactSelected(contact: Contact): boolean {
     return this.selectedContacts.some(c => c.id === contact.id);
+  }
+
+  /**
+   * Gets initials from a contact name using the same logic as contacts component
+   */
+  getInitials(name: string): string {
+    return ContactsComponent.getInitials(name);
+  }
+
+  /**
+   * Gets color for contact avatar using the same logic as contacts component
+   */
+  getInitialsColor(name: string): string {
+    return ContactsComponent.getInitialsColor(name);
+  }
+
+  /**
+   * Gets selected contacts text for display
+   */
+  getSelectedContactsText(): string {
+    if (this.selectedContacts.length === 0) return '';
+    if (this.selectedContacts.length === 1) return this.selectedContacts[0].name;
+    if (this.selectedContacts.length === 2) return this.selectedContacts.map(c => c.name).join(' and ');
+    return `${this.selectedContacts[0].name} and ${this.selectedContacts.length - 1} others`;
   }
 
   /**
