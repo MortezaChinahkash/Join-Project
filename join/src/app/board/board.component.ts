@@ -19,11 +19,10 @@ export class BoardComponent implements OnInit {
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
 
-  // Arrays für die verschiedenen Spalten
-  todoTasks: any[] = [];
-  inProgressTasks: any[] = [];
-  awaitingFeedbackTasks: any[] = [];
-  doneTasks: any[] = [];
+  contacts: Contact[] = [];
+  private firestore = inject(Firestore);
+
+  
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
