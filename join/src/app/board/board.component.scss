@@ -55,7 +55,7 @@
   box-sizing: border-box;
 
   .search-input {
-    width: 100%;
+    width: 24rem;
   }
 }
 
@@ -566,6 +566,15 @@
     display: none;
   }
 
+    .component-title-bar {
+    /* make sure items align nicely on mobile */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
   .board-container {
     display: flex;
     flex-direction: column;
