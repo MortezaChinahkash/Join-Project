@@ -105,6 +105,7 @@
   width: 100%;
 
   .empty-state {
+    margin-top: 25px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +113,6 @@
     border: 2px dashed #d1d7db;
     border-radius: 10px;
     background-color: #f8f9fa;
-    min-height: 100px;
 
     .empty-message {
       color: #a8a8a8;
