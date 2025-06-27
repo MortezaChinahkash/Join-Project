@@ -68,6 +68,21 @@
   font-size: 1rem;
 }
 
+.header-add-task-button {
+  color: var(--bg-dark-grey);
+  background-color: transparent;
+  border: solid 1px var(--bg-dark-grey);
+  border-radius: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .board-add-task-button {
   color: var(--bg-dark-grey);
   background-color: transparent;
@@ -466,14 +481,14 @@
   .buttonArea {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 2rem;
     background-color: white;
     border-top: 1px solid #d1d7db;
     margin-top: auto; // Schiebt Button Area nach unten
 
     span {
-      color: #ff8190;
+      color: #000000;
       font-size: 0.9rem;
       font-style: italic;
     }
@@ -735,20 +750,6 @@
     display: none;
   }
 
-  .component-title {
-    display: flex;
-    order: 1;
-  }
-
-.mobile-add-icon-box {
-  display: flex;
-  order: 2;
-}
-
-.mobile-search-box {
-  display: flex;
-  order: 3;
-}
 
   .board-container {
     display: flex;
