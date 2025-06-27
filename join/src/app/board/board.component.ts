@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 import { Contact, ContactsComponent } from '../contacts/contacts.component';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Task, TaskColumn } from '../interfaces/task.interface';
@@ -74,7 +74,8 @@ taskCollection: string = "tasks"
       dueDate: ['', Validators.required],
       priority: [''], // Priority ist optional, wird über Buttons gesetzt
       assignedTo: [''],
-      category: ['', Validators.required]
+      category: ['', Validators.required],
+      subtasks: this.fb.array([])
     });
 
     // Lokale Arrays initialisieren
@@ -399,13 +400,22 @@ getSelectedContactsText(): string {
     this.showTaskDetailsOverlay = false;
     this.selectedTask = null;
     this.isEditingTask = false;
+    this.showAssignedContactsDropdown = false; // Reset dropdown state
     this.resetForm();
   }
 
   editTask() {
     if (!this.selectedTask) return;
     
+    // Close task details overlay and open edit overlay
+    this.showTaskDetailsOverlay = false;
     this.isEditingTask = true;
+    
+    // Clear existing subtasks
+    while (this.subtasksFormArray.length !== 0) {
+      this.subtasksFormArray.removeAt(0);
+    }
+    
     // Populate form with selected task data
     this.taskForm.patchValue({
       title: this.selectedTask.title,
@@ -420,6 +430,23 @@ getSelectedContactsText(): string {
     // Set selected contacts
     this.selectedContacts = this.selectedTask.assignedTo ? 
       this.contacts.filter(contact => this.selectedTask!.assignedTo!.includes(contact.name)) : [];
+      
+    // Load subtasks
+    if (this.selectedTask.subtasks) {
+      this.selectedTask.subtasks.forEach(subtask => {
+        const subtaskGroup = this.fb.group({
+          title: [subtask.title, Validators.required],
+          completed: [subtask.completed]
+        });
+        this.subtasksFormArray.push(subtaskGroup);
+      });
+    }
+  }
+
+  cancelEditTask() {
+    this.isEditingTask = false;
+    this.showTaskDetailsOverlay = true;
+    this.resetForm();
   }
 
   async saveTaskChanges() {
@@ -433,7 +460,8 @@ getSelectedContactsText(): string {
         dueDate: this.taskForm.value.dueDate,
         priority: this.selectedPriority as any,
         category: this.taskForm.value.category,
-        assignedTo: this.selectedContacts.map(contact => contact.name)
+        assignedTo: this.selectedContacts.map(contact => contact.name),
+        subtasks: this.taskForm.value.subtasks || []
       };
 
       await this.taskService.updateTaskInFirebase(updatedTask);
@@ -447,6 +475,7 @@ getSelectedContactsText(): string {
 
       this.selectedTask = updatedTask;
       this.isEditingTask = false;
+      this.showTaskDetailsOverlay = true; // Return to task details overlay
       console.log('✅ Task updated successfully');
     } catch (error) {
       console.error('❌ Error updating task:', error);
@@ -493,5 +522,47 @@ getSelectedContactsText(): string {
     
     // Auto-save subtask changes
     this.saveTaskChanges();
+  }
+
+  showAssignedContactsDropdown = false; // Controls dropdown visibility for assigned contacts in task details
+
+  // Methods for assigned contacts dropdown in task details
+  getDisplayedAssignedContacts(): string[] {
+    if (!this.selectedTask?.assignedTo) return [];
+    return this.selectedTask.assignedTo.slice(0, 2);
+  }
+
+  hasMoreAssignedContacts(): boolean {
+    return this.selectedTask?.assignedTo ? this.selectedTask.assignedTo.length > 2 : false;
+  }
+
+  getRemainingAssignedContactsCount(): number {
+    if (!this.selectedTask?.assignedTo || this.selectedTask.assignedTo.length <= 2) return 0;
+    return this.selectedTask.assignedTo.length - 2;
+  }
+
+  getRemainingAssignedContacts(): string[] {
+    if (!this.selectedTask?.assignedTo) return [];
+    return this.selectedTask.assignedTo.slice(2);
+  }
+
+  toggleAssignedContactsDropdown(): void {
+    this.showAssignedContactsDropdown = !this.showAssignedContactsDropdown;
+  }
+
+  get subtasksFormArray(): FormArray {
+    return this.taskForm.get('subtasks') as FormArray;
+  }
+
+  addSubtask() {
+    const subtaskGroup = this.fb.group({
+      title: ['', Validators.required],
+      completed: [false]
+    });
+    this.subtasksFormArray.push(subtaskGroup);
+  }
+
+  removeSubtask(index: number) {
+    this.subtasksFormArray.removeAt(index);
   }
 }

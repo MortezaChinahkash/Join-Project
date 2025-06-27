@@ -1032,28 +1032,123 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
   
-  .avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
+  .contact-item {
     display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 400;
-    color: white;
+    gap: 16px;
+    
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 400;
+      color: white;
+    }
+    
+    .contact-name {
+      font-size: 19px;
+      color: #2A3647;
+    }
   }
   
-  .contact-name {
-    font-size: 19px;
-    color: #2A3647;
+  .more-contacts-dropdown {
+    position: relative;
+    
+    .dropdown-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background: transparent;
+    }
+    
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background-color: #f6f7f8;
+      border: 1px solid #d1d7db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #e8e9ea;
+      }
+      
+      .more-contacts-text {
+        font-size: 16px;
+        color: #2A3647;
+        font-weight: 500;
+      }
+      
+      .dropdown-arrow {
+        font-size: 12px;
+        color: #666;
+        transition: transform 0.2s ease;
+        
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    
+    .dropdown-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #d1d1d1;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 4px;
+      
+      .dropdown-contact {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        
+        .avatar {
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: 400;
+          color: white;
+        }
+        
+        .contact-name {
+          font-size: 19px;
+          color: #2A3647;
+        }
+        
+        &:hover {
+          background-color: #f6f7f8;
+        }
+        
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
   }
 }
 
@@ -1190,8 +1285,8 @@
 .taskEditOverlay-content {
   background: white;
   border-radius: 30px;
-  padding: 32px;
-  min-width: 525px;
+  padding: 48px;
+  min-width: 600px;
   max-width: 90vw;
   max-height: 90vh;
   overflow-y: auto;
@@ -1516,3 +1611,88 @@
     }
   }
 }
+
+.subtasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtask-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.subtask-input-group .form-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.subtask-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.subtask-checkbox img {
+  width: 20px;
+  height: 20px;
+}
+
+.remove-subtask-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff3d3d;
+}
+
+.remove-subtask-btn img {
+  width: 16px;
+  height: 16px;
+  filter: invert(39%) sepia(95%) saturate(7471%) hue-rotate(356deg) brightness(107%) contrast(102%);
+}
+
+.remove-subtask-btn:hover {
+  background-color: #ff3d3d1a;
+  border-radius: 4px;
+}
+
+.add-subtask-btn {
+  background: none;
+  border: 1px dashed #29abe2;
+  color: #29abe2;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.add-subtask-btn:hover {
+  background-color: #29abe21a;
+}
+
+.add-subtask-btn img {
+  width: 16px;
+  height: 16px;
+  filter: invert(62%) sepia(98%) saturate(1034%) hue-rotate(172deg) brightness(97%) contrast(89%);
+}
+
