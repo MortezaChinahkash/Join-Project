@@ -30,29 +30,134 @@
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">To Do</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay()">+</button>
+            <button class="board-add-task-button" (click)="openAddTaskOverlay('todo')">+</button>
           </div>
-          <div class="task-list"></div>
+          <div class="task-list">
+            <div class="task-card" *ngFor="let task of todoTasks">
+              <div class="task-category-tag" [ngClass]="'category-' + task.category">
+                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              </div>
+              <h3 class="task-title">{{ task.title }}</h3>
+              <p class="task-description">{{ task.description }}</p>
+              
+              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                </div>
+                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+              </div>
+              
+              <div class="task-footer">
+                <div class="task-avatars" *ngIf="task.assignedTo">
+                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    {{ getInitials(task.assignedTo) }}
+                  </div>
+                </div>
+                <div class="task-priority">
+                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">In Progress</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay()">+</button>
+            <button class="board-add-task-button" (click)="openAddTaskOverlay('inprogress')">+</button>
           </div>
-          <div class="task-list"></div>
+          <div class="task-list">
+            <div class="task-card" *ngFor="let task of inProgressTasks">
+              <div class="task-category-tag" [ngClass]="'category-' + task.category">
+                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              </div>
+              <h3 class="task-title">{{ task.title }}</h3>
+              <p class="task-description">{{ task.description }}</p>
+              
+              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                </div>
+                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+              </div>
+              
+              <div class="task-footer">
+                <div class="task-avatars" *ngIf="task.assignedTo">
+                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    {{ getInitials(task.assignedTo) }}
+                  </div>
+                </div>
+                <div class="task-priority">
+                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">Awaiting feedback</h2>
-            <button class="board-add-task-button" (click)="openAddTaskOverlay()">+</button>
+            <button class="board-add-task-button" (click)="openAddTaskOverlay('awaiting')">+</button>
           </div>
-          <div class="task-list"></div>
+          <div class="task-list">
+            <div class="task-card" *ngFor="let task of awaitingFeedbackTasks">
+              <div class="task-category-tag" [ngClass]="'category-' + task.category">
+                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              </div>
+              <h3 class="task-title">{{ task.title }}</h3>
+              <p class="task-description">{{ task.description }}</p>
+              
+              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                </div>
+                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+              </div>
+              
+              <div class="task-footer">
+                <div class="task-avatars" *ngIf="task.assignedTo">
+                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    {{ getInitials(task.assignedTo) }}
+                  </div>
+                </div>
+                <div class="task-priority">
+                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="board-column">
           <div class="column-header">
             <h2 class="column-title">Done</h2>
+            <button class="board-add-task-button" (click)="openAddTaskOverlay('done')">+</button>
           </div>
-          <div class="task-list"></div>
+          <div class="task-list">
+            <div class="task-card" *ngFor="let task of doneTasks">
+              <div class="task-category-tag" [ngClass]="'category-' + task.category">
+                {{ task.category === 'technical' ? 'Technical Task' : 'User Story' }}
+              </div>
+              <h3 class="task-title">{{ task.title }}</h3>
+              <p class="task-description">{{ task.description }}</p>
+              
+              <div class="task-progress" *ngIf="task.subtasks && task.subtasks.length > 0">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="getTaskProgress(task)"></div>
+                </div>
+                <span class="progress-text">{{ getCompletedSubtasks(task) }}/{{ task.subtasks.length }} Subtasks</span>
+              </div>
+              
+              <div class="task-footer">
+                <div class="task-avatars" *ngIf="task.assignedTo">
+                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                    {{ getInitials(task.assignedTo) }}
+                  </div>
+                </div>
+                <div class="task-priority">
+                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -144,7 +249,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" [formGroup]="taskForm">
             <label for="assignedTo">Assigned to</label>
             <select id="assignedTo" formControlName="assignedTo" class="form-select">
               <option value="">Select contacts to assign</option>
@@ -154,14 +259,14 @@
             </select>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" [formGroup]="taskForm">
             <label for="category">Category<span class="required">*</span></label>
             <select 
               id="category" 
               formControlName="category" 
               class="form-select"
               [class.error]="isFieldInvalid('category')"
-              (change)="onCategoryChange()"
+              (change)="onCategoryChange($event); debugCategoryStatus()"
             >
               <option value="">Select task category</option>
               <option value="technical">Technical Task</option>
@@ -183,7 +288,7 @@
       </div>  
 
       <div class="buttonArea">
-        <span *ngIf="taskForm.invalid && taskForm.touched">This field is required</span>
+        <span *ngIf="taskForm.invalid && taskForm.touched && (isFieldInvalid('title') || isFieldInvalid('dueDate') || isFieldInvalid('category'))">This field is required</span>
         <div class="button-group">
           <button type="button" class="cancelBtn" (click)="closeAddTaskOverlay()">Cancel</button>
           <button type="button" class="createBtn" (click)="onSubmit()">
