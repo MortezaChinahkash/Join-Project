@@ -571,15 +571,6 @@
   .desktop-only {
     display: none;
   }
-
-    .component-title-bar {
-    /* make sure items align nicely on mobile */
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 1rem;
-  }
   
   .board-container {
     display: flex;
