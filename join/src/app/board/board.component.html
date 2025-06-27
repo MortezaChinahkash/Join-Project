@@ -29,7 +29,7 @@
               <span class="empty-message">{{ column.emptyMessage }}</span>
             </div>
             <!-- Tasks -->
-            <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())">
+            <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" (click)="openTaskDetails(task)">
               <div class="task-category-tag" [ngClass]="'category-' + task.category">{{ task.category === "technical" ? "Technical Task" : "User Story" }}</div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
