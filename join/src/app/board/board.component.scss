@@ -481,14 +481,14 @@
   .buttonArea {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding: 2rem;
     background-color: white;
     border-top: 1px solid #d1d7db;
     margin-top: auto; // Schiebt Button Area nach unten
 
     span {
-      color: #ff8190;
+      color: #000000;
       font-size: 0.9rem;
       font-style: italic;
     }
