@@ -402,19 +402,19 @@
 
                 <div class="custom-select-wrapper">
                   <div class="custom-select" (click)="toggleDropdown()">
-                    <div
-                      class="selected-option"
-                      *ngIf="getSelectedContact(); else placeholder"
-                    >
-                      <div
-                        class="contact-avatar"
-                        [style.background-color]="
-                          getInitialsColor(getSelectedContact()!.name)
-                        "
-                      >
-                        {{ getInitials(getSelectedContact()!.name) }}
+                    <!-- Ausgewählte Kontakte anzeigen -->
+                    <div class="selected-contacts" *ngIf="selectedContacts.length > 0; else placeholder">
+                      <div class="selected-contact-avatars">
+                        <div class="contact-avatar" 
+                             *ngFor="let contact of selectedContacts.slice(0, 4)" 
+                             [style.background-color]="getInitialsColor(contact.name)">
+                          {{ getInitials(contact.name) }}
+                        </div>
+                        <div class="more-contacts" *ngIf="selectedContacts.length > 4">
+                          +{{ selectedContacts.length - 4 }}
+                        </div>
                       </div>
-                      <span>{{ getSelectedContact()!.name }}</span>
+                      <span class="selected-text">{{ getSelectedContactsText() }}</span>
                     </div>
                     <ng-template #placeholder>
                       <span class="placeholder">Select contacts to assign</span>
