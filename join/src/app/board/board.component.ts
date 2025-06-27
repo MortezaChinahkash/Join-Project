@@ -38,6 +38,13 @@ export class BoardComponent {
   selectPriority(priority: string) {
     this.selectedPriority = priority;
     this.taskForm.patchValue({ priority: priority });
+    // Mark priority field as touched to trigger validation
+    this.taskForm.get('priority')?.markAsTouched();
+  }
+
+  onCategoryChange() {
+    // Mark category field as touched when changed
+    this.taskForm.get('category')?.markAsTouched();
   }
 
   resetForm() {

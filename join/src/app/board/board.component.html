@@ -56,6 +56,7 @@
                 [placeholder]="isFieldInvalid('title') ? 'This field is required' : 'Enter a title'" 
                 class="form-input"
                 [class.error]="isFieldInvalid('title')"
+                (blur)="taskForm.get('title')?.markAsTouched()"
               />
             </div>
 
@@ -79,6 +80,7 @@
                   formControlName="dueDate"
                   class="form-input date-input"
                   [class.error]="isFieldInvalid('dueDate')"
+                  (change)="taskForm.get('dueDate')?.markAsTouched()"
                 />
                 <img
                   src="./assets/img/icon_calendar.svg"
@@ -144,6 +146,7 @@
               formControlName="category" 
               class="form-select"
               [class.error]="isFieldInvalid('category')"
+              (change)="onCategoryChange()"
             >
               <option value="">Select task category</option>
               <option value="technical">Technical Task</option>
