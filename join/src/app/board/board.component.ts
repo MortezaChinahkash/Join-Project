@@ -16,6 +16,9 @@ import { TaskService } from '../services/task.service';
 export class BoardComponent implements OnInit {
   taskForm: FormGroup;
   showAddTaskOverlay = false;
+  showTaskDetailsOverlay = false;
+  selectedTask: Task | null = null;
+  isEditingTask = false;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
 taskCollection: string = "tasks"
@@ -383,5 +386,112 @@ getSelectedContactsText(): string {
     console.log('In Progress:', this.inProgressTasks.length);
     console.log('Awaiting:', this.awaitingFeedbackTasks.length);
     console.log('Done:', this.doneTasks.length);
+  }
+
+  // Task Details Overlay Methods
+  openTaskDetails(task: Task) {
+    this.selectedTask = task;
+    this.showTaskDetailsOverlay = true;
+    this.isEditingTask = false;
+  }
+
+  closeTaskDetailsOverlay() {
+    this.showTaskDetailsOverlay = false;
+    this.selectedTask = null;
+    this.isEditingTask = false;
+    this.resetForm();
+  }
+
+  editTask() {
+    if (!this.selectedTask) return;
+    
+    this.isEditingTask = true;
+    // Populate form with selected task data
+    this.taskForm.patchValue({
+      title: this.selectedTask.title,
+      description: this.selectedTask.description,
+      dueDate: this.selectedTask.dueDate,
+      priority: this.selectedTask.priority,
+      category: this.selectedTask.category
+    });
+    
+    this.selectedPriority = this.selectedTask.priority || '';
+    
+    // Set selected contacts
+    this.selectedContacts = this.selectedTask.assignedTo ? 
+      this.contacts.filter(contact => this.selectedTask!.assignedTo!.includes(contact.name)) : [];
+  }
+
+  async saveTaskChanges() {
+    if (!this.selectedTask || !this.taskForm.valid) return;
+
+    try {
+      const updatedTask: Task = {
+        ...this.selectedTask,
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        dueDate: this.taskForm.value.dueDate,
+        priority: this.selectedPriority as any,
+        category: this.taskForm.value.category,
+        assignedTo: this.selectedContacts.map(contact => contact.name)
+      };
+
+      await this.taskService.updateTaskInFirebase(updatedTask);
+      
+      // Update local tasks array
+      const taskIndex = this.tasks.findIndex(t => t.id === updatedTask.id);
+      if (taskIndex !== -1) {
+        this.tasks[taskIndex] = updatedTask;
+        this.sortTasksIntoColumns();
+      }
+
+      this.selectedTask = updatedTask;
+      this.isEditingTask = false;
+      console.log('✅ Task updated successfully');
+    } catch (error) {
+      console.error('❌ Error updating task:', error);
+    }
+  }
+
+  async deleteTask() {
+    if (!this.selectedTask || !this.selectedTask.id) return;
+
+    const confirmDelete = confirm(`Are you sure you want to delete the task "${this.selectedTask.title}"?`);
+    if (!confirmDelete) return;
+
+    try {
+      await this.taskService.deleteTaskFromFirebase(this.selectedTask.id);
+      
+      // Remove from local arrays
+      this.tasks = this.tasks.filter(t => t.id !== this.selectedTask!.id);
+      this.sortTasksIntoColumns();
+
+      this.closeTaskDetailsOverlay();
+      console.log('✅ Task deleted successfully');
+    } catch (error) {
+      console.error('❌ Error deleting task:', error);
+    }
+  }
+
+  getSubtaskProgress(): number {
+    if (!this.selectedTask?.subtasks || this.selectedTask.subtasks.length === 0) {
+      return 0;
+    }
+    const completed = this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+    return (completed / this.selectedTask.subtasks.length) * 100;
+  }
+
+  getCompletedSubtasksCount(): number {
+    if (!this.selectedTask?.subtasks) return 0;
+    return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+  }
+
+  toggleSubtask(subtaskIndex: number) {
+    if (!this.selectedTask?.subtasks) return;
+    
+    this.selectedTask.subtasks[subtaskIndex].completed = !this.selectedTask.subtasks[subtaskIndex].completed;
+    
+    // Auto-save subtask changes
+    this.saveTaskChanges();
   }
 }
