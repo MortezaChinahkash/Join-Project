@@ -555,11 +555,23 @@
   }
 
   .component-title {
+    display: flex;
     order: 1;
   }
+
+.mobile-add-icon-box {
+  display: flex;
+  order: 2;
+}
+
+.mobile-search-box {
+  display: flex;
+  order: 3;
+}
 
   .board-container {
     display: flex;
     flex-direction: column;
   }
+
 }
