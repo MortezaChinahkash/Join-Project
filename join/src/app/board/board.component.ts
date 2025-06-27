@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Contact, ContactsComponent } from '../contacts/contacts.component';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
+import { Task, TaskColumn } from '../interfaces/task.interface';
+import { TaskService } from '../services/task.service';
 
 @Component({
   selector: 'app-board',
@@ -14,19 +16,21 @@ import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 export class BoardComponent implements OnInit {
   taskForm: FormGroup;
   showAddTaskOverlay = false;
-  selectedPriority: string = '';
-  currentColumn: string = ''; // Speichert die aktuelle Spalte
-
-  contacts: Contact[] = [];
-  private firestore = inject(Firestore);
+  selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
+  currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
 
   // Arrays für die verschiedenen Spalten
   todoTasks: any[] = [];
   inProgressTasks: any[] = [];
   awaitingFeedbackTasks: any[] = [];
   doneTasks: any[] = [];
+  // Arrays für die verschiedenen Spalten - jetzt typisiert
+  todoTasks: Task[] = [];
+  inProgressTasks: Task[] = [];
+  awaitingFeedbackTasks: Task[] = [];
+  doneTasks: Task[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -35,9 +39,12 @@ export class BoardComponent implements OnInit {
       assignedTo: [''],
       category: ['', Validators.required]
     });
+
+    // Lokale Arrays initialisieren
+    this.updateLocalArrays();
   }
 
-  openAddTaskOverlay(column: string = 'todo') {
+  openAddTaskOverlay(column: TaskColumn = 'todo') {
     this.showAddTaskOverlay = true;
     this.currentColumn = column;
     this.resetForm();
@@ -48,7 +55,7 @@ export class BoardComponent implements OnInit {
     this.resetForm();
   }
 
-  selectPriority(priority: string) {
+  selectPriority(priority: 'urgent' | 'medium' | 'low') {
     this.selectedPriority = priority;
     this.taskForm.patchValue({ priority: priority });
     // Mark priority field as touched to trigger validation
@@ -73,40 +80,25 @@ export class BoardComponent implements OnInit {
     this.markFormGroupTouched();
     
     if (this.taskForm.valid) {
-      const newTask = {
-        id: Date.now(), // Einfache ID-Generierung
-        ...this.taskForm.value,
+      const taskData: Omit<Task, 'id' | 'createdAt'> = {
+        title: this.taskForm.value.title,
+        description: this.taskForm.value.description,
+        dueDate: this.taskForm.value.dueDate,
         priority: this.selectedPriority,
-        createdAt: new Date(),
-        subtasks: [] // Placeholder für Subtasks
+        assignedTo: this.taskForm.value.assignedTo,
+        category: this.taskForm.value.category,
+        subtasks: []
       };
 
-      // Task je nach aktueller Spalte zum entsprechenden Array hinzufügen
-      switch (this.currentColumn) {
-        case 'todo':
-          this.todoTasks.push(newTask);
-          break;
-        case 'inprogress':
-          this.inProgressTasks.push(newTask);
-          break;
-        case 'awaiting':
-          this.awaitingFeedbackTasks.push(newTask);
-          break;
-        case 'done':
-          this.doneTasks.push(newTask);
-          break;
-        default:
-          this.todoTasks.push(newTask); // Standard: To Do
-      }
+      // Task über den Service hinzufügen
+      const newTask = this.taskService.addTask(taskData, this.currentColumn);
+
+      // Lokale Arrays aktualisieren
+      this.updateLocalArrays();
 
       console.log('Task created in column:', this.currentColumn);
       console.log('Task:', newTask);
-      console.log('All tasks:', {
-        todo: this.todoTasks,
-        inProgress: this.inProgressTasks,
-        awaiting: this.awaitingFeedbackTasks,
-        done: this.doneTasks
-      });
+      console.log('All tasks:', this.taskService.getAllTasks());
 
       this.closeAddTaskOverlay();
     } else {
@@ -121,6 +113,14 @@ export class BoardComponent implements OnInit {
       const control = this.taskForm.get(key);
       control?.markAsTouched();
     });
+  }
+
+  // Lokale Arrays mit Service synchronisieren
+  private updateLocalArrays() {
+    this.todoTasks = this.taskService.getTasksByColumn('todo');
+    this.inProgressTasks = this.taskService.getTasksByColumn('inprogress');
+    this.awaitingFeedbackTasks = this.taskService.getTasksByColumn('awaiting');
+    this.doneTasks = this.taskService.getTasksByColumn('done');
   }
 
   isFieldInvalid(fieldName: string): boolean {
@@ -141,20 +141,21 @@ export class BoardComponent implements OnInit {
   }
 
   // Helper methods for task display
-  getTaskProgress(task: any): number {
+  getTaskProgress(task: Task): number {
     if (!task.subtasks || task.subtasks.length === 0) return 0;
-    const completed = task.subtasks.filter((subtask: any) => subtask.completed).length;
+    const completed = task.subtasks.filter(subtask => subtask.completed).length;
     return (completed / task.subtasks.length) * 100;
   }
 
-  getCompletedSubtasks(task: any): number {
+  getCompletedSubtasks(task: Task): number {
     if (!task.subtasks) return 0;
-    return task.subtasks.filter((subtask: any) => subtask.completed).length;
+    return task.subtasks.filter(subtask => subtask.completed).length;
   }
 
   getAvatarColor(assignedTo: string): string {
+    if (!assignedTo) return '#999999';
     const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FECA57', '#A55EEA', '#FF9FF3', '#26D0CE'];
-    const index = assignedTo ? assignedTo.charCodeAt(0) % colors.length : 0;
+    const index = assignedTo.charCodeAt(0) % colors.length;
     return colors[index];
   }
 
@@ -163,16 +164,16 @@ export class BoardComponent implements OnInit {
   //   return name.split(' ').map(n => n[0]).join('').toUpperCase();
   // }
 
-  getPriorityIcon(priority: string): string {
+  getPriorityIcon(priority: Task['priority']): string {
     switch (priority) {
       case 'urgent':
-        return './assets/icons/priority_urgent.svg';
+        return './assets/img/icon_priority_urgent.svg';
       case 'medium':
-        return './assets/icons/priority_medium.svg';
+        return './assets/img/icon_priority_medium.svg';
       case 'low':
-        return './assets/icons/priority_low.svg';
+        return './assets/img/icon_priority_low.svg';
       default:
-        return './assets/icons/priority_medium.svg';
+        return './assets/img/icon_priority_medium.svg';
     }
   }
 

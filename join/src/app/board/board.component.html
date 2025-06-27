@@ -13,9 +13,7 @@
 
     <!-- Mobile version: icon-only button -->
     <div class="mobile-only add-icon-box">
-      <button class="add-icon-button" (click)="openAddTaskOverlay()">
-        <img src="./assets/img/icon_plus.svg" alt="Add task">
-      </button>
+      <button class="add-task-button" (click)="openAddTaskOverlay()">+</button>
     </div>
   </div>
 
@@ -49,11 +47,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -82,11 +82,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -115,11 +117,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -147,11 +151,13 @@
               
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo">
-                  <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
-                    {{ getInitials(task.assignedTo) }}
+                  <div class="avatar-group">
+                    <div class="avatar" [style.background-color]="getAvatarColor(task.assignedTo)">
+                      {{ getInitials(task.assignedTo) }}
+                    </div>
                   </div>
                 </div>
-                <div class="task-priority">
+                <div class="task-priority" *ngIf="task.priority">
                   <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon">
                 </div>
               </div>
@@ -288,7 +294,6 @@
       </div>  
 
       <div class="buttonArea">
-        <span *ngIf="taskForm.invalid && taskForm.touched && (isFieldInvalid('title') || isFieldInvalid('dueDate') || isFieldInvalid('category'))">This field is required</span>
         <div class="button-group">
           <button type="button" class="cancelBtn" (click)="closeAddTaskOverlay()">Cancel</button>
           <button type="button" class="createBtn" (click)="onSubmit()">
