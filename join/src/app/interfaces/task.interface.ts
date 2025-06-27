@@ -1,5 +1,5 @@
 export interface Task {
-  id: number;
+  id?: string; // Optional, da Firebase die ID automatisch generiert
   title: string;
   description: string;
   dueDate: string;
@@ -11,7 +11,7 @@ export interface Task {
 }
 
 export interface Subtask {
-  id: number;
+  id?: string; // Optional, da Firebase die ID automatisch generiert
   title: string;
   completed: boolean;
 }
