@@ -404,11 +404,18 @@
               <div class="dropdown-options" *ngIf="isDropdownOpen">
                 <div class="dropdown-option" 
                      *ngFor="let contact of contacts" 
-                     (click)="selectContact(contact)">
+                     (click)="toggleContactSelection(contact, $event)">
                   <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">
                     {{ getInitials(contact.name) }}
                   </div>
-                  <span>{{ contact.name }}</span>
+                  <span class="contact-name">{{ contact.name }}</span>
+                  <div class="checkbox-wrapper">
+                    <input type="checkbox" 
+                           [id]="'contact-' + contact.id"
+                           [checked]="isContactSelected(contact)"
+                           (click)="$event.stopPropagation()">
+                    <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
+                  </div>
                 </div>
               </div>
             </div>

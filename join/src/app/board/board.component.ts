@@ -23,6 +23,7 @@ export class BoardComponent implements OnInit {
   private firestore = inject(Firestore);
 
     isDropdownOpen = false;
+    selectedContacts: Contact[] = []; // Array für ausgewählte Kontakte
 
   
   // Arrays für die verschiedenen Spalten - jetzt typisiert
@@ -47,6 +48,26 @@ export class BoardComponent implements OnInit {
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  toggleContactSelection(contact: Contact, event: Event) {
+    event.stopPropagation();
+    
+    const index = this.selectedContacts.findIndex(c => c.id === contact.id);
+    
+    if (index === -1) {
+      // Kontakt hinzufügen
+      this.selectedContacts.push(contact);
+    } else {
+      // Kontakt entfernen
+      this.selectedContacts.splice(index, 1);
+    }
+    
+    console.log('Ausgewählte Kontakte:', this.selectedContacts);
+  }
+
+  isContactSelected(contact: Contact): boolean {
+    return this.selectedContacts.some(c => c.id === contact.id);
   }
 
    selectContact(contact: Contact) {
