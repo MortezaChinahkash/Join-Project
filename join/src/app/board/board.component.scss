@@ -827,6 +827,15 @@
     display: flex;
     flex-direction: column;
   }
+
+  .default-content-container {
+    display: flex;
+  }
+
+  .component-header {
+    width: 90%;
+    padding-inline: 1rem;
+  }
 }
 .priority-icon-overlay {
   width: 20px;
