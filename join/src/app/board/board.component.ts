@@ -246,4 +246,16 @@ export class BoardComponent implements OnInit {
   );
 }
 
+getSelectedContactsText(): string {
+    if (this.selectedContacts.length === 0) return '';
+    
+    if (this.selectedContacts.length === 1) {
+      return this.selectedContacts[0].name;
+    } else if (this.selectedContacts.length === 2) {
+      return this.selectedContacts.map(c => c.name).join(', ');
+    } else {
+      return `${this.selectedContacts[0].name} +${this.selectedContacts.length - 1} more`;
+    }
+  }
+
 }
