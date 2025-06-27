@@ -743,7 +743,9 @@
           }
 
           .checkbox-label {
-            display: inline-block;
+            display: flex;                    // Flexbox verwenden
+            align-items: center;             // Vertikal zentrieren
+            justify-content: center;         // Horizontal zentrieren
             width: 18px;
             height: 18px;
             border: 2px solid #d1d7db;
@@ -753,12 +755,8 @@
             position: relative;
             transition: all 0.2s ease;
 
-            // Häkchen
             &::after {
               content: "";
-              position: absolute;
-              left: 4px;
-              top: 1px;
               width: 4px;
               height: 8px;
               border: solid white;
@@ -766,6 +764,7 @@
               transform: rotate(45deg) scale(0);
               opacity: 0;
               transition: all 0.2s ease;
+              margin-top: -1px;              // Kleine optische Korrektur
             }
 
             &:hover {
