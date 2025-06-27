@@ -834,7 +834,19 @@
 
   .component-header {
     width: 90%;
-    padding-inline: 1rem;
+    padding-right: 2rem;
+  }
+
+  .component-title-bar {
+    display: flex;
+    order: 1;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mobile-search-box {
+    display: flex;
+    order: 2;
   }
 }
 .priority-icon-overlay {
