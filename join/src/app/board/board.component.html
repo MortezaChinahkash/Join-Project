@@ -7,10 +7,20 @@
 
           <div class="search-add-box desktop-only">
             <input type="text" class="search-input" placeholder="Find task" />
-            <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task +</button>
+            <button
+              class="desktop-header-add-button header-add-task-button"
+              (click)="openAddTaskOverlay()"
+            >
+              Add task +
+            </button>
           </div>
 
-          <button class="mobile-header-add-button header-add-task-button mobile-only" (click)="openAddTaskOverlay()">+</button>
+          <button
+            class="mobile-header-add-button header-add-task-button mobile-only"
+            (click)="openAddTaskOverlay()"
+          >
+            +
+          </button>
         </div>
 
         <div class="mobile-only mobile-search-box">
@@ -352,7 +362,11 @@
                     (click)="selectPriority('urgent')"
                   >
                     Urgent
-                    <span class="priority-icon">🔺</span>
+                    <img
+                      src="assets/img/icon_priority_urgent.svg"
+                      alt="Urgent"
+                      class="priority-icon-overlay urgent-icon"
+                    />
                   </button>
                   <button
                     type="button"
@@ -361,7 +375,11 @@
                     (click)="selectPriority('medium')"
                   >
                     Medium
-                    <span class="priority-icon">🟰</span>
+                    <img
+                      src="assets/img/icon_priority_medium.svg"
+                      alt="Medium"
+                      class="priority-icon-overlay medium-icon"
+                    />
                   </button>
                   <button
                     type="button"
@@ -370,14 +388,18 @@
                     (click)="selectPriority('low')"
                   >
                     Low
-                    <span class="priority-icon">🔻</span>
+                    <img
+                      src="assets/img/icon_priority_low.svg"
+                      alt="Low"
+                      class="priority-icon-overlay low-icon"
+                    />
                   </button>
                 </div>
               </div>
 
               <div class="form-group" [formGroup]="taskForm">
                 <label for="assignedTo">Assigned to</label>
-                
+
                 <div class="custom-select-wrapper">
                   <div class="custom-select" (click)="toggleDropdown()">
                     <!-- Ausgewählte Kontakte anzeigen -->
@@ -397,29 +419,43 @@
                     <ng-template #placeholder>
                       <span class="placeholder">Select contacts to assign</span>
                     </ng-template>
-                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
+                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">
+                      ▼
+                    </div>
                   </div>
-                  
+
                   <div class="dropdown-options" *ngIf="isDropdownOpen">
-                    <div class="dropdown-option" 
-                         *ngFor="let contact of contacts" 
-                         (click)="toggleContactSelection(contact, $event)">
-                      <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">
+                    <div
+                      class="dropdown-option"
+                      *ngFor="let contact of contacts"
+                      (click)="toggleContactSelection(contact, $event)"
+                    >
+                      <div
+                        class="contact-avatar"
+                        [style.background-color]="
+                          getInitialsColor(contact.name)
+                        "
+                      >
                         {{ getInitials(contact.name) }}
                       </div>
                       <span class="contact-name">{{ contact.name }}</span>
                       <div class="checkbox-wrapper">
-                        <input type="checkbox" 
-                               [id]="'contact-' + contact.id"
-                               [checked]="isContactSelected(contact)"
-                               (click)="$event.stopPropagation()">
-                        <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
+                        <input
+                          type="checkbox"
+                          [id]="'contact-' + contact.id"
+                          [checked]="isContactSelected(contact)"
+                          (click)="$event.stopPropagation()"
+                        />
+                        <label
+                          [for]="'contact-' + contact.id"
+                          class="checkbox-label"
+                        ></label>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div class="form-group" [formGroup]="taskForm">
                 <label for="category"
                   >Category<span class="required">*</span></label
