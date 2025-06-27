@@ -4,7 +4,7 @@ export interface Task {
   description: string;
   dueDate: string;
   priority: 'urgent' | 'medium' | 'low' | '';
-  assignedTo: string;
+  assignedTo: string[]; // Array für mehrere Kontakte
   category: 'technical' | 'user-story' | '';
   subtasks: Subtask[];
   createdAt: Date;
