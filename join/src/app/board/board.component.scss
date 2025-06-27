@@ -757,3 +757,8 @@
   }
 
 }
+.priority-icon-overlay{
+  width: 20px;
+  height: 20px;
+  pointer-events: none; // Verhindert, dass das Overlay Klicks blockiert
+}
