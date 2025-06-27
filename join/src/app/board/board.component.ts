@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Contact, ContactsComponent } from '../contacts/contacts.component';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-board',
@@ -9,11 +11,14 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
-export class BoardComponent {
+export class BoardComponent implements OnInit {
   taskForm: FormGroup;
   showAddTaskOverlay = false;
   selectedPriority: string = '';
   currentColumn: string = ''; // Speichert die aktuelle Spalte
+
+  contacts: Contact[] = [];
+  private firestore = inject(Firestore);
 
   // Arrays für die verschiedenen Spalten
   todoTasks: any[] = [];
@@ -153,10 +158,10 @@ export class BoardComponent {
     return colors[index];
   }
 
-  getInitials(name: string): string {
-    if (!name) return '';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  }
+  // getInitials(name: string): string {
+  //   if (!name) return '';
+  //   return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  // }
 
   getPriorityIcon(priority: string): string {
     switch (priority) {
@@ -170,4 +175,37 @@ export class BoardComponent {
         return './assets/icons/priority_medium.svg';
     }
   }
+
+  ngOnInit() {
+  console.log('BoardComponent initialized');
+  this.loadContacts()
+  }
+
+  getInitials(name: string): string {
+    return ContactsComponent.getInitials(name);
+  }
+
+  getInitialsColor(name: string): string {
+    return ContactsComponent.getInitialsColor(name);
+  }
+
+  private loadContacts() {
+  const contactsCollection = collection(this.firestore, 'contacts');
+  collectionData(contactsCollection, { idField: 'id' }).subscribe(
+    (contacts) => {
+      this.contacts = contacts as Contact[];
+      
+      // Alphabetisch sortieren
+      this.contacts.sort((a, b) => 
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      );
+      
+      console.log('Kontakte geladen:', this.contacts);
+    },
+    (error) => {
+      console.error('Fehler beim Laden der Kontakte:', error);
+    }
+  );
+}
+
 }

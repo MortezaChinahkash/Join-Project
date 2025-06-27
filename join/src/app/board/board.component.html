@@ -252,9 +252,10 @@
             <label for="assignedTo">Assigned to</label>
             <select id="assignedTo" formControlName="assignedTo" class="form-select">
               <option value="">Select contacts to assign</option>
-              <option value="user1">John Doe</option>
-              <option value="user2">Jane Smith</option>
-              <option value="user3">Mike Johnson</option>
+              <option *ngFor="let contact of contacts" 
+                       [value]="contact.id">
+                       
+                       {{ contact.name }}</option>              
             </select>
           </div>
 
