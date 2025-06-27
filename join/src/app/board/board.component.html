@@ -256,13 +256,33 @@
 
           <div class="form-group" [formGroup]="taskForm">
             <label for="assignedTo">Assigned to</label>
-            <select id="assignedTo" formControlName="assignedTo" class="form-select">
-              <option value="">Select contacts to assign</option>
-              <option *ngFor="let contact of contacts" 
-                       [value]="contact.id">
-                       
-                       {{ contact.name }}</option>              
-            </select>
+            
+            <!-- Custom Dropdown -->
+            <div class="custom-select-wrapper">
+              <div class="custom-select" (click)="toggleDropdown()">
+                <div class="selected-option" *ngIf="getSelectedContact(); else placeholder">
+                  <div class="contact-avatar" [style.background-color]="getInitialsColor(getSelectedContact()!.name)">
+                    {{ getInitials(getSelectedContact()!.name) }}
+                  </div>
+                  <span>{{ getSelectedContact()!.name }}</span>
+                </div>
+                <ng-template #placeholder>
+                  <span class="placeholder">Select contacts to assign</span>
+                </ng-template>
+                <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
+              </div>
+              
+              <div class="dropdown-options" *ngIf="isDropdownOpen">
+                <div class="dropdown-option" 
+                     *ngFor="let contact of contacts" 
+                     (click)="selectContact(contact)">
+                  <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">
+                    {{ getInitials(contact.name) }}
+                  </div>
+                  <span>{{ contact.name }}</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="form-group" [formGroup]="taskForm">
