@@ -8,6 +8,7 @@ export interface Task {
   category: 'technical' | 'user-story' | '';
   subtasks: Subtask[];
   createdAt: Date;
+  column: TaskColumn; // ← NEU: Spalten-Information
 }
 
 export interface Subtask {

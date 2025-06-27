@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Firestore, addDoc, collection } from '@angular/fire/firestore';
 import { Task, TaskColumn, Subtask } from '../interfaces/task.interface';
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class TaskService {
   private tasks: { [key in TaskColumn]: Task[] } = {
     todo: [],
@@ -11,8 +13,33 @@ export class TaskService {
     awaiting: [],
     done: []
   };
+  taskCollection: string = "tasks"
 
-  constructor() { }
+  private firestore = inject(Firestore);
+
+  constructor() {
+  }
+
+  async addTaskToFirebase(task: Omit<Task, 'id'>, column: TaskColumn): Promise<string> {
+    try {
+      console.log('🔥 Sende Task zu Firebase:', task);
+      
+      const taskData = {
+        ...task,
+        column: column, // ← NEU: Spalte mit speichern
+        createdAt: new Date()
+      };
+      
+      const docRef = await addDoc(collection(this.firestore, this.taskCollection), taskData);
+      
+      console.log('✅ Firebase Document erstellt mit ID:', docRef.id);
+      console.log('📍 Spalte gespeichert:', column);
+      return docRef.id;
+    } catch (error) {
+      console.error('❌ Firebase Fehler:', error);
+      throw error;
+    }
+  }
 
   // Get tasks for a specific column
   getTasksByColumn(column: TaskColumn): Task[] {
@@ -34,6 +61,11 @@ export class TaskService {
 
     this.tasks[column].push(newTask);
     return newTask;
+  }
+
+  // Neue Methode: Task direkt hinzufügen (für Firebase Integration)
+  addTaskDirectly(task: Task, column: TaskColumn): void {
+    this.tasks[column].push(task);
   }
 
   // Temporary ID generation for local development (will be replaced by Firebase)

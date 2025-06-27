@@ -18,7 +18,7 @@ export class BoardComponent implements OnInit {
   showAddTaskOverlay = false;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
-
+taskCollection: string = "tasks"
   contacts: Contact[] = [];
   private firestore = inject(Firestore);
 
@@ -30,6 +30,7 @@ export class BoardComponent implements OnInit {
   inProgressTasks: Task[] = [];
   awaitingFeedbackTasks: Task[] = [];
   doneTasks: Task[] = [];
+  tasks: Task[] = []; // Holds all tasks loaded from Firebase
 
   // Board columns configuration
   boardColumns = [
@@ -144,36 +145,59 @@ export class BoardComponent implements OnInit {
     this.selectedContacts = []; // Reset selected contacts
   }
 
-  onSubmit() {
-    // Mark all fields as touched to show validation errors
+  async onSubmit() {
+    // Schritt 1: Alle Felder als berührt markieren
     this.markFormGroupTouched();
     
+    // Schritt 2: Prüfen ob das Formular gültig ist
     if (this.taskForm.valid) {
-      const taskData: Omit<Task, 'id' | 'createdAt'> = {
-        title: this.taskForm.value.title,
-        description: this.taskForm.value.description,
-        dueDate: this.taskForm.value.dueDate,
-        priority: this.selectedPriority,
-        assignedTo: this.selectedContacts.map(contact => contact.name), // Use selected contacts
-        category: this.taskForm.value.category,
-        subtasks: []
-      };
+      try {
+        // Schritt 3: Task-Daten vorbereiten
+        const taskData: Omit<Task, 'id' | 'createdAt'> = {
+          title: this.taskForm.value.title,
+          description: this.taskForm.value.description,
+          dueDate: this.taskForm.value.dueDate,
+          priority: this.selectedPriority,
+          assignedTo: this.selectedContacts.map(contact => contact.name),
+          category: this.taskForm.value.category,
+          subtasks: [],
+          column: this.currentColumn // ← NEU: Spalte hinzufügen
+        };
 
-      // Task über den Service hinzufügen
-      const newTask = this.taskService.addTask(taskData, this.currentColumn);
+        console.log('📝 Erstelle Task für Spalte:', this.currentColumn);
 
-      // Lokale Arrays aktualisieren
-      this.updateLocalArrays();
+        // Schritt 4: Task zu Firebase hinzufügen (mit Spalten-Info)
+        const firebaseId = await this.taskService.addTaskToFirebase({
+          ...taskData,
+          createdAt: new Date()
+        }, this.currentColumn); // ← NEU: Spalte als Parameter
 
-      console.log('Task created in column:', this.currentColumn);
-      console.log('Task:', newTask);
-      console.log('All tasks:', this.taskService.getAllTasks());
+        console.log('✅ Firebase ID erhalten:', firebaseId);
 
-      this.closeAddTaskOverlay();
+        // Schritt 5: Task zu lokalem Service hinzufügen (mit Firebase ID)
+        const newTask: Task = {
+          ...taskData,
+          id: firebaseId,
+          createdAt: new Date()
+        };
+
+        // Schritt 6: Task zum lokalen Array hinzufügen
+        this.taskService.addTaskDirectly(newTask, this.currentColumn);
+
+        // Schritt 7: Lokale Arrays aktualisieren
+        this.updateLocalArrays();
+
+        console.log('🎉 Task erfolgreich erstellt in Spalte:', this.currentColumn);
+
+        // Schritt 8: Overlay schließen
+        this.closeAddTaskOverlay();
+
+      } catch (error) {
+        console.error('❌ Fehler beim Erstellen der Task:', error);
+        alert('Fehler beim Erstellen der Task. Bitte versuchen Sie es erneut.');
+      }
     } else {
-      console.log('Form is invalid:', this.taskForm.errors);
-      console.log('Form values:', this.taskForm.value);
-      console.log('Category field:', this.taskForm.get('category'));
+      console.log('❌ Formular ist ungültig:', this.taskForm.errors);
     }
   }
 
@@ -237,7 +261,31 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
   console.log('BoardComponent initialized');
   this.loadContacts()
+  this.getTasksFromFirebase();
   }
+
+  async getTasksFromFirebase() {
+  try {
+    const taskRef = collection(this.firestore, 'tasks');
+    
+    // Subscribe to the collection data
+    collectionData(taskRef, { idField: 'id' }).subscribe({
+      next: (tasks) => {
+        this.tasks = tasks as Task[];
+        console.log('✅ Tasks loaded from Firebase:', this.tasks);
+        
+        // NEU: Tasks in die richtigen Spalten sortieren
+        this.sortTasksIntoColumns();
+      },
+      error: (error) => {
+        console.error('❌ Error loading tasks:', error);
+      }
+    });
+    
+  } catch (error) {
+    console.error("❌ Das lief wohl nicht so wie gedacht ;)", error);
+  }
+}
 
   getInitials(name: string): string {
     return ContactsComponent.getInitials(name);
@@ -301,4 +349,39 @@ getSelectedContactsText(): string {
     return assignedTo ? assignedTo.length : 0;
   }
 
+  private sortTasksIntoColumns() {
+    // Arrays zurücksetzen
+    this.todoTasks = [];
+    this.inProgressTasks = [];
+    this.awaitingFeedbackTasks = [];
+    this.doneTasks = [];
+
+    // Tasks in die richtigen Spalten sortieren
+    this.tasks.forEach(task => {
+      switch (task.column) {
+        case 'todo':
+          this.todoTasks.push(task);
+          break;
+        case 'inprogress':
+          this.inProgressTasks.push(task);
+          break;
+        case 'awaiting':
+          this.awaitingFeedbackTasks.push(task);
+          break;
+        case 'done':
+          this.doneTasks.push(task);
+          break;
+        default:
+          // Fallback: Wenn keine Spalte definiert, in "todo" einordnen
+          console.warn(`Task "${task.title}" hat keine gültige Spalte, wird in "todo" eingeordnet`);
+          this.todoTasks.push(task);
+      }
+    });
+
+    console.log('📊 Tasks sortiert:');
+    console.log('To Do:', this.todoTasks.length);
+    console.log('In Progress:', this.inProgressTasks.length);
+    console.log('Awaiting:', this.awaitingFeedbackTasks.length);
+    console.log('Done:', this.doneTasks.length);
+  }
 }
