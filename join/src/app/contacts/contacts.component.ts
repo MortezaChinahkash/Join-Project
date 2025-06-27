@@ -370,7 +370,7 @@ export class ContactsComponent implements OnInit {
    * @param name The name to extract initials from.
    * @returns The initials as a string.
    */
-  getInitials(name: string): string {
+  static getInitials(name: string): string {
     if (!name) return '';
     const parts = name.trim().split(' ').filter(Boolean);
     if (parts.length === 1) {
@@ -384,7 +384,7 @@ export class ContactsComponent implements OnInit {
    * @param name The name to determine the color for.
    * @returns A hex color string.
    */
-  getInitialsColor(name: string): string {
+  static getInitialsColor(name: string): string {
     if (!name) return '#888';
     const colors = [
       '#FFB900', '#D83B01','#B50E0E', '#E81123',
@@ -399,6 +399,14 @@ export class ContactsComponent implements OnInit {
     const letter = name.trim()[0].toUpperCase();
     const index = letter.charCodeAt(0) - 65;
     return colors[index % colors.length];
+  }
+
+  getInitials(name: string): string {
+    return ContactsComponent.getInitials(name);
+  }
+
+  getInitialsColor(name: string): string {
+    return ContactsComponent.getInitialsColor(name);
   }
 
   /**

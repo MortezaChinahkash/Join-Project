@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Contact, ContactsComponent } from '../contacts/contacts.component';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Task, TaskColumn } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 
@@ -11,12 +13,17 @@ import { TaskService } from '../services/task.service';
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
-export class BoardComponent {
+export class BoardComponent implements OnInit {
   taskForm: FormGroup;
   showAddTaskOverlay = false;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
 
+  // Arrays für die verschiedenen Spalten
+  todoTasks: any[] = [];
+  inProgressTasks: any[] = [];
+  awaitingFeedbackTasks: any[] = [];
+  doneTasks: any[] = [];
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
@@ -152,10 +159,10 @@ export class BoardComponent {
     return colors[index];
   }
 
-  getInitials(name: string): string {
-    if (!name) return '';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  }
+  // getInitials(name: string): string {
+  //   if (!name) return '';
+  //   return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  // }
 
   getPriorityIcon(priority: Task['priority']): string {
     switch (priority) {
@@ -169,4 +176,37 @@ export class BoardComponent {
         return './assets/img/icon_priority_medium.svg';
     }
   }
+
+  ngOnInit() {
+  console.log('BoardComponent initialized');
+  this.loadContacts()
+  }
+
+  getInitials(name: string): string {
+    return ContactsComponent.getInitials(name);
+  }
+
+  getInitialsColor(name: string): string {
+    return ContactsComponent.getInitialsColor(name);
+  }
+
+  private loadContacts() {
+  const contactsCollection = collection(this.firestore, 'contacts');
+  collectionData(contactsCollection, { idField: 'id' }).subscribe(
+    (contacts) => {
+      this.contacts = contacts as Contact[];
+      
+      // Alphabetisch sortieren
+      this.contacts.sort((a, b) => 
+        a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+      );
+      
+      console.log('Kontakte geladen:', this.contacts);
+    },
+    (error) => {
+      console.error('Fehler beim Laden der Kontakte:', error);
+    }
+  );
+}
+
 }
