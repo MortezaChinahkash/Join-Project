@@ -5,20 +5,12 @@
         <div class="component-title-bar">
           <h1 class="component-title">Board</h1>
 
-          <!-- Desktop version: search + text-button -->
           <div class="search-add-box desktop-only">
             <input type="text" class="search-input" placeholder="Find task" />
-            <button class="add-button" (click)="openAddTaskOverlay()">
-              Add task +
-            </button>
+            <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task +</button>
           </div>
 
-          <!-- Mobile version: icon-only button -->
-          <div class="mobile-only mobile-add-icon-box">
-            <button class="add-task-button" (click)="openAddTaskOverlay()">
-              +
-            </button>
-          </div>
+          <button class="mobile-header-add-button header-add-task-button mobile-only" (click)="openAddTaskOverlay()">+</button>
         </div>
 
         <div class="mobile-only mobile-search-box">
@@ -383,36 +375,53 @@
                 </div>
               </div>
 
-          <div class="form-group" [formGroup]="taskForm">
-            <label for="assignedTo">Assigned to</label>
-            
-            <!-- Custom Dropdown -->
-            <div class="custom-select-wrapper">
-              <div class="custom-select" (click)="toggleDropdown()">
-                <div class="selected-option" *ngIf="getSelectedContact(); else placeholder">
-                  <div class="contact-avatar" [style.background-color]="getInitialsColor(getSelectedContact()!.name)">
-                    {{ getInitials(getSelectedContact()!.name) }}
+              <div class="form-group" [formGroup]="taskForm">
+                <label for="assignedTo">Assigned to</label>
+
+                <!-- Custom Dropdown -->
+                <div class="custom-select-wrapper">
+                  <div class="custom-select" (click)="toggleDropdown()">
+                    <div
+                      class="selected-option"
+                      *ngIf="getSelectedContact(); else placeholder"
+                    >
+                      <div
+                        class="contact-avatar"
+                        [style.background-color]="
+                          getInitialsColor(getSelectedContact()!.name)
+                        "
+                      >
+                        {{ getInitials(getSelectedContact()!.name) }}
+                      </div>
+                      <span>{{ getSelectedContact()!.name }}</span>
+                    </div>
+                    <ng-template #placeholder>
+                      <span class="placeholder">Select contacts to assign</span>
+                    </ng-template>
+                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">
+                      ▼
+                    </div>
                   </div>
-                  <span>{{ getSelectedContact()!.name }}</span>
-                </div>
-                <ng-template #placeholder>
-                  <span class="placeholder">Select contacts to assign</span>
-                </ng-template>
-                <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
-              </div>
-              
-              <div class="dropdown-options" *ngIf="isDropdownOpen">
-                <div class="dropdown-option" 
-                     *ngFor="let contact of contacts" 
-                     (click)="selectContact(contact)">
-                  <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">
-                    {{ getInitials(contact.name) }}
+
+                  <div class="dropdown-options" *ngIf="isDropdownOpen">
+                    <div
+                      class="dropdown-option"
+                      *ngFor="let contact of contacts"
+                      (click)="selectContact(contact)"
+                    >
+                      <div
+                        class="contact-avatar"
+                        [style.background-color]="
+                          getInitialsColor(contact.name)
+                        "
+                      >
+                        {{ getInitials(contact.name) }}
+                      </div>
+                      <span>{{ contact.name }}</span>
+                    </div>
                   </div>
-                  <span>{{ contact.name }}</span>
                 </div>
               </div>
-            </div>
-          </div>
 
               <div class="form-group" [formGroup]="taskForm">
                 <label for="category"

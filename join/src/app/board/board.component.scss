@@ -68,6 +68,21 @@
   font-size: 1rem;
 }
 
+.header-add-task-button {
+  color: var(--bg-dark-grey);
+  background-color: transparent;
+  border: solid 1px var(--bg-dark-grey);
+  border-radius: 10px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .board-add-task-button {
   color: var(--bg-dark-grey);
   background-color: transparent;
@@ -630,20 +645,6 @@
     display: none;
   }
 
-  .component-title {
-    display: flex;
-    order: 1;
-  }
-
-.mobile-add-icon-box {
-  display: flex;
-  order: 2;
-}
-
-.mobile-search-box {
-  display: flex;
-  order: 3;
-}
 
   .board-container {
     display: flex;
