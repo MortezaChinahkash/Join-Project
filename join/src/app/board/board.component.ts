@@ -18,12 +18,13 @@ export class BoardComponent implements OnInit {
   showAddTaskOverlay = false;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo'; // Speichert die aktuelle Spalte
-taskCollection: string = "tasks"
+  taskCollection: string = "tasks"
   contacts: Contact[] = [];
   private firestore = inject(Firestore);
 
   isDropdownOpen = false;
   selectedContacts: Contact[] = []; // Array für ausgewählte Kontakte
+  searchTerm: string = '';
 
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
@@ -384,4 +385,21 @@ getSelectedContactsText(): string {
     console.log('Awaiting:', this.awaitingFeedbackTasks.length);
     console.log('Done:', this.doneTasks.length);
   }
+
+  onSearchChange() {
+    // Wird automatisch aufgerufen beim Tippen
+    console.log('🔍 Suche nach:', this.searchTerm);
+  }
+
+   getFilteredTasks(tasks: Task[]): Task[] {
+    if (!this.searchTerm || this.searchTerm.trim() === '') {
+      return tasks;
+    }
+    
+    const searchTermLower = this.searchTerm.toLowerCase().trim();
+    return tasks.filter(task => 
+      task.title.toLowerCase().includes(searchTermLower)
+    );
+  }
+
 }
