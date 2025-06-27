@@ -1,0 +1,167 @@
+<div class="default-content-container">
+  <div class="component-header">
+    <div class="component-title-bar">
+      <h1 class="component-title">Add Task</h1>
+    </div>
+    <p class="component-subtitle">Organize your tasks to keep on top of your work</p>
+    <div class="header-divider"></div>
+  </div>
+
+  <div class="add-task-content">
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form">
+      
+      <!-- Title Field -->
+      <div class="form-group">
+        <label for="title" class="form-label">Title<span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="title" 
+          formControlName="title" 
+          class="form-input"
+          placeholder="Enter a title"
+          [class.error]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
+        <div class="error-message" *ngIf="getErrorMessage('title')">
+          {{ getErrorMessage('title') }}
+        </div>
+      </div>
+
+      <!-- Description Field -->
+      <div class="form-group">
+        <label for="description" class="form-label">Description</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          class="form-textarea"
+          placeholder="Enter a description"
+          rows="4">
+        </textarea>
+      </div>
+
+      <!-- Assigned To Field -->
+      <div class="form-group">
+        <label class="form-label">Assigned to</label>
+        <div class="dropdown-container">
+          <div class="dropdown-trigger" (click)="toggleDropdown()">
+            <span *ngIf="selectedContacts.length === 0" class="placeholder">Select contacts to assign</span>
+            <span *ngIf="selectedContacts.length > 0" class="selected-count">
+              {{ selectedContacts.length }} contact(s) selected
+            </span>
+            <div [inlineSvg]="'assets/icons/plus.svg'" class="dropdown-icon" 
+                 [class.rotated]="isDropdownOpen"></div>
+          </div>
+          
+          <div class="dropdown-list" *ngIf="isDropdownOpen">
+            <div class="contact-item" 
+                 *ngFor="let contact of contacts" 
+                 (click)="toggleContactSelection(contact)"
+                 [class.selected]="isContactSelected(contact)">
+              <div class="contact-info">
+                <div class="contact-avatar">{{ contact.name.charAt(0).toUpperCase() }}</div>
+                <span class="contact-name">{{ contact.name }}</span>
+              </div>
+              <div class="checkbox" [class.checked]="isContactSelected(contact)">
+                <div [inlineSvg]="isContactSelected(contact) ? 'assets/icons/checkbox_checked.svg' : 'assets/icons/checkbox_unchecked.svg'"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Selected Contacts Display -->
+        <div class="selected-contacts" *ngIf="selectedContacts.length > 0">
+          <div class="contact-badge" *ngFor="let contact of selectedContacts">
+            <div class="contact-avatar small">{{ contact.name.charAt(0).toUpperCase() }}</div>
+            <span class="contact-name">{{ contact.name }}</span>
+            <button type="button" class="remove-contact" (click)="toggleContactSelection(contact)">
+              <div [inlineSvg]="'assets/icons/cancel.svg'"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Due Date Field -->
+      <div class="form-group">
+        <label for="dueDate" class="form-label">Due date<span class="required">*</span></label>
+        <input 
+          type="date" 
+          id="dueDate" 
+          formControlName="dueDate" 
+          class="form-input"
+          [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
+        <div class="error-message" *ngIf="getErrorMessage('dueDate')">
+          {{ getErrorMessage('dueDate') }}
+        </div>
+      </div>
+
+      <!-- Priority Field -->
+      <div class="form-group">
+        <label class="form-label">Priority<span class="required">*</span></label>
+        <div class="priority-buttons">
+          <button 
+            type="button" 
+            class="priority-btn" 
+            [class.selected]="selectedPriority === 'urgent'"
+            (click)="setPriority('urgent')">
+            Urgent
+            <div [inlineSvg]="'assets/icons/priority_urgent.svg'" class="priority-icon"></div>
+          </button>
+          <button 
+            type="button" 
+            class="priority-btn" 
+            [class.selected]="selectedPriority === 'medium'"
+            (click)="setPriority('medium')">
+            Medium
+            <div [inlineSvg]="'assets/icons/priority_medium.svg'" class="priority-icon"></div>
+          </button>
+          <button 
+            type="button" 
+            class="priority-btn" 
+            [class.selected]="selectedPriority === 'low'"
+            (click)="setPriority('low')">
+            Low
+            <div [inlineSvg]="'assets/icons/priority_low.svg'" class="priority-icon"></div>
+          </button>
+        </div>
+        <div class="error-message" *ngIf="getErrorMessage('priority')">
+          {{ getErrorMessage('priority') }}
+        </div>
+      </div>
+
+      <!-- Category Field -->
+      <div class="form-group">
+        <label for="category" class="form-label">Category<span class="required">*</span></label>
+        <select 
+          id="category" 
+          formControlName="category" 
+          class="form-select"
+          [class.error]="taskForm.get('category')?.invalid && taskForm.get('category')?.touched">
+          <option value="" disabled>Select task category</option>
+          <option value="technical">Technical Task</option>
+          <option value="user-story">User Story</option>
+        </select>
+        <div class="error-message" *ngIf="getErrorMessage('category')">
+          {{ getErrorMessage('category') }}
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="resetForm()"
+          [disabled]="isSubmitting">
+          Clear
+          <div [inlineSvg]="'assets/icons/cancel.svg'" class="btn-icon"></div>
+        </button>
+        <button 
+          type="submit" 
+          class="btn btn-primary" 
+          [disabled]="taskForm.invalid || isSubmitting">
+          <span *ngIf="!isSubmitting">Create Task</span>
+          <span *ngIf="isSubmitting">Creating...</span>
+          <div [inlineSvg]="'assets/icons/check.svg'" class="btn-icon"></div>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
