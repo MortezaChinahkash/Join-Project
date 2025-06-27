@@ -28,7 +28,7 @@ export class TaskService {
   addTask(task: Omit<Task, 'id' | 'createdAt'>, column: TaskColumn): Task {
     const newTask: Task = {
       ...task,
-      id: Date.now(),
+      id: this.generateId(), // Temporäre ID-Generierung für lokale Entwicklung
       createdAt: new Date()
     };
 
@@ -36,8 +36,13 @@ export class TaskService {
     return newTask;
   }
 
+  // Temporary ID generation for local development (will be replaced by Firebase)
+  private generateId(): string {
+    return Date.now().toString() + Math.random().toString(36).substr(2, 9);
+  }
+
   // Update a task
-  updateTask(taskId: number, updatedTask: Partial<Task>): boolean {
+  updateTask(taskId: string, updatedTask: Partial<Task>): boolean {
     for (const column of Object.keys(this.tasks) as TaskColumn[]) {
       const taskIndex = this.tasks[column].findIndex(task => task.id === taskId);
       if (taskIndex !== -1) {
@@ -49,7 +54,7 @@ export class TaskService {
   }
 
   // Move task between columns
-  moveTask(taskId: number, fromColumn: TaskColumn, toColumn: TaskColumn): boolean {
+  moveTask(taskId: string, fromColumn: TaskColumn, toColumn: TaskColumn): boolean {
     const taskIndex = this.tasks[fromColumn].findIndex(task => task.id === taskId);
     if (taskIndex !== -1) {
       const task = this.tasks[fromColumn].splice(taskIndex, 1)[0];
@@ -60,7 +65,7 @@ export class TaskService {
   }
 
   // Delete a task
-  deleteTask(taskId: number): boolean {
+  deleteTask(taskId: string): boolean {
     for (const column of Object.keys(this.tasks) as TaskColumn[]) {
       const taskIndex = this.tasks[column].findIndex(task => task.id === taskId);
       if (taskIndex !== -1) {
@@ -72,12 +77,12 @@ export class TaskService {
   }
 
   // Add subtask to a task
-  addSubtask(taskId: number, subtaskTitle: string): boolean {
+  addSubtask(taskId: string, subtaskTitle: string): boolean {
     for (const column of Object.keys(this.tasks) as TaskColumn[]) {
       const task = this.tasks[column].find(task => task.id === taskId);
       if (task) {
         const newSubtask: Subtask = {
-          id: Date.now(),
+          id: this.generateId(), // Use string ID for subtasks too
           title: subtaskTitle,
           completed: false
         };
@@ -89,7 +94,7 @@ export class TaskService {
   }
 
   // Toggle subtask completion
-  toggleSubtask(taskId: number, subtaskId: number): boolean {
+  toggleSubtask(taskId: string, subtaskId: string): boolean {
     for (const column of Object.keys(this.tasks) as TaskColumn[]) {
       const task = this.tasks[column].find(task => task.id === taskId);
       if (task) {
