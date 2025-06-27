@@ -22,15 +22,42 @@ export class BoardComponent implements OnInit {
   contacts: Contact[] = [];
   private firestore = inject(Firestore);
 
-    isDropdownOpen = false;
-    selectedContacts: Contact[] = []; // Array für ausgewählte Kontakte
+  isDropdownOpen = false;
+  selectedContacts: Contact[] = []; // Array für ausgewählte Kontakte
 
-  
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   awaitingFeedbackTasks: Task[] = [];
   doneTasks: Task[] = [];
+
+  // Board columns configuration
+  boardColumns = [
+    {
+      id: 'todo' as TaskColumn,
+      title: 'To Do',
+      tasks: () => this.todoTasks,
+      showAddButton: true
+    },
+    {
+      id: 'inprogress' as TaskColumn,
+      title: 'In Progress',
+      tasks: () => this.inProgressTasks,
+      showAddButton: true
+    },
+    {
+      id: 'awaiting' as TaskColumn,
+      title: 'Awaiting feedback',
+      tasks: () => this.awaitingFeedbackTasks,
+      showAddButton: true
+    },
+    {
+      id: 'done' as TaskColumn,
+      title: 'Done',
+      tasks: () => this.doneTasks,
+      showAddButton: false
+    }
+  ];
 
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
