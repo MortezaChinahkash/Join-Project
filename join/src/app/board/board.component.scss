@@ -27,18 +27,129 @@
 
 .search-add-box {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
+
+  .search-input-wrapper {
+    position: relative;
+    flex: 1;
+    max-width: 400px;
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 3.5rem 0.75rem 1rem; // Mehr Padding rechts für Icon
+      border: 1px solid #d1d7db;
+      border-radius: 10px;
+      background-color: white;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: #a8a8a8;
+        font-size: 1rem;
+      }
+
+      &:focus {
+        border-color: #29abe2;
+        box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.1);
+      }
+
+      &:hover {
+        border-color: #29abe2;
+      }
+    }
+
+    // NEU: Divider weiter links positioniert
+    &::before {
+      content: '';
+      position: absolute;
+      right: 3rem; // Von 2.5rem auf 3rem geändert
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 20px;
+      background-color: #d1d7db;
+      pointer-events: none;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      opacity: 0.6;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    &:hover .search-icon {
+      opacity: 0.8;
+    }
+  }
 }
 
 .mobile-search-box {
+  position: relative;
   width: 100%;
-  box-sizing: border-box;
+  margin-top: 1rem;
 
   .search-input {
-    width: 16rem;
+    width: 100%;
+    padding: 0.75rem 3.5rem 0.75rem 1rem; // Mehr Padding rechts für Icon
+    border: 1px solid #d1d7db;
+    border-radius: 10px;
+    background-color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #a8a8a8;
+      font-size: 1rem;
+    }
+
+    &:focus {
+      border-color: #29abe2;
+      box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.1);
+    }
+
+    &:hover {
+      border-color: #29abe2;
+    }
+  }
+
+  // NEU: Divider auch für Mobile weiter links
+  &::before {
+    content: '';
+    position: absolute;
+    right: 3rem; // Von 2.5rem auf 3rem geändert
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 20px;
+    background-color: #d1d7db;
+    pointer-events: none;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    opacity: 0.6;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover .search-icon {
+    opacity: 0.8;
   }
 }
 

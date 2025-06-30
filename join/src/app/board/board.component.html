@@ -5,15 +5,22 @@
         <div class="component-title-bar">
           <h1 class="component-title">Board</h1>
 
+          <!-- Desktop Search -->
           <div class="search-add-box desktop-only">
-            <input type="text" class="search-input" placeholder="Find task" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+            <div class="search-input-wrapper">
+              <input type="text" class="search-input" placeholder="Find task" 
+                     [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+              <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
+            </div>
             <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task +</button>
           </div>
-          <button class="mobile-header-add-button header-add-task-button mobile-only" (click)="openAddTaskOverlay()">+</button>
-        </div>
 
-        <div class="mobile-only mobile-search-box">
-          <input type="text" class="search-input" placeholder="Find task" [(ngModel)]="searchTerm" (input)="onSearchChange()"  />
+          <!-- Mobile Search -->
+          <div class="mobile-only mobile-search-box">
+            <input type="text" class="search-input" placeholder="Find task" 
+                   [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+            <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
+          </div>
         </div>
       </div>
 
