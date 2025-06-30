@@ -185,3 +185,141 @@
     font-size: 1.5rem;
   }
 }
+
+// Ultra-small screen support (320px)
+@media (max-width: 320px) {
+  .board-container {
+    flex-direction: column;
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .board-column {
+    flex: 0 0 auto;
+    min-width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .board-scroll-wrapper {
+    overflow-x: hidden;
+  }
+  
+  .component-header {
+    width: 100%;
+    padding: 0.5rem;
+  }
+  
+  .component-title-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    
+    .search-add-box {
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      .search-input-wrapper {
+        min-width: 100%;
+        width: 100%;
+      }
+    }
+  }
+  
+  // Task cards ultra-small screen
+  .task-card {
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .task-title {
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+  
+  .task-description {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+  
+  // Task overlays ultra-small screen
+  .taskDetailsOverlay-content,
+  .taskEditOverlay-content,
+  .addTaskOverlay-content {
+    width: calc(100vw - 1rem);
+    min-width: auto;
+    max-width: none;
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: 15px;
+  }
+  
+  .task-details-title {
+    font-size: 1.5rem;
+    line-height: 1.2;
+  }
+  
+  .task-edit-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .task-details-content h3 {
+    font-size: 1rem;
+  }
+  
+  .task-details-content p,
+  .task-details-content span {
+    font-size: 0.85rem;
+  }
+  
+  .contact-item .contact-name {
+    font-size: 0.85rem;
+  }
+  
+  .task-edit-form .form-group label {
+    font-size: 1rem;
+  }
+  
+  .task-edit-form .form-input,
+  .task-edit-form .form-textarea,
+  .task-edit-form .form-select {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+  
+  .priority-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    .priority-btn {
+      justify-content: center;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+    }
+  }
+  
+  // Add Task Overlay ultra-small screen
+  .addTaskOverlay .taskProperties {
+    flex-direction: column;
+    padding: 0.5rem;
+    
+    .leftSide,
+    .rightSide {
+      padding: 0.5rem;
+    }
+    
+    .devider {
+      margin: 0.5rem 0;
+    }
+  }
+  
+  // Search results ultra-small screen
+  .no-search-results h2 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+  }
+  
+  .no-search-results p {
+    font-size: 0.85rem;
+  }
+}

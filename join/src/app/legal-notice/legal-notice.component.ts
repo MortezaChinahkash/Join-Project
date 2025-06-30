@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 /**
  * Component that displays legal notice and privacy policy information
  * Supports language switching between German and English
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
  */
 @Component({
   selector: 'app-legal-notice',
