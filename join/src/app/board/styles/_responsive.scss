@@ -323,3 +323,23 @@
     font-size: 0.85rem;
   }
 }
+
+// Desktop Search - verstecken ab 1000px und darunter
+.search-add-box.desktop-only {
+  display: flex;
+  
+  @media (max-width: 1000px) {
+    display: none !important;
+  }
+}
+
+// Mobile Search - nur zeigen ab 1000px und darunter
+.mobile-search-box.mobile-only {
+  display: none;
+  
+  @media (max-width: 1000px) {
+    display: block !important;
+    width: 100%;
+    margin-top: 1rem;
+  }
+}
