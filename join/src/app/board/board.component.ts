@@ -900,6 +900,13 @@ getSelectedContactsText(): string {
   // ==================== TASK DRAG & DROP METHODS ====================
 
   // Desktop Mouse Events
+  /**
+   * Handles mouse down events on tasks for desktop drag & drop functionality.
+   * Initiates task dragging with left mouse button click and sets up mouse event listeners.
+   * 
+   * @param event - The mouse event from the task element
+   * @param task - The task object to be dragged
+   */
   onTaskMouseDown(event: MouseEvent, task: Task) {
     // Prevent default to avoid text selection
     event.preventDefault();
@@ -926,6 +933,13 @@ getSelectedContactsText(): string {
   }
 
   // Mobile Touch Events
+  /**
+   * Handles touch start events on tasks for mobile drag & drop functionality.
+   * Implements long press detection (500ms) to initiate dragging on touch devices.
+   * 
+   * @param event - The touch event from the task element
+   * @param task - The task object to be dragged
+   */
   onTaskTouchStart(event: TouchEvent, task: Task) {
     event.preventDefault();
     
@@ -969,6 +983,16 @@ getSelectedContactsText(): string {
     document.addEventListener('touchend', handleTouchEnd);
   }
 
+  /**
+   * Initiates the task dragging process by creating a visual clone and setting up drag state.
+   * Creates a rotated clone of the task card and calculates the drag offset for smooth positioning.
+   * 
+   * @param clientX - The X coordinate of the mouse/touch position
+   * @param clientY - The Y coordinate of the mouse/touch position  
+   * @param task - The task object being dragged
+   * @param element - The HTML element that triggered the drag
+   * @private
+   */
   private startTaskDrag(clientX: number, clientY: number, task: Task, element: HTMLElement) {
     this.draggedTask = task;
     this.isDraggingTask = true;
@@ -1009,6 +1033,15 @@ getSelectedContactsText(): string {
     }
   }
 
+  /**
+   * Updates the position of the dragged task element and determines target column.
+   * Uses multiple detection methods: elementsFromPoint, geometric bounds, and event delegation
+   * to accurately detect which column the task is being dragged over.
+   * 
+   * @param clientX - The current X coordinate of the mouse/touch position
+   * @param clientY - The current Y coordinate of the mouse/touch position
+   * @private
+   */
   private updateTaskDrag(clientX: number, clientY: number) {
     if (!this.isDraggingTask || !this.dragElement) return;
     
@@ -1064,6 +1097,15 @@ getSelectedContactsText(): string {
     }
   }
 
+  /**
+   * Enhanced column detection method using geometric bounds as fallback.
+   * Iterates through all board columns and checks if the cursor position is within column boundaries.
+   * 
+   * @param clientX - The X coordinate to check
+   * @param clientY - The Y coordinate to check
+   * @returns The TaskColumn at the given position, or null if none found
+   * @private
+   */
   // Enhanced column detection method
   private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
     // Get all board columns
@@ -1084,6 +1126,13 @@ getSelectedContactsText(): string {
     return null;
   }
 
+  /**
+   * Completes the task dragging process and updates the task in Firebase if moved to a different column.
+   * Cleans up the drag element, removes CSS classes, and updates the task's column in the database.
+   * Resets all drag-related state variables after completion.
+   * 
+   * @private
+   */
   private async endTaskDrag() {
     if (!this.isDraggingTask || !this.draggedTask) return;
     
@@ -1134,6 +1183,13 @@ getSelectedContactsText(): string {
   }
 
   // Column drag over events
+  /**
+   * Handles drag over events on board columns to show visual feedback.
+   * Prevents default behavior and shows placeholder when dragging over a different column.
+   * 
+   * @param event - The drag event from the column
+   * @param column - The target column being dragged over
+   */
   onColumnDragOver(event: DragEvent, column: TaskColumn) {
     if (this.isDraggingTask && this.draggedTask && column !== this.draggedTask.column) {
       event.preventDefault();
@@ -1142,6 +1198,12 @@ getSelectedContactsText(): string {
     }
   }
 
+  /**
+   * Handles drag leave events on board columns to hide placeholder.
+   * Only hides placeholder when actually leaving the column area (not moving to child elements).
+   * 
+   * @param event - The drag leave event from the column
+   */
   onColumnDragLeave(event: DragEvent) {
     // Only hide placeholder if we're actually leaving the column area
     const relatedTarget = event.relatedTarget as HTMLElement;
@@ -1153,6 +1215,13 @@ getSelectedContactsText(): string {
     }
   }
 
+  /**
+   * Handles drop events on board columns for proper event handling.
+   * Prevents default behavior, actual drop logic is handled in endTaskDrag().
+   * 
+   * @param event - The drop event from the column
+   * @param column - The target column where the task is being dropped
+   */
   onColumnDrop(event: DragEvent, column: TaskColumn) {
     event.preventDefault();
     // The actual drop logic is handled in endTaskDrag()
