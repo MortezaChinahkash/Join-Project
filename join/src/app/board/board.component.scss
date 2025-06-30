@@ -22,8 +22,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 0 2rem; // Optional: Seitlicher Abstand
-
+  
   .component-title {
     flex: 0 0 auto; // Title behält seine natürliche Breite
     margin: 0;
@@ -279,9 +278,7 @@
 .board-column {
   display: flex;
   flex-direction: column;
-  flex: 0 0 320px; /* Fixed width, no shrinking */
-  min-width: 320px;
-  max-width: 320px;
+  width: 300px;
   padding: 1rem;
 }
 
@@ -1135,11 +1132,6 @@
     justify-content: flex-start;
   }
   
-  .board-column {
-    flex: 1 1 320px; /* Allow growing on very large screens */
-    min-width: 320px;
-    max-width: 400px; /* Cap at reasonable size */
-  }
 }
 
 @media (min-width: 1001px) {
