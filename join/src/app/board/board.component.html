@@ -105,7 +105,8 @@
                [style.left.px]="thumbnailService.thumbnailViewport.left"
                [style.width.px]="thumbnailService.thumbnailViewport.width"
                [style.height.px]="thumbnailService.thumbnailViewport.height"
-               (mousedown)="onViewportMouseDown($event)"></div>
+               (mousedown)="onViewportMouseDown($event)"
+               (click)="onViewportClick($event)"></div>
         </div>
       </div>
 

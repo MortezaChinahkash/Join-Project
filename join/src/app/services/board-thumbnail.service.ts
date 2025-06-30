@@ -132,6 +132,40 @@ export class BoardThumbnailService {
   }
 
   /**
+   * Handles viewport click events for repositioning.
+   * Moves the viewport to the clicked position within the thumbnail for quick navigation.
+   * 
+   * @param event - The mouse click event on the viewport
+   */
+  onViewportClick(event: MouseEvent) {
+    if (this.isViewportDragging) return; // Don't handle click if we were dragging
+    
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const thumbnail = document.querySelector('.thumbnail-content') as HTMLElement;
+    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    
+    if (!thumbnail || !container) return;
+    
+    const thumbnailRect = thumbnail.getBoundingClientRect();
+    const clickX = event.clientX - thumbnailRect.left - 4; // Account for padding
+    const thumbnailWidth = thumbnailRect.width - 8; // Account for padding
+    
+    // Calculate the available click area (thumbnail width minus viewport width)
+    const viewportWidth = this.thumbnailViewport.width;
+    const availableClickWidth = thumbnailWidth - viewportWidth;
+    
+    // Calculate new viewport position
+    const newViewportLeft = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
+    const percentage = availableClickWidth > 0 ? (newViewportLeft / availableClickWidth) * 100 : 0;
+    
+    // Scroll to the corresponding position
+    const scrollPosition = (percentage / 100) * this.maxScrollPosition;
+    container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+  }
+
+  /**
    * Updates scroll position and thumbnail viewport calculations.
    * Determines if scroll overview should be shown based on window width and content overflow.
    * 

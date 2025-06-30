@@ -325,6 +325,10 @@ export class BoardComponent implements OnInit {
     this.thumbnailService.onViewportMouseDown(event);
   }
 
+  onViewportClick(event: MouseEvent) {
+    this.thumbnailService.onViewportClick(event);
+  }
+
   // Utils Service delegates (for template access)
   getTaskProgress(task: Task): number {
     return this.utilsService.getTaskProgress(task);
