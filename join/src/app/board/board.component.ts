@@ -16,7 +16,7 @@ import { BoardUtilsService } from '../services/board-utils.service';
  * Handles task creation, editing, deletion, and drag & drop functionality.
  * 
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
- * @version 2.0.0
+ * @version 1.0.0
  */
 @Component({
   selector: 'app-board',
