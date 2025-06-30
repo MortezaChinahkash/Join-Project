@@ -17,23 +17,14 @@
         </div>
       </div>
 
-      <div class="board-container" >
-
-        <div class="no-search-results" [style.display]="noSearchResults ? 'flex' : 'none'">
-            <h2>no search results found</h2>
-          </div>
-        <div class="board-column" *ngFor="let column of boardColumns">
-          <div class="column-header">
-            <h2 class="column-title">{{ column.title }}</h2>
-            <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
-          </div>
-          <div class="task-list">
       <div class="board-scroll-wrapper" #boardScrollWrapper>
         <div class="board-container">
+          <!-- No Search Results Message -->
           <div class="no-search-results" [style.display]="noSearchResults ? 'flex' : 'none'">
-              <h2>Keine Suchergebnisse gefunden</h2>
-            </div>
-          <div class="board-column" *ngFor="let column of boardColumns">
+            <h2>no search results found</h2>
+          </div>
+          
+          <div class="board-column" *ngFor="let column of boardColumns" [style.display]="noSearchResults ? 'none' : 'flex'">
             <div class="column-header">
               <h2 class="column-title">{{ column.title }}</h2>
               <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>

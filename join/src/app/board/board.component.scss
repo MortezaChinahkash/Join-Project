@@ -54,6 +54,23 @@
   padding-bottom: 1rem;
 }
 
+// NEU: No Search Results Styling
+.no-search-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%;
+  text-align: center;
+
+  h2 {
+    font-size: 2rem;
+    color: #2a3647;
+    font-weight: 600;
+    margin: 0;
+  }
+}
+
 .board-scroll-wrapper {
   width: 100%;
   overflow-x: auto;
@@ -1822,6 +1839,8 @@
   h2 {
     font-size: 2rem;
     color: #2a3647;
+    font-weight: 600;
+    margin: 0;
   }
 }
 
