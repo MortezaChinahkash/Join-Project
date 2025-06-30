@@ -278,16 +278,30 @@ export class BoardComponent implements OnInit {
   }
 
   // Drag & Drop Service delegates
-  onTaskMouseDown(event: MouseEvent, task: Task) {
-    this.dragDropService.onTaskMouseDown(event, task, () => {
+  async onTaskMouseDown(event: MouseEvent, task: Task) {
+    const wasDragged = await this.dragDropService.onTaskMouseDown(event, task, () => {
       this.updateTaskArrays();
     });
+    
+    // If it wasn't a drag, treat it as a click to open task details
+    if (!wasDragged) {
+      setTimeout(() => {
+        this.openTaskDetails(task);
+      }, 0);
+    }
   }
 
-  onTaskTouchStart(event: TouchEvent, task: Task) {
-    this.dragDropService.onTaskTouchStart(event, task, () => {
+  async onTaskTouchStart(event: TouchEvent, task: Task) {
+    const wasDragged = await this.dragDropService.onTaskTouchStart(event, task, () => {
       this.updateTaskArrays();
     });
+    
+    // If it wasn't a drag, treat it as a tap to open task details
+    if (!wasDragged) {
+      setTimeout(() => {
+        this.openTaskDetails(task);
+      }, 0);
+    }
   }
 
   onColumnDragOver(event: DragEvent, column: TaskColumn) {

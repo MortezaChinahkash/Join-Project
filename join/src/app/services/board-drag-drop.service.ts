@@ -24,40 +24,100 @@ export class BoardDragDropService {
   longPressTimeout: any = null;
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
+  
+  // New properties for click detection
+  isMousePressed = false;
+  mouseDownTime = 0;
+  dragThreshold = 5; // pixels to move before considering it a drag
+  dragDelay = 150; // milliseconds before drag starts
+  dragDelayTimeout: any = null;
+  initialMousePosition = { x: 0, y: 0 };
 
   constructor(private taskService: TaskService) {}
 
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
    * Initiates task dragging with left mouse button click and sets up mouse event listeners.
+   * Now includes delay and distance threshold to prevent interference with click events.
    * 
    * @param event - The mouse event from the task element
    * @param task - The task object to be dragged
    * @param onTaskUpdate - Callback to update local task arrays
+   * @returns Promise<boolean> - Returns true if drag was started, false if it was a click
    */
-  onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => void) {
-    // Prevent default to avoid text selection
-    event.preventDefault();
-    
-    // Only start drag with left mouse button
-    if (event.button !== 0) return;
-    
-    this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      if (this.isDraggingTask) {
-        this.updateTaskDrag(e.clientX, e.clientY);
+  onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
+    return new Promise((resolve) => {
+      // Prevent default but don't prevent the click event from firing
+      // event.preventDefault();
+      
+      // Only handle left mouse button
+      if (event.button !== 0) {
+        resolve(false);
+        return;
       }
-    };
-    
-    const handleMouseUp = () => {
-      this.endTaskDrag(onTaskUpdate);
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-    
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+      
+      this.isMousePressed = true;
+      this.mouseDownTime = Date.now();
+      this.initialMousePosition = { x: event.clientX, y: event.clientY };
+      
+      let hasMoved = false;
+      let dragStarted = false;
+      
+      // Start delay timer for drag
+      this.dragDelayTimeout = setTimeout(() => {
+        if (this.isMousePressed && !hasMoved) {
+          this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
+          dragStarted = true;
+        }
+      }, this.dragDelay);
+      
+      const handleMouseMove = (e: MouseEvent) => {
+        if (!this.isMousePressed) return;
+        
+        const deltaX = Math.abs(e.clientX - this.initialMousePosition.x);
+        const deltaY = Math.abs(e.clientY - this.initialMousePosition.y);
+        
+        if (deltaX > this.dragThreshold || deltaY > this.dragThreshold) {
+          hasMoved = true;
+          
+          // Start drag immediately if threshold is exceeded
+          if (!dragStarted && !this.isDraggingTask) {
+            if (this.dragDelayTimeout) {
+              clearTimeout(this.dragDelayTimeout);
+              this.dragDelayTimeout = null;
+            }
+            this.startTaskDrag(e.clientX, e.clientY, task, event.target as HTMLElement);
+            dragStarted = true;
+          }
+        }
+        
+        if (this.isDraggingTask) {
+          this.updateTaskDrag(e.clientX, e.clientY);
+        }
+      };
+      
+      const handleMouseUp = () => {
+        this.isMousePressed = false;
+        
+        if (this.dragDelayTimeout) {
+          clearTimeout(this.dragDelayTimeout);
+          this.dragDelayTimeout = null;
+        }
+        
+        if (this.isDraggingTask) {
+          this.endTaskDrag(onTaskUpdate);
+          resolve(true); // Was a drag
+        } else {
+          resolve(false); // Was a click
+        }
+        
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+      };
+      
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+    });
   }
 
   /**
@@ -67,48 +127,56 @@ export class BoardDragDropService {
    * @param event - The touch event from the task element
    * @param task - The task object to be dragged
    * @param onTaskUpdate - Callback to update local task arrays
+   * @returns Promise<boolean> - Returns true if drag was started, false if it was a tap
    */
-  onTaskTouchStart(event: TouchEvent, task: Task, onTaskUpdate: () => void) {
-    event.preventDefault();
-    
-    this.touchStartTime = Date.now();
-    const touch = event.touches[0];
-    
-    // Start long press timer for mobile
-    this.longPressTimeout = setTimeout(() => {
-      this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
-    }, 500); // 500ms long press
-    
-    const handleTouchMove = (e: TouchEvent) => {
-      const touch = e.touches[0];
-      if (this.isDraggingTask) {
-        e.preventDefault();
-        this.updateTaskDrag(touch.clientX, touch.clientY);
-      } else {
-        // Cancel long press if user moves finger before drag starts
+  onTaskTouchStart(event: TouchEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
+    return new Promise((resolve) => {
+      event.preventDefault();
+      
+      this.touchStartTime = Date.now();
+      const touch = event.touches[0];
+      let dragStarted = false;
+      
+      // Start long press timer for mobile
+      this.longPressTimeout = setTimeout(() => {
+        this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
+        dragStarted = true;
+      }, 500); // 500ms long press
+      
+      const handleTouchMove = (e: TouchEvent) => {
+        const touch = e.touches[0];
+        if (this.isDraggingTask) {
+          e.preventDefault();
+          this.updateTaskDrag(touch.clientX, touch.clientY);
+        } else {
+          // Cancel long press if user moves finger before drag starts
+          if (this.longPressTimeout) {
+            clearTimeout(this.longPressTimeout);
+            this.longPressTimeout = null;
+          }
+        }
+      };
+      
+      const handleTouchEnd = () => {
         if (this.longPressTimeout) {
           clearTimeout(this.longPressTimeout);
           this.longPressTimeout = null;
         }
-      }
-    };
-    
-    const handleTouchEnd = () => {
-      if (this.longPressTimeout) {
-        clearTimeout(this.longPressTimeout);
-        this.longPressTimeout = null;
-      }
+        
+        if (this.isDraggingTask) {
+          this.endTaskDrag(onTaskUpdate);
+          resolve(true); // Was a drag
+        } else {
+          resolve(false); // Was a tap
+        }
+        
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+      };
       
-      if (this.isDraggingTask) {
-        this.endTaskDrag(onTaskUpdate);
-      }
-      
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
-    };
-    
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd);
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd);
+    });
   }
 
   /**
