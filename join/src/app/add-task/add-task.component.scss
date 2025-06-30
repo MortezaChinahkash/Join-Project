@@ -82,6 +82,22 @@
             .date-input {
               width: 100%;
               padding-right: 3rem;
+              box-sizing: border-box;
+
+              // Hide default calendar icon
+              &::-webkit-calendar-picker-indicator {
+                opacity: 0;
+                position: absolute;
+                right: 0.75rem;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+              }
+
+              &::-webkit-inner-spin-button,
+              &::-webkit-clear-button {
+                display: none;
+              }
             }
 
             .date-icon {
