@@ -200,10 +200,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 32px; // Ensure minimum height for footer
 
     .task-avatars {
       display: flex;
       align-items: center;
+      flex: 0 0 auto; // Don't grow or shrink
 
       .avatar-group {
         display: flex;
@@ -246,6 +248,9 @@
     }
 
     .task-priority {
+      flex: 0 0 auto; // Don't grow or shrink
+      margin-left: auto; // Always push to the right
+
       .priority-icon {
         width: 24px;
         height: 24px;

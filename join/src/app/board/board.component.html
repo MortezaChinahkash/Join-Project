@@ -46,8 +46,8 @@
                     <div class="remaining-contacts" *ngIf="hasRemainingContacts(task.assignedTo)" [style.z-index]="1">+{{ getRemainingContactsCount(task.assignedTo) }}</div>
                   </div>
                 </div>
-                <div class="task-priority" *ngIf="task.priority">
-                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority" class="priority-icon" />
+                <div class="task-priority">
+                  <img [src]="getPriorityIcon(task.priority)" [alt]="task.priority || 'medium'" class="priority-icon" />
                 </div>
               </div>
             </div>

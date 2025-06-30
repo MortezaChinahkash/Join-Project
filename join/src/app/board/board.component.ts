@@ -277,6 +277,7 @@ export class BoardComponent implements OnInit {
       case 'low':
         return './assets/img/icon_priority_low.svg';
       default:
+        // Fallback: Always show medium priority icon if no priority is set
         return './assets/img/icon_priority_medium.svg';
     }
   }
