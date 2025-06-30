@@ -83,6 +83,11 @@ export class BoardComponent implements OnInit {
     height: 96
   };
 
+  // Drag and drop properties for thumbnail
+  isDragging = false;
+  dragStartX = 0;
+  dragStartScrollLeft = 0;
+
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
@@ -645,8 +650,12 @@ getSelectedContactsText(): string {
     && this.getFilteredTasks(this.inProgressTasks).length === 0
     && this.getFilteredTasks(this.awaitingFeedbackTasks).length === 0
     && this.getFilteredTasks(this.doneTasks).length === 0;
+  }
+
   // Thumbnail navigation methods
   onThumbnailClick(event: MouseEvent) {
+    if (this.isDragging) return; // Don't handle click if we were dragging
+    
     event.stopPropagation();
     const thumbnail = event.currentTarget as HTMLElement;
     const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
@@ -656,11 +665,51 @@ getSelectedContactsText(): string {
     
     const percentage = Math.max(0, Math.min(100, (clickX / thumbnailWidth) * 100));
     
-    const container = document.querySelector('.board-container') as HTMLElement;
+    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
     if (container) {
       const scrollPosition = (percentage / 100) * this.maxScrollPosition;
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
     }
+  }
+
+  onThumbnailMouseDown(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    this.isDragging = true;
+    this.dragStartX = event.clientX;
+    
+    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (container) {
+      this.dragStartScrollLeft = container.scrollLeft;
+    }
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!this.isDragging) return;
+      
+      const deltaX = e.clientX - this.dragStartX;
+      const thumbnailWidth = 192; // 200px - 8px padding
+      const scrollRatio = this.maxScrollPosition / thumbnailWidth;
+      const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
+      
+      if (container) {
+        container.scrollLeft = Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
+      }
+    };
+
+    const handleMouseUp = () => {
+      this.isDragging = false;
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      
+      // Reset drag flag after a short delay to prevent click handler
+      setTimeout(() => {
+        this.isDragging = false;
+      }, 100);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
   }
 
   hideThumbnail(event: MouseEvent) {
@@ -669,20 +718,25 @@ getSelectedContactsText(): string {
   }
 
   private updateScrollPosition() {
-    const container = document.querySelector('.board-container') as HTMLElement;
-    if (container) {
+    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    const boardContainer = document.querySelector('.board-container') as HTMLElement;
+    
+    if (container && boardContainer) {
       this.scrollPosition = container.scrollLeft;
-      this.maxScrollPosition = container.scrollWidth - container.clientWidth;
+      this.maxScrollPosition = boardContainer.scrollWidth - container.clientWidth;
       
-      // Show/hide thumbnail overview based on whether scrolling is needed
-      this.showScrollOverview = this.maxScrollPosition > 0;
+      // Check window width to determine if scrolling should be enabled
+      const windowWidth = window.innerWidth;
+      const shouldShowScroll = windowWidth >= 1000 && windowWidth <= 1750 && this.maxScrollPosition > 0;
+      
+      this.showScrollOverview = shouldShowScroll;
       
       if (this.maxScrollPosition > 0) {
         this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
-        this.thumbWidth = (container.clientWidth / container.scrollWidth) * 100;
+        this.thumbWidth = (container.clientWidth / boardContainer.scrollWidth) * 100;
         
         // Update thumbnail viewport
-        this.updateThumbnailViewport(container);
+        this.updateThumbnailViewport(container, boardContainer);
       } else {
         this.scrollPercentage = 0;
         this.thumbWidth = 100;
@@ -690,14 +744,14 @@ getSelectedContactsText(): string {
     }
   }
 
-  private updateThumbnailViewport(container: HTMLElement) {
+  private updateThumbnailViewport(container: HTMLElement, boardContainer: HTMLElement) {
     const thumbnailWidth = 192; // 200px - 8px padding
     const containerWidth = container.clientWidth;
-    const scrollWidth = container.scrollWidth;
+    const scrollWidth = boardContainer.scrollWidth;
     
     // Calculate viewport size and position in thumbnail
     const viewportWidthRatio = containerWidth / scrollWidth;
-    const viewportPositionRatio = this.scrollPosition / this.maxScrollPosition;
+    const viewportPositionRatio = this.maxScrollPosition > 0 ? this.scrollPosition / this.maxScrollPosition : 0;
     
     this.thumbnailViewport = {
       left: Math.max(0, viewportPositionRatio * thumbnailWidth),
@@ -707,7 +761,7 @@ getSelectedContactsText(): string {
   }
 
   private setupScrollListener() {
-    const container = document.querySelector('.board-container') as HTMLElement;
+    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
     if (container) {
       container.addEventListener('scroll', () => {
         this.updateScrollPosition();
@@ -726,7 +780,6 @@ getSelectedContactsText(): string {
       }, 100);
     }
   }
-}
 }
 
 
