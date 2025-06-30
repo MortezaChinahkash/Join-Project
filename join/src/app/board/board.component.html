@@ -55,6 +55,30 @@
         </div>
       </div>
 
+      <!-- Board Thumbnail Overview -->
+      <div class="board-thumbnail" *ngIf="showScrollOverview" [class.visible]="showScrollOverview" (click)="onThumbnailClick($event)">
+        <div class="thumbnail-header">Board Overview</div>
+        <div class="thumbnail-close" (click)="hideThumbnail($event)">×</div>
+        <div class="thumbnail-content">
+          <div class="thumbnail-columns">
+            <div class="thumbnail-column" 
+                 *ngFor="let column of boardColumns; let i = index"
+                 [class.has-tasks]="column.tasks().length > 0">
+              <div class="thumbnail-column-title">{{ column.title }}</div>
+              <div class="thumbnail-tasks">
+                <div class="thumbnail-task" 
+                     *ngFor="let task of column.tasks().slice(0, 8)"
+                     [class]="'priority-' + task.priority"></div>
+              </div>
+            </div>
+          </div>
+          <div class="thumbnail-viewport" 
+               [style.left.px]="thumbnailViewport.left"
+               [style.width.px]="thumbnailViewport.width"
+               [style.height.px]="thumbnailViewport.height"></div>
+        </div>
+      </div>
+
       <div class="addTaskOverlay" *ngIf="showAddTaskOverlay">
         <div class="addTaskOverlay-content">
           <h2>Add Task</h2>

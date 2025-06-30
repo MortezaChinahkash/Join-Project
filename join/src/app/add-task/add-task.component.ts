@@ -149,9 +149,7 @@ export class AddTaskComponent implements OnInit {
         await this.taskService.addTaskToFirebase(task, 'todo');
         this.resetForm();
         
-        // Show success message or redirect
-        console.log('Task created successfully!');
-        
+        // Task created successfully
       } catch (error) {
         console.error('Error creating task:', error);
       } finally {
