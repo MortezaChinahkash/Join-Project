@@ -133,19 +133,19 @@
         transition: filter 0.2s ease;
       }
     }
+  }
 
-    // Priority icon colors for different priority levels in board tasks
-    &[data-priority="urgent"] .priority-icon {
-      filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
-    }
+  // Priority icon colors for different priority levels in board tasks
+  &[data-priority="urgent"] .priority-icon {
+    filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
+  }
 
-    &[data-priority="medium"] .priority-icon {
-      filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
-    }
+  &[data-priority="medium"] .priority-icon {
+    filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
+  }
 
-    &[data-priority="low"] .priority-icon {
-      filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
-    }
+  &[data-priority="low"] .priority-icon {
+    filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
   }
 }
 

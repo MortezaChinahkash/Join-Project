@@ -171,7 +171,7 @@
 
           .priority-btn {
             padding: 0.75rem 1.5rem;
-            border: 1px solid #d1d7db;
+            border: 2px solid #d1d7db;
             border-radius: 10px;
             background-color: white;
             color: #2a3647;
@@ -181,28 +181,46 @@
             align-items: center;
             gap: 0.5rem;
             transition: all 0.2s ease;
+            font-weight: 500;
 
-            &:hover {
-              background-color: #f8f9fa;
-              border-color: #c1c7cb;
+            // Default state - subtle priority colors in borders and icons
+            &:nth-child(1) { // Urgent
+              border-color: var(--color-prio-urgent);
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
+              }
+              &:hover:not(.active) {
+                background-color: rgba(255, 61, 0, 0.1);
+                border-color: var(--color-prio-urgent);
+              }
             }
 
-            // Non-selected state - icons in priority colors
-            &:nth-child(1) .priority-icon-overlay {
-              filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
+            &:nth-child(2) { // Medium
+              border-color: var(--color-prio-medium);
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
+              }
+              &:hover:not(.active) {
+                background-color: rgba(255, 168, 0, 0.1);
+                border-color: var(--color-prio-medium);
+              }
             }
 
-            &:nth-child(2) .priority-icon-overlay {
-              filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
-            }
-
-            &:nth-child(3) .priority-icon-overlay {
-              filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
+            &:nth-child(3) { // Low
+              border-color: var(--color-prio-low);
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
+              }
+              &:hover:not(.active) {
+                background-color: rgba(122, 226, 41, 0.1);
+                border-color: var(--color-prio-low);
+              }
             }
 
             &.active {
               color: white;
               border-color: transparent;
+              font-weight: 600;
 
               // Active state - white icons
               .priority-icon-overlay {
@@ -212,14 +230,17 @@
               // Specific background colors for each priority level
               &:nth-child(1) {
                 background-color: var(--color-prio-urgent);
+                box-shadow: 0 2px 8px rgba(255, 61, 0, 0.3);
               }
 
               &:nth-child(2) {
                 background-color: var(--color-prio-medium);
+                box-shadow: 0 2px 8px rgba(255, 168, 0, 0.3);
               }
 
               &:nth-child(3) {
                 background-color: var(--color-prio-low);
+                box-shadow: 0 2px 8px rgba(122, 226, 41, 0.3);
               }
             }
 

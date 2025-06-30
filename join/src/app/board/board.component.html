@@ -4,21 +4,17 @@
       <div class="component-header">
         <div class="component-title-bar">
           <h1 class="component-title">Board</h1>
-
           <!-- Desktop Search -->
           <div class="search-add-box desktop-only">
             <div class="search-input-wrapper">
-              <input type="text" class="search-input" placeholder="Find task" 
-                     [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+              <input type="text" class="search-input" placeholder="Find task" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
               <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
             </div>
             <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task</button>
           </div>
-
           <!-- Mobile Search -->
           <div class="mobile-only mobile-search-box">
-            <input type="text" class="search-input" placeholder="Find task" 
-                   [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+            <input type="text" class="search-input" placeholder="Find task" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
             <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
           </div>
         </div>
@@ -31,33 +27,20 @@
             <h2>no search results found</h2>
           </div>
           
-          <div class="board-column" *ngFor="let column of boardColumns" [style.display]="noSearchResults ? 'none' : 'flex'" 
-               [attr.data-column]="column.id"
-               (dragover)="onColumnDragOver($event, column.id)"
-               (dragleave)="onColumnDragLeave($event)"
-               (drop)="onColumnDrop($event, column.id)">
+          <div class="board-column" *ngFor="let column of boardColumns" [style.display]="noSearchResults ? 'none' : 'flex'" [attr.data-column]="column.id" (dragover)="onColumnDragOver($event, column.id)" (dragleave)="onColumnDragLeave($event)" (drop)="onColumnDrop($event, column.id)">
             <div class="column-header">
               <h2 class="column-title">{{ column.title }}</h2>
               <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
             </div>
-            <div class="task-list"
-                 (dragover)="onColumnDragOver($event, column.id)"
-                 (dragleave)="onColumnDragLeave($event)">
+            <div class="task-list" (dragover)="onColumnDragOver($event, column.id)" (dragleave)="onColumnDragLeave($event)">
             <!-- Drag placeholder -->
-            <div class="drag-placeholder" 
-                 *ngIf="dragDropService.dragPlaceholderVisible && dragDropService.dragOverColumn === column.id"
-                 [style.height.px]="dragDropService.dragPlaceholderHeight">
-            </div>
+            <div class="drag-placeholder" *ngIf="dragDropService.dragPlaceholderVisible && dragDropService.dragOverColumn === column.id" [style.height.px]="dragDropService.dragPlaceholderHeight"></div>
             <!-- Empty state when no tasks -->
             <div class="empty-state" *ngIf="column.tasks().length === 0 && !dragDropService.dragPlaceholderVisible">
               <span class="empty-message">{{ column.emptyMessage }}</span>
             </div>
             <!-- Tasks -->
-            <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" 
-                 (mousedown)="onTaskMouseDown($event, task)"
-                 (touchstart)="onTaskTouchStart($event, task)"
-                 [attr.data-priority]="task.priority"
-                 [class.task-dragging-original]="dragDropService.draggedTask?.id === task.id">
+            <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" (mousedown)="onTaskMouseDown($event, task)" (touchstart)="onTaskTouchStart($event, task)" [attr.data-priority]="task.priority" [class.task-dragging-original]="dragDropService.draggedTask?.id === task.id">
               <div class="task-category-tag" [ngClass]="'category-' + task.category">{{ task.category === "technical" ? "Technical Task" : "User Story" }}</div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
@@ -85,28 +68,18 @@
       </div>
 
       <!-- Board Thumbnail Overview -->
-      <div class="board-thumbnail" *ngIf="thumbnailService.showScrollOverview" [class.visible]="thumbnailService.showScrollOverview" 
-           (click)="onThumbnailClick($event)">
+      <div class="board-thumbnail" *ngIf="thumbnailService.showScrollOverview" [class.visible]="thumbnailService.showScrollOverview" (click)="onThumbnailClick($event)">
         <div class="thumbnail-header">Board Overview</div>
         <div class="thumbnail-content">
           <div class="thumbnail-columns">
-            <div class="thumbnail-column" 
-                 *ngFor="let column of boardColumns; let i = index"
-                 [class.has-tasks]="column.tasks().length > 0">
+            <div class="thumbnail-column" *ngFor="let column of boardColumns; let i = index" [class.has-tasks]="column.tasks().length > 0">
               <div class="thumbnail-column-title">{{ column.title }}</div>
               <div class="thumbnail-tasks">
-                <div class="thumbnail-task" 
-                     *ngFor="let task of column.tasks().slice(0, 8)"
-                     [class]="'priority-' + task.priority"></div>
+                <div class="thumbnail-task" *ngFor="let task of column.tasks().slice(0, 8)" [class]="'priority-' + task.priority"></div>
               </div>
             </div>
           </div>
-          <div class="thumbnail-viewport" 
-               [style.left.px]="thumbnailService.thumbnailViewport.left"
-               [style.width.px]="thumbnailService.thumbnailViewport.width"
-               [style.height.px]="thumbnailService.thumbnailViewport.height"
-               (mousedown)="onViewportMouseDown($event)"
-               (click)="onViewportClick($event)"></div>
+          <div class="thumbnail-viewport" [style.left.px]="thumbnailService.thumbnailViewport.left" [style.width.px]="thumbnailService.thumbnailViewport.width" [style.height.px]="thumbnailService.thumbnailViewport.height" (mousedown)="onViewportMouseDown($event)" (click)="onViewportClick($event)"></div>
         </div>
       </div>
 
@@ -138,15 +111,9 @@
               <div class="form-group">
                 <label>Priority</label>
                 <div class="priority-buttons">
-                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">
-                    Urgent<img src="assets/img/icon_priority_urgent.svg" alt="Urgent" class="priority-icon-overlay urgent-icon" />
-                  </button>
-                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">
-                    Medium<img src="assets/img/icon_priority_medium.svg" alt="Medium" class="priority-icon-overlay medium-icon" />
-                  </button>
-                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">
-                    Low<img src="assets/img/icon_priority_low.svg" alt="Low" class="priority-icon-overlay low-icon" />
-                  </button>
+                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">Urgent<img src="assets/img/icon_priority_urgent.svg" alt="Urgent" class="priority-icon-overlay urgent-icon" /></button>
+                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">Medium<img src="assets/img/icon_priority_medium.svg" alt="Medium" class="priority-icon-overlay medium-icon" /></button>
+                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">Low<img src="assets/img/icon_priority_low.svg" alt="Low" class="priority-icon-overlay low-icon" /></button>
                 </div>
               </div>
 
@@ -192,12 +159,7 @@
                   <div class="subtasks-container" formArrayName="subtasks">
                     <div class="subtask-item" *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" [formGroupName]="i">
                       <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
-                        <input 
-                          type="text" 
-                          formControlName="title" 
-                          class="form-input" 
-                          [class.completed]="subtask.get('completed')?.value"
-                          placeholder="Enter subtask title" />
+                        <input type="text" formControlName="title" class="form-input" [class.completed]="subtask.get('completed')?.value" placeholder="Enter subtask title" />
                         <div class="subtask-checkbox" (click)="subtask.get('completed')?.setValue(!subtask.get('completed')?.value)">
                           <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                           <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
@@ -221,9 +183,7 @@
             <span>*This field is required</span>
             <div class="button-group">
               <button type="button" class="cancelBtn" (click)="closeAddTaskOverlay()">Cancel</button>
-              <button type="button" class="createBtn" (click)="onSubmit()">
-                Create Task <img src="./assets/img/icon_done.svg" alt="" />
-              </button>
+              <button type="button" class="createBtn" (click)="onSubmit()">Create Task <img src="./assets/img/icon_done.svg" alt="" /></button>
             </div>
           </div>
         </div>
@@ -233,12 +193,8 @@
       <div class="taskDetailsOverlay" *ngIf="formService.showTaskDetailsOverlay">
         <div class="taskDetailsOverlay-content" *ngIf="formService.selectedTask">
           <div class="task-details-header">
-            <div class="task-category-tag" [ngClass]="'category-' + formService.selectedTask.category">
-              {{ formService.selectedTask.category === "technical" ? "Technical Task" : "User Story" }}
-            </div>
-            <button class="close-btn" (click)="closeTaskDetailsOverlay()">
-              <img src="./assets/img/icon_cancel.svg" alt="Close" />
-            </button>
+            <div class="task-category-tag" [ngClass]="'category-' + formService.selectedTask.category">{{ formService.selectedTask.category === "technical" ? "Technical Task" : "User Story" }}</div>
+            <button class="close-btn" (click)="closeTaskDetailsOverlay()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
           </div>
 
           <h1 class="task-details-title">{{ formService.selectedTask.title }}</h1>
@@ -254,7 +210,7 @@
               <span>{{ formService.selectedTask.dueDate | date:'dd/MM/yyyy' }}</span>
             </div>
 
-            <div class="task-priority" *ngIf="formService.selectedTask.priority">
+            <div class="task-priority" *ngIf="formService.selectedTask.priority" [attr.data-priority]="formService.selectedTask.priority">
               <h3>Priority:</h3>
               <div class="priority-display">
                 <img [src]="utilsService.getPriorityIcon(formService.selectedTask.priority)" [alt]="formService.selectedTask.priority" class="priority-icon" />
@@ -267,9 +223,7 @@
               <div class="assigned-contacts">
                 <!-- Show first 2 contacts directly -->
                 <div class="contact-item" *ngFor="let contactName of formService.getDisplayedAssignedContacts(); let i = index">
-                  <div class="avatar" [style.background-color]="getInitialsColor(contactName)">
-                    {{ getInitials(contactName) }}
-                  </div>
+                  <div class="avatar" [style.background-color]="getInitialsColor(contactName)">{{ getInitials(contactName) }}</div>
                   <span class="contact-name">{{ contactName }}</span>
                 </div>
                 
@@ -284,9 +238,7 @@
                   </div>
                   <div class="dropdown-options" *ngIf="formService.showAssignedContactsDropdown">
                     <div class="contact-item dropdown-contact" *ngFor="let contactName of formService.getRemainingAssignedContacts()">
-                      <div class="avatar" [style.background-color]="getInitialsColor(contactName)">
-                        {{ getInitials(contactName) }}
-                      </div>
+                      <div class="avatar" [style.background-color]="getInitialsColor(contactName)">{{ getInitials(contactName) }}</div>
                       <span class="contact-name">{{ contactName }}</span>
                     </div>
                   </div>
@@ -315,12 +267,8 @@
           </div>
 
           <div class="task-details-actions">
-            <button class="delete-btn" (click)="deleteTask()">
-              <img src="./assets/img/icon_delete.svg" alt="Delete" />
-            </button>
-            <button class="edit-btn" (click)="editTask()">
-              <img src="./assets/img/icon_todo.svg" alt="Edit" />
-            </button>
+            <button class="delete-btn" (click)="deleteTask()"><img src="./assets/img/icon_delete.svg" alt="Delete" /></button>
+            <button class="edit-btn" (click)="editTask()"><img src="./assets/img/icon_todo.svg" alt="Edit" /></button>
           </div>
         </div>
       </div>
@@ -330,9 +278,7 @@
         <div class="taskEditOverlay-content">
           <div class="task-edit-header">
             <h2>Edit Task</h2>
-            <button class="close-btn" (click)="cancelEditTask()">
-              <img src="./assets/img/icon_cancel.svg" alt="Close" />
-            </button>
+            <button class="close-btn" (click)="cancelEditTask()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
           </div>
           
           <form [formGroup]="formService.taskForm" class="task-edit-form">
@@ -354,15 +300,9 @@
             <div class="form-group">
               <label>Priority</label>
               <div class="priority-buttons">
-                <button type="button" class="priority-btn urgent" [class.selected]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">
-                  Urgent <img src="./assets/img/icon_priority_urgent.svg" alt="Urgent" />
-                </button>
-                <button type="button" class="priority-btn medium" [class.selected]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">
-                  Medium <img src="./assets/img/icon_priority_medium.svg" alt="Medium" />
-                </button>
-                <button type="button" class="priority-btn low" [class.selected]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">
-                  Low <img src="./assets/img/icon_priority_low.svg" alt="Low" />
-                </button>
+                <button type="button" class="priority-btn urgent" [class.selected]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">Urgent <img src="./assets/img/icon_priority_urgent.svg" alt="Urgent" /></button>
+                <button type="button" class="priority-btn medium" [class.selected]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">Medium <img src="./assets/img/icon_priority_medium.svg" alt="Medium" /></button>
+                <button type="button" class="priority-btn low" [class.selected]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">Low <img src="./assets/img/icon_priority_low.svg" alt="Low" /></button>
               </div>
             </div>
             
@@ -403,12 +343,7 @@
               <div class="subtasks-container" formArrayName="subtasks">
                 <div class="subtask-item" *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" [formGroupName]="i">
                   <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
-                    <input 
-                      type="text" 
-                      formControlName="title" 
-                      class="form-input" 
-                      [class.completed]="subtask.get('completed')?.value"
-                      placeholder="Enter subtask title" />
+                    <input type="text" formControlName="title" class="form-input" [class.completed]="subtask.get('completed')?.value" placeholder="Enter subtask title" />
                     <div class="subtask-checkbox" (click)="subtask.get('completed')?.setValue(!subtask.get('completed')?.value)">
                       <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                       <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
@@ -438,28 +373,20 @@
         <div class="deleteConfirmationOverlay-content">
           <div class="delete-confirmation-header">
             <h2>Delete Task</h2>
-            <button class="close-btn" (click)="closeDeleteConfirmation()">
-              <img src="./assets/img/icon_cancel.svg" alt="Close" />
-            </button>
+            <button class="close-btn" (click)="closeDeleteConfirmation()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
           </div>
           
           <div class="delete-confirmation-body">
             <div class="warning-icon">
               <img src="./assets/img/icon_delete.svg" alt="Warning" />
             </div>
-            <p class="delete-message">
-              Are you sure you want to delete the task 
-              <strong>"{{ formService.taskToDelete?.title }}"</strong>?
-            </p>
+            <p class="delete-message">Are you sure you want to delete the task <strong>"{{ formService.taskToDelete?.title }}"</strong>?</p>
             <p class="delete-warning">This action cannot be undone.</p>
           </div>
           
           <div class="delete-confirmation-actions">
             <button class="cancel-btn" (click)="closeDeleteConfirmation()">Cancel</button>
-            <button class="delete-confirm-btn" (click)="confirmDeleteTask()">
-              <img src="./assets/img/icon_delete.svg" alt="Delete" />
-              Delete Task
-            </button>
+            <button class="delete-confirm-btn" (click)="confirmDeleteTask()"><img src="./assets/img/icon_delete.svg" alt="Delete" />Delete Task</button>
           </div>
         </div>
       </div>
