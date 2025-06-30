@@ -19,124 +19,144 @@
 
 .component-title-bar {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-}
+  padding: 0 2rem; // Optional: Seitlicher Abstand
 
-.search-add-box {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
+  .component-title {
+    flex: 0 0 auto; // Title behält seine natürliche Breite
+    margin: 0;
+  }
 
-  .search-input-wrapper {
-    position: relative;
-    flex: 1;
-    max-width: 400px;
+  .search-add-box {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto; // Schiebt die gesamte Box nach rechts
+    flex: 0 0 auto; // Verhindert Schrumpfung
+    
+    // Alternativ: Fester Abstand vom Titel
+    // margin-left: 4rem; // Für mehr Abstand zum Titel
 
-    .search-input {
-      width: 100%;
-      padding: 0.75rem 3.5rem 0.75rem 1rem; // Mehr Padding rechts für Icon
-      border: 1px solid #d1d7db;
-      border-radius: 10px;
-      background-color: white;
-      font-size: 1rem;
-      outline: none;
-      transition: all 0.2s ease;
-      box-sizing: border-box;
-
-      &::placeholder {
-        color: #a8a8a8;
+    .search-input-wrapper {
+      position: relative;
+      min-width: 300px; // Mindestbreite für das Suchfeld
+      
+      .search-input {
+        width: 100%;
+        padding: 0.75rem 3.5rem 0.75rem 1rem;
+        border: 1px solid #d1d7db;
+        border-radius: 10px;
+        background-color: white;
         font-size: 1rem;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+
+        &::placeholder {
+          color: #a8a8a8;
+          font-size: 1rem;
+        }
+
+        &:focus {
+          border-color: #29abe2;
+          box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.1);
+        }
+
+        &:hover {
+          border-color: #29abe2;
+        }
       }
 
-      &:focus {
-        border-color: #29abe2;
-        box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.1);
+      &::before {
+        content: '';
+        position: absolute;
+        right: 3rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 20px;
+        background-color: #d1d7db;
+        pointer-events: none;
+      }
+
+      .search-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        opacity: 0.6;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+
+      &:hover .search-icon {
+        opacity: 0.8;
+      }
+    }
+
+    .desktop-header-add-button {
+      background-color: #2a3647;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      min-height: 48px;
+      flex-shrink: 0; // Verhindert Schrumpfung des Buttons
+
+      &::after {
+        content: '+';
+        font-size: 1.2rem;
+        font-weight: 300;
+        line-height: 1;
       }
 
       &:hover {
-        border-color: #29abe2;
+        background-color: #29abe2;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(42, 54, 71, 0.25);
+      }
+
+      &:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 6px rgba(42, 54, 71, 0.2);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.3);
       }
     }
-
-    // NEU: Divider weiter links positioniert
-    &::before {
-      content: '';
-      position: absolute;
-      right: 3rem; // Von 2.5rem auf 3rem geändert
-      top: 50%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 20px;
-      background-color: #d1d7db;
-      pointer-events: none;
-    }
-
-    .search-icon {
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 18px;
-      height: 18px;
-      opacity: 0.6;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-
-    &:hover .search-icon {
-      opacity: 0.8;
-    }
   }
+}
 
-  .desktop-header-add-button {
-    background-color: #2a3647;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 10px;
-    font-size: 1rem;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-    white-space: nowrap;
-    min-height: 48px; // Gleiche Höhe wie Search Input
+// Mobile Responsiveness
+@media (max-width: 768px) {
+  .component-title-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0 1rem;
 
-    // Plus-Icon styling
-    &::after {
-      content: '+';
-      font-size: 1.2rem;
-      font-weight: 300;
-      line-height: 1;
-    }
-
-    &:hover {
-      background-color: #29abe2;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(42, 54, 71, 0.25);
-    }
-
-    &:active {
-      transform: translateY(0);
-      box-shadow: 0 2px 6px rgba(42, 54, 71, 0.2);
-    }
-
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.3);
-    }
-
-    // Responsive adjustments
-    @media (max-width: 768px) {
-      padding: 0.6rem 1.2rem;
-      font-size: 0.9rem;
-      min-height: 44px;
+    .search-add-box {
+      margin-left: 0;
+      width: 100%;
+      
+      .search-input-wrapper {
+        flex: 1;
+        min-width: auto;
+      }
     }
   }
 }
