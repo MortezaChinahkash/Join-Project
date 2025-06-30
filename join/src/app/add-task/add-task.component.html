@@ -47,12 +47,21 @@
                   type="date" 
                   id="dueDate" 
                   formControlName="dueDate" 
+                  [min]="boardFormService.getTodayDateString()"
                   class="form-input date-input"
-                  [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
+                  [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched || boardFormService.isDateInvalid('dueDate', taskForm)"
+                  (change)="taskForm.get('dueDate')?.markAsTouched()">
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
-              <div class="error-message" *ngIf="getErrorMessage('dueDate')">
+              
+              <!-- Required Error -->
+              <div class="error-message" *ngIf="getErrorMessage('dueDate') && !boardFormService.isDateInvalid('dueDate', taskForm)">
                 {{ getErrorMessage('dueDate') }}
+              </div>
+              
+              <!-- Past Date Error -->
+              <div *ngIf="boardFormService.isDateInvalid('dueDate', taskForm)" class="error-message">
+                The date cannot be in the past
               </div>
             </div>
           </div>

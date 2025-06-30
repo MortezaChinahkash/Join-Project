@@ -319,7 +319,7 @@
               <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">This field is required</div>
               
               <!-- Neue Past-Date-Validierung -->
-              <div *ngIf="formService.isDateInvalid('dueDate')" class="error-message">Das Datum darf nicht in der Vergangenheit liegen</div>
+              <div *ngIf="formService.isDateInvalid('dueDate')" class="error-message">The date cannot be in the past</div>
             </div>
             
             <div class="form-group">

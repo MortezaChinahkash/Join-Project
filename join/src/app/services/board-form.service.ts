@@ -131,7 +131,7 @@ export class BoardFormService {
    * @returns Date string in YYYY-MM-DD format
    * @private
    */
-     getTodayDateString(): string {
+    public getTodayDateString(): string {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -229,20 +229,27 @@ export class BoardFormService {
     return !!(field && field.invalid && field.touched);
   }
 
-  isDateInvalid(fieldName: string): boolean {
-  const field = this.taskForm.get(fieldName);
-  
-  // If no field or no value, return false (not our concern)
-  if (!field?.value) {
-    return false;
+  /**
+   * Checks if the date field contains a date in the past
+   * @param fieldName - The name of the date field to check
+   * @param form - Optional FormGroup to check (defaults to service's taskForm)
+   * @returns True if date is in the past, false otherwise
+   */
+  public isDateInvalid(fieldName: string, form?: FormGroup): boolean {
+    const targetForm = form || this.taskForm;
+    const field = targetForm.get(fieldName);
+    
+    // If no field or no value, return false (not our concern)
+    if (!field?.value) {
+      return false;
+    }
+    
+    const selectedDate = new Date(field.value);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to compare only dates
+    
+    return selectedDate < today; // True if date is in the past
   }
-  
-  const selectedDate = new Date(field.value);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Reset time to compare only dates
-  
-  return selectedDate < today; // True if date is in the past
-}
 
   // Contact selection methods
   toggleDropdown() {

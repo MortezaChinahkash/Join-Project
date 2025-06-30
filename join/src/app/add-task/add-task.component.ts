@@ -7,6 +7,7 @@ import { Firestore, collectionData, collection, DocumentData } from '@angular/fi
 import { Task } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 import { InlineSvgDirective } from '../inline-svg.directive';
+import { BoardFormService } from '../services/board-form.service';
 
 /**
  * Component for adding new tasks to the system
@@ -32,7 +33,8 @@ export class AddTaskComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private taskService: TaskService
+    private taskService: TaskService,
+    public boardFormService: BoardFormService
   ) {
     this.taskForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
