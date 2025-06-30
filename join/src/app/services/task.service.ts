@@ -22,8 +22,6 @@ export class TaskService {
 
   async addTaskToFirebase(task: Omit<Task, 'id'>, column: TaskColumn): Promise<string> {
     try {
-      console.log('🔥 Sende Task zu Firebase:', task);
-      
       const taskData = {
         ...task,
         column: column, // ← NEU: Spalte mit speichern
@@ -32,8 +30,6 @@ export class TaskService {
       
       const docRef = await addDoc(collection(this.firestore, this.taskCollection), taskData);
       
-      console.log('✅ Firebase Document erstellt mit ID:', docRef.id);
-      console.log('📍 Spalte gespeichert:', column);
       return docRef.id;
     } catch (error) {
       console.error('❌ Firebase Fehler:', error);
@@ -147,14 +143,10 @@ export class TaskService {
         throw new Error('Task ID is required for update');
       }
       
-      console.log('🔥 Updating task in Firebase:', task.id);
-      
       const taskRef = doc(this.firestore, this.taskCollection, task.id);
       const { id, ...taskData } = task; // Remove ID from data to update
       
       await updateDoc(taskRef, taskData);
-      
-      console.log('✅ Task updated successfully in Firebase');
     } catch (error) {
       console.error('❌ Error updating task in Firebase:', error);
       throw error;
@@ -164,12 +156,8 @@ export class TaskService {
   // Firebase delete task
   async deleteTaskFromFirebase(taskId: string): Promise<void> {
     try {
-      console.log('🔥 Deleting task from Firebase:', taskId);
-      
       const taskRef = doc(this.firestore, this.taskCollection, taskId);
       await deleteDoc(taskRef);
-      
-      console.log('✅ Task deleted successfully from Firebase');
     } catch (error) {
       console.error('❌ Error deleting task from Firebase:', error);
       throw error;

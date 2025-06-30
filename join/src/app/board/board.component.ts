@@ -68,6 +68,21 @@ export class BoardComponent implements OnInit {
     }
   ];
 
+  // Scroll properties for horizontal overview
+  scrollPosition = 0;
+  maxScrollPosition = 0;
+  scrollPercentage = 0;
+  thumbWidth = 100;
+  showScrollOverview = false;
+  Math = Math; // Make Math available in template
+  
+  // Thumbnail viewport tracking
+  thumbnailViewport = {
+    left: 0,
+    width: 50,
+    height: 96
+  };
+
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
@@ -99,8 +114,6 @@ export class BoardComponent implements OnInit {
       // Kontakt entfernen
       this.selectedContacts.splice(index, 1);
     }
-    
-    console.log('Ausgewählte Kontakte:', this.selectedContacts);
   }
 
   isContactSelected(contact: Contact): boolean {
@@ -177,16 +190,6 @@ export class BoardComponent implements OnInit {
     // Schritt 1: Alle Felder als berührt markieren
     this.markFormGroupTouched();
     
-    // Debug: Check form validity and errors
-    console.log('🔍 Form valid:', this.taskForm.valid);
-    console.log('🔍 Form errors:', this.taskForm.errors);
-    console.log('🔍 Form values:', this.taskForm.value);
-    console.log('🔍 Individual control states:');
-    Object.keys(this.taskForm.controls).forEach(key => {
-      const control = this.taskForm.get(key);
-      console.log(`  - ${key}: valid=${control?.valid}, errors=`, control?.errors);
-    });
-    
     // Schritt 2: Prüfen ob das Formular gültig ist
     if (this.taskForm.valid) {
       try {
@@ -196,9 +199,6 @@ export class BoardComponent implements OnInit {
         const validSubtasks = allSubtasks.filter((subtask: any) => 
           subtask && subtask.title && subtask.title.trim() !== ''
         );
-
-        console.log('🔍 Subtasks vor Filterung:', allSubtasks);
-        console.log('✅ Subtasks nach Filterung:', validSubtasks);
 
         const taskData: Omit<Task, 'id' | 'createdAt'> = {
           title: this.taskForm.value.title,
@@ -211,15 +211,11 @@ export class BoardComponent implements OnInit {
           column: this.currentColumn // ← NEU: Spalte hinzufügen
         };
 
-        console.log('📝 Erstelle Task für Spalte:', this.currentColumn);
-
         // Schritt 4: Task zu Firebase hinzufügen (mit Spalten-Info)
         const firebaseId = await this.taskService.addTaskToFirebase({
           ...taskData,
           createdAt: new Date()
         }, this.currentColumn); // ← NEU: Spalte als Parameter
-
-        console.log('✅ Firebase ID erhalten:', firebaseId);
 
         // Schritt 5: Task zu lokalem Service hinzufügen (mit Firebase ID)
         const newTask: Task = {
@@ -234,17 +230,14 @@ export class BoardComponent implements OnInit {
         // Schritt 7: Lokale Arrays aktualisieren
         this.updateLocalArrays();
 
-        console.log('🎉 Task erfolgreich erstellt in Spalte:', this.currentColumn);
-
         // Schritt 8: Overlay schließen
         this.closeAddTaskOverlay();
 
       } catch (error) {
-        console.error('❌ Fehler beim Erstellen der Task:', error);
         alert('Fehler beim Erstellen der Task. Bitte versuchen Sie es erneut.');
       }
     } else {
-      console.log('❌ Formular ist ungültig:', this.taskForm.errors);
+      // Formular ist ungültig
     }
   }
 
@@ -282,12 +275,6 @@ export class BoardComponent implements OnInit {
       return priorityB - priorityA;
     });
 
-    // Debug output für Prioritätssortierung
-    if (sortedTasks.length > 0) {
-      console.log('🔄 Tasks nach Priorität sortiert:', 
-        sortedTasks.map(task => `${task.title} (${task.priority})`));
-    }
-    
     return sortedTasks;
   }
 
@@ -298,14 +285,6 @@ export class BoardComponent implements OnInit {
 
   // Debug method to check category status
   debugCategoryStatus() {
-    const categoryField = this.taskForm.get('category');
-    console.log('Category field status:', {
-      value: categoryField?.value,
-      valid: categoryField?.valid,
-      invalid: categoryField?.invalid,
-      touched: categoryField?.touched,
-      errors: categoryField?.errors
-    });
   }
 
   // Helper methods for task display
@@ -335,9 +314,13 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-  console.log('BoardComponent initialized');
   this.loadContacts()
   this.getTasksFromFirebase();
+  
+  // Setup scroll listener after view init
+  setTimeout(() => {
+    this.setupScrollListener();
+  }, 500);
   }
 
   async getTasksFromFirebase() {
@@ -348,18 +331,17 @@ export class BoardComponent implements OnInit {
     collectionData(taskRef, { idField: 'id' }).subscribe({
       next: (tasks) => {
         this.tasks = tasks as Task[];
-        console.log('✅ Tasks loaded from Firebase:', this.tasks);
         
         // NEU: Tasks in die richtigen Spalten sortieren
         this.sortTasksIntoColumns();
       },
       error: (error) => {
-        console.error('❌ Error loading tasks:', error);
+        // Error loading tasks
       }
     });
     
   } catch (error) {
-    console.error("❌ Das lief wohl nicht so wie gedacht ;)", error);
+    // Error loading tasks
   }
 }
 
@@ -381,11 +363,9 @@ export class BoardComponent implements OnInit {
       this.contacts.sort((a, b) => 
         a.name.toLowerCase().localeCompare(b.name.toLowerCase())
       );
-      
-      console.log('Kontakte geladen:', this.contacts);
     },
     (error) => {
-      console.error('Fehler beim Laden der Kontakte:', error);
+      // Error loading contacts
     }
   );
 }
@@ -459,17 +439,10 @@ getSelectedContactsText(): string {
     this.inProgressTasks = this.sortTasksByPriority(this.inProgressTasks);
     this.awaitingFeedbackTasks = this.sortTasksByPriority(this.awaitingFeedbackTasks);
     this.doneTasks = this.sortTasksByPriority(this.doneTasks);
-
-    console.log('📊 Tasks sortiert und nach Priorität geordnet:');
-    console.log('To Do:', this.todoTasks.length);
-    console.log('In Progress:', this.inProgressTasks.length);
-    console.log('Awaiting:', this.awaitingFeedbackTasks.length);
-    console.log('Done:', this.doneTasks.length);
   }
 
   onSearchChange() {
     // Wird automatisch aufgerufen beim Tippen
-    console.log('🔍 Suche nach:', this.searchTerm);
   }
 
    getFilteredTasks(tasks: Task[]): Task[] {
@@ -570,7 +543,6 @@ getSelectedContactsText(): string {
       this.selectedTask = updatedTask;
       this.isEditingTask = false;
       this.showTaskDetailsOverlay = true; // Return to task details overlay
-      console.log('✅ Task updated successfully');
     } catch (error) {
       console.error('❌ Error updating task:', error);
     }
@@ -590,7 +562,6 @@ getSelectedContactsText(): string {
       this.sortTasksIntoColumns();
 
       this.closeTaskDetailsOverlay();
-      console.log('✅ Task deleted successfully');
     } catch (error) {
       console.error('❌ Error deleting task:', error);
     }
@@ -646,41 +617,116 @@ getSelectedContactsText(): string {
 
   get subtasksFormArray(): FormArray {
     const formArray = this.taskForm.get('subtasks') as FormArray;
-    console.log('📝 subtasksFormArray getter called, length:', formArray?.length || 0);
     return formArray;
   }
 
   addSubtask() {
-    console.log('🔧 addSubtask() called');
-    console.log('📊 Current subtasks count:', this.subtasksFormArray.length);
-    
     // Don't use required validator to avoid validation errors for empty subtasks
     const subtaskGroup = this.fb.group({
       title: [''], // No validators - empty subtasks will be filtered out on submit
       completed: [false]
     });
     this.subtasksFormArray.push(subtaskGroup);
-    
-    console.log('✅ Subtask added, new count:', this.subtasksFormArray.length);
   }
 
   removeSubtask(index: number) {
-    console.log('🗑️ removeSubtask() called with index:', index);
-    console.log('📊 Current subtasks count before removal:', this.subtasksFormArray.length);
-    
     this.subtasksFormArray.removeAt(index);
-    
-    console.log('✅ Subtask removed, new count:', this.subtasksFormArray.length);
   }
 
   // Debug method to test subtasks functionality
   testSubtasks() {
-    console.log('🧪 Testing subtasks functionality...');
-    console.log('📋 TaskForm:', this.taskForm);
-    console.log('📝 Subtasks FormArray:', this.taskForm.get('subtasks'));
-    console.log('🔢 Current subtasks count:', this.subtasksFormArray.length);
-    
     // Test adding a subtask
     this.addSubtask();
   }
+
+  get noSearchResults(): boolean {
+  return !!this.searchTerm
+    && this.getFilteredTasks(this.todoTasks).length === 0
+    && this.getFilteredTasks(this.inProgressTasks).length === 0
+    && this.getFilteredTasks(this.awaitingFeedbackTasks).length === 0
+    && this.getFilteredTasks(this.doneTasks).length === 0;
+  // Thumbnail navigation methods
+  onThumbnailClick(event: MouseEvent) {
+    event.stopPropagation();
+    const thumbnail = event.currentTarget as HTMLElement;
+    const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
+    const rect = thumbnailContent.getBoundingClientRect();
+    const clickX = event.clientX - rect.left - 4; // Account for padding
+    const thumbnailWidth = rect.width - 8; // Account for padding
+    
+    const percentage = Math.max(0, Math.min(100, (clickX / thumbnailWidth) * 100));
+    
+    const container = document.querySelector('.board-container') as HTMLElement;
+    if (container) {
+      const scrollPosition = (percentage / 100) * this.maxScrollPosition;
+      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    }
+  }
+
+  hideThumbnail(event: MouseEvent) {
+    event.stopPropagation();
+    this.showScrollOverview = false;
+  }
+
+  private updateScrollPosition() {
+    const container = document.querySelector('.board-container') as HTMLElement;
+    if (container) {
+      this.scrollPosition = container.scrollLeft;
+      this.maxScrollPosition = container.scrollWidth - container.clientWidth;
+      
+      // Show/hide thumbnail overview based on whether scrolling is needed
+      this.showScrollOverview = this.maxScrollPosition > 0;
+      
+      if (this.maxScrollPosition > 0) {
+        this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
+        this.thumbWidth = (container.clientWidth / container.scrollWidth) * 100;
+        
+        // Update thumbnail viewport
+        this.updateThumbnailViewport(container);
+      } else {
+        this.scrollPercentage = 0;
+        this.thumbWidth = 100;
+      }
+    }
+  }
+
+  private updateThumbnailViewport(container: HTMLElement) {
+    const thumbnailWidth = 192; // 200px - 8px padding
+    const containerWidth = container.clientWidth;
+    const scrollWidth = container.scrollWidth;
+    
+    // Calculate viewport size and position in thumbnail
+    const viewportWidthRatio = containerWidth / scrollWidth;
+    const viewportPositionRatio = this.scrollPosition / this.maxScrollPosition;
+    
+    this.thumbnailViewport = {
+      left: Math.max(0, viewportPositionRatio * thumbnailWidth),
+      width: Math.min(thumbnailWidth, viewportWidthRatio * thumbnailWidth),
+      height: 96 // Full height minus header (120 - 24)
+    };
+  }
+
+  private setupScrollListener() {
+    const container = document.querySelector('.board-container') as HTMLElement;
+    if (container) {
+      container.addEventListener('scroll', () => {
+        this.updateScrollPosition();
+      });
+      
+      // Listen for window resize to update scroll calculations
+      window.addEventListener('resize', () => {
+        setTimeout(() => {
+          this.updateScrollPosition();
+        }, 100);
+      });
+      
+      // Initial calculation
+      setTimeout(() => {
+        this.updateScrollPosition();
+      }, 100);
+    }
+  }
 }
+}
+
+
