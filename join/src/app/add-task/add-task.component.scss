@@ -238,33 +238,128 @@
         }
       }
 
-      .subtasks-input-wrapper {
-        position: relative;
+      .subtasks-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
 
-        .subtask-input {
-          width: 100%;
-          padding: 0.75rem 3rem 0.75rem 1rem;
-          border: 1px solid #d1d7db;
-          border-radius: 10px;
-          font-size: 1rem;
-          color: var(--bg-dark-grey);
-          background-color: var(--bg-white);
-          box-sizing: border-box;
+        .subtask-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
 
-          &:focus {
-            outline: none;
-            border-color: var(--color-accent);
+          .subtask-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+
+            .form-input {
+              flex: 1;
+              padding: 0.75rem 1rem;
+              border: 1px solid #d1d7db;
+              border-radius: 10px;
+              font-size: 1rem;
+              color: var(--bg-dark-grey);
+              background-color: var(--bg-white);
+              box-sizing: border-box;
+              transition: all 0.2s ease;
+
+              &::placeholder {
+                color: #d1d7db;
+              }
+
+              &:focus {
+                outline: none;
+                border-color: var(--color-accent);
+              }
+
+              // Style for completed subtasks - strikethrough and muted colors
+              &.completed {
+                text-decoration: line-through;
+                color: #999;
+                background-color: #f8f9fa;
+                border-color: #e0e0e0;
+              }
+            }
+
+            .subtask-checkbox {
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: transform 0.2s ease;
+
+              &:hover {
+                transform: scale(1.1);
+              }
+
+              img {
+                width: 20px;
+                height: 20px;
+              }
+            }
+
+            .remove-subtask-btn {
+              background: none;
+              border: none;
+              cursor: pointer;
+              padding: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              transition: background-color 0.2s ease;
+
+              &:hover {
+                background-color: #f8f9fa;
+              }
+
+              img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) saturate(100%) invert(39%) sepia(95%) saturate(7471%) hue-rotate(356deg) brightness(107%) contrast(102%);
+              }
+            }
+
+            // Additional styling for completed subtask row
+            &.completed-subtask {
+              opacity: 0.7;
+              
+              .form-input {
+                text-decoration: line-through;
+                color: #999;
+                background-color: #f8f9fa;
+                border-color: #e0e0e0;
+              }
+            }
           }
         }
 
-        .subtask-add-icon {
-          position: absolute;
-          right: 1rem;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 1.5rem;
-          height: 1.5rem;
+        .add-subtask-btn {
+          background: none;
+          border: 1px dashed #29abe2;
+          color: #29abe2;
+          padding: 8px 16px;
+          border-radius: 8px;
           cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: #29abe21a;
+          }
+
+          img {
+            width: 16px;
+            height: 16px;
+            filter: invert(62%) sepia(98%) saturate(1034%) hue-rotate(172deg) brightness(97%) contrast(89%);
+          }
         }
       }
     }
