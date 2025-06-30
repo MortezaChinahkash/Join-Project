@@ -89,6 +89,18 @@ export class BoardComponent implements OnInit {
   dragStartX = 0;
   dragStartScrollLeft = 0;
 
+  // Task drag and drop properties
+  draggedTask: Task | null = null;
+  dragStartPosition = { x: 0, y: 0 };
+  isDraggingTask = false;
+  dragOverColumn: TaskColumn | null = null;
+  dragPlaceholderVisible = false;
+  dragPlaceholderHeight = 0;
+  touchStartTime = 0;
+  longPressTimeout: any = null;
+  dragOffset = { x: 0, y: 0 };
+  dragElement: HTMLElement | null = null;
+
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
@@ -833,6 +845,268 @@ getSelectedContactsText(): string {
         this.updateScrollPosition();
       }, 1000);
     }
+  }
+
+  // ==================== TASK DRAG & DROP METHODS ====================
+
+  // Desktop Mouse Events
+  onTaskMouseDown(event: MouseEvent, task: Task) {
+    // Prevent default to avoid text selection
+    event.preventDefault();
+    
+    // Only start drag with left mouse button
+    if (event.button !== 0) return;
+    
+    this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      if (this.isDraggingTask) {
+        this.updateTaskDrag(e.clientX, e.clientY);
+      }
+    };
+    
+    const handleMouseUp = () => {
+      this.endTaskDrag();
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+    
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  }
+
+  // Mobile Touch Events
+  onTaskTouchStart(event: TouchEvent, task: Task) {
+    event.preventDefault();
+    
+    this.touchStartTime = Date.now();
+    const touch = event.touches[0];
+    
+    // Start long press timer for mobile
+    this.longPressTimeout = setTimeout(() => {
+      this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
+    }, 500); // 500ms long press
+    
+    const handleTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (this.isDraggingTask) {
+        e.preventDefault();
+        this.updateTaskDrag(touch.clientX, touch.clientY);
+      } else {
+        // Cancel long press if user moves finger before drag starts
+        if (this.longPressTimeout) {
+          clearTimeout(this.longPressTimeout);
+          this.longPressTimeout = null;
+        }
+      }
+    };
+    
+    const handleTouchEnd = () => {
+      if (this.longPressTimeout) {
+        clearTimeout(this.longPressTimeout);
+        this.longPressTimeout = null;
+      }
+      
+      if (this.isDraggingTask) {
+        this.endTaskDrag();
+      }
+      
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+    
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+  }
+
+  private startTaskDrag(clientX: number, clientY: number, task: Task, element: HTMLElement) {
+    this.draggedTask = task;
+    this.isDraggingTask = true;
+    this.dragStartPosition = { x: clientX, y: clientY };
+    
+    // Find the task card element
+    const taskCard = element.closest('.task-card') as HTMLElement;
+    if (taskCard) {
+      // Clone the element for dragging
+      this.dragElement = taskCard.cloneNode(true) as HTMLElement;
+      this.dragElement.style.position = 'fixed';
+      this.dragElement.style.pointerEvents = 'none';
+      this.dragElement.style.zIndex = '9999';
+      this.dragElement.style.transform = 'rotate(5deg)';
+      this.dragElement.style.transition = 'none';
+      this.dragElement.style.width = taskCard.offsetWidth + 'px';
+      this.dragElement.style.height = taskCard.offsetHeight + 'px';
+      this.dragElement.classList.add('task-dragging');
+      
+      // Calculate offset from mouse/touch to element
+      const rect = taskCard.getBoundingClientRect();
+      this.dragOffset = {
+        x: clientX - rect.left,
+        y: clientY - rect.top
+      };
+      
+      // Position the drag element
+      this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
+      this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
+      
+      document.body.appendChild(this.dragElement);
+      
+      // Add dragging class to original element
+      taskCard.classList.add('task-dragging-original');
+      
+      // Store placeholder height
+      this.dragPlaceholderHeight = taskCard.offsetHeight;
+    }
+  }
+
+  private updateTaskDrag(clientX: number, clientY: number) {
+    if (!this.isDraggingTask || !this.dragElement) return;
+    
+    // Update drag element position
+    this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
+    this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
+    
+    // Primary method: Check which column we're over using elementFromPoint
+    const elements = document.elementsFromPoint(clientX, clientY);
+    let targetColumn: TaskColumn | null = null;
+    
+    for (const element of elements) {
+      // Check for board-column element (main column container)
+      const columnElement = element.closest('.board-column') as HTMLElement;
+      if (columnElement) {
+        targetColumn = columnElement.getAttribute('data-column') as TaskColumn;
+        break;
+      }
+      
+      // Also check for task-list element as fallback
+      const taskListElement = element.closest('.task-list') as HTMLElement;
+      if (taskListElement) {
+        const parentColumn = taskListElement.closest('.board-column') as HTMLElement;
+        if (parentColumn) {
+          targetColumn = parentColumn.getAttribute('data-column') as TaskColumn;
+          break;
+        }
+      }
+      
+      // Check for column-header as additional fallback
+      const headerElement = element.closest('.column-header') as HTMLElement;
+      if (headerElement) {
+        const parentColumn = headerElement.closest('.board-column') as HTMLElement;
+        if (parentColumn) {
+          targetColumn = parentColumn.getAttribute('data-column') as TaskColumn;
+          break;
+        }
+      }
+    }
+    
+    // Fallback method: Use geometric bounds detection if primary method fails
+    if (!targetColumn) {
+      targetColumn = this.getColumnAtPosition(clientX, clientY);
+    }
+    
+    // Update drag over column and show/hide placeholder
+    if (targetColumn && targetColumn !== this.draggedTask?.column) {
+      this.dragOverColumn = targetColumn;
+      this.dragPlaceholderVisible = true;
+    } else {
+      this.dragOverColumn = null;
+      this.dragPlaceholderVisible = false;
+    }
+  }
+
+  // Enhanced column detection method
+  private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
+    // Get all board columns
+    const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
+    
+    for (const column of columns) {
+      const rect = column.getBoundingClientRect();
+      
+      // Check if the cursor is within the column bounds
+      if (clientX >= rect.left && 
+          clientX <= rect.right && 
+          clientY >= rect.top && 
+          clientY <= rect.bottom) {
+        return column.getAttribute('data-column') as TaskColumn;
+      }
+    }
+    
+    return null;
+  }
+
+  private async endTaskDrag() {
+    if (!this.isDraggingTask || !this.draggedTask) return;
+    
+    // Remove drag element
+    if (this.dragElement) {
+      document.body.removeChild(this.dragElement);
+      this.dragElement = null;
+    }
+    
+    // Remove dragging classes
+    const originalElement = document.querySelector('.task-dragging-original');
+    if (originalElement) {
+      originalElement.classList.remove('task-dragging-original');
+    }
+    
+    // If dropped on a different column, move the task
+    if (this.dragOverColumn && this.dragOverColumn !== this.draggedTask.column) {
+      try {
+        const updatedTask: Task = {
+          ...this.draggedTask,
+          column: this.dragOverColumn
+        };
+        
+        await this.taskService.updateTaskInFirebase(updatedTask);
+        
+        // Update local tasks array
+        const taskIndex = this.tasks.findIndex(t => t.id === updatedTask.id);
+        if (taskIndex !== -1) {
+          this.tasks[taskIndex] = updatedTask;
+          this.sortTasksIntoColumns();
+        }
+      } catch (error) {
+        console.error('❌ Error moving task:', error);
+      }
+    }
+    
+    // Reset drag state
+    this.isDraggingTask = false;
+    this.draggedTask = null;
+    this.dragOverColumn = null;
+    this.dragPlaceholderVisible = false;
+    this.dragPlaceholderHeight = 0;
+    
+    if (this.longPressTimeout) {
+      clearTimeout(this.longPressTimeout);
+      this.longPressTimeout = null;
+    }
+  }
+
+  // Column drag over events
+  onColumnDragOver(event: DragEvent, column: TaskColumn) {
+    if (this.isDraggingTask && this.draggedTask && column !== this.draggedTask.column) {
+      event.preventDefault();
+      this.dragOverColumn = column;
+      this.dragPlaceholderVisible = true;
+    }
+  }
+
+  onColumnDragLeave(event: DragEvent) {
+    // Only hide placeholder if we're actually leaving the column area
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    const currentTarget = event.currentTarget as HTMLElement;
+    
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      this.dragOverColumn = null;
+      this.dragPlaceholderVisible = false;
+    }
+  }
+
+  onColumnDrop(event: DragEvent, column: TaskColumn) {
+    event.preventDefault();
+    // The actual drop logic is handled in endTaskDrag()
+    // This just ensures proper event handling
   }
 }
 

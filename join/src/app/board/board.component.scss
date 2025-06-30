@@ -2295,3 +2295,103 @@
   }
 }
 
+// ==================== DRAG & DROP STYLES ====================
+
+.task-card {
+  // User select prevention during drag
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  // Drag and drop states
+  &.task-dragging-original {
+    opacity: 0.5;
+    transform: scale(0.95);
+    pointer-events: none;
+  }
+}
+
+.task-dragging {
+  opacity: 0.9;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  cursor: grabbing;
+  transform: rotate(5deg) !important;
+  z-index: 9999;
+  
+  // Prevent interactions with the dragged element
+  pointer-events: none;
+  user-select: none;
+  
+  // Enhanced visual effect
+  background: white;
+  border: 2px solid #4A90E2;
+}
+
+.drag-placeholder {
+  border: 2px dashed #4A90E2;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  background-color: rgba(74, 144, 226, 0.1);
+  position: relative;
+  transition: all 0.2s ease;
+  
+  &::before {
+    content: "Drop task here";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #4A90E2;
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+  
+  // Animation for placeholder appearance
+  animation: placeholderPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes placeholderPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+// Column drag over state
+.board-column {
+  transition: background-color 0.2s ease;
+  
+  &:has(.drag-placeholder) {
+    background-color: rgba(74, 144, 226, 0.05);
+    border-radius: 15px;
+  }
+}
+
+// Prevent text selection during drag operations
+.board-container {
+  &.dragging-active {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+}
+
+// Mobile specific adjustments
+@media (max-width: 768px) {
+  .task-dragging {
+    transform: rotate(3deg) !important; // Smaller rotation on mobile
+  }
+  
+  .drag-placeholder {
+    &::before {
+      font-size: 0.8rem;
+    }
+  }
+}
