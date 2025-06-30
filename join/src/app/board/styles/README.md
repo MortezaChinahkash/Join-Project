@@ -55,20 +55,30 @@ Contains styles for:
 
 #### 6. `_task-edit-overlay.scss`
 Contains styles for:
-- Task edit modal overlay
-- Edit form styling
-- Priority selection in edit mode
-- Contact dropdown for editing
-- Action buttons (save/cancel)
+- Task editing overlay container
+- Task edit form styling
+- Edit form fields and inputs
+- Priority buttons in edit mode
+- Contact selection in edit mode
+- Subtasks management in edit mode
+- Edit action buttons (save/cancel)
 
-#### 7. `_board-thumbnail.scss`
+#### 7. `_delete-confirmation-overlay.scss` 
+Contains styles for:
+- Delete confirmation overlay
+- Warning dialog styling
+- Delete confirmation buttons
+- Animation effects for the overlay
+- Mobile responsive design for confirmation dialog
+
+#### 8. `_board-thumbnail.scss`
 Contains styles for:
 - Board overview thumbnail
 - Thumbnail viewport indicator
 - Miniature column representation
 - Thumbnail interaction states
 
-#### 8. `_drag-and-drop.scss`
+#### 9. `_drag-and-drop.scss`
 Contains styles for:
 - Drag and drop visual feedback
 - Dragging states for task cards
@@ -76,7 +86,7 @@ Contains styles for:
 - Column drag-over states
 - Animation keyframes
 
-#### 9. `_responsive.scss`
+#### 10. `_responsive.scss`
 Contains styles for:
 - Mobile responsive breakpoints
 - Tablet and desktop layout adjustments
@@ -121,6 +131,7 @@ The main component file imports all partials:
 @use './styles/add-task-overlay';
 @use './styles/task-details-overlay';
 @use './styles/task-edit-overlay';
+@use './styles/delete-confirmation-overlay';
 @use './styles/board-thumbnail';
 @use './styles/drag-and-drop';
 @use './styles/responsive';

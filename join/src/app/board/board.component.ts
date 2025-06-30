@@ -273,6 +273,17 @@ export class BoardComponent implements OnInit {
     });
   }
 
+  async confirmDeleteTask() {
+    await this.formService.confirmDeleteTask(() => {
+      this.tasks = this.tasks.filter(t => t.id !== this.formService.taskToDelete!.id);
+      this.sortTasksIntoColumns();
+    });
+  }
+
+  closeDeleteConfirmation() {
+    this.formService.closeDeleteConfirmation();
+  }
+
   async toggleSubtask(subtaskIndex: number) {
     await this.formService.toggleSubtask(subtaskIndex, () => this.updateTaskArrays());
   }

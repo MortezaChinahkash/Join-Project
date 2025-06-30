@@ -27,6 +27,10 @@ export class BoardFormService {
   isDropdownOpen = false;
   selectedContacts: Contact[] = [];
   showAssignedContactsDropdown = false;
+  
+  // Delete confirmation overlay
+  showDeleteConfirmationOverlay = false;
+  taskToDelete: Task | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -438,27 +442,52 @@ export class BoardFormService {
   }
 
   /**
-   * Deletes the currently selected task after confirmation.
+   * Opens the delete confirmation overlay for the currently selected task.
+   */
+  openDeleteConfirmation(): void {
+    if (!this.selectedTask) return;
+    this.taskToDelete = this.selectedTask;
+    this.showDeleteConfirmationOverlay = true;
+  }
+
+  /**
+   * Closes the delete confirmation overlay and resets the task to delete.
+   */
+  closeDeleteConfirmation(): void {
+    this.showDeleteConfirmationOverlay = false;
+    this.taskToDelete = null;
+  }
+
+  /**
+   * Confirms and deletes the task after user confirmation.
+   * 
+   * @param onTaskUpdate - Callback to update local task arrays after successful deletion
+   * @returns Promise<void>
+   */
+  async confirmDeleteTask(onTaskUpdate: () => void): Promise<void> {
+    if (!this.taskToDelete || !this.taskToDelete.id) return;
+
+    try {
+      await this.taskService.deleteTaskFromFirebase(this.taskToDelete.id);
+      
+      // Call the update callback to refresh local arrays
+      onTaskUpdate();
+
+      this.closeDeleteConfirmation();
+      this.closeTaskDetailsOverlay();
+    } catch (error) {
+      console.error('❌ Error deleting task:', error);
+    }
+  }
+
+  /**
+   * Legacy method for backwards compatibility - now opens the confirmation overlay.
    * 
    * @param onTaskUpdate - Callback to update local task arrays after successful deletion
    * @returns Promise<void>
    */
   async deleteTask(onTaskUpdate: () => void): Promise<void> {
-    if (!this.selectedTask || !this.selectedTask.id) return;
-
-    const confirmDelete = confirm(`Are you sure you want to delete the task "${this.selectedTask.title}"?`);
-    if (!confirmDelete) return;
-
-    try {
-      await this.taskService.deleteTaskFromFirebase(this.selectedTask.id);
-      
-      // Call the update callback to refresh local arrays
-      onTaskUpdate();
-
-      this.closeTaskDetailsOverlay();
-    } catch (error) {
-      console.error('❌ Error deleting task:', error);
-    }
+    this.openDeleteConfirmation();
   }
 
   /**
