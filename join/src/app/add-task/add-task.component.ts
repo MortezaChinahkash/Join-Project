@@ -92,7 +92,7 @@ export class AddTaskComponent implements OnInit {
     } else {
       this.selectedContacts.push(contact);
     }
-    this.taskForm.patchValue({ assignedTo: this.selectedContacts.map(c => c.id || '') });
+    this.taskForm.patchValue({ assignedTo: this.selectedContacts.map(c => c.name) });
   }
 
   /**
@@ -173,7 +173,7 @@ export class AddTaskComponent implements OnInit {
           dueDate: formValue.dueDate,
           priority: formValue.priority,
           category: formValue.category,
-          assignedTo: this.selectedContacts.map(c => c.id || ''),
+          assignedTo: this.selectedContacts.map(c => c.name),
           column: 'todo',
           subtasks: validSubtasks,
           createdAt: new Date()
