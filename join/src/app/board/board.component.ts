@@ -149,6 +149,11 @@ export class BoardComponent implements OnInit {
     this.selectedPriority = '';
     this.selectedContacts = []; // Reset selected contacts
     
+    // Clear all subtasks
+    while (this.subtasksFormArray.length !== 0) {
+      this.subtasksFormArray.removeAt(0);
+    }
+    
     // Set today's date as default for due date and medium priority as default
     const today = this.getTodayDateString();
     this.taskForm.patchValue({
@@ -183,7 +188,7 @@ export class BoardComponent implements OnInit {
           priority: this.selectedPriority,
           assignedTo: this.selectedContacts.map(contact => contact.name),
           category: this.taskForm.value.category,
-          subtasks: [],
+          subtasks: this.taskForm.value.subtasks || [],
           column: this.currentColumn // ← NEU: Spalte hinzufügen
         };
 
@@ -587,18 +592,41 @@ getSelectedContactsText(): string {
   }
 
   get subtasksFormArray(): FormArray {
-    return this.taskForm.get('subtasks') as FormArray;
+    const formArray = this.taskForm.get('subtasks') as FormArray;
+    console.log('📝 subtasksFormArray getter called, length:', formArray?.length || 0);
+    return formArray;
   }
 
   addSubtask() {
+    console.log('🔧 addSubtask() called');
+    console.log('📊 Current subtasks count:', this.subtasksFormArray.length);
+    
     const subtaskGroup = this.fb.group({
       title: ['', Validators.required],
       completed: [false]
     });
     this.subtasksFormArray.push(subtaskGroup);
+    
+    console.log('✅ Subtask added, new count:', this.subtasksFormArray.length);
   }
 
   removeSubtask(index: number) {
+    console.log('🗑️ removeSubtask() called with index:', index);
+    console.log('📊 Current subtasks count before removal:', this.subtasksFormArray.length);
+    
     this.subtasksFormArray.removeAt(index);
+    
+    console.log('✅ Subtask removed, new count:', this.subtasksFormArray.length);
+  }
+
+  // Debug method to test subtasks functionality
+  testSubtasks() {
+    console.log('🧪 Testing subtasks functionality...');
+    console.log('📋 TaskForm:', this.taskForm);
+    console.log('📝 Subtasks FormArray:', this.taskForm.get('subtasks'));
+    console.log('🔢 Current subtasks count:', this.subtasksFormArray.length);
+    
+    // Test adding a subtask
+    this.addSubtask();
   }
 }
