@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Contact, ContactsComponent } from '../contacts/contacts.component';
 import { Firestore, collectionData, collection, DocumentData } from '@angular/fire/firestore';
 import { Task } from '../interfaces/task.interface';
@@ -40,12 +40,23 @@ export class AddTaskComponent implements OnInit {
       dueDate: ['', Validators.required],
       priority: ['', Validators.required],
       category: ['', Validators.required],
-      assignedTo: [[]]
+      assignedTo: [[]],
+      subtasks: this.formBuilder.array([])
     });
   }
 
   ngOnInit(): void {
     this.loadContacts();
+    this.setDefaultValues();
+  }
+
+  /**
+   * Sets default values for the form - medium priority by default
+   */
+  private setDefaultValues(): void {
+    // Set medium as default priority
+    this.selectedPriority = 'medium';
+    this.taskForm.patchValue({ priority: 'medium' });
   }
 
   /**
@@ -91,7 +102,7 @@ export class AddTaskComponent implements OnInit {
     } else {
       this.selectedContacts.push(contact);
     }
-    this.taskForm.patchValue({ assignedTo: this.selectedContacts.map(c => c.id || '') });
+    this.taskForm.patchValue({ assignedTo: this.selectedContacts.map(c => c.name) });
   }
 
   /**
@@ -116,6 +127,31 @@ export class AddTaskComponent implements OnInit {
   }
 
   /**
+   * Gets the subtasks FormArray
+   */
+  get subtasksFormArray(): FormArray {
+    return this.taskForm.get('subtasks') as FormArray;
+  }
+
+  /**
+   * Adds a new subtask to the form array
+   */
+  addSubtask(): void {
+    const subtaskGroup = this.formBuilder.group({
+      title: [''], // No validators - empty subtasks will be filtered out on submit
+      completed: [false]
+    });
+    this.subtasksFormArray.push(subtaskGroup);
+  }
+
+  /**
+   * Removes a subtask from the form array
+   */
+  removeSubtask(index: number): void {
+    this.subtasksFormArray.removeAt(index);
+  }
+
+  /**
    * Gets selected contacts text for display
    */
   getSelectedContactsText(): string {
@@ -134,15 +170,22 @@ export class AddTaskComponent implements OnInit {
       
       try {
         const formValue = this.taskForm.value;
+        
+        // Filter out empty subtasks - only save subtasks with non-empty titles
+        const allSubtasks = formValue.subtasks || [];
+        const validSubtasks = allSubtasks.filter((subtask: any) => 
+          subtask && subtask.title && subtask.title.trim() !== ''
+        );
+        
         const task: Omit<Task, 'id'> = {
           title: formValue.title,
           description: formValue.description,
           dueDate: formValue.dueDate,
           priority: formValue.priority,
           category: formValue.category,
-          assignedTo: this.selectedContacts.map(c => c.id || ''),
+          assignedTo: this.selectedContacts.map(c => c.name),
           column: 'todo',
-          subtasks: [],
+          subtasks: validSubtasks,
           createdAt: new Date()
         };
 
@@ -165,9 +208,16 @@ export class AddTaskComponent implements OnInit {
    */
   resetForm(): void {
     this.taskForm.reset();
-    this.selectedPriority = '';
     this.selectedContacts = [];
     this.isDropdownOpen = false;
+    
+    // Clear all subtasks
+    while (this.subtasksFormArray.length !== 0) {
+      this.subtasksFormArray.removeAt(0);
+    }
+    
+    // Set default values after reset
+    this.setDefaultValues();
   }
 
   /**
@@ -177,6 +227,13 @@ export class AddTaskComponent implements OnInit {
     Object.keys(this.taskForm.controls).forEach(key => {
       const control = this.taskForm.get(key);
       control?.markAsTouched();
+      
+      // For FormArray controls (like subtasks), mark them as touched but don't validate
+      if (control instanceof FormArray) {
+        control.controls.forEach(arrayControl => {
+          arrayControl.markAsTouched();
+        });
+      }
     });
   }
 

@@ -161,9 +161,28 @@
           <!-- Subtasks -->
           <div class="form-group">
             <label>Subtasks</label>
-            <div class="subtasks-input-wrapper">
-              <input type="text" placeholder="Add new subtask" class="form-input subtask-input" />
-              <div [inlineSvg]="'assets/icons/plus.svg'" class="subtask-add-icon"></div>
+            <div class="subtasks-container" formArrayName="subtasks">
+              <div class="subtask-item" *ngFor="let subtask of subtasksFormArray.controls; let i = index" [formGroupName]="i">
+                <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
+                  <input 
+                    type="text" 
+                    formControlName="title" 
+                    class="form-input" 
+                    [class.completed]="subtask.get('completed')?.value"
+                    placeholder="Enter subtask title" />
+                  <div class="subtask-checkbox" (click)="subtask.get('completed')?.setValue(!subtask.get('completed')?.value)">
+                    <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
+                    <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
+                  </div>
+                  <button type="button" class="remove-subtask-btn" (click)="removeSubtask(i)">
+                    <img src="./assets/img/icon_cancel.svg" alt="Remove" />
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="add-subtask-btn" (click)="addSubtask()">
+                <img src="./assets/img/icon_plus.svg" alt="Add" />
+                Add new subtask
+              </button>
             </div>
           </div>
         </div>
