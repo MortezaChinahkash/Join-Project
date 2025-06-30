@@ -966,16 +966,42 @@ getSelectedContactsText(): string {
     this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
     this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
     
-    // Check which column we're over
+    // Primary method: Check which column we're over using elementFromPoint
     const elements = document.elementsFromPoint(clientX, clientY);
     let targetColumn: TaskColumn | null = null;
     
     for (const element of elements) {
-      const columnElement = element.closest('[data-column]') as HTMLElement;
+      // Check for board-column element (main column container)
+      const columnElement = element.closest('.board-column') as HTMLElement;
       if (columnElement) {
         targetColumn = columnElement.getAttribute('data-column') as TaskColumn;
         break;
       }
+      
+      // Also check for task-list element as fallback
+      const taskListElement = element.closest('.task-list') as HTMLElement;
+      if (taskListElement) {
+        const parentColumn = taskListElement.closest('.board-column') as HTMLElement;
+        if (parentColumn) {
+          targetColumn = parentColumn.getAttribute('data-column') as TaskColumn;
+          break;
+        }
+      }
+      
+      // Check for column-header as additional fallback
+      const headerElement = element.closest('.column-header') as HTMLElement;
+      if (headerElement) {
+        const parentColumn = headerElement.closest('.board-column') as HTMLElement;
+        if (parentColumn) {
+          targetColumn = parentColumn.getAttribute('data-column') as TaskColumn;
+          break;
+        }
+      }
+    }
+    
+    // Fallback method: Use geometric bounds detection if primary method fails
+    if (!targetColumn) {
+      targetColumn = this.getColumnAtPosition(clientX, clientY);
     }
     
     // Update drag over column and show/hide placeholder
@@ -986,6 +1012,26 @@ getSelectedContactsText(): string {
       this.dragOverColumn = null;
       this.dragPlaceholderVisible = false;
     }
+  }
+
+  // Enhanced column detection method
+  private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
+    // Get all board columns
+    const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
+    
+    for (const column of columns) {
+      const rect = column.getBoundingClientRect();
+      
+      // Check if the cursor is within the column bounds
+      if (clientX >= rect.left && 
+          clientX <= rect.right && 
+          clientY >= rect.top && 
+          clientY <= rect.bottom) {
+        return column.getAttribute('data-column') as TaskColumn;
+      }
+    }
+    
+    return null;
   }
 
   private async endTaskDrag() {
@@ -1046,9 +1092,21 @@ getSelectedContactsText(): string {
     }
   }
 
-  onColumnDragLeave() {
-    this.dragOverColumn = null;
-    this.dragPlaceholderVisible = false;
+  onColumnDragLeave(event: DragEvent) {
+    // Only hide placeholder if we're actually leaving the column area
+    const relatedTarget = event.relatedTarget as HTMLElement;
+    const currentTarget = event.currentTarget as HTMLElement;
+    
+    if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
+      this.dragOverColumn = null;
+      this.dragPlaceholderVisible = false;
+    }
+  }
+
+  onColumnDrop(event: DragEvent, column: TaskColumn) {
+    event.preventDefault();
+    // The actual drop logic is handled in endTaskDrag()
+    // This just ensures proper event handling
   }
 }
 
