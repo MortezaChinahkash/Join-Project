@@ -2252,7 +2252,11 @@
   line-height: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: nowrap;  
+}
+
+.column-title{
+  margin-bottom: 8px;
 }
 
 .thumbnail-tasks {
