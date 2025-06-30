@@ -718,15 +718,16 @@
     }
 
     .button-group {
-      flex-direction: column-reverse;
+      flex-direction: row;
       gap: 0.75rem;
       max-width: 600px;
       margin: 0 auto;
+      justify-content: center;
     }
 
     .btn {
       justify-content: center;
-      width: 100%;
+      flex: 0 0 auto; // Don't grow or shrink, maintain natural size
     }
   }
 }
