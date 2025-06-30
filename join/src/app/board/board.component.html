@@ -28,6 +28,17 @@
             <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
           </div>
           <div class="task-list">
+      <div class="board-scroll-wrapper" #boardScrollWrapper>
+        <div class="board-container">
+          <div class="no-search-results" [style.display]="noSearchResults ? 'flex' : 'none'">
+              <h2>Keine Suchergebnisse gefunden</h2>
+            </div>
+          <div class="board-column" *ngFor="let column of boardColumns">
+            <div class="column-header">
+              <h2 class="column-title">{{ column.title }}</h2>
+              <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
+            </div>
+            <div class="task-list">
             <!-- Empty state when no tasks -->
             <div class="empty-state" *ngIf="column.tasks().length === 0">
               <span class="empty-message">{{ column.emptyMessage }}</span>
@@ -58,11 +69,12 @@
           </div>
         </div>
       </div>
+      </div>
 
       <!-- Board Thumbnail Overview -->
-      <div class="board-thumbnail" *ngIf="showScrollOverview" [class.visible]="showScrollOverview" (click)="onThumbnailClick($event)">
+      <div class="board-thumbnail" *ngIf="showScrollOverview" [class.visible]="showScrollOverview" 
+           (click)="onThumbnailClick($event)">
         <div class="thumbnail-header">Board Overview</div>
-        <div class="thumbnail-close" (click)="hideThumbnail($event)">×</div>
         <div class="thumbnail-content">
           <div class="thumbnail-columns">
             <div class="thumbnail-column" 
@@ -79,7 +91,8 @@
           <div class="thumbnail-viewport" 
                [style.left.px]="thumbnailViewport.left"
                [style.width.px]="thumbnailViewport.width"
-               [style.height.px]="thumbnailViewport.height"></div>
+               [style.height.px]="thumbnailViewport.height"
+               (mousedown)="onViewportMouseDown($event)"></div>
         </div>
       </div>
 
