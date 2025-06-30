@@ -22,18 +22,28 @@
           <div class="no-search-results" [style.display]="noSearchResults ? 'flex' : 'none'">
               <h2>Keine Suchergebnisse gefunden</h2>
             </div>
-          <div class="board-column" *ngFor="let column of boardColumns">
+          <div class="board-column" *ngFor="let column of boardColumns" [attr.data-column]="column.id">
             <div class="column-header">
               <h2 class="column-title">{{ column.title }}</h2>
               <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
             </div>
             <div class="task-list">
+            <!-- Drag placeholder -->
+            <div class="drag-placeholder" 
+                 *ngIf="dragPlaceholderVisible && dragOverColumn === column.id"
+                 [style.height.px]="dragPlaceholderHeight">
+            </div>
             <!-- Empty state when no tasks -->
-            <div class="empty-state" *ngIf="column.tasks().length === 0">
+            <div class="empty-state" *ngIf="column.tasks().length === 0 && !dragPlaceholderVisible">
               <span class="empty-message">{{ column.emptyMessage }}</span>
             </div>
             <!-- Tasks -->
-            <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" (click)="openTaskDetails(task)" [attr.data-priority]="task.priority">
+            <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" 
+                 (click)="openTaskDetails(task)" 
+                 (mousedown)="onTaskMouseDown($event, task)"
+                 (touchstart)="onTaskTouchStart($event, task)"
+                 [attr.data-priority]="task.priority"
+                 [class.task-dragging-original]="draggedTask?.id === task.id">
               <div class="task-category-tag" [ngClass]="'category-' + task.category">{{ task.category === "technical" ? "Technical Task" : "User Story" }}</div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
