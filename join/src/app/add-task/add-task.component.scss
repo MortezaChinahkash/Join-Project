@@ -260,9 +260,8 @@
               border: 1px solid #d1d7db;
               border-radius: 10px;
               font-size: 1rem;
-              color: var(--bg-dark-grey);
-              background-color: var(--bg-white);
-              box-sizing: border-box;
+              color: #2a3647;
+              background-color: white;
               transition: all 0.2s ease;
 
               &::placeholder {
@@ -271,7 +270,7 @@
 
               &:focus {
                 outline: none;
-                border-color: var(--color-accent);
+                border-color: #29abe2;
               }
 
               // Style for completed subtasks - strikethrough and muted colors
@@ -320,7 +319,7 @@
               img {
                 width: 16px;
                 height: 16px;
-                filter: brightness(0) saturate(100%) invert(39%) sepia(95%) saturate(7471%) hue-rotate(356deg) brightness(107%) contrast(102%);
+                filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
               }
             }
 
@@ -339,26 +338,28 @@
         }
 
         .add-subtask-btn {
-          background: none;
-          border: 1px dashed #29abe2;
-          color: #29abe2;
-          padding: 8px 16px;
-          border-radius: 8px;
-          cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 8px;
-          font-size: 14px;
+          gap: 0.5rem;
+          padding: 0.75rem 1rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          background-color: white;
+          color: #2a3647;
+          cursor: pointer;
+          font-size: 1rem;
           transition: all 0.2s ease;
+          margin-top: 0.5rem;
 
           &:hover {
-            background-color: #29abe21a;
+            background-color: #f8f9fa;
+            border-color: #29abe2;
           }
 
           img {
             width: 16px;
             height: 16px;
-            filter: invert(62%) sepia(98%) saturate(1034%) hue-rotate(172deg) brightness(97%) contrast(89%);
+            filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
           }
         }
       }
