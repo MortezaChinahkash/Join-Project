@@ -177,10 +177,29 @@ export class BoardComponent implements OnInit {
     // Schritt 1: Alle Felder als berührt markieren
     this.markFormGroupTouched();
     
+    // Debug: Check form validity and errors
+    console.log('🔍 Form valid:', this.taskForm.valid);
+    console.log('🔍 Form errors:', this.taskForm.errors);
+    console.log('🔍 Form values:', this.taskForm.value);
+    console.log('🔍 Individual control states:');
+    Object.keys(this.taskForm.controls).forEach(key => {
+      const control = this.taskForm.get(key);
+      console.log(`  - ${key}: valid=${control?.valid}, errors=`, control?.errors);
+    });
+    
     // Schritt 2: Prüfen ob das Formular gültig ist
     if (this.taskForm.valid) {
       try {
         // Schritt 3: Task-Daten vorbereiten
+        // Filter out empty subtasks - only save subtasks with non-empty titles
+        const allSubtasks = this.taskForm.value.subtasks || [];
+        const validSubtasks = allSubtasks.filter((subtask: any) => 
+          subtask && subtask.title && subtask.title.trim() !== ''
+        );
+
+        console.log('🔍 Subtasks vor Filterung:', allSubtasks);
+        console.log('✅ Subtasks nach Filterung:', validSubtasks);
+
         const taskData: Omit<Task, 'id' | 'createdAt'> = {
           title: this.taskForm.value.title,
           description: this.taskForm.value.description,
@@ -188,7 +207,7 @@ export class BoardComponent implements OnInit {
           priority: this.selectedPriority,
           assignedTo: this.selectedContacts.map(contact => contact.name),
           category: this.taskForm.value.category,
-          subtasks: this.taskForm.value.subtasks || [],
+          subtasks: validSubtasks,
           column: this.currentColumn // ← NEU: Spalte hinzufügen
         };
 
@@ -233,6 +252,13 @@ export class BoardComponent implements OnInit {
     Object.keys(this.taskForm.controls).forEach(key => {
       const control = this.taskForm.get(key);
       control?.markAsTouched();
+      
+      // For FormArray controls (like subtasks), mark them as touched but don't validate
+      if (control instanceof FormArray) {
+        control.controls.forEach(arrayControl => {
+          arrayControl.markAsTouched();
+        });
+      }
     });
   }
 
@@ -476,7 +502,7 @@ getSelectedContactsText(): string {
     if (this.selectedTask.subtasks) {
       this.selectedTask.subtasks.forEach(subtask => {
         const subtaskGroup = this.fb.group({
-          title: [subtask.title, Validators.required],
+          title: [subtask.title], // No required validator - empty subtasks will be filtered out
           completed: [subtask.completed]
         });
         this.subtasksFormArray.push(subtaskGroup);
@@ -601,8 +627,9 @@ getSelectedContactsText(): string {
     console.log('🔧 addSubtask() called');
     console.log('📊 Current subtasks count:', this.subtasksFormArray.length);
     
+    // Don't use required validator to avoid validation errors for empty subtasks
     const subtaskGroup = this.fb.group({
-      title: ['', Validators.required],
+      title: [''], // No validators - empty subtasks will be filtered out on submit
       completed: [false]
     });
     this.subtasksFormArray.push(subtaskGroup);
