@@ -47,6 +47,16 @@ export class AddTaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadContacts();
+    this.setDefaultValues();
+  }
+
+  /**
+   * Sets default values for the form - medium priority by default
+   */
+  private setDefaultValues(): void {
+    // Set medium as default priority
+    this.selectedPriority = 'medium';
+    this.taskForm.patchValue({ priority: 'medium' });
   }
 
   /**
@@ -200,7 +210,6 @@ export class AddTaskComponent implements OnInit {
    */
   resetForm(): void {
     this.taskForm.reset();
-    this.selectedPriority = '';
     this.selectedContacts = [];
     this.isDropdownOpen = false;
     
@@ -208,6 +217,9 @@ export class AddTaskComponent implements OnInit {
     while (this.subtasksFormArray.length !== 0) {
       this.subtasksFormArray.removeAt(0);
     }
+    
+    // Set default values after reset
+    this.setDefaultValues();
   }
 
   /**
