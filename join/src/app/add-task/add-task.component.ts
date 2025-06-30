@@ -183,6 +183,16 @@ export class AddTaskComponent implements OnInit {
   }
 
   /**
+   * Opens the date picker when calendar icon is clicked
+   */
+  openDatePicker(): void {
+    const dateInput = document.getElementById('dueDate') as HTMLInputElement;
+    if (dateInput) {
+      dateInput.showPicker();
+    }
+  }
+
+  /**
    * Gets validation error message for a field
    */
   getErrorMessage(fieldName: string): string {
