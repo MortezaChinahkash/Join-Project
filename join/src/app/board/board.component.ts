@@ -645,6 +645,8 @@ getSelectedContactsText(): string {
     && this.getFilteredTasks(this.inProgressTasks).length === 0
     && this.getFilteredTasks(this.awaitingFeedbackTasks).length === 0
     && this.getFilteredTasks(this.doneTasks).length === 0;
+  }
+
   // Thumbnail navigation methods
   onThumbnailClick(event: MouseEvent) {
     event.stopPropagation();
@@ -726,7 +728,6 @@ getSelectedContactsText(): string {
       }, 100);
     }
   }
-}
 }
 
 
