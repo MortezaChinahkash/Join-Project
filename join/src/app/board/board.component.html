@@ -136,8 +136,13 @@
                   <label>Subtasks</label>
                   <div class="subtasks-container" formArrayName="subtasks">
                     <div class="subtask-item" *ngFor="let subtask of subtasksFormArray.controls; let i = index" [formGroupName]="i">
-                      <div class="subtask-input-group">
-                        <input type="text" formControlName="title" class="form-input" placeholder="Enter subtask title" />
+                      <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
+                        <input 
+                          type="text" 
+                          formControlName="title" 
+                          class="form-input" 
+                          [class.completed]="subtask.get('completed')?.value"
+                          placeholder="Enter subtask title" />
                         <div class="subtask-checkbox" (click)="subtask.get('completed')?.setValue(!subtask.get('completed')?.value)">
                           <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                           <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
@@ -342,8 +347,13 @@
               <label>Subtasks</label>
               <div class="subtasks-container" formArrayName="subtasks">
                 <div class="subtask-item" *ngFor="let subtask of subtasksFormArray.controls; let i = index" [formGroupName]="i">
-                  <div class="subtask-input-group">
-                    <input type="text" formControlName="title" class="form-input" placeholder="Enter subtask title" />
+                  <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
+                    <input 
+                      type="text" 
+                      formControlName="title" 
+                      class="form-input" 
+                      [class.completed]="subtask.get('completed')?.value"
+                      placeholder="Enter subtask title" />
                     <div class="subtask-checkbox" (click)="subtask.get('completed')?.setValue(!subtask.get('completed')?.value)">
                       <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                       <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />

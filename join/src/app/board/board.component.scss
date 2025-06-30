@@ -1229,50 +1229,31 @@
       color: #2A3647;
     }
   }
-}
 
-.subtasks-container {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-
-  .subtask-item {
+  .subtasks-list {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
+    flex-direction: column;
+    gap: 12px;
 
-    .subtask-input-group {
+    .subtask-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      width: 100%;
+      gap: 12px;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
 
-      .form-input {
-        flex: 1;
-        padding: 0.75rem 1rem;
-        border: 1px solid #d1d7db;
-        border-radius: 10px;
-        font-size: 1rem;
-        color: #2a3647;
-        background-color: white;
-
-        &::placeholder {
-          color: #d1d7db;
-        }
-
-        &:focus {
-          outline: none;
-          border-color: #29abe2;
-        }
+      &:hover {
+        background-color: #f8f9fa;
       }
 
       .subtask-checkbox {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        cursor: pointer;
         transition: transform 0.2s ease;
 
         &:hover {
@@ -1285,28 +1266,116 @@
         }
       }
 
-      .remove-subtask-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background-color 0.2s ease;
+      .subtask-title {
+        font-size: 16px;
+        color: #2A3647;
+        transition: all 0.2s ease;
 
-        &:hover {
-          background-color: #f8f9fa;
-        }
-
-        img {
-          width: 16px;
-          height: 16px;
-          filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+        &.completed {
+          text-decoration: line-through;
+          color: #999;
+          opacity: 0.7;
         }
       }
     }
+  }
+}
+
+.subtasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  .subtask-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;      .subtask-input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+
+        .form-input {
+          flex: 1;
+          padding: 0.75rem 1rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          font-size: 1rem;
+          color: #2a3647;
+          background-color: white;
+          transition: all 0.2s ease;
+
+          &::placeholder {
+            color: #d1d7db;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #29abe2;
+          }
+
+          // Style for completed subtasks - strikethrough and muted colors
+          &.completed {
+            text-decoration: line-through;
+            color: #999;
+            background-color: #f8f9fa;
+            border-color: #e0e0e0;
+          }
+        }
+
+        .subtask-checkbox {
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+
+        .remove-subtask-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          transition: background-color 0.2s ease;
+
+          &:hover {
+            background-color: #f8f9fa;
+          }
+
+          img {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+          }
+        }
+
+        // Additional styling for completed subtask row
+        &.completed-subtask {
+          opacity: 0.7;
+          
+          .form-input {
+            text-decoration: line-through;
+            color: #999;
+            background-color: #f8f9fa;
+            border-color: #e0e0e0;
+          }
+        }
+      }
   }
 
   .add-subtask-btn {
