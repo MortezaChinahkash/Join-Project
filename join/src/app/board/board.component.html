@@ -311,8 +311,7 @@
                        formControlName="dueDate" 
                        [min]="formService.getTodayDateString()"
                        class="form-input" 
-                       [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" />
-                <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
+                       [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" />                
               </div>
               
               <!-- Bestehende Required-Validierung -->
