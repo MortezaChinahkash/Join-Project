@@ -131,7 +131,7 @@ export class BoardFormService {
    * @returns Date string in YYYY-MM-DD format
    * @private
    */
-  private getTodayDateString(): string {
+     getTodayDateString(): string {
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
@@ -228,6 +228,21 @@ export class BoardFormService {
     const field = this.taskForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
+
+  isDateInvalid(fieldName: string): boolean {
+  const field = this.taskForm.get(fieldName);
+  
+  // If no field or no value, return false (not our concern)
+  if (!field?.value) {
+    return false;
+  }
+  
+  const selectedDate = new Date(field.value);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0); // Reset time to compare only dates
+  
+  return selectedDate < today; // True if date is in the past
+}
 
   // Contact selection methods
   toggleDropdown() {
@@ -570,3 +585,5 @@ export class BoardFormService {
     return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
   }
 }
+
+
