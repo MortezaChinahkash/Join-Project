@@ -1989,10 +1989,7 @@
   &:hover {
     transform: translateY(0) scale(1.05);
     box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
-  }
-
-  &:active {
-    cursor: grabbing;
+    border-color: #29abe2;
   }
 }
 
@@ -2090,33 +2087,32 @@
   position: absolute;
   top: 24px;
   left: 0;
-  background: rgba(41, 171, 226, 0.3);
+  background: rgba(41, 171, 226, 0.4);
   border: 2px solid #29abe2;
-  border-radius: 2px;
-  pointer-events: none;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 0 1px rgba(41, 171, 226, 0.5);
-}
-
-.thumbnail-close {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  width: 16px;
-  height: 16px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.6rem;
-  color: #666;
-  z-index: 3;
+  border-radius: 3px;
+  transition: all 0.1s ease;
+  box-shadow: 
+    0 0 0 1px rgba(41, 171, 226, 0.6),
+    0 2px 4px rgba(41, 171, 226, 0.3);
+  cursor: grab;
+  min-width: 20px; /* Ensure minimum visibility */
+  z-index: 10; /* Ensure it's above other elements */
   
   &:hover {
-    background: rgba(255, 255, 255, 1);
-    color: #333;
+    background: rgba(41, 171, 226, 0.5);
+    border-color: #1a90c4;
+    box-shadow: 
+      0 0 0 1px rgba(26, 144, 196, 0.8),
+      0 2px 6px rgba(41, 171, 226, 0.4);
+  }
+  
+  &:active {
+    cursor: grabbing;
+    background: rgba(41, 171, 226, 0.6);
+    transition: none; /* Remove transition during drag for smooth movement */
+    box-shadow: 
+      0 0 0 2px rgba(26, 144, 196, 1),
+      0 2px 8px rgba(41, 171, 226, 0.5);
   }
 }
 

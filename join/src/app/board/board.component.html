@@ -62,10 +62,8 @@
 
       <!-- Board Thumbnail Overview -->
       <div class="board-thumbnail" *ngIf="showScrollOverview" [class.visible]="showScrollOverview" 
-           (mousedown)="onThumbnailMouseDown($event)"
            (click)="onThumbnailClick($event)">
         <div class="thumbnail-header">Board Overview</div>
-        <div class="thumbnail-close" (click)="hideThumbnail($event)">×</div>
         <div class="thumbnail-content">
           <div class="thumbnail-columns">
             <div class="thumbnail-column" 
@@ -82,7 +80,8 @@
           <div class="thumbnail-viewport" 
                [style.left.px]="thumbnailViewport.left"
                [style.width.px]="thumbnailViewport.width"
-               [style.height.px]="thumbnailViewport.height"></div>
+               [style.height.px]="thumbnailViewport.height"
+               (mousedown)="onViewportMouseDown($event)"></div>
         </div>
       </div>
 
