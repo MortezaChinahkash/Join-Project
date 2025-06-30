@@ -519,4 +519,25 @@ export class BoardFormService {
     if (!this.selectedTask?.assignedTo) return [];
     return this.selectedTask.assignedTo.slice(2);
   }
+
+  /**
+   * Gets the percentage of completed subtasks for the currently selected task.
+   * 
+   * @returns Progress percentage (0-100)
+   */
+  getSubtaskProgress(): number {
+    if (!this.selectedTask?.subtasks || this.selectedTask.subtasks.length === 0) return 0;
+    const completed = this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+    return (completed / this.selectedTask.subtasks.length) * 100;
+  }
+
+  /**
+   * Gets the count of completed subtasks for the currently selected task.
+   * 
+   * @returns Number of completed subtasks
+   */
+  getCompletedSubtasksCount(): number {
+    if (!this.selectedTask?.subtasks) return 0;
+    return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
+  }
 }

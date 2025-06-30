@@ -45,11 +45,11 @@
                  (dragleave)="onColumnDragLeave($event)">
             <!-- Drag placeholder -->
             <div class="drag-placeholder" 
-                 *ngIf="dragPlaceholderVisible && dragOverColumn === column.id"
-                 [style.height.px]="dragPlaceholderHeight">
+                 *ngIf="dragDropService.dragPlaceholderVisible && dragDropService.dragOverColumn === column.id"
+                 [style.height.px]="dragDropService.dragPlaceholderHeight">
             </div>
             <!-- Empty state when no tasks -->
-            <div class="empty-state" *ngIf="column.tasks().length === 0 && !dragPlaceholderVisible">
+            <div class="empty-state" *ngIf="column.tasks().length === 0 && !dragDropService.dragPlaceholderVisible">
               <span class="empty-message">{{ column.emptyMessage }}</span>
             </div>
             <!-- Tasks -->
@@ -58,7 +58,7 @@
                  (mousedown)="onTaskMouseDown($event, task)"
                  (touchstart)="onTaskTouchStart($event, task)"
                  [attr.data-priority]="task.priority"
-                 [class.task-dragging-original]="draggedTask?.id === task.id">
+                 [class.task-dragging-original]="dragDropService.draggedTask?.id === task.id">
               <div class="task-category-tag" [ngClass]="'category-' + task.category">{{ task.category === "technical" ? "Technical Task" : "User Story" }}</div>
               <h3 class="task-title">{{ task.title }}</h3>
               <p class="task-description">{{ task.description }}</p>
@@ -86,7 +86,7 @@
       </div>
 
       <!-- Board Thumbnail Overview -->
-      <div class="board-thumbnail" *ngIf="showScrollOverview" [class.visible]="showScrollOverview" 
+      <div class="board-thumbnail" *ngIf="thumbnailService.showScrollOverview" [class.visible]="thumbnailService.showScrollOverview" 
            (click)="onThumbnailClick($event)">
         <div class="thumbnail-header">Board Overview</div>
         <div class="thumbnail-content">
@@ -103,22 +103,22 @@
             </div>
           </div>
           <div class="thumbnail-viewport" 
-               [style.left.px]="thumbnailViewport.left"
-               [style.width.px]="thumbnailViewport.width"
-               [style.height.px]="thumbnailViewport.height"
+               [style.left.px]="thumbnailService.thumbnailViewport.left"
+               [style.width.px]="thumbnailService.thumbnailViewport.width"
+               [style.height.px]="thumbnailService.thumbnailViewport.height"
                (mousedown)="onViewportMouseDown($event)"></div>
         </div>
       </div>
 
-      <div class="addTaskOverlay" *ngIf="showAddTaskOverlay">
+      <div class="addTaskOverlay" *ngIf="formService.showAddTaskOverlay">
         <div class="addTaskOverlay-content">
           <h2>Add Task</h2>
-          <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form-wrapper">
+          <form [formGroup]="formService.taskForm" (ngSubmit)="onSubmit()" class="task-form-wrapper">
             <div class="taskProperties">
               <div class="leftSide">
                 <div class="form-group">
                   <label for="title">Title<span class="required">*</span></label>
-                  <input type="text" id="title" formControlName="title" [placeholder]="isFieldInvalid('title') ? 'This field is required' : 'Enter a title'" class="form-input" [class.error]="isFieldInvalid('title')" (blur)="taskForm.get('title')?.markAsTouched()" />
+                  <input type="text" id="title" formControlName="title" [placeholder]="formService.isFieldInvalid('title') ? 'This field is required' : 'Enter a title'" class="form-input" [class.error]="formService.isFieldInvalid('title')" (blur)="formService.taskForm.get('title')?.markAsTouched()" />
                 </div>
                 <div class="form-group">
                   <label for="description">Description</label>
@@ -127,10 +127,10 @@
                 <div class="form-group date-group">
                   <label for="dueDate">Due date<span class="required">*</span></label>
                   <div class="date-input-wrapper">
-                    <input type="date" id="dueDate" formControlName="dueDate" class="form-input date-input" [class.error]="isFieldInvalid('dueDate')" (change)="taskForm.get('dueDate')?.markAsTouched()" />
+                    <input type="date" id="dueDate" formControlName="dueDate" class="form-input date-input" [class.error]="formService.isFieldInvalid('dueDate')" (change)="formService.taskForm.get('dueDate')?.markAsTouched()" />
                     <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
                   </div>
-                  <div *ngIf="isFieldInvalid('dueDate')" class="error-message">This field is required</div>
+                  <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">This field is required</div>
                 </div>
               </div>
               <div class="devider"></div>
@@ -138,13 +138,13 @@
               <div class="form-group">
                 <label>Priority</label>
                 <div class="priority-buttons">
-                  <button type="button" class="priority-btn" [class.active]="selectedPriority === 'urgent'" (click)="selectPriority('urgent')">
+                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">>
                     Urgent<img src="assets/img/icon_priority_urgent.svg" alt="Urgent" class="priority-icon-overlay urgent-icon" />
                   </button>
-                  <button type="button" class="priority-btn" [class.active]="selectedPriority === 'medium'" (click)="selectPriority('medium')">
+                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">>
                     Medium<img src="assets/img/icon_priority_medium.svg" alt="Medium" class="priority-icon-overlay medium-icon" />
                   </button>
-                  <button type="button" class="priority-btn" [class.active]="selectedPriority === 'low'" (click)="selectPriority('low')">
+                  <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">>
                     Low<img src="assets/img/icon_priority_low.svg" alt="Low" class="priority-icon-overlay low-icon" />
                   </button>
                 </div>
@@ -153,23 +153,23 @@
               <div class="form-group">
                 <label for="assignedTo">Assigned to</label>
                 <div class="custom-select-wrapper">
-                  <div class="custom-select" (click)="toggleDropdown()">
-                    <div class="selected-contacts" *ngIf="selectedContacts.length > 0; else placeholder">
+                  <div class="custom-select" (click)="formService.toggleDropdown()">>
+                    <div class="selected-contacts" *ngIf="formService.selectedContacts.length > 0; else placeholder">>
                       <div class="selected-contact-avatars">
-                        <div class="contact-avatar" *ngFor="let contact of selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-                        <div class="more-contacts" *ngIf="selectedContacts.length > 4">+{{ selectedContacts.length - 4 }}</div>
+                        <div class="contact-avatar" *ngFor="let contact of formService.selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
+                        <div class="more-contacts" *ngIf="formService.selectedContacts.length > 4">+{{ formService.selectedContacts.length - 4 }}</div>
                       </div>
-                      <span class="selected-text">{{ getSelectedContactsText() }}</span>
+                      <span class="selected-text">{{ formService.getSelectedContactsText() }}</span>
                     </div>
                     <ng-template #placeholder><span class="placeholder">Select contacts to assign</span></ng-template>
-                    <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
+                    <div class="dropdown-arrow" [class.open]="formService.isDropdownOpen">▼</div>
                   </div>
-                  <div class="dropdown-options" *ngIf="isDropdownOpen">
-                    <div class="dropdown-option" *ngFor="let contact of contacts" (click)="toggleContactSelection(contact, $event)">
+                  <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
+                    <div class="dropdown-option" *ngFor="let contact of contacts" (click)="formService.toggleContactSelection(contact, $event)">>
                       <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
                       <span class="contact-name">{{ contact.name }}</span>
                       <div class="checkbox-wrapper">
-                        <input type="checkbox" [id]="'contact-' + contact.id" [checked]="isContactSelected(contact)" (click)="$event.stopPropagation()" />
+                        <input type="checkbox" [id]="'contact-' + contact.id" [checked]="formService.isContactSelected(contact)" (click)="$event.stopPropagation()" />
                         <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
                       </div>
                     </div>
@@ -179,18 +179,18 @@
 
               <div class="form-group">
                 <label for="category">Category<span class="required">*</span></label>
-                <select id="category" formControlName="category" class="form-select" [class.error]="isFieldInvalid('category')" (change)="onCategoryChange($event); debugCategoryStatus()">
+                <select id="category" formControlName="category" class="form-select" [class.error]="formService.isFieldInvalid('category')" (change)="formService.onCategoryChange($event)">>
                   <option value="">Select task category</option>
                   <option value="technical">Technical Task</option>
                   <option value="user-story">User Story</option>
                 </select>
-                <div *ngIf="isFieldInvalid('category')" class="error-message">This field is required</div>
+                <div *ngIf="formService.isFieldInvalid('category')" class="error-message">This field is required</div>
               </div>
 
                 <div class="form-group">
                   <label>Subtasks</label>
                   <div class="subtasks-container" formArrayName="subtasks">
-                    <div class="subtask-item" *ngFor="let subtask of subtasksFormArray.controls; let i = index" [formGroupName]="i">
+                    <div class="subtask-item" *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" [formGroupName]="i">>
                       <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
                         <input 
                           type="text" 
@@ -202,12 +202,12 @@
                           <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                           <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
                         </div>
-                        <button type="button" class="remove-subtask-btn" (click)="removeSubtask(i)">
+                        <button type="button" class="remove-subtask-btn" (click)="formService.removeSubtask(i)">>
                           <img src="./assets/img/icon_cancel.svg" alt="Remove" />
                         </button>
                       </div>
                     </div>
-                    <button type="button" class="add-subtask-btn" (click)="addSubtask()">
+                    <button type="button" class="add-subtask-btn" (click)="formService.addSubtask()">>
                       <img src="./assets/img/icon_plus.svg" alt="Add" />
                       Add new subtask
                     </button>
@@ -230,43 +230,43 @@
       </div>
 
       <!-- Task Details Overlay -->
-      <div class="taskDetailsOverlay" *ngIf="showTaskDetailsOverlay">
-        <div class="taskDetailsOverlay-content" *ngIf="selectedTask">
+      <div class="taskDetailsOverlay" *ngIf="formService.showTaskDetailsOverlay">
+        <div class="taskDetailsOverlay-content" *ngIf="formService.selectedTask">
           <div class="task-details-header">
-            <div class="task-category-tag" [ngClass]="'category-' + selectedTask.category">
-              {{ selectedTask.category === "technical" ? "Technical Task" : "User Story" }}
+            <div class="task-category-tag" [ngClass]="'category-' + formService.selectedTask.category">
+              {{ formService.selectedTask.category === "technical" ? "Technical Task" : "User Story" }}
             </div>
             <button class="close-btn" (click)="closeTaskDetailsOverlay()">
               <img src="./assets/img/icon_cancel.svg" alt="Close" />
             </button>
           </div>
 
-          <h1 class="task-details-title">{{ selectedTask.title }}</h1>
+          <h1 class="task-details-title">{{ formService.selectedTask.title }}</h1>
           
           <div class="task-details-content">
-            <div class="task-description" *ngIf="selectedTask.description">
+            <div class="task-description" *ngIf="formService.selectedTask.description">
               <h3>Description</h3>
-              <p>{{ selectedTask.description }}</p>
+              <p>{{ formService.selectedTask.description }}</p>
             </div>
 
-            <div class="task-due-date" *ngIf="selectedTask.dueDate">
+            <div class="task-due-date" *ngIf="formService.selectedTask.dueDate">
               <h3>Due date:</h3>
-              <span>{{ selectedTask.dueDate | date:'dd/MM/yyyy' }}</span>
+              <span>{{ formService.selectedTask.dueDate | date:'dd/MM/yyyy' }}</span>
             </div>
 
-            <div class="task-priority" *ngIf="selectedTask.priority">
+            <div class="task-priority" *ngIf="formService.selectedTask.priority">
               <h3>Priority:</h3>
               <div class="priority-display">
-                <img [src]="getPriorityIcon(selectedTask.priority)" [alt]="selectedTask.priority" class="priority-icon" />
-                <span class="priority-text">{{ selectedTask.priority | titlecase }}</span>
+                <img [src]="utilsService.getPriorityIcon(formService.selectedTask.priority)" [alt]="formService.selectedTask.priority" class="priority-icon" />
+                <span class="priority-text">{{ formService.selectedTask.priority | titlecase }}</span>
               </div>
             </div>
 
-            <div class="task-assigned-to" *ngIf="selectedTask.assignedTo && selectedTask.assignedTo.length > 0">
+            <div class="task-assigned-to" *ngIf="formService.selectedTask.assignedTo && formService.selectedTask.assignedTo.length > 0">
               <h3>Assigned to:</h3>
               <div class="assigned-contacts">
                 <!-- Show first 2 contacts directly -->
-                <div class="contact-item" *ngFor="let contactName of getDisplayedAssignedContacts(); let i = index">
+                <div class="contact-item" *ngFor="let contactName of formService.getDisplayedAssignedContacts(); let i = index">
                   <div class="avatar" [style.background-color]="getInitialsColor(contactName)">
                     {{ getInitials(contactName) }}
                   </div>
@@ -274,16 +274,16 @@
                 </div>
                 
                 <!-- Show dropdown for remaining contacts if there are more than 2 -->
-                <div class="more-contacts-dropdown" *ngIf="hasMoreAssignedContacts()">
+                <div class="more-contacts-dropdown" *ngIf="formService.hasMoreAssignedContacts()">
                   <!-- Backdrop to close dropdown when clicking outside -->
-                  <div class="dropdown-backdrop" *ngIf="showAssignedContactsDropdown" (click)="showAssignedContactsDropdown = false"></div>
+                  <div class="dropdown-backdrop" *ngIf="formService.showAssignedContactsDropdown" (click)="formService.showAssignedContactsDropdown = false"></div>
                   
-                  <div class="dropdown-trigger" (click)="toggleAssignedContactsDropdown()">
-                    <span class="more-contacts-text">+{{ getRemainingAssignedContactsCount() }} more</span>
-                    <div class="dropdown-arrow" [class.open]="showAssignedContactsDropdown">▼</div>
+                  <div class="dropdown-trigger" (click)="formService.toggleAssignedContactsDropdown()">
+                    <span class="more-contacts-text">+{{ formService.getRemainingAssignedContactsCount() }} more</span>
+                    <div class="dropdown-arrow" [class.open]="formService.showAssignedContactsDropdown">▼</div>
                   </div>
-                  <div class="dropdown-options" *ngIf="showAssignedContactsDropdown">
-                    <div class="contact-item dropdown-contact" *ngFor="let contactName of getRemainingAssignedContacts()">
+                  <div class="dropdown-options" *ngIf="formService.showAssignedContactsDropdown">
+                    <div class="contact-item dropdown-contact" *ngFor="let contactName of formService.getRemainingAssignedContacts()">
                       <div class="avatar" [style.background-color]="getInitialsColor(contactName)">
                         {{ getInitials(contactName) }}
                       </div>
@@ -294,16 +294,16 @@
               </div>
             </div>
 
-            <div class="task-subtasks" *ngIf="selectedTask.subtasks && selectedTask.subtasks.length > 0">
+            <div class="task-subtasks" *ngIf="formService.selectedTask.subtasks && formService.selectedTask.subtasks.length > 0">
               <h3>Subtasks</h3>
               <div class="subtasks-progress">
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="getSubtaskProgress()"></div>
+                  <div class="progress-fill" [style.width.%]="formService.getSubtaskProgress()"></div>
                 </div>
-                <span class="progress-text">{{ getCompletedSubtasksCount() }}/{{ selectedTask.subtasks.length }} done</span>
+                <span class="progress-text">{{ formService.getCompletedSubtasksCount() }}/{{ formService.selectedTask.subtasks.length }} done</span>
               </div>
               <div class="subtasks-list">
-                <div class="subtask-item" *ngFor="let subtask of selectedTask.subtasks; let i = index" (click)="toggleSubtask(i)">
+                <div class="subtask-item" *ngFor="let subtask of formService.selectedTask.subtasks; let i = index" (click)="toggleSubtask(i)">>
                   <div class="subtask-checkbox" [class.checked]="subtask.completed">
                     <img *ngIf="subtask.completed" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                     <img *ngIf="!subtask.completed" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
@@ -326,19 +326,19 @@
       </div>
 
       <!-- Task Edit Overlay -->
-      <div class="taskEditOverlay" *ngIf="isEditingTask && selectedTask">
+      <div class="taskEditOverlay" *ngIf="formService.isEditingTask && formService.selectedTask">
         <div class="taskEditOverlay-content">
           <div class="task-edit-header">
             <h2>Edit Task</h2>
-            <button class="close-btn" (click)="cancelEditTask()">
+            <button class="close-btn" (click)="cancelEditTask()">>
               <img src="./assets/img/icon_cancel.svg" alt="Close" />
             </button>
           </div>
           
-          <form [formGroup]="taskForm" class="task-edit-form">
+          <form [formGroup]="formService.taskForm" class="task-edit-form">
             <div class="form-group">
               <label for="edit-title">Title<span class="required">*</span></label>
-              <input type="text" id="edit-title" formControlName="title" class="form-input" [class.error]="isFieldInvalid('title')" />
+              <input type="text" id="edit-title" formControlName="title" class="form-input" [class.error]="formService.isFieldInvalid('title')" />
             </div>
             
             <div class="form-group">
@@ -348,19 +348,19 @@
             
             <div class="form-group">
               <label for="edit-dueDate">Due date<span class="required">*</span></label>
-              <input type="date" id="edit-dueDate" formControlName="dueDate" class="form-input" [class.error]="isFieldInvalid('dueDate')" />
+              <input type="date" id="edit-dueDate" formControlName="dueDate" class="form-input" [class.error]="formService.isFieldInvalid('dueDate')" />
             </div>
             
             <div class="form-group">
               <label>Priority</label>
               <div class="priority-buttons">
-                <button type="button" class="priority-btn urgent" [class.selected]="selectedPriority === 'urgent'" (click)="selectPriority('urgent')">
+                <button type="button" class="priority-btn urgent" [class.selected]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">>
                   Urgent <img src="./assets/img/icon_priority_urgent.svg" alt="Urgent" />
                 </button>
-                <button type="button" class="priority-btn medium" [class.selected]="selectedPriority === 'medium'" (click)="selectPriority('medium')">
+                <button type="button" class="priority-btn medium" [class.selected]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">>
                   Medium <img src="./assets/img/icon_priority_medium.svg" alt="Medium" />
                 </button>
-                <button type="button" class="priority-btn low" [class.selected]="selectedPriority === 'low'" (click)="selectPriority('low')">
+                <button type="button" class="priority-btn low" [class.selected]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">>
                   Low <img src="./assets/img/icon_priority_low.svg" alt="Low" />
                 </button>
               </div>
@@ -369,16 +369,16 @@
             <div class="form-group">
               <label>Assigned to</label>
               <div class="contacts-dropdown">
-                <div class="dropdown-trigger" (click)="toggleDropdown()">
-                  <span *ngIf="selectedContacts.length === 0">Select contacts to assign</span>
-                  <span *ngIf="selectedContacts.length > 0">{{ selectedContacts.length }} contact(s) selected</span>
+                <div class="dropdown-trigger" (click)="formService.toggleDropdown()">
+                  <span *ngIf="formService.selectedContacts.length === 0">Select contacts to assign</span>
+                  <span *ngIf="formService.selectedContacts.length > 0">{{ formService.selectedContacts.length }} contact(s) selected</span>
                   <img src="./assets/img/icon_cancel.svg" alt="Dropdown" class="dropdown-arrow" />
                 </div>
-                <div class="dropdown-options" *ngIf="isDropdownOpen">
-                  <div class="contact-option" *ngFor="let contact of contacts" (click)="toggleContactSelection(contact, $event)">
-                    <div class="contact-checkbox" [class.checked]="isContactSelected(contact)">
-                      <img *ngIf="isContactSelected(contact)" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
-                      <img *ngIf="!isContactSelected(contact)" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
+                <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
+                  <div class="contact-option" *ngFor="let contact of contacts" (click)="formService.toggleContactSelection(contact, $event)">
+                    <div class="contact-checkbox" [class.checked]="formService.isContactSelected(contact)">
+                      <img *ngIf="formService.isContactSelected(contact)" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
+                      <img *ngIf="!formService.isContactSelected(contact)" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
                     </div>
                     <div class="contact-info">
                       <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
@@ -391,7 +391,7 @@
             
             <div class="form-group">
               <label for="edit-category">Category<span class="required">*</span></label>
-              <select id="edit-category" formControlName="category" class="form-select" [class.error]="isFieldInvalid('category')">
+              <select id="edit-category" formControlName="category" class="form-select" [class.error]="formService.isFieldInvalid('category')">>
                 <option value="">Select task category</option>
                 <option value="technical">Technical Task</option>
                 <option value="user-story">User Story</option>
@@ -401,7 +401,7 @@
             <div class="form-group">
               <label>Subtasks</label>
               <div class="subtasks-container" formArrayName="subtasks">
-                <div class="subtask-item" *ngFor="let subtask of subtasksFormArray.controls; let i = index" [formGroupName]="i">
+                <div class="subtask-item" *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" [formGroupName]="i">>
                   <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
                     <input 
                       type="text" 
@@ -413,12 +413,12 @@
                       <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                       <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
                     </div>
-                    <button type="button" class="remove-subtask-btn" (click)="removeSubtask(i)">
+                    <button type="button" class="remove-subtask-btn" (click)="formService.removeSubtask(i)">>
                       <img src="./assets/img/icon_cancel.svg" alt="Remove" />
                     </button>
                   </div>
                 </div>
-                <button type="button" class="add-subtask-btn" (click)="addSubtask()">
+                <button type="button" class="add-subtask-btn" (click)="formService.addSubtask()">>
                   <img src="./assets/img/icon_plus.svg" alt="Add" />
                   Add new subtask
                 </button>
