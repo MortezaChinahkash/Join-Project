@@ -49,7 +49,7 @@
                   formControlName="dueDate" 
                   class="form-input date-input"
                   [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
-                <div [inlineSvg]="'assets/icons/calendar.svg'" class="date-icon" (click)="openDatePicker()"></div>
+                <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
               <div class="error-message" *ngIf="getErrorMessage('dueDate')">
                 {{ getErrorMessage('dueDate') }}
