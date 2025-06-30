@@ -1,11 +1,474 @@
-<h1>Privacy Policy</h1>
+<div class="privacy-policy-container">
+  <!-- Language Selection -->
+  <div class="language-selector">
+    <button 
+      class="language-btn" 
+      [class.active]="selectedLanguage === 'de'" 
+      (click)="setLanguage('de')">
+      🇩🇪 Deutsch
+    </button>
+    <button 
+      class="language-btn" 
+      [class.active]="selectedLanguage === 'en'" 
+      (click)="setLanguage('en')">
+      🇬🇧 English
+    </button>
+  </div>
 
-<h3>Subtitle</h3>
-<p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque odio felis, iaculis ut massa eget, ornare lacinia urna. In dignissim justo eu velit sagittis, in scelerisque nulla convallis. Vestibulum eros lorem, sollicitudin eget eros non, varius aliquam mauris. Sed turpis ipsum, condimentum quis nulla at, lobortis facilisis ipsum. Nunc erat justo, hendrerit vel enim vitae, feugiat mattis dui. In auctor dignissim luctus. Mauris ornare ipsum at ultrices eleifend. Praesent tempus congue magna. Quisque libero erat, pharetra a neque et, imperdiet semper justo.
-</p>
+  <!-- German Version -->
+  <div class="content-section" *ngIf="selectedLanguage === 'de'">
+    <div class="header-section">
+      <h1>Datenschutzerklärung</h1>
+      <p class="subtitle">Informationen zum Umgang mit Ihren personenbezogenen Daten</p>
+    </div>
 
-<h3>Subtitle</h3>
-<p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque odio felis, iaculis ut massa eget, ornare lacinia urna. In dignissim justo eu velit sagittis, in scelerisque nulla convallis. Vestibulum eros lorem, sollicitudin eget eros non, varius aliquam mauris. Sed turpis ipsum, condimentum quis nulla at, lobortis facilisis ipsum. Nunc erat justo, hendrerit vel enim vitae, feugiat mattis dui. In auctor dignissim luctus. Mauris ornare ipsum at ultrices eleifend. Praesent tempus congue magna. Quisque libero erat, pharetra a neque et, imperdiet semper justo.
-</p>
+    <div class="info-card">
+      <h2>Inhaltsverzeichnis</h2>
+      <ul>
+        <li>Einleitung und Überblick</li>
+        <li>Anwendungsbereich</li>
+        <li>Rechtsgrundlagen</li>
+        <li>Speicherdauer</li>
+        <li>Rechte laut Datenschutz-Grundverordnung</li>
+        <li>Cookies</li>
+        <li>Single-Sign-On-Anmeldungen Einleitung</li>
+        <li>Schlusswort</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h2>Einleitung und Überblick</h2>
+      <p>
+        Wir haben diese Datenschutzerklärung (Fassung 24.06.2025-323017699) verfasst,
+        um Ihnen gemäß der Vorgaben der Datenschutz-Grundverordnung (EU) 2016/679 und
+        anwendbaren nationalen Gesetzen zu erklären, welche personenbezogenen Daten
+        (kurz Daten) wir als Verantwortliche – und die von uns beauftragten
+        Auftragsverarbeiter (z. B. Provider) – verarbeiten, zukünftig verarbeiten
+        werden und welche rechtmäßigen Möglichkeiten Sie haben. Die verwendeten
+        Begriffe sind geschlechtsneutral zu verstehen.<br />
+        Kurz gesagt: Wir informieren Sie umfassend über Daten, die wir über Sie
+        verarbeiten.
+      </p>
+      <p>
+        Datenschutzerklärungen klingen für gewöhnlich sehr technisch und verwenden
+        juristische Fachbegriffe. Diese Datenschutzerklärung soll Ihnen hingegen die
+        wichtigsten Dinge so einfach und transparent wie möglich beschreiben. Soweit
+        es der Transparenz förderlich ist, werden technische Begriffe leserfreundlich
+        erklärt, Links zu weiterführenden Informationen geboten und Grafiken zum
+        Einsatz gebracht. Wir informieren damit in klarer und einfacher Sprache, dass
+        wir im Rahmen unserer Geschäftstätigkeiten nur dann personenbezogene Daten
+        verarbeiten, wenn eine entsprechende gesetzliche Grundlage gegeben ist. Das
+        ist sicherlich nicht möglich, wenn man die knappsten, unklarsten und
+        juristisch-technischsten Erklärungen abgibt, wie sie im Internet oft
+        standard sind, wenn es um Datenschutz geht. Ich hoffe, Sie finden die
+        folgenden Erläuterungen interessant und informativ und vielleicht ist die
+        eine oder andere Information dabei, die Sie noch nicht kannten.
+      </p>
+      <p>
+        Wenn trotzdem Fragen bleiben, möchten wir Sie bitten, sich an die unten bzw.
+        im Impressum genannte verantwortliche Stelle zu wenden, den vorhandenen Links
+        zu folgen und sich weitere Informationen auf Drittseiten anzusehen. Unsere
+        Kontaktdaten finden Sie selbstverständlich auch im Impressum.
+      </p>
+
+      <h3>Hinweis zur verantwortlichen Stelle</h3>
+      <p>
+        Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:
+      </p>
+      <div class="contact-info">
+        <p>
+          <strong>Morteza Chinahkash</strong><br>
+          Foorthkamp 15<br>
+          22419 Hamburg<br>
+          Deutschland<br><br>
+          📧 E-Mail: <a href="mailto:kontakt&#64;m-chinahkash.de">kontakt&#64;m-chinahkash.de</a><br>
+          📞 Tel.: <a href="tel:+4917622508589">017622508589</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h2>Anwendungsbereich</h2>
+      <p>
+        Diese Datenschutzerklärung gilt für alle von uns im Unternehmen verarbeiteten
+        personenbezogenen Daten und für alle personenbezogenen Daten, die von uns
+        beauftragte Firmen (Auftragsverarbeiter) verarbeiten. Mit personenbezogenen
+        Daten meinen wir Informationen im Sinne des Art. 4 Nr. 1 DSGVO wie zum
+        Beispiel Name, E-Mail-Adresse und postalische Anschrift einer Person. Die
+        Verarbeitung personenbezogener Daten sorgt dafür, dass wir unsere
+        Dienstleistungen und Produkte anbieten und abrechnen können, sei es online
+        oder offline. Der Anwendungsbereich dieser Datenschutzerklärung umfasst:
+      </p>
+      <ul>
+        <li>alle Onlineauftritte (Websites, Onlineshops), die wir betreiben</li>
+        <li>Social Media Auftritte und E-Mail-Kommunikation</li>
+        <li>mobile Apps für Smartphones und andere Geräte</li>
+      </ul>
+      <p>
+        Kurz gesagt: Die Datenschutzerklärung gilt für alle Bereiche, in denen
+        personenbezogene Daten im Unternehmen über die genannten Kanäle strukturiert
+        verarbeitet werden. Sollten wir außerhalb dieser Kanäle mit Ihnen in
+        Rechtsbeziehungen eintreten, werden wir Sie gegebenenfalls gesondert
+        informieren.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Rechtsgrundlagen</h2>
+      <p>
+        In der folgenden Datenschutzerklärung geben wir Ihnen transparente
+        Informationen zu den rechtlichen Grundsätzen und Vorschriften, also den
+        Rechtsgrundlagen der Datenschutz-Grundverordnung, die uns ermöglichen,
+        personenbezogene Daten zu verarbeiten. Was das EU-Recht betrifft, beziehen wir
+        uns auf die VERORDNUNG (EU) 2016/679 DES EUROPÄISCHEN PARLAMENTS UND DES RATES
+        vom 27. April 2016. Diese Datenschutz-Grundverordnung der EU können Sie
+        selbstverständlich online auf EUR-Lex, dem Zugang zum EU-Recht, unter 
+        <a href="https://eur-lex.europa.eu/legal-content/DE/ALL/?uri=celex%3A32016R0679" target="_blank" rel="noopener noreferrer">
+          https://eur-lex.europa.eu/legal-content/DE/ALL/?uri=celex%3A32016R0679
+        </a>
+        nachlesen.
+      </p>
+      <p>
+        Wir verarbeiten Ihre Daten nur, wenn mindestens eine der folgenden Bedingungen
+        zutrifft:
+      </p>
+      <ul>
+        <li>
+          <b>Einwilligung (Artikel 6 Absatz 1 lit. a DSGVO):</b> Sie haben uns Ihre
+          Einwilligung gegeben, Daten zu einem bestimmten Zweck zu verarbeiten. Ein
+          Beispiel wäre die Speicherung Ihrer eingegebenen Daten eines
+          Kontaktformulars.
+        </li>
+        <li>
+          <b>Vertrag (Artikel 6 Absatz 1 lit. b DSGVO):</b> Um einen Vertrag oder
+          vorvertragliche Verpflichtungen mit Ihnen zu erfüllen, verarbeiten wir Ihre
+          Daten. Wenn wir zum Beispiel einen Kaufvertrag mit Ihnen abschließen,
+          benötigen wir vorab personenbezogene Informationen.
+        </li>
+        <li>
+          <b>Rechtliche Verpflichtung (Artikel 6 Absatz 1 lit. c DSGVO):</b> Wenn wir
+          einer rechtlichen Verpflichtung unterliegen, verarbeiten wir Ihre Daten. Zum
+          Beispiel sind wir gesetzlich verpflichtet Rechnungen für die Buchhaltung
+          aufzuheben. Diese enthalten in der Regel personenbezogene Daten.
+        </li>
+        <li>
+          <b>Berechtigte Interessen (Artikel 6 Absatz 1 lit. f DSGVO):</b> Im Falle
+          berechtigter Interessen, die Ihre Grundrechte nicht einschränken, behalten
+          wir uns die Verarbeitung personenbezogener Daten vor. Wir müssen zum
+          Beispiel gewisse Daten verarbeiten, um unsere Website sicher und
+          wirtschaftlich effizient betreiben zu können. Diese Verarbeitung ist somit
+          ein berechtigtes Interesse.
+        </li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h2>Speicherdauer</h2>
+      <p>
+        Dass wir personenbezogene Daten nur so lange speichern, wie es für die
+        Bereitstellung unserer Dienstleistungen und Produkte unbedingt notwendig ist,
+        gilt als generelles Kriterium bei uns. Das bedeutet, dass wir personenbezogene
+        Daten löschen, sobald der Grund für die Datenverarbeitung nicht mehr vorhanden
+        ist. In einigen Fällen sind wir gesetzlich dazu verpflichtet, bestimmte Daten
+        auch nach Wegfall des ursprüngliches Zwecks zu speichern, zum Beispiel zu
+        Zwecken der Buchführung.
+      </p>
+      <p>
+        Sollten Sie die Löschung Ihrer Daten wünschen oder die Einwilligung zur
+        Datenverarbeitung widerrufen, werden die Daten so rasch wie möglich und soweit
+        keine Pflicht zur Speicherung besteht, gelöscht.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Rechte laut Datenschutz-Grundverordnung</h2>
+      <p>
+        Gemäß Artikel 13, 14 DSGVO informieren wir Sie über die folgenden Rechte, die
+        Ihnen zustehen, damit es zu einer fairen und transparenten Verarbeitung von
+        Daten kommt:
+      </p>
+      <ul>
+        <li>Sie haben laut Artikel 15 DSGVO ein Auskunftsrecht darüber, ob wir Daten von Ihnen verarbeiten.</li>
+        <li>Sie haben laut Artikel 16 DSGVO ein Recht auf Berichtigung der Daten.</li>
+        <li>Sie haben laut Artikel 17 DSGVO das Recht auf Löschung („Recht auf Vergessenwerden").</li>
+        <li>Sie haben laut Artikel 18 DSGVO das Recht auf Einschränkung der Verarbeitung.</li>
+        <li>Sie haben laut Artikel 20 DSGVO das Recht auf Datenübertragbarkeit.</li>
+        <li>Sie haben laut Artikel 21 DSGVO ein Widerspruchsrecht.</li>
+        <li>Sie haben laut Artikel 77 DSGVO das Recht auf Beschwerde bei einer Aufsichtsbehörde.</li>
+      </ul>
+      
+      <p>
+        Falls Sie von einem dieser Rechte Gebrauch machen möchten, wenden Sie sich bitte an die oben genannte 
+        Kontaktadresse.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Cookies</h2>
+      <h3>Was sind Cookies?</h3>
+      <p>
+        Unsere Website verwendet HTTP-Cookies, um nutzerspezifische Daten zu
+        speichern. Cookies sind kleine Text-Dateien, die von Websites in Ihrem Browser gespeichert werden.
+        Diese Cookie-Dateien werden automatisch im Cookie-Ordner Ihres Browsers untergebracht.
+      </p>
+      <p>
+        Cookies speichern gewisse Nutzerdaten von Ihnen, wie beispielsweise Sprache
+        oder persönliche Seiteneinstellungen. Wenn Sie unsere Seite wieder aufrufen,
+        übermittelt Ihr Browser die „userbezogenen" Informationen an unsere Seite
+        zurück. Dank der Cookies weiß unsere Website, wer Sie sind und bietet Ihnen
+        die Einstellung, die Sie gewohnt sind.
+      </p>
+
+      <h3>Widerspruchsrecht – wie kann ich Cookies löschen?</h3>
+      <p>
+        Wie und ob Sie Cookies verwenden wollen, entscheiden Sie selbst. Unabhängig
+        von welchem Service oder welcher Website die Cookies stammen, haben Sie immer
+        die Möglichkeit Cookies zu löschen, zu deaktivieren oder nur teilweise
+        zuzulassen. Sie können dies in Ihren Browser-Einstellungen verwalten.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Single-Sign-On-Anmeldungen</h2>
+      <p>
+        Auf unserer Website haben Sie die Möglichkeit sich über ein Userkonto eines
+        anderen Anbieters (z.B. über Google) schnell und einfach für unser
+        Onlineservice anzumelden. Dieses Authentifizierungs-Verfahren nennt man unter
+        anderem „Single-Sign-On-Anmeldung".
+      </p>
+      <p>
+        Im Zuge dieser Anmeldung können auch personenbezogenen Daten von Ihnen verarbeitet und gespeichert
+        werden. Die Verarbeitung erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) 
+        sowie zur Vertragserfüllung (Art. 6 Abs. 1 lit. b DSGVO).
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Schlusswort</h2>
+      <p>
+        Herzlichen Glückwunsch! Wenn Sie diese Zeilen lesen, haben Sie sich wirklich
+        durch unsere gesamte Datenschutzerklärung „gekämpft" oder zumindest bis hier
+        hin gescrollt. Wie Sie am Umfang unserer Datenschutzerklärung sehen, nehmen
+        wir den Schutz Ihrer persönlichen Daten sehr ernst.
+      </p>
+      <p>
+        Uns ist es wichtig, Sie nach bestem Wissen und Gewissen über die Verarbeitung
+        personenbezogener Daten zu informieren. Bei Fragen zum Thema Datenschutz auf unserer Website 
+        zögern Sie bitte nicht, uns zu kontaktieren.
+      </p>
+      <p>
+        <small>
+          Alle Texte sind urheberrechtlich geschützt.<br />
+          Quelle: Datenschutzerklärung erstellt mit dem Datenschutz Generator von AdSimple<br />
+          <a href="https://www.adsimple.de/datenschutz-generator/" target="_blank" rel="noopener noreferrer">
+            https://www.adsimple.de/datenschutz-generator/
+          </a>
+        </small>
+      </p>
+    </div>
+  </div>
+
+  <!-- English Version -->
+  <div class="content-section" *ngIf="selectedLanguage === 'en'">
+    <div class="header-section">
+      <h1>Privacy Policy</h1>
+      <p class="subtitle">Information about the handling of your personal data</p>
+    </div>
+
+    <div class="info-card">
+      <h2>Table of Contents</h2>
+      <ul>
+        <li>Introduction and Overview</li>
+        <li>Scope of Application</li>
+        <li>Legal Basis</li>
+        <li>Storage Duration</li>
+        <li>Rights under the General Data Protection Regulation</li>
+        <li>Cookies</li>
+        <li>Single Sign-On Logins Introduction</li>
+        <li>Conclusion</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h2>Introduction and Overview</h2>
+      <p>
+        We have created this privacy policy (version 24.06.2025-323017699) to explain to you, 
+        in accordance with the requirements of the General Data Protection Regulation (EU) 2016/679 
+        and applicable national laws, what personal data (data for short) we as data controllers – 
+        and the processors commissioned by us (e.g. providers) – process, will process in the future, 
+        and what lawful options you have. The terms used are to be understood as gender-neutral.<br />
+        In short: We provide you with comprehensive information about data that we process about you.
+      </p>
+      <p>
+        Privacy policies usually sound very technical and use legal jargon. This privacy policy, 
+        on the other hand, is intended to describe the most important things to you as simply and 
+        transparently as possible. We inform in clear and simple language that we only process 
+        personal data in the course of our business activities when there is a corresponding legal basis.
+      </p>
+
+      <h3>Information about the Responsible Party</h3>
+      <p>
+        The responsible party for data processing on this website is:
+      </p>
+      <div class="contact-info">
+        <p>
+          <strong>Morteza Chinahkash</strong><br>
+          Foorthkamp 15<br>
+          22419 Hamburg<br>
+          Germany<br><br>
+          📧 Email: <a href="mailto:kontakt&#64;m-chinahkash.de">kontakt&#64;m-chinahkash.de</a><br>
+          📞 Phone: <a href="tel:+4917622508589">017622508589</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h2>Scope of Application</h2>
+      <p>
+        This privacy policy applies to all personal data processed by us in the company and 
+        to all personal data processed by companies commissioned by us (processors). By personal 
+        data, we mean information within the meaning of Art. 4 No. 1 GDPR such as the name, 
+        email address and postal address of a person. The processing of personal data ensures 
+        that we can offer and bill our services and products, whether online or offline. 
+        The scope of this privacy policy includes:
+      </p>
+      <ul>
+        <li>all online presences (websites, online shops) that we operate</li>
+        <li>Social media presences and email communication</li>
+        <li>mobile apps for smartphones and other devices</li>
+      </ul>
+      <p>
+        In short: The privacy policy applies to all areas in which personal data is processed 
+        in a structured manner in the company via the channels mentioned.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Legal Basis</h2>
+      <p>
+        In the following privacy policy, we provide you with transparent information about the 
+        legal principles and regulations, i.e. the legal bases of the General Data Protection 
+        Regulation, which enable us to process personal data. As far as EU law is concerned, 
+        we refer to REGULATION (EU) 2016/679 OF THE EUROPEAN PARLIAMENT AND OF THE COUNCIL of 
+        27 April 2016.
+      </p>
+      <p>We only process your data if at least one of the following conditions applies:</p>
+      <ul>
+        <li>
+          <b>Consent (Article 6 paragraph 1 lit. a GDPR):</b> You have given us your consent 
+          to process data for a specific purpose.
+        </li>
+        <li>
+          <b>Contract (Article 6 paragraph 1 lit. b GDPR):</b> In order to fulfill a contract 
+          or pre-contractual obligations with you, we process your data.
+        </li>
+        <li>
+          <b>Legal obligation (Article 6 paragraph 1 lit. c GDPR):</b> If we are subject to 
+          a legal obligation, we process your data.
+        </li>
+        <li>
+          <b>Legitimate interests (Article 6 paragraph 1 lit. f GDPR):</b> In the case of 
+          legitimate interests that do not restrict your fundamental rights, we reserve the 
+          right to process personal data.
+        </li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h2>Storage Duration</h2>
+      <p>
+        The fact that we only store personal data for as long as it is absolutely necessary 
+        for the provision of our services and products applies as a general criterion for us. 
+        This means that we delete personal data as soon as the reason for data processing no 
+        longer exists.
+      </p>
+      <p>
+        Should you wish to have your data deleted or revoke your consent to data processing, 
+        the data will be deleted as quickly as possible and insofar as there is no obligation 
+        to store it.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Rights under the General Data Protection Regulation</h2>
+      <p>
+        In accordance with Articles 13, 14 GDPR, we inform you of the following rights that 
+        you have so that fair and transparent processing of data takes place:
+      </p>
+      <ul>
+        <li>According to Article 15 GDPR, you have a right of access as to whether we process data from you.</li>
+        <li>According to Article 16 GDPR, you have a right to rectification of data.</li>
+        <li>According to Article 17 GDPR, you have the right to erasure ("right to be forgotten").</li>
+        <li>According to Article 18 GDPR, you have the right to restriction of processing.</li>
+        <li>According to Article 20 GDPR, you have the right to data portability.</li>
+        <li>According to Article 21 GDPR, you have a right to object.</li>
+        <li>According to Article 77 GDPR, you have the right to lodge a complaint.</li>
+      </ul>
+      
+      <p>
+        If you would like to exercise any of these rights, please contact the address given above.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Cookies</h2>
+      <h3>What are cookies?</h3>
+      <p>
+        Our website uses HTTP cookies to store user-specific data. Cookies are small text files 
+        that are stored on your computer by our website. These cookie files are automatically 
+        placed in the cookie folder, which is like the "brain" of your browser.
+      </p>
+      <p>
+        Cookies store certain user data from you, such as language or personal page settings. 
+        When you visit our site again, your browser transmits the "user-related" information 
+        back to our site. Thanks to cookies, our website knows who you are and offers you the 
+        settings you are used to.
+      </p>
+
+      <h3>Right to object – how can I delete cookies?</h3>
+      <p>
+        You decide how and whether you want to use cookies. Regardless of which service or 
+        website the cookies come from, you always have the option to delete, deactivate or 
+        only partially allow cookies. You can manage this in your browser settings.
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Single Sign-On Logins</h2>
+      <p>
+        On our website, you have the option of quickly and easily registering for our online 
+        service via a user account from another provider (e.g. via Google). This authentication 
+        procedure is called, among other things, "single sign-on login".
+      </p>
+      <p>
+        In the course of this login, personal data from you can also be processed and stored. 
+        The processing is based on your consent (Art. 6 para. 1 lit. a GDPR) and for contract 
+        fulfillment (Art. 6 para. 1 lit. b GDPR).
+      </p>
+    </div>
+
+    <div class="info-card">
+      <h2>Conclusion</h2>
+      <p>
+        Congratulations! If you are reading these lines, you have really "fought" your way 
+        through our entire privacy policy or at least scrolled down to here. As you can see 
+        from the scope of our privacy policy, we do not take the protection of your personal 
+        data lightly.
+      </p>
+      <p>
+        It is important to us to inform you about the processing of personal data to the best 
+        of our knowledge and belief. If you have any questions about data protection on our 
+        website, please do not hesitate to contact us.
+      </p>
+      <p>
+        <small>
+          All texts are protected by copyright.<br />
+          Source: Privacy policy created with the Privacy Policy Generator by AdSimple<br />
+          <a href="https://www.adsimple.de/datenschutz-generator/" target="_blank" rel="noopener noreferrer">
+            https://www.adsimple.de/datenschutz-generator/
+          </a>
+        </small>
+      </p>
+    </div>
+  </div>
+</div>
