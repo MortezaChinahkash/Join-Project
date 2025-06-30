@@ -683,4 +683,14 @@ getSelectedContactsText(): string {
     // Test adding a subtask
     this.addSubtask();
   }
+
+  get noSearchResults(): boolean {
+  return !!this.searchTerm
+    && this.getFilteredTasks(this.todoTasks).length === 0
+    && this.getFilteredTasks(this.inProgressTasks).length === 0
+    && this.getFilteredTasks(this.awaitingFeedbackTasks).length === 0
+    && this.getFilteredTasks(this.doneTasks).length === 0;
 }
+}
+
+

@@ -1724,6 +1724,20 @@
   }
 }
 
+.no-search-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%;
+  text-align: center;
+
+  h2 {
+    font-size: 2rem;
+    color: #2a3647;
+  }
+}
+
 /* Responsive Design for Task Overlays */
 @media (max-width: 768px) {
   .taskDetailsOverlay-content,

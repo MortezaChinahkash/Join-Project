@@ -17,7 +17,11 @@
         </div>
       </div>
 
-      <div class="board-container">
+      <div class="board-container" >
+
+        <div class="no-search-results" [style.display]="noSearchResults ? 'flex' : 'none'">
+            <h2>Keine Suchergebnisse gefunden</h2>
+          </div>
         <div class="board-column" *ngFor="let column of boardColumns">
           <div class="column-header">
             <h2 class="column-title">{{ column.title }}</h2>
