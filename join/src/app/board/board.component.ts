@@ -7,6 +7,13 @@ import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Task, TaskColumn } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 
+/**
+ * Main board component for task management with kanban-style columns.
+ * Handles task creation, editing, deletion, and drag & drop functionality.
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ */
 @Component({
   selector: 'app-board',
   imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
@@ -101,6 +108,13 @@ export class BoardComponent implements OnInit {
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
 
+  /**
+   * Initializes the board component with form controls and services.
+   * Sets up the task form with validation rules and initializes local task arrays.
+   * 
+   * @param fb - FormBuilder service for creating reactive forms
+   * @param taskService - Service for managing task data operations
+   */
   constructor(private fb: FormBuilder, private taskService: TaskService) {
     this.taskForm = this.fb.group({
       title: ['', Validators.required],
@@ -149,12 +163,20 @@ export class BoardComponent implements OnInit {
     return this.contacts.find(c => c.id === selectedId) || null;
   }
 
+  /**
+   * Opens the add task overlay for a specific column.
+   * 
+   * @param column - The column where the new task should be created (defaults to 'todo')
+   */
   openAddTaskOverlay(column: TaskColumn = 'todo') {
     this.showAddTaskOverlay = true;
     this.currentColumn = column;
     this.resetForm();
   }
 
+  /**
+   * Closes the add task overlay and resets the form.
+   */
   closeAddTaskOverlay() {
     this.showAddTaskOverlay = false;
     this.resetForm();
@@ -204,6 +226,12 @@ export class BoardComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
+  /**
+   * Handles form submission for creating a new task.
+   * Validates the form, processes task data, saves to Firebase, and updates local arrays.
+   * 
+   * @returns Promise<void>
+   */
   async onSubmit() {
     // Schritt 1: Alle Felder als berührt markieren
     this.markFormGroupTouched();
@@ -331,6 +359,10 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  /**
+   * Angular lifecycle hook that runs after component initialization.
+   * Loads contacts, fetches tasks from Firebase, and sets up scroll listeners.
+   */
   ngOnInit() {
   this.loadContacts()
   this.getTasksFromFirebase();
@@ -341,6 +373,12 @@ export class BoardComponent implements OnInit {
   }, 500);
   }
 
+  /**
+   * Loads tasks from Firebase and subscribes to real-time updates.
+   * Automatically sorts tasks into appropriate columns based on their status.
+   * 
+   * @returns Promise<void>
+   */
   async getTasksFromFirebase() {
   try {
     const taskRef = collection(this.firestore, 'tasks');
@@ -363,10 +401,22 @@ export class BoardComponent implements OnInit {
   }
 }
 
+  /**
+   * Gets the initials from a contact name.
+   * 
+   * @param name - The full name of the contact
+   * @returns The initials (first letters of first and last name)
+   */
   getInitials(name: string): string {
     return ContactsComponent.getInitials(name);
   }
 
+  /**
+   * Gets a deterministic color for a contact based on their name.
+   * 
+   * @param name - The full name of the contact
+   * @returns A CSS color string for the contact's avatar
+   */
   getInitialsColor(name: string): string {
     return ContactsComponent.getInitialsColor(name);
   }
