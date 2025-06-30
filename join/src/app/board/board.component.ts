@@ -262,12 +262,33 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  // Lokale Arrays mit Service synchronisieren
+  // Lokale Arrays mit Service synchronisieren und nach Priorität sortieren
   private updateLocalArrays() {
-    this.todoTasks = this.taskService.getTasksByColumn('todo');
-    this.inProgressTasks = this.taskService.getTasksByColumn('inprogress');
-    this.awaitingFeedbackTasks = this.taskService.getTasksByColumn('awaiting');
-    this.doneTasks = this.taskService.getTasksByColumn('done');
+    this.todoTasks = this.sortTasksByPriority(this.taskService.getTasksByColumn('todo'));
+    this.inProgressTasks = this.sortTasksByPriority(this.taskService.getTasksByColumn('inprogress'));
+    this.awaitingFeedbackTasks = this.sortTasksByPriority(this.taskService.getTasksByColumn('awaiting'));
+    this.doneTasks = this.sortTasksByPriority(this.taskService.getTasksByColumn('done'));
+  }
+
+  // Tasks nach Priorität sortieren (urgent > medium > low)
+  private sortTasksByPriority(tasks: Task[]): Task[] {
+    const priorityOrder = { 'urgent': 3, 'medium': 2, 'low': 1 };
+    
+    const sortedTasks = tasks.sort((a, b) => {
+      const priorityA = priorityOrder[a.priority as keyof typeof priorityOrder] || 0;
+      const priorityB = priorityOrder[b.priority as keyof typeof priorityOrder] || 0;
+      
+      // Höhere Priorität (höhere Zahl) kommt zuerst
+      return priorityB - priorityA;
+    });
+
+    // Debug output für Prioritätssortierung
+    if (sortedTasks.length > 0) {
+      console.log('🔄 Tasks nach Priorität sortiert:', 
+        sortedTasks.map(task => `${task.title} (${task.priority})`));
+    }
+    
+    return sortedTasks;
   }
 
   isFieldInvalid(fieldName: string): boolean {
@@ -433,7 +454,13 @@ getSelectedContactsText(): string {
       }
     });
 
-    console.log('📊 Tasks sortiert:');
+    // Nach der Aufteilung: Jede Spalte nach Priorität sortieren
+    this.todoTasks = this.sortTasksByPriority(this.todoTasks);
+    this.inProgressTasks = this.sortTasksByPriority(this.inProgressTasks);
+    this.awaitingFeedbackTasks = this.sortTasksByPriority(this.awaitingFeedbackTasks);
+    this.doneTasks = this.sortTasksByPriority(this.doneTasks);
+
+    console.log('📊 Tasks sortiert und nach Priorität geordnet:');
     console.log('To Do:', this.todoTasks.length);
     console.log('In Progress:', this.inProgressTasks.length);
     console.log('Awaiting:', this.awaitingFeedbackTasks.length);
