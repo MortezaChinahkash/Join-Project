@@ -485,8 +485,10 @@
                       (click)="moveTaskToPreviousColumn()" 
                       [disabled]="!getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
                 <img src="./assets/img/arrow_upward.png" alt="Move up" class="arrow-icon" />
-                <span class="move-label" *ngIf="getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
-                  {{ getColumnDisplayName(getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)!) }}
+                <span class="move-label">
+                  {{ getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!) ? 
+                     getColumnDisplayName(getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)!) : 
+                     'To Do' }}
                 </span>
               </button>
               
@@ -494,8 +496,10 @@
                       (click)="moveTaskToNextColumn()" 
                       [disabled]="!getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
                 <img src="./assets/img/arrow_downward.png" alt="Move down" class="arrow-icon" />
-                <span class="move-label" *ngIf="getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
-                  {{ getColumnDisplayName(getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)!) }}
+                <span class="move-label">
+                  {{ getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!) ? 
+                     getColumnDisplayName(getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)!) : 
+                     'Done' }}
                 </span>
               </button>
             </div>
