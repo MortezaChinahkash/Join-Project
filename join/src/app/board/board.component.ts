@@ -32,6 +32,8 @@ export class BoardComponent implements OnInit {
   // Maximum length for task titles
   maxTitleLength: number = 40;
 
+  editingSubtaskIndex: number | null = null;
+
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
@@ -467,6 +469,7 @@ truncate(text: string | null | undefined, limit: number = 200): string {
    * @param index - Index of the subtask to edit
    */
   editSubtask(index: number): void {
+     this.editingSubtaskIndex = index;
     setTimeout(() => {
       const inputElement = document.querySelector(
         `.taskEditOverlay [formGroupName="${index}"] input[formControlName="title"]`

@@ -459,6 +459,32 @@
   }
 }
 
+// Subtask readonly/editable visual states
+.taskEditOverlay .subtask-item .form-input {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  
+  // Readonly state - permanently darker gray background
+  &[readonly] {
+    background-color: #e9ecef !important;
+    cursor: default;
+    
+    &:hover {
+      background-color: #dee2e6 !important;
+    }
+  }
+  
+  // Editable state - white background (normal)
+  &:not([readonly]) {
+    background-color: white !important;
+    cursor: text;
+    
+    &:focus {
+      border-color: #29abe2;
+      outline: none;
+    }
+  }
+}
+
 // Responsive Design für Edit Overlay
 @media (max-width: 768px) {
   .taskEditOverlay-content {
