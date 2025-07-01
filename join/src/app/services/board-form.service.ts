@@ -28,6 +28,10 @@ export class BoardFormService {
   selectedContacts: Contact[] = [];
   showAssignedContactsDropdown = false;
   
+  // Click outside listener cleanup
+  private documentClickListener?: (event: Event) => void;
+  private assignedContactsClickListener?: (event: Event) => void;
+  
   // Delete confirmation overlay
   showDeleteConfirmationOverlay = false;
   taskToDelete: Task | null = null;
@@ -73,6 +77,8 @@ export class BoardFormService {
    */
   closeAddTaskOverlay() {
     this.showAddTaskOverlay = false;
+    this.isDropdownOpen = false;
+    this.removeDocumentClickListener();
     this.resetForm();
   }
 
@@ -108,6 +114,10 @@ export class BoardFormService {
     this.taskForm.reset();
     this.selectedPriority = '';
     this.selectedContacts = []; // Reset selected contacts
+    this.isDropdownOpen = false;
+    this.showAssignedContactsDropdown = false;
+    this.removeDocumentClickListener();
+    this.removeAssignedContactsClickListener();
     
     // Clear all subtasks
     while (this.subtasksFormArray.length !== 0) {
@@ -254,6 +264,44 @@ export class BoardFormService {
   // Contact selection methods
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+    
+    if (this.isDropdownOpen) {
+      this.addDocumentClickListener();
+    } else {
+      this.removeDocumentClickListener();
+    }
+  }
+
+  /**
+   * Adds document click listener for closing dropdown when clicking outside
+   */
+  private addDocumentClickListener(): void {
+    // Remove existing listener first to avoid duplicates
+    this.removeDocumentClickListener();
+    
+    this.documentClickListener = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const dropdownWrapper = target.closest('.custom-select-wrapper');
+      const contactsDropdown = target.closest('.contacts-dropdown');
+      
+      // Close dropdown if click is outside both dropdown structures
+      if (!dropdownWrapper && !contactsDropdown && this.isDropdownOpen) {
+        this.isDropdownOpen = false;
+        this.removeDocumentClickListener();
+      }
+    };
+    
+    document.addEventListener('click', this.documentClickListener);
+  }
+
+  /**
+   * Removes document click listener
+   */
+  private removeDocumentClickListener(): void {
+    if (this.documentClickListener) {
+      document.removeEventListener('click', this.documentClickListener);
+      this.documentClickListener = undefined;
+    }
   }
 
   /**
@@ -372,6 +420,9 @@ export class BoardFormService {
     this.selectedTask = null;
     this.isEditingTask = false;
     this.showAssignedContactsDropdown = false;
+    this.isDropdownOpen = false;
+    this.removeDocumentClickListener();
+    this.removeAssignedContactsClickListener();
     this.resetForm();
   }
 
@@ -530,6 +581,46 @@ export class BoardFormService {
   // Assigned contacts dropdown methods for task details
   toggleAssignedContactsDropdown(): void {
     this.showAssignedContactsDropdown = !this.showAssignedContactsDropdown;
+    
+    if (this.showAssignedContactsDropdown) {
+      this.addAssignedContactsClickListener();
+    } else {
+      this.removeAssignedContactsClickListener();
+    }
+  }
+
+  /**
+   * Adds document click listener for closing assigned contacts dropdown when clicking outside
+   */
+  private addAssignedContactsClickListener(): void {
+    // Remove existing listener first to avoid duplicates
+    this.removeAssignedContactsClickListener();
+    
+    // Use a slight delay to avoid immediate closure from the same click that opened it
+    setTimeout(() => {
+      this.assignedContactsClickListener = (event: Event) => {
+        const target = event.target as HTMLElement;
+        const dropdownContainer = target.closest('.more-contacts-dropdown');
+        
+        // Close dropdown if click is outside the dropdown container
+        if (!dropdownContainer && this.showAssignedContactsDropdown) {
+          this.showAssignedContactsDropdown = false;
+          this.removeAssignedContactsClickListener();
+        }
+      };
+      
+      document.addEventListener('click', this.assignedContactsClickListener);
+    }, 10);
+  }
+
+  /**
+   * Removes assigned contacts document click listener
+   */
+  private removeAssignedContactsClickListener(): void {
+    if (this.assignedContactsClickListener) {
+      document.removeEventListener('click', this.assignedContactsClickListener);
+      this.assignedContactsClickListener = undefined;
+    }
   }
 
   /**
