@@ -147,3 +147,139 @@
     }
   }
 }
+
+// Responsive Design - 1000px und darunter
+@media (max-width: 1000px) {
+  .component-title-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    
+    // Erste Zeile: Titel und + Button
+    .title-with-add-button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    
+    .component-title {
+      margin: 0;
+    }
+    
+    // Größerer Mobile Add Button mit CSS-basiertem dünnem +
+    .mobile-add-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: #2a3647;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      position: relative;
+      
+      // Text "+" ausblenden
+      font-size: 0;
+      
+      // CSS-basiertes + Zeichen
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        background-color: white;
+        border-radius: 1px;
+      }
+      
+      // Horizontale Linie des +
+      &::before {
+        width: 32px;
+        height: 2px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      // Vertikale Linie des +
+      &::after {
+        width: 2px;
+        height: 32px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      
+      &:hover {
+        background-color: #29abe2;
+      }
+    }
+    
+    // Desktop Search & Add Button verstecken
+    .search-add-box.desktop-only {
+      display: none;
+    }
+    
+    // Mobile Search Box anzeigen
+    .mobile-only.mobile-search-box {
+      display: flex;
+      width: 100%;
+      position: relative;
+      
+      .search-input {
+        width: 100%;
+        padding: 12px 50px 12px 20px;
+        font-size: 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+        background-color: white;
+        
+        &::placeholder {
+          color: #a8a8a8;
+        }
+        
+        &:focus {
+          outline: none;
+          border-color: #29abe2;
+          box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.2);
+        }
+      }
+      
+      .search-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        pointer-events: none;
+      }
+    }
+  }
+}
+
+// Für noch kleinere Bildschirme (768px und darunter)
+@media (max-width: 768px) {
+  .component-title-bar {
+    padding: 15px 20px;
+    
+    .component-title {
+      font-size: 36px;
+    }
+    
+    .mobile-search-box {
+      .search-input {
+        padding: 10px 45px 10px 15px;
+        font-size: 14px;
+      }
+      
+      .search-icon {
+        width: 18px;
+        height: 18px;
+        right: 12px;
+      }
+    }
+  }
+}
