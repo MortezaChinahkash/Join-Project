@@ -31,6 +31,9 @@ export class AddTaskComponent implements OnInit {
   selectedContacts: Contact[] = [];
   isSubmitting = false;
 
+  // Maximum length for task titles
+  maxTitleLength: number = 40;
+
   constructor(
     private formBuilder: FormBuilder,
     private taskService: TaskService,

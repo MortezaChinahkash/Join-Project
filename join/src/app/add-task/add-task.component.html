@@ -21,6 +21,7 @@
                 formControlName="title" 
                 class="form-input"
                 placeholder="Enter a title"
+                [attr.maxlength]="maxTitleLength"
                 [class.error]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
               <div class="error-message" *ngIf="getErrorMessage('title')">
                 {{ getErrorMessage('title') }}
@@ -176,6 +177,7 @@
                   <input 
                     type="text" 
                     formControlName="title" 
+                    [attr.maxlength]="maxTitleLength"
                     class="form-input" 
                     [class.completed]="subtask.get('completed')?.value"
                     placeholder="Enter subtask title" />

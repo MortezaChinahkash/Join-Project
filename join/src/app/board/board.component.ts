@@ -29,6 +29,9 @@ export class BoardComponent implements OnInit {
   private firestore = inject(Firestore);
   searchTerm: string = '';
 
+  // Maximum length for task titles
+  maxTitleLength: number = 40;
+
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
