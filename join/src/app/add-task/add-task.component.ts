@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, HostListener } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
@@ -21,7 +21,7 @@ import { BoardFormService } from '../services/board-form.service';
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
 })
-export class AddTaskComponent implements OnInit {
+export class AddTaskComponent implements OnInit, OnDestroy {
   taskForm: FormGroup;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   contacts: Contact[] = [];
@@ -240,6 +240,30 @@ export class AddTaskComponent implements OnInit {
         });
       }
     });
+  }
+
+  /**
+   * Cleanup subscriptions when component is destroyed
+   */
+  ngOnDestroy(): void {
+    // The @HostListener will be automatically cleaned up by Angular
+  }
+
+  /**
+   * Handles clicks outside the component to close dropdown
+   */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    if (this.isDropdownOpen) {
+      const target = event.target as HTMLElement;
+      const dropdownWrapper = target.closest('.custom-select-wrapper');
+      const contactsDropdown = target.closest('.contacts-dropdown');
+      
+      // Close dropdown if click is outside both dropdown structures
+      if (!dropdownWrapper && !contactsDropdown) {
+        this.isDropdownOpen = false;
+      }
+    }
   }
 
   /**
