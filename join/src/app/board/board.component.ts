@@ -415,4 +415,18 @@ export class BoardComponent implements OnInit {
   toggleAssignedContactsDropdown(): void {
     this.formService.toggleAssignedContactsDropdown();
   }
+
+  /**
+   * Edit a specific subtask (focus input field)
+   * @param index - Index of the subtask to edit
+   */
+  editSubtask(index: number): void {
+    setTimeout(() => {
+      const inputElement = document.querySelector(`.taskEditOverlay [formGroupName="${index}"] input[formControlName="title"]`) as HTMLInputElement;
+      if (inputElement) {
+        inputElement.focus();
+        inputElement.select(); // Select all text for easy editing
+      }
+    }, 0);
+  }
 }

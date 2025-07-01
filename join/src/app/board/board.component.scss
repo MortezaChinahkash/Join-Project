@@ -56,3 +56,94 @@
     }
   }
 }
+
+// Spezifisch für taskEditOverlay
+.taskEditOverlay {
+  .subtask-item {
+    .subtask-input-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+      position: relative;
+      
+      // Sehr leichter Hover-Effekt für die ganze Zeile
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02); // Minimal grauer Hintergrund
+        
+        .subtask-hover-actions {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+      
+      // Input nimmt verfügbaren Platz
+      .form-input {
+        flex: 1;
+        margin-right: auto;
+      }
+    }
+    
+    // Hover Actions Container - versteckt bis hover
+    .subtask-hover-actions {
+      display: flex;
+      gap: 16px; // Fester Abstand zwischen den Buttons
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s ease;
+      position: relative; // Für den Divider
+      
+      .edit-subtask-btn,
+      .remove-subtask-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: none;
+        background: transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: transform 0.2s ease; // Nur Transform-Animation
+        
+        img {
+          width: 18px;
+          height: 18px;
+          opacity: 0.6;
+          transition: opacity 0.15s ease;
+        }
+        
+        // Hover-Effekt: Leichte Vergrößerung + Opacity
+        &:hover {
+          transform: scale(1.1); // 10% Vergrößerung
+          
+          img {
+            opacity: 1; // Vollständige Sichtbarkeit
+          }
+        }
+        
+        // Active-State für besseres Feedback
+        &:active {
+          transform: scale(1.05); // Leicht kleiner beim Klick
+        }
+      }
+      
+      // Divider genau mittig zwischen den Buttons - UNABHÄNGIG von Hover
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%; // Genau in der Mitte
+        top: 50%;
+        transform: translate(-50%, -50%); // Perfekte Zentrierung
+        width: 1px;
+        height: 20px;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        pointer-events: none; // Kein Hover-Effekt auf den Divider
+      }
+    }
+  }
+}
