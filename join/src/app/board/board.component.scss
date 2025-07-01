@@ -172,8 +172,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 55px;
-      height: 55px;
+      width: 40px;
+      height: 40px;
       background-color: #2a3647;
       color: white;
       border: none;
@@ -196,7 +196,7 @@
       
       // Horizontale Linie des +
       &::before {
-        width: 42px;
+        width: 32px;
         height: 2px;
         top: 50%;
         left: 50%;
@@ -206,7 +206,7 @@
       // Vertikale Linie des +
       &::after {
         width: 2px;
-        height: 42px;
+        height: 32px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
