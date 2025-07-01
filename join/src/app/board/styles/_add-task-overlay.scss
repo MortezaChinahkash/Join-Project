@@ -958,6 +958,27 @@
   }
 }
 
+// Fix for medium screen sizes where button area gets cramped
+@media (max-width: 1130px) and (min-width: 1001px) {
+  .addTaskOverlay {
+    .buttonArea {
+      padding: 1.5rem 2rem;
+      gap: 1rem; // Add explicit gap between required text and buttons
+      
+      span {
+        margin-right: 1rem; // Extra margin to prevent smooshing
+        flex-shrink: 0; // Prevent text from shrinking
+        min-width: fit-content; // Ensure text has enough space
+      }
+      
+      .button-group {
+        flex-shrink: 0; // Prevent buttons from shrinking
+        gap: 0.75rem; // Slightly tighter gap between buttons if needed
+      }
+    }
+  }
+}
+
 // Tablet specific fixes for priority buttons (more specific to override mobile styles)
 @media (max-width: 768px) and (min-width: 552px) {
   .addTaskOverlay .taskProperties .rightSide .form-group {
