@@ -33,6 +33,13 @@ export class BoardDragDropService {
   dragDelayTimeout: any = null;
   initialMousePosition = { x: 0, y: 0 };
 
+  // Auto-scroll properties
+  autoScrollZone = 200; // pixels from top/bottom where auto-scroll activates (larger for mobile)
+  autoScrollSpeed = 8; // pixels per scroll step (slower for smoother experience)
+  autoScrollInterval: any = null;
+  isAutoScrolling = false;
+  currentCursorY = 0; // Track current cursor position for auto-scroll
+
   constructor(private taskService: TaskService) {}
 
   /**
@@ -92,6 +99,8 @@ export class BoardDragDropService {
         }
         
         if (this.isDraggingTask) {
+          // Try emergency auto-scroll first
+          this.emergencyAutoScroll(e);
           this.updateTaskDrag(e.clientX, e.clientY);
         }
       };
@@ -147,6 +156,9 @@ export class BoardDragDropService {
         const touch = e.touches[0];
         if (this.isDraggingTask) {
           e.preventDefault();
+          console.log('Touch move during drag:', touch.clientX, touch.clientY);
+          // Try emergency auto-scroll first
+          this.emergencyAutoScroll(e);
           this.updateTaskDrag(touch.clientX, touch.clientY);
         } else {
           // Cancel long press if user moves finger before drag starts
@@ -190,6 +202,7 @@ export class BoardDragDropService {
    * @private
    */
   private startTaskDrag(clientX: number, clientY: number, task: Task, element: HTMLElement) {
+    console.log('Starting task drag at:', clientX, clientY);
     this.draggedTask = task;
     this.isDraggingTask = true;
     this.dragStartPosition = { x: clientX, y: clientY };
@@ -233,6 +246,7 @@ export class BoardDragDropService {
    * Updates the position of the dragged task element and determines target column.
    * Uses multiple detection methods: elementsFromPoint, geometric bounds, and event delegation
    * to accurately detect which column the task is being dragged over.
+   * Also handles auto-scrolling when dragging near the top or bottom of the viewport.
    * 
    * @param clientX - The current X coordinate of the mouse/touch position
    * @param clientY - The current Y coordinate of the mouse/touch position
@@ -240,6 +254,14 @@ export class BoardDragDropService {
    */
   private updateTaskDrag(clientX: number, clientY: number) {
     if (!this.isDraggingTask || !this.dragElement) return;
+    
+    // Handle auto-scrolling - MUST be called first
+    this.handleAutoScroll(clientY);
+    
+    // Also try simple auto-scroll as immediate fallback
+    this.simpleAutoScroll(clientY);
+    
+    console.log('🎯 Updating task drag:', clientX, clientY);
     
     // Update drag element position
     this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
@@ -322,6 +344,196 @@ export class BoardDragDropService {
   }
 
   /**
+   * Handles auto-scrolling when dragging tasks near the top or bottom of the viewport.
+   * Activates when the cursor is within the auto-scroll zone and starts continuous scrolling.
+   * Now uses the proper content container instead of the window.
+   * 
+   * @param clientY - The current Y coordinate of the cursor/touch position
+   * @private
+   */
+  private handleAutoScroll(clientY: number) {
+    // Update current cursor position with bounds checking
+    this.currentCursorY = Math.max(0, Math.min(clientY, window.innerHeight));
+    
+    const viewportHeight = window.innerHeight;
+    const scrollableContainer = this.findScrollableContainer();
+    
+    if (!scrollableContainer) {
+      console.log('❌ No scrollable container found for auto-scroll');
+      return;
+    }
+    
+    const containerScrollTop = scrollableContainer.scrollTop;
+    const containerScrollHeight = scrollableContainer.scrollHeight;
+    const containerClientHeight = scrollableContainer.clientHeight;
+    
+    // Use normalized cursor position for zone detection
+    const normalizedY = this.currentCursorY;
+    
+    // Check if we're in the top auto-scroll zone
+    const inTopZone = normalizedY < this.autoScrollZone && containerScrollTop > 0;
+    // Check if we're in the bottom auto-scroll zone  
+    const canScrollDown = (containerScrollTop + containerClientHeight) < containerScrollHeight;
+    const inBottomZone = normalizedY > (viewportHeight - this.autoScrollZone) && canScrollDown;
+    
+    console.log('🔄 Auto-scroll check (container):', {
+      originalCursorY: clientY,
+      normalizedCursorY: normalizedY,
+      viewportHeight,
+      containerScrollTop,
+      containerScrollHeight,
+      containerClientHeight,
+      autoScrollZone: this.autoScrollZone,
+      inTopZone,
+      inBottomZone,
+      canScrollDown,
+      isAutoScrolling: this.isAutoScrolling
+    });
+    
+    // Stop auto-scrolling if we're not in any zone
+    if (!inTopZone && !inBottomZone) {
+      this.stopAutoScroll();
+      return;
+    }
+    
+    // Start auto-scrolling if not already active
+    if (!this.isAutoScrolling) {
+      console.log('🚀 Starting auto-scroll (container)...');
+      this.isAutoScrolling = true;
+      
+      this.autoScrollInterval = setInterval(() => {
+        const currentContainerScrollTop = scrollableContainer.scrollTop;
+        const currentContainerScrollHeight = scrollableContainer.scrollHeight;
+        const currentContainerClientHeight = scrollableContainer.clientHeight;
+        
+        // Recalculate zones based on current cursor position
+        const currentInTopZone = this.currentCursorY < this.autoScrollZone && currentContainerScrollTop > 0;
+        const currentCanScrollDown = (currentContainerScrollTop + currentContainerClientHeight) < currentContainerScrollHeight;
+        const currentInBottomZone = this.currentCursorY > (window.innerHeight - this.autoScrollZone) && currentCanScrollDown;
+        
+        console.log('🔍 Scroll interval check (container):', {
+          currentCursorY: this.currentCursorY,
+          currentInTopZone,
+          currentInBottomZone,
+          currentContainerScrollTop,
+          currentCanScrollDown,
+          maxScroll: currentContainerScrollHeight - currentContainerClientHeight
+        });
+        
+        if (currentInTopZone) {
+          // Speed increases as we get closer to the top
+          const distanceFromTop = this.currentCursorY;
+          const speed = this.getAdaptiveScrollSpeed(distanceFromTop);
+          // Scroll up in container
+          scrollableContainer.scrollBy(0, -speed);
+          console.log('⬆️ Auto-scrolling UP (container), speed:', speed, 'cursorY:', this.currentCursorY);
+        } else if (currentInBottomZone) {
+          // Speed increases as we get closer to the bottom
+          const distanceFromBottom = window.innerHeight - this.currentCursorY;
+          const speed = this.getAdaptiveScrollSpeed(distanceFromBottom);
+          // Scroll down in container
+          scrollableContainer.scrollBy(0, speed);
+          console.log('⬇️ Auto-scrolling DOWN (container), speed:', speed, 'cursorY:', this.currentCursorY);
+        } else {
+          // Stop if we've moved out of the zones or reached limits
+          console.log('⏹️ Stopping auto-scroll - out of zone');
+          this.stopAutoScroll();
+        }
+      }, 8); // Even higher frequency for ultra-smooth scrolling
+    }
+  }
+
+  /**
+   * Simple and direct auto-scroll implementation as fallback.
+   * This method provides a more straightforward approach using the content container.
+   * 
+   * @param clientY - The current Y coordinate of the cursor/touch position
+   * @private
+   */
+  private simpleAutoScroll(clientY: number) {
+    const scrollZone = 150;
+    const scrollSpeed = 10;
+    const viewportHeight = window.innerHeight;
+    
+    // Ensure clientY is within reasonable bounds
+    const normalizedY = Math.max(0, Math.min(clientY, viewportHeight));
+    
+    // Find scrollable container
+    const scrollableContainer = this.findScrollableContainer();
+    if (!scrollableContainer) {
+      console.log('❌ Simple auto-scroll: No container found');
+      return;
+    }
+    
+    const containerScrollTop = scrollableContainer.scrollTop;
+    const containerScrollHeight = scrollableContainer.scrollHeight;
+    const containerClientHeight = scrollableContainer.clientHeight;
+    
+    console.log('🔧 Simple auto-scroll debug (container):', {
+      originalY: clientY,
+      normalizedY,
+      viewportHeight,
+      scrollZone,
+      containerScrollTop,
+      containerScrollHeight,
+      containerClientHeight,
+      topZoneCheck: normalizedY < scrollZone,
+      bottomZoneCheck: normalizedY > (viewportHeight - scrollZone),
+      canScrollUp: containerScrollTop > 0,
+      canScrollDown: (containerScrollTop + containerClientHeight) < containerScrollHeight
+    });
+    
+    // Top zone - use normalized Y to prevent negative values
+    if (normalizedY < scrollZone && containerScrollTop > 0) {
+      scrollableContainer.scrollBy(0, -scrollSpeed);
+      console.log('🔝 Simple scroll UP (container) - executed');
+      return;
+    }
+    
+    // Bottom zone - check if we can scroll down
+    const canScrollDown = (containerScrollTop + containerClientHeight) < containerScrollHeight;
+    if (normalizedY > (viewportHeight - scrollZone) && canScrollDown) {
+      scrollableContainer.scrollBy(0, scrollSpeed);
+      console.log('🔻 Simple scroll DOWN (container) - executed');
+      return;
+    }
+    
+    console.log('❌ No scroll action taken');
+  }
+
+  /**
+   * Calculates adaptive scroll speed based on distance to the edge.
+   * The closer to the edge, the faster the scrolling.
+   * 
+   * @param distance - Distance from the edge (0 = at edge, autoScrollZone = at boundary)
+   * @returns The calculated scroll speed
+   * @private
+   */
+  private getAdaptiveScrollSpeed(distance: number): number {
+    const proximity = Math.max(0, 1 - (distance / this.autoScrollZone));
+    const speed = Math.max(4, this.autoScrollSpeed + (proximity * 20));
+    console.log('📊 Speed calculation:', { distance, proximity, speed });
+    return speed;
+  }
+
+  /**
+   * Stops the auto-scrolling functionality and clears the interval.
+   * 
+   * @private
+   */
+  private stopAutoScroll() {
+    if (this.autoScrollInterval) {
+      clearInterval(this.autoScrollInterval);
+      this.autoScrollInterval = null;
+      console.log('🛑 Auto-scroll interval cleared');
+    }
+    if (this.isAutoScrolling) {
+      this.isAutoScrolling = false;
+      console.log('🛑 Auto-scroll stopped');
+    }
+  }
+
+  /**
    * Completes the task dragging process and updates the task in Firebase if moved to a different column.
    * Cleans up the drag element, removes CSS classes, and updates the task's column in the database.
    * Resets all drag-related state variables after completion.
@@ -331,6 +543,9 @@ export class BoardDragDropService {
    */
   private async endTaskDrag(onTaskUpdate: () => void) {
     if (!this.isDraggingTask || !this.draggedTask) return;
+    
+    // Stop auto-scrolling
+    this.stopAutoScroll();
     
     // Remove drag element
     if (this.dragElement) {
@@ -429,15 +644,178 @@ export class BoardDragDropService {
     this.dragOverColumn = null;
     this.dragPlaceholderVisible = false;
     this.dragPlaceholderHeight = 0;
+    this.currentCursorY = 0;
+    
+    // Stop auto-scrolling
+    this.stopAutoScroll();
     
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
       this.longPressTimeout = null;
     }
     
+    if (this.dragDelayTimeout) {
+      clearTimeout(this.dragDelayTimeout);
+      this.dragDelayTimeout = null;
+    }
+    
     if (this.dragElement) {
       document.body.removeChild(this.dragElement);
       this.dragElement = null;
     }
+  }
+
+  /**
+   * Emergency auto-scroll implementation that works with any cursor position.
+   * This scrolls the main content container instead of creating artificial scroll areas.
+   * Now supports both vertical and horizontal scrolling.
+   * 
+   * @param event - The mouse or touch event
+   * @private
+   */
+  private emergencyAutoScroll(event: MouseEvent | TouchEvent) {
+    if (!this.isDraggingTask) return;
+    
+    const scrollSpeed = 15;
+    const scrollZone = 100;
+    const viewportHeight = window.innerHeight;
+    const viewportWidth = window.innerWidth;
+    
+    let clientX: number;
+    let clientY: number;
+    if (event instanceof MouseEvent) {
+      clientX = event.clientX;
+      clientY = event.clientY;
+    } else {
+      clientX = event.touches[0].clientX;
+      clientY = event.touches[0].clientY;
+    }
+    
+    // Find the main scrollable container (likely the board or main content area)
+    const scrollableContainer = this.findScrollableContainer();
+    
+    if (!scrollableContainer) {
+      console.log('❌ No scrollable container found');
+      return false;
+    }
+    
+    const containerRect = scrollableContainer.getBoundingClientRect();
+    const containerScrollTop = scrollableContainer.scrollTop;
+    const containerScrollLeft = scrollableContainer.scrollLeft;
+    const containerScrollHeight = scrollableContainer.scrollHeight;
+    const containerScrollWidth = scrollableContainer.scrollWidth;
+    const containerClientHeight = scrollableContainer.clientHeight;
+    const containerClientWidth = scrollableContainer.clientWidth;
+    const maxScrollTop = containerScrollHeight - containerClientHeight;
+    const maxScrollLeft = containerScrollWidth - containerClientWidth;
+    
+    console.log('🚨 Emergency auto-scroll (container):', {
+      clientX,
+      clientY,
+      viewportHeight,
+      viewportWidth,
+      scrollZone,
+      containerScrollTop,
+      containerScrollLeft,
+      containerScrollHeight,
+      containerScrollWidth,
+      containerClientHeight,
+      containerClientWidth,
+      maxScrollTop,
+      maxScrollLeft,
+      canScrollUp: containerScrollTop > 0,
+      canScrollDown: containerScrollTop < maxScrollTop,
+      canScrollLeft: containerScrollLeft > 0,
+      canScrollRight: containerScrollLeft < maxScrollLeft,
+      topZoneActive: clientY < scrollZone,
+      bottomZoneActive: clientY > (viewportHeight - scrollZone),
+      leftZoneActive: clientX < scrollZone,
+      rightZoneActive: clientX > (viewportWidth - scrollZone)
+    });
+    
+    let scrolled = false;
+    
+    // Vertical scrolling
+    if (clientY < scrollZone && containerScrollTop > 0) {
+      scrollableContainer.scrollBy(0, -scrollSpeed);
+      console.log('🆙 Emergency scroll UP (container) - EXECUTED');
+      scrolled = true;
+    } else if (clientY > (viewportHeight - scrollZone) && containerScrollTop < maxScrollTop) {
+      scrollableContainer.scrollBy(0, scrollSpeed);
+      console.log('⬇️ Emergency scroll DOWN (container) - EXECUTED');
+      scrolled = true;
+    }
+    
+    // Horizontal scrolling
+    if (clientX < scrollZone && containerScrollLeft > 0) {
+      scrollableContainer.scrollBy(-scrollSpeed, 0);
+      console.log('⬅️ Emergency scroll LEFT (container) - EXECUTED');
+      scrolled = true;
+    } else if (clientX > (viewportWidth - scrollZone) && containerScrollLeft < maxScrollLeft) {
+      scrollableContainer.scrollBy(scrollSpeed, 0);
+      console.log('➡️ Emergency scroll RIGHT (container) - EXECUTED');
+      scrolled = true;
+    }
+    
+    if (!scrolled) {
+      console.log('❌ Emergency scroll: No action - not in zone or cannot scroll');
+    }
+    
+    return scrolled;
+  }
+
+  /**
+   * Finds the main scrollable container in the application.
+   * Looks for common scrollable container patterns used in Angular apps.
+   * 
+   * @returns The scrollable container element or null if none found
+   * @private
+   */
+  private findScrollableContainer(): HTMLElement | null {
+    // Common selectors for scrollable containers in Angular apps
+    const selectors = [
+      '.board-container',
+      '.main-content',
+      '.content-container', 
+      '.scroll-container',
+      'main',
+      '.board',
+      '[data-scroll="true"]',
+      '.cdk-virtual-scroll-viewport',
+      '.mat-drawer-content',
+      '.router-outlet-container'
+    ];
+    
+    for (const selector of selectors) {
+      const element = document.querySelector(selector) as HTMLElement;
+      if (element && this.isScrollable(element)) {
+        console.log('✅ Found scrollable container:', selector);
+        return element;
+      }
+    }
+    
+    // Fallback: Find any element with overflow scroll/auto
+    const allElements = document.querySelectorAll('*') as NodeListOf<HTMLElement>;
+    for (const element of allElements) {
+      if (this.isScrollable(element) && element.scrollHeight > element.clientHeight) {
+        console.log('✅ Found scrollable element via fallback:', element.tagName.toLowerCase() + (element.className ? '.' + element.className.split(' ').join('.') : ''));
+        return element;
+      }
+    }
+    
+    console.log('❌ No scrollable container found, using document.documentElement');
+    return document.documentElement;
+  }
+
+  /**
+   * Checks if an element is scrollable.
+   * 
+   * @param element - The element to check
+   * @returns True if the element is scrollable
+   * @private
+   */
+  private isScrollable(element: HTMLElement): boolean {
+    const style = window.getComputedStyle(element);
+    return style.overflowY === 'scroll' || style.overflowY === 'auto' || style.overflow === 'scroll' || style.overflow === 'auto';
   }
 }
