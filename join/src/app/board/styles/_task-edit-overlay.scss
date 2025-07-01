@@ -162,7 +162,7 @@
       font-size: 13px;
       color: #2A3647;
       transition: all 0.2s ease;
-      flex: 1;
+      flex: 0 0 auto; // Default to natural width instead of flex: 1
       justify-content: center;
       
       &:hover {
@@ -510,12 +510,15 @@
   }
   
   .priority-buttons {
-    flex-direction: column;
-    gap: 4px;
+    display: flex !important; // Force override
+    flex-direction: row !important; // Force row layout
+    gap: 6px; // Keep buttons in a row at this breakpoint
     
     .priority-btn {
-      font-size: 12px;
-      padding: 8px 12px;
+      font-size: 13px;
+      padding: 6px 8px;
+      flex: 0 0 auto !important; // Force override the base flex: 1
+      width: auto !important; // Force natural width
       justify-content: center;
     }
   }
@@ -523,6 +526,24 @@
   .task-edit-actions button {
     font-size: 13px;
     padding: 6px 12px;
+  }
+}
+
+// Priority buttons stack at smaller screens
+@media (max-width: 550px) {
+  .priority-buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.5rem;
+    
+    .priority-btn {
+      width: auto !important; // Keep natural button width
+      max-width: 200px; // Prevent them from getting too wide
+      align-self: flex-start; // Align to left instead of stretching
+      font-size: 13px;
+      padding: 8px 12px;
+      flex: 0 0 auto !important; // Force override the base flex: 1
+    }
   }
 }
 
@@ -563,15 +584,6 @@
         box-sizing: border-box;
         min-width: 0; // Allow shrinking
       }
-    }
-  }
-  
-  .priority-buttons {
-    .priority-btn {
-      font-size: 13px;
-      padding: 8px 6px;
-      min-width: 0; // Allow buttons to shrink if needed
-      word-break: break-word;
     }
   }
 }
