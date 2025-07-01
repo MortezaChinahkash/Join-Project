@@ -160,7 +160,6 @@ export class BoardDragDropService {
         const touch = e.touches[0];
         if (this.isDraggingTask) {
           e.preventDefault();
-          console.log('Touch move during drag:', touch.clientX, touch.clientY);
           // Try emergency auto-scroll first
           this.emergencyAutoScroll(e);
           this.updateTaskDrag(touch.clientX, touch.clientY);
@@ -206,7 +205,6 @@ export class BoardDragDropService {
    * @private
    */
   private startTaskDrag(clientX: number, clientY: number, task: Task, element: HTMLElement) {
-    console.log('Starting task drag at:', clientX, clientY);
     this.draggedTask = task;
     this.isDraggingTask = true;
     this.dragStartPosition = { x: clientX, y: clientY };
@@ -264,8 +262,6 @@ export class BoardDragDropService {
     
     // Also try simple auto-scroll as immediate fallback
     this.simpleAutoScroll(clientY);
-    
-    console.log('🎯 Updating task drag:', clientX, clientY);
     
     // Update drag element position
     this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
@@ -363,7 +359,6 @@ export class BoardDragDropService {
     const scrollableContainer = this.findScrollableContainer();
     
     if (!scrollableContainer) {
-      console.log('❌ No scrollable container found for auto-scroll');
       return;
     }
     
@@ -380,20 +375,6 @@ export class BoardDragDropService {
     const canScrollDown = (containerScrollTop + containerClientHeight) < containerScrollHeight;
     const inBottomZone = normalizedY > (viewportHeight - this.autoScrollZone) && canScrollDown;
     
-    console.log('🔄 Auto-scroll check (container):', {
-      originalCursorY: clientY,
-      normalizedCursorY: normalizedY,
-      viewportHeight,
-      containerScrollTop,
-      containerScrollHeight,
-      containerClientHeight,
-      autoScrollZone: this.autoScrollZone,
-      inTopZone,
-      inBottomZone,
-      canScrollDown,
-      isAutoScrolling: this.isAutoScrolling
-    });
-    
     // Stop auto-scrolling if we're not in any zone
     if (!inTopZone && !inBottomZone) {
       this.stopAutoScroll();
@@ -402,7 +383,6 @@ export class BoardDragDropService {
     
     // Start auto-scrolling if not already active
     if (!this.isAutoScrolling) {
-      console.log('🚀 Starting auto-scroll (container)...');
       this.isAutoScrolling = true;
       
       this.autoScrollInterval = setInterval(() => {
@@ -415,15 +395,6 @@ export class BoardDragDropService {
         const currentCanScrollDown = (currentContainerScrollTop + currentContainerClientHeight) < currentContainerScrollHeight;
         const currentInBottomZone = this.currentCursorY > (window.innerHeight - this.autoScrollZone) && currentCanScrollDown;
         
-        console.log('🔍 Scroll interval check (container):', {
-          currentCursorY: this.currentCursorY,
-          currentInTopZone,
-          currentInBottomZone,
-          currentContainerScrollTop,
-          currentCanScrollDown,
-          maxScroll: currentContainerScrollHeight - currentContainerClientHeight
-        });
-        
         if (currentInTopZone) {
           // Speed increases as we get closer to the top
           const distanceFromTop = this.currentCursorY;
@@ -432,7 +403,6 @@ export class BoardDragDropService {
           scrollableContainer.scrollBy(0, -speed);
           // Update board overview viewport after scrolling
           this.boardThumbnailService.updateScrollPosition();
-          console.log('⬆️ Auto-scrolling UP (container), speed:', speed, 'cursorY:', this.currentCursorY);
         } else if (currentInBottomZone) {
           // Speed increases as we get closer to the bottom
           const distanceFromBottom = window.innerHeight - this.currentCursorY;
@@ -441,10 +411,8 @@ export class BoardDragDropService {
           scrollableContainer.scrollBy(0, speed);
           // Update board overview viewport after scrolling
           this.boardThumbnailService.updateScrollPosition();
-          console.log('⬇️ Auto-scrolling DOWN (container), speed:', speed, 'cursorY:', this.currentCursorY);
         } else {
           // Stop if we've moved out of the zones or reached limits
-          console.log('⏹️ Stopping auto-scroll - out of zone');
           this.stopAutoScroll();
         }
       }, 8); // Even higher frequency for ultra-smooth scrolling
@@ -469,7 +437,6 @@ export class BoardDragDropService {
     // Find scrollable container
     const scrollableContainer = this.findScrollableContainer();
     if (!scrollableContainer) {
-      console.log('❌ Simple auto-scroll: No container found');
       return;
     }
     
@@ -477,24 +444,9 @@ export class BoardDragDropService {
     const containerScrollHeight = scrollableContainer.scrollHeight;
     const containerClientHeight = scrollableContainer.clientHeight;
     
-    console.log('🔧 Simple auto-scroll debug (container):', {
-      originalY: clientY,
-      normalizedY,
-      viewportHeight,
-      scrollZone,
-      containerScrollTop,
-      containerScrollHeight,
-      containerClientHeight,
-      topZoneCheck: normalizedY < scrollZone,
-      bottomZoneCheck: normalizedY > (viewportHeight - scrollZone),
-      canScrollUp: containerScrollTop > 0,
-      canScrollDown: (containerScrollTop + containerClientHeight) < containerScrollHeight
-    });
-    
     // Top zone - use normalized Y to prevent negative values
     if (normalizedY < scrollZone && containerScrollTop > 0) {
       scrollableContainer.scrollBy(0, -scrollSpeed);
-      console.log('🔝 Simple scroll UP (container) - executed');
       return;
     }
     
@@ -502,11 +454,8 @@ export class BoardDragDropService {
     const canScrollDown = (containerScrollTop + containerClientHeight) < containerScrollHeight;
     if (normalizedY > (viewportHeight - scrollZone) && canScrollDown) {
       scrollableContainer.scrollBy(0, scrollSpeed);
-      console.log('🔻 Simple scroll DOWN (container) - executed');
       return;
     }
-    
-    console.log('❌ No scroll action taken');
   }
 
   /**
@@ -520,7 +469,6 @@ export class BoardDragDropService {
   private getAdaptiveScrollSpeed(distance: number): number {
     const proximity = Math.max(0, 1 - (distance / this.autoScrollZone));
     const speed = Math.max(4, this.autoScrollSpeed + (proximity * 20));
-    console.log('📊 Speed calculation:', { distance, proximity, speed });
     return speed;
   }
 
@@ -533,11 +481,9 @@ export class BoardDragDropService {
     if (this.autoScrollInterval) {
       clearInterval(this.autoScrollInterval);
       this.autoScrollInterval = null;
-      console.log('🛑 Auto-scroll interval cleared');
     }
     if (this.isAutoScrolling) {
       this.isAutoScrolling = false;
-      console.log('🛑 Auto-scroll stopped');
     }
   }
 
@@ -703,7 +649,6 @@ export class BoardDragDropService {
     const scrollableContainer = this.findScrollableContainer();
     
     if (!scrollableContainer) {
-      console.log('❌ No scrollable container found');
       return false;
     }
     
@@ -717,56 +662,24 @@ export class BoardDragDropService {
     const maxScrollTop = containerScrollHeight - containerClientHeight;
     const maxScrollLeft = containerScrollWidth - containerClientWidth;
     
-    console.log('🚨 Emergency auto-scroll (container):', {
-      clientX,
-      clientY,
-      viewportHeight,
-      viewportWidth,
-      scrollZone,
-      containerScrollTop,
-      containerScrollLeft,
-      containerScrollHeight,
-      containerScrollWidth,
-      containerClientHeight,
-      containerClientWidth,
-      maxScrollTop,
-      maxScrollLeft,
-      canScrollUp: containerScrollTop > 0,
-      canScrollDown: containerScrollTop < maxScrollTop,
-      canScrollLeft: containerScrollLeft > 0,
-      canScrollRight: containerScrollLeft < maxScrollLeft,
-      topZoneActive: clientY < scrollZone,
-      bottomZoneActive: clientY > (viewportHeight - scrollZone),
-      leftZoneActive: clientX < scrollZone,
-      rightZoneActive: clientX > (viewportWidth - scrollZone)
-    });
-    
     let scrolled = false;
     
     // Vertical scrolling
     if (clientY < scrollZone && containerScrollTop > 0) {
       scrollableContainer.scrollBy(0, -scrollSpeed);
-      console.log('🆙 Emergency scroll UP (container) - EXECUTED');
       scrolled = true;
     } else if (clientY > (viewportHeight - scrollZone) && containerScrollTop < maxScrollTop) {
       scrollableContainer.scrollBy(0, scrollSpeed);
-      console.log('⬇️ Emergency scroll DOWN (container) - EXECUTED');
       scrolled = true;
     }
     
     // Horizontal scrolling
     if (clientX < scrollZone && containerScrollLeft > 0) {
       scrollableContainer.scrollBy(-scrollSpeed, 0);
-      console.log('⬅️ Emergency scroll LEFT (container) - EXECUTED');
       scrolled = true;
     } else if (clientX > (viewportWidth - scrollZone) && containerScrollLeft < maxScrollLeft) {
       scrollableContainer.scrollBy(scrollSpeed, 0);
-      console.log('➡️ Emergency scroll RIGHT (container) - EXECUTED');
       scrolled = true;
-    }
-    
-    if (!scrolled) {
-      console.log('❌ Emergency scroll: No action - not in zone or cannot scroll');
     }
     
     return scrolled;
@@ -797,7 +710,6 @@ export class BoardDragDropService {
     for (const selector of selectors) {
       const element = document.querySelector(selector) as HTMLElement;
       if (element && this.isScrollable(element)) {
-        console.log('✅ Found scrollable container:', selector);
         return element;
       }
     }
@@ -806,12 +718,10 @@ export class BoardDragDropService {
     const allElements = document.querySelectorAll('*') as NodeListOf<HTMLElement>;
     for (const element of allElements) {
       if (this.isScrollable(element) && element.scrollHeight > element.clientHeight) {
-        console.log('✅ Found scrollable element via fallback:', element.tagName.toLowerCase() + (element.className ? '.' + element.className.split(' ').join('.') : ''));
         return element;
       }
     }
     
-    console.log('❌ No scrollable container found, using document.documentElement');
     return document.documentElement;
   }
 
