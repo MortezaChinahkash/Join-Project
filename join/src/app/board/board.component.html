@@ -484,7 +484,7 @@
               <button class="move-option-btn previous" 
                       (click)="moveTaskToPreviousColumn()" 
                       [disabled]="!getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
-                <div class="arrow-icon">↑</div>
+                <img src="./assets/img/arrow_upward.png" alt="Move up" class="arrow-icon" />
                 <span class="move-label" *ngIf="getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
                   {{ getColumnDisplayName(getPreviousColumn(getCurrentTaskColumn(selectedTaskForMove)!)!) }}
                 </span>
@@ -493,7 +493,7 @@
               <button class="move-option-btn next" 
                       (click)="moveTaskToNextColumn()" 
                       [disabled]="!getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
-                <div class="arrow-icon">↓</div>
+                <img src="./assets/img/arrow_downward.png" alt="Move down" class="arrow-icon" />
                 <span class="move-label" *ngIf="getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)">
                   {{ getColumnDisplayName(getNextColumn(getCurrentTaskColumn(selectedTaskForMove)!)!) }}
                 </span>
