@@ -10,6 +10,8 @@
   pointer-events: auto;
   // Ensure no layout impact
   contain: layout style;
+  // Prevent any scrolling or layout interference
+  overflow: hidden;
 
   .mobileMoveOverlay-content {
     position: absolute;
@@ -25,6 +27,8 @@
     will-change: transform, opacity;
     backface-visibility: hidden;
     transform: translateZ(0); // Force GPU acceleration
+    // Ensure the overlay content doesn't affect document flow
+    contain: layout style paint;
   }
 
   .mobile-move-header {
