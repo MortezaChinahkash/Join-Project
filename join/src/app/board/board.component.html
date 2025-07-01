@@ -214,27 +214,40 @@
           
           <!-- Scrollable Content Container (3rd Container) -->
           <div class="task-details-scrollable-content">
-            <div class="task-description" *ngIf="formService.selectedTask.description">
+            <!-- Description Section - Always visible -->
+            <div class="task-description">
               <h3>Description</h3>
-              <p>{{ formService.selectedTask.description }}</p>
+              <p *ngIf="formService.selectedTask.description; else noDescription">{{ formService.selectedTask.description }}</p>
+              <ng-template #noDescription>
+                <p class="no-content-placeholder">No Description</p>
+              </ng-template>
             </div>
 
-            <div class="task-due-date" *ngIf="formService.selectedTask.dueDate">
+            <!-- Due Date Section - Always visible -->
+            <div class="task-due-date">
               <h3>Due date:</h3>
-              <span>{{ formService.selectedTask.dueDate | date:'dd/MM/yyyy' }}</span>
+              <span *ngIf="formService.selectedTask.dueDate; else noDueDate">{{ formService.selectedTask.dueDate | date:'dd/MM/yyyy' }}</span>
+              <ng-template #noDueDate>
+                <span class="no-content-placeholder">No Due Date</span>
+              </ng-template>
             </div>
 
-            <div class="task-priority" *ngIf="formService.selectedTask.priority" [attr.data-priority]="formService.selectedTask.priority">
+            <!-- Priority Section - Always visible -->
+            <div class="task-priority" [attr.data-priority]="formService.selectedTask.priority">
               <h3>Priority:</h3>
-              <div class="priority-display">
+              <div class="priority-display" *ngIf="formService.selectedTask.priority; else noPriority">
                 <img [src]="utilsService.getPriorityIcon(formService.selectedTask.priority)" [alt]="formService.selectedTask.priority" class="priority-icon" />
                 <span class="priority-text">{{ formService.selectedTask.priority | titlecase }}</span>
               </div>
+              <ng-template #noPriority>
+                <span class="no-content-placeholder">No Priority Set</span>
+              </ng-template>
             </div>
 
-            <div class="task-assigned-to" *ngIf="formService.selectedTask.assignedTo && formService.selectedTask.assignedTo.length > 0">
+            <!-- Assigned To Section - Always visible -->
+            <div class="task-assigned-to">
               <h3>Assigned to:</h3>
-              <div class="assigned-contacts">
+              <div class="assigned-contacts" *ngIf="formService.selectedTask.assignedTo && formService.selectedTask.assignedTo.length > 0; else noContacts">
                 <!-- Show first 2 contacts directly -->
                 <div class="contact-item" *ngFor="let contactName of formService.getDisplayedAssignedContacts(); let i = index">
                   <div class="avatar" [style.background-color]="getInitialsColor(contactName)">{{ getInitials(contactName) }}</div>
@@ -258,25 +271,34 @@
                   </div>
                 </div>
               </div>
+              <ng-template #noContacts>
+                <span class="no-content-placeholder">No Contacts assigned</span>
+              </ng-template>
             </div>
 
-            <div class="task-subtasks" *ngIf="formService.selectedTask.subtasks && formService.selectedTask.subtasks.length > 0">
+            <!-- Subtasks Section - Always visible -->
+            <div class="task-subtasks">
               <h3>Subtasks</h3>
-              <div class="subtasks-progress">
-                <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="formService.getSubtaskProgress()"></div>
-                </div>
-                <span class="progress-text">{{ formService.getCompletedSubtasksCount() }}/{{ formService.selectedTask.subtasks.length }} done</span>
-              </div>
-              <div class="subtasks-list">
-                <div class="subtask-item" *ngFor="let subtask of formService.selectedTask.subtasks; let i = index" (click)="toggleSubtask(i)">
-                  <div class="subtask-checkbox" [class.checked]="subtask.completed">
-                    <img *ngIf="subtask.completed" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
-                    <img *ngIf="!subtask.completed" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
+              <div *ngIf="formService.selectedTask.subtasks && formService.selectedTask.subtasks.length > 0; else noSubtasks">
+                <div class="subtasks-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" [style.width.%]="formService.getSubtaskProgress()"></div>
                   </div>
-                  <span class="subtask-title" [class.completed]="subtask.completed">{{ subtask.title }}</span>
+                  <span class="progress-text">{{ formService.getCompletedSubtasksCount() }}/{{ formService.selectedTask.subtasks.length }} done</span>
+                </div>
+                <div class="subtasks-list">
+                  <div class="subtask-item" *ngFor="let subtask of formService.selectedTask.subtasks; let i = index" (click)="toggleSubtask(i)">
+                    <div class="subtask-checkbox" [class.checked]="subtask.completed">
+                      <img *ngIf="subtask.completed" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
+                      <img *ngIf="!subtask.completed" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
+                    </div>
+                    <span class="subtask-title" [class.completed]="subtask.completed">{{ subtask.title }}</span>
+                  </div>
                 </div>
               </div>
+              <ng-template #noSubtasks>
+                <span class="no-content-placeholder">No Subtasks</span>
+              </ng-template>
             </div>
           </div>
 
