@@ -505,6 +505,8 @@
     background-color: white;
     border-top: 1px solid #d1d7db;
     margin-top: auto;
+    width: 100%; // Ensure full width
+    box-sizing: border-box; // Include padding in width calculation
 
     span {
       color: #000000;
@@ -964,6 +966,8 @@
     .buttonArea {
       padding: 1.5rem 2rem;
       gap: 1rem; // Add explicit gap between required text and buttons
+      width: 100%; // Ensure full width
+      box-sizing: border-box; // Include padding in width
       
       span {
         margin-right: 1rem; // Extra margin to prevent smooshing
