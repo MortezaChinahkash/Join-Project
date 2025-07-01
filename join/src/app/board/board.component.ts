@@ -480,4 +480,15 @@ truncate(text: string | null | undefined, limit: number = 200): string {
       }
     }, 0);
   }
+
+  newSubtaskText: string = '';
+
+  addNewSubtask(taskId: string): void {
+    if (this.newSubtaskText?.trim()) {
+      this.taskService.addSubtask(taskId, this.newSubtaskText.trim());
+      this.newSubtaskText = '';
+      // Optional: Task auch in Firebase aktualisieren
+      // this.taskService.updateTaskInFirebase(updatedTask);
+    }
+  }
 }
