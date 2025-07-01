@@ -39,6 +39,7 @@ export class BoardComponent implements OnInit {
   // Mobile move overlay state
   showMobileMoveOverlay: boolean = false;
   selectedTaskForMove: Task | null = null;
+  overlayPosition = { top: 0, right: 0 };
 
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
@@ -508,8 +509,35 @@ truncate(text: string | null | undefined, limit: number = 200): string {
   onMobileMoveTask(event: MouseEvent, task: Task): void {
     event.stopPropagation(); // Prevent task card click
     
+    // Prevent any layout shifts by temporarily disabling transitions
+    document.documentElement.style.scrollBehavior = 'auto';
+    
+    // Get button position using currentTarget for more reliable positioning
+    const button = event.currentTarget as HTMLElement;
+    const buttonRect = button.getBoundingClientRect();
+    
+    // Calculate overlay position (below the button, right-aligned)
+    const overlayWidth = 180; // Approximate overlay width
+    const viewportWidth = window.innerWidth;
+    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    
+    this.overlayPosition = {
+      top: buttonRect.bottom + scrollY + 10, // Account for page scroll + 10px gap
+      right: Math.max(20, viewportWidth - buttonRect.right) // Right-align with minimum 20px margin
+    };
+    
+    // Ensure overlay doesn't go too far left
+    if (this.overlayPosition.right > viewportWidth - overlayWidth - 20) {
+      this.overlayPosition.right = 20; // 20px margin from left edge
+    }
+    
     this.selectedTaskForMove = task;
     this.showMobileMoveOverlay = true;
+    
+    // Reset scroll behavior after a short delay
+    setTimeout(() => {
+      document.documentElement.style.scrollBehavior = '';
+    }, 50);
   }
 
   /**
@@ -534,6 +562,7 @@ truncate(text: string | null | undefined, limit: number = 200): string {
   closeMobileMoveOverlay(): void {
     this.showMobileMoveOverlay = false;
     this.selectedTaskForMove = null;
+    this.overlayPosition = { top: 0, right: 0 };
   }
 
   /**
