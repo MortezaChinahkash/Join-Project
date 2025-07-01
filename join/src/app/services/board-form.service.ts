@@ -682,6 +682,15 @@ export class BoardFormService {
     if (!this.selectedTask?.subtasks) return 0;
     return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
   }
+
+  
+public createSubtaskGroup(title: string = '', completed: boolean = false) {
+  return this.fb.group({
+    title: [title],
+    completed: [completed]
+  });
+}
+
 }
 
 

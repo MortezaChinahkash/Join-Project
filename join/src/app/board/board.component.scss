@@ -283,3 +283,65 @@
     }
   }
 }
+
+/* Wrapper für Input und Button */
+.add-subtask-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 8px;
+  position: relative;
+  margin-bottom: 16px;
+}
+
+/* Input-Feld */
+.add-subtask-input-wrapper .form-input {
+  flex: 1;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px 0 0 8px;
+  padding: 10px 16px;
+  font-size: 16px;
+  background: #fff;
+  outline: none;
+  transition: border 0.2s;
+  box-shadow: none;
+  width: 100%;
+  padding-right: 44px; /* Platz für das Plus-Icon */
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  height: 40px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Plus-Button */
+.add-subtask-input-wrapper .plus-btn {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  height: 28px;
+  width: 28px;
+  border: none;
+  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.add-subtask-input-wrapper .plus-btn img {
+  width: 20px;
+  height: 20px;
+  opacity: 0.6;
+}
+
+.add-subtask-input-wrapper .plus-btn:disabled img {
+  opacity: 0.3;
+}
+
+/* Optional: Fokus-Style */
+.add-subtask-input-wrapper .form-input:focus {
+  border-color: #5ba4cf;
+}

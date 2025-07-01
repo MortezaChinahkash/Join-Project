@@ -29,6 +29,8 @@ export class BoardComponent implements OnInit {
   private firestore = inject(Firestore);
   searchTerm: string = '';
 
+  newSubtaskTitle: string = '';
+
   // Maximum length for task titles
   maxTitleLength: number = 40;
 
@@ -483,12 +485,13 @@ truncate(text: string | null | undefined, limit: number = 200): string {
 
   newSubtaskText: string = '';
 
-  addNewSubtask(taskId: string): void {
-    if (this.newSubtaskText?.trim()) {
-      this.taskService.addSubtask(taskId, this.newSubtaskText.trim());
-      this.newSubtaskText = '';
-      // Optional: Task auch in Firebase aktualisieren
-      // this.taskService.updateTaskInFirebase(updatedTask);
-    }
+  addNewSubtask(): void {
+  const title = this.newSubtaskTitle.trim();
+  if (title) {
+    this.formService.subtasksFormArray.push(
+      this.formService.createSubtaskGroup(title, false)
+    );
+    this.newSubtaskTitle = '';
   }
+}
 }
