@@ -525,3 +525,53 @@
     padding: 6px 12px;
   }
 }
+
+// Additional responsive fixes for very small screens
+@media (max-width: 450px) {
+  .taskEditOverlay {
+    padding: 0.5rem; // Add padding to prevent edge touching
+  }
+  
+  .taskEditOverlay-content {
+    width: calc(100vw - 1rem); // Full width minus padding
+    max-width: calc(100vw - 1rem); // Ensure it never exceeds viewport
+    height: calc(100vh - 1rem); // Full height minus padding
+    max-height: calc(100vh - 1rem);
+    padding: 1rem;
+    border-radius: 15px;
+    box-sizing: border-box; // Include padding in width calculation
+    overflow-x: hidden; // Prevent horizontal scroll
+    min-width: 0; // Allow shrinking below content width
+  }
+  
+  .task-edit-header h2 {
+    font-size: 16px;
+    word-break: break-word; // Prevent long titles from overflowing
+  }
+  
+  .task-edit-form {
+    gap: 6px;
+    
+    .form-group {
+      .form-input,
+      .form-textarea,
+      .form-select {
+        font-size: 14px;
+        padding: 8px 10px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0; // Allow shrinking
+      }
+    }
+  }
+  
+  .priority-buttons {
+    .priority-btn {
+      font-size: 13px;
+      padding: 8px 6px;
+      min-width: 0; // Allow buttons to shrink if needed
+      word-break: break-word;
+    }
+  }
+}
