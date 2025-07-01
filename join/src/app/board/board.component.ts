@@ -509,35 +509,43 @@ truncate(text: string | null | undefined, limit: number = 200): string {
   onMobileMoveTask(event: MouseEvent, task: Task): void {
     event.stopPropagation(); // Prevent task card click
     
-    // Prevent any layout shifts by temporarily disabling transitions
-    document.documentElement.style.scrollBehavior = 'auto';
-    
-    // Get button position using currentTarget for more reliable positioning
+    // Get button position using currentTarget for reliable positioning
     const button = event.currentTarget as HTMLElement;
     const buttonRect = button.getBoundingClientRect();
     
     // Calculate overlay position (below the button, right-aligned)
-    const overlayWidth = 180; // Approximate overlay width
+    const overlayWidth = 180; // Updated to match CSS
     const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+    
+    // Calculate top position (below button with gap)
+    const gapSize = 8;
+    let topPosition = buttonRect.bottom + scrollY + gapSize;
+    
+    // Calculate right position (align right edge of overlay with right edge of button)
+    let rightPosition = Math.max(10, viewportWidth - buttonRect.right);
+    
+    // Ensure overlay doesn't exceed viewport boundaries
+    if (rightPosition > viewportWidth - overlayWidth - 10) {
+      rightPosition = 10; // 10px margin from left edge
+    }
+    
+    // Ensure overlay doesn't go below viewport (adjust if needed)
+    const overlayHeight = 120; // Approximate overlay height
+    if (topPosition + overlayHeight > scrollY + viewportHeight - 20) {
+      // Position above the button instead
+      topPosition = buttonRect.top + scrollY - overlayHeight - gapSize;
+    }
     
     this.overlayPosition = {
-      top: buttonRect.bottom + scrollY + 10, // Account for page scroll + 10px gap
-      right: Math.max(20, viewportWidth - buttonRect.right) // Right-align with minimum 20px margin
+      top: Math.max(scrollY + 10, topPosition), // Ensure minimum 10px from top
+      right: rightPosition
     };
-    
-    // Ensure overlay doesn't go too far left
-    if (this.overlayPosition.right > viewportWidth - overlayWidth - 20) {
-      this.overlayPosition.right = 20; // 20px margin from left edge
-    }
     
     this.selectedTaskForMove = task;
     this.showMobileMoveOverlay = true;
-    
-    // Reset scroll behavior after a short delay
-    setTimeout(() => {
-      document.documentElement.style.scrollBehavior = '';
-    }, 50);
   }
 
   /**
