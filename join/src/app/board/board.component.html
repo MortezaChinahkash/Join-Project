@@ -470,8 +470,8 @@
       </div>
 
       <!-- Mobile Move Task Overlay -->
-      <div class="mobileMoveOverlay" *ngIf="showMobileMoveOverlay">
-        <div class="mobileMoveOverlay-content">
+      <div class="mobileMoveOverlay" *ngIf="showMobileMoveOverlay" (click)="closeMobileMoveOverlay()">
+        <div class="mobileMoveOverlay-content" (click)="$event.stopPropagation()">
           <div class="mobile-move-header">
             <h2>Move to</h2>
           </div>
