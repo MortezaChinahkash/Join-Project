@@ -36,6 +36,10 @@ export class BoardComponent implements OnInit {
 
   editingSubtaskIndex: number | null = null;
 
+  // Mobile move overlay state
+  showMobileMoveOverlay: boolean = false;
+  selectedTaskForMove: Task | null = null;
+
   // Arrays für die verschiedenen Spalten - jetzt typisiert
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
@@ -494,4 +498,149 @@ truncate(text: string | null | undefined, limit: number = 200): string {
     this.newSubtaskTitle = '';
   }
 }
+
+  /**
+   * Shows a popup or modal to select which column to move the task to.
+   * 
+   * @param event - The click event
+   * @param task - The task to move
+   */
+  onMobileMoveTask(event: MouseEvent, task: Task): void {
+    event.stopPropagation(); // Prevent task card click
+    
+    this.selectedTaskForMove = task;
+    this.showMobileMoveOverlay = true;
+  }
+
+  /**
+   * Prevents mousedown event propagation on mobile move button
+   */
+  onMobileMoveButtonMouseDown(event: MouseEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  /**
+   * Prevents touchstart event propagation on mobile move button
+   */
+  onMobileMoveButtonTouchStart(event: TouchEvent): void {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  /**
+   * Closes the mobile move overlay
+   */
+  closeMobileMoveOverlay(): void {
+    this.showMobileMoveOverlay = false;
+    this.selectedTaskForMove = null;
+  }
+
+  /**
+   * Moves the task to the previous column (left)
+   */
+  async moveTaskToPreviousColumn(): Promise<void> {
+    if (!this.selectedTaskForMove) return;
+    
+    const currentColumn = this.getCurrentTaskColumn(this.selectedTaskForMove);
+    if (!currentColumn) return;
+    
+    const previousColumn = this.getPreviousColumn(currentColumn);
+    
+    if (previousColumn) {
+      await this.moveTaskToColumn(this.selectedTaskForMove, previousColumn);
+    }
+    
+    this.closeMobileMoveOverlay();
+  }
+
+  /**
+   * Moves the task to the next column (right)
+   */
+  async moveTaskToNextColumn(): Promise<void> {
+    if (!this.selectedTaskForMove) return;
+    
+    const currentColumn = this.getCurrentTaskColumn(this.selectedTaskForMove);
+    if (!currentColumn) return;
+    
+    const nextColumn = this.getNextColumn(currentColumn);
+    
+    if (nextColumn) {
+      await this.moveTaskToColumn(this.selectedTaskForMove, nextColumn);
+    }
+    
+    this.closeMobileMoveOverlay();
+  }
+
+  /**
+   * Gets the current column of a task
+   */
+  getCurrentTaskColumn(task: Task): TaskColumn | null {
+    for (const column of this.boardColumns) {
+      if (column.tasks().some(t => t.id === task.id)) {
+        return column.id;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Gets the previous column in the workflow
+   */
+  getPreviousColumn(currentColumn: TaskColumn): TaskColumn | null {
+    const columnOrder: TaskColumn[] = ['todo', 'inprogress', 'awaiting', 'done'];
+    const currentIndex = columnOrder.indexOf(currentColumn);
+    
+    if (currentIndex > 0) {
+      return columnOrder[currentIndex - 1];
+    }
+    
+    return null; // Already at the first column
+  }
+
+  /**
+   * Gets the next column in the workflow
+   */
+  getNextColumn(currentColumn: TaskColumn): TaskColumn | null {
+    const columnOrder: TaskColumn[] = ['todo', 'inprogress', 'awaiting', 'done'];
+    const currentIndex = columnOrder.indexOf(currentColumn);
+    
+    if (currentIndex < columnOrder.length - 1) {
+      return columnOrder[currentIndex + 1];
+    }
+    
+    return null; // Already at the last column
+  }
+
+  /**
+   * Gets the display name for a column
+   */
+  getColumnDisplayName(column: TaskColumn): string {
+    const columnMap: Record<TaskColumn, string> = {
+      todo: 'To Do',
+      inprogress: 'In Progress',
+      awaiting: 'Awaiting Feedback',
+      done: 'Done'
+    };
+    return columnMap[column];
+  }
+
+  /**
+   * Moves a task to the specified column
+   */
+  private async moveTaskToColumn(task: Task, targetColumn: TaskColumn): Promise<void> {
+    // Update task column
+    task.column = targetColumn;
+    
+    // Update local arrays
+    this.updateLocalArrays();
+    
+    // Save to Firebase
+    try {
+      await this.taskService.updateTaskInFirebase(task);
+      console.log(`Task "${task.title}" moved to ${targetColumn}`);
+    } catch (error) {
+      console.error('Error moving task:', error);
+    }
+  }
 }
