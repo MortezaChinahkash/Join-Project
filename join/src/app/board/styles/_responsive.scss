@@ -38,6 +38,10 @@
 }
 
 @media (max-width: 1000px) {
+  .task-card{
+    width: 280px;
+    height: fit-content;
+  }
   .mobile-only {
     display: flex;
   }
@@ -53,15 +57,21 @@
 
   .board-container {
     display: flex;
-    flex-direction: row;
-    width: fit-content;
+    flex-direction: column;
+    width: 100%;
     min-width: 100%;
+    
   }
-  
+  .task-list{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: unset;
+  }
   .board-column {
     flex: 0 0 280px;
-    min-width: 280px;
-    max-width: 280px;
+    width: 100%;
+    padding: 0;
+    display: flex;
   }
 
   .default-content-container {
