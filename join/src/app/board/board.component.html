@@ -203,14 +203,17 @@
       <!-- Task Details Overlay -->
       <div class="taskDetailsOverlay" *ngIf="formService.showTaskDetailsOverlay">
         <div class="taskDetailsOverlay-content" *ngIf="formService.selectedTask">
-          <div class="task-details-header">
-            <div class="task-category-tag" [ngClass]="'category-' + formService.selectedTask.category">{{ formService.selectedTask.category === "technical" ? "Technical Task" : "User Story" }}</div>
-            <button class="close-btn" (click)="closeTaskDetailsOverlay()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
+          <!-- Fixed Header Container (1st & 2nd Container) -->
+          <div class="task-details-header-fixed">
+            <div class="task-details-header">
+              <div class="task-category-tag" [ngClass]="'category-' + formService.selectedTask.category">{{ formService.selectedTask.category === "technical" ? "Technical Task" : "User Story" }}</div>
+              <button class="close-btn" (click)="closeTaskDetailsOverlay()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
+            </div>
+            <h1 class="task-details-title">{{ formService.selectedTask.title }}</h1>
           </div>
-
-          <h1 class="task-details-title">{{ formService.selectedTask.title }}</h1>
           
-          <div class="task-details-content">
+          <!-- Scrollable Content Container (3rd Container) -->
+          <div class="task-details-scrollable-content">
             <div class="task-description" *ngIf="formService.selectedTask.description">
               <h3>Description</h3>
               <p>{{ formService.selectedTask.description }}</p>
@@ -277,7 +280,8 @@
             </div>
           </div>
 
-          <div class="task-details-actions">
+          <!-- Fixed Footer Container (4th Container) -->
+          <div class="task-details-actions-fixed">
             <button class="delete-btn" (click)="deleteTask()"><img src="./assets/img/icon_delete.svg" alt="Delete" /></button>
             <button class="edit-btn" (click)="editTask()"><img src="./assets/img/icon_todo.svg" alt="Edit" /></button>
           </div>
