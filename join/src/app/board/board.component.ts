@@ -248,21 +248,15 @@ export class BoardComponent implements OnInit {
 
  /**
  * Safely truncate any string (or null/undefined) to a max length,
- * appending “…” if it was longer.
+ * appending “…” if it was longer. 
  */
 truncate(text: string | null | undefined, limit: number = 200): string {
-  // Normalize null/undefined to an empty string
   const content = text ?? '';
-  
-  // If short enough, return as-is
   if (content.length <= limit) {
     return content;
   }
-  
-  // Otherwise cut and add ellipsis
   return content.slice(0, limit) + '…';
 }
-
 
   // Delegate methods to services for template access
 
