@@ -987,15 +987,18 @@
 @media (max-width: 768px) and (min-width: 552px) {
   .addTaskOverlay .taskProperties .rightSide .form-group {
     .priority-buttons {
-      justify-content: flex-start !important; // Force override
-      gap: 0.75rem !important; // Slightly tighter gap for tablet
-      flex-wrap: nowrap; // Don't wrap on tablet
+      display: flex;
+      flex-direction: column; // Stack vertically like below 550px
+      gap: 0.75rem; // Slightly larger gap for tablet
+      max-width: 100%;
       
       .priority-btn {
-        flex: 0 0 auto !important; // Don't grow or shrink
-        width: auto !important; // Natural button width
-        min-width: auto !important; // Remove any minimum width constraints
-        max-width: none !important; // Remove max width constraints
+        width: auto; // Keep natural button width
+        max-width: 200px; // Prevent them from getting too wide
+        align-self: flex-start; // Align to left instead of stretching
+        flex: 0 0 auto; // Don't grow or shrink
+        font-size: 1rem; // Keep original font size, don't shrink
+        padding: 0.75rem 1.5rem; // Keep original padding, don't shrink
       }
     }
   }
