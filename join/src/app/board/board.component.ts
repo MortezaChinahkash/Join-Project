@@ -14,7 +14,7 @@ import { BoardUtilsService } from '../services/board-utils.service';
 /**
  * Main board component for task management with kanban-style columns.
  * Handles task creation, editing, deletion, and drag & drop functionality.
- * 
+ *
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
@@ -22,7 +22,7 @@ import { BoardUtilsService } from '../services/board-utils.service';
   selector: 'app-board',
   imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './board.component.html',
-  styleUrl: './board.component.scss'
+  styleUrl: './board.component.scss',
 })
 export class BoardComponent implements OnInit {
   contacts: Contact[] = [];
@@ -46,29 +46,29 @@ export class BoardComponent implements OnInit {
       title: 'To Do',
       tasks: () => this.todoTasks,
       showAddButton: true,
-      emptyMessage: 'No tasks to do'
+      emptyMessage: 'No tasks to do',
     },
     {
       id: 'inprogress' as TaskColumn,
       title: 'In Progress',
       tasks: () => this.inProgressTasks,
       showAddButton: true,
-      emptyMessage: 'No tasks in progress'
+      emptyMessage: 'No tasks in progress',
     },
     {
       id: 'awaiting' as TaskColumn,
       title: 'Awaiting feedback',
       tasks: () => this.awaitingFeedbackTasks,
       showAddButton: true,
-      emptyMessage: 'No tasks awaiting feedback'
+      emptyMessage: 'No tasks awaiting feedback',
     },
     {
       id: 'done' as TaskColumn,
       title: 'Done',
       tasks: () => this.doneTasks,
       showAddButton: false,
-      emptyMessage: 'No tasks done'
-    }
+      emptyMessage: 'No tasks done',
+    },
   ];
 
   // Make Math available in template
@@ -76,7 +76,7 @@ export class BoardComponent implements OnInit {
 
   /**
    * Initializes the board component with services.
-   * 
+   *
    * @param taskService - Service for managing task data operations
    * @param dragDropService - Service for handling drag & drop functionality
    * @param thumbnailService - Service for thumbnail navigation
@@ -101,7 +101,7 @@ export class BoardComponent implements OnInit {
   ngOnInit() {
     this.loadContacts();
     this.getTasksFromFirebase();
-    
+
     // Setup scroll listener after view init
     setTimeout(() => {
       this.thumbnailService.setupScrollListener();
@@ -111,26 +111,25 @@ export class BoardComponent implements OnInit {
   /**
    * Loads tasks from Firebase and subscribes to real-time updates.
    * Automatically sorts tasks into appropriate columns based on their status.
-   * 
+   *
    * @returns Promise<void>
    */
   async getTasksFromFirebase() {
     try {
       const taskRef = collection(this.firestore, 'tasks');
-      
+
       // Subscribe to the collection data
       collectionData(taskRef, { idField: 'id' }).subscribe({
         next: (tasks) => {
           this.tasks = tasks as Task[];
-          
+
           // NEU: Tasks in die richtigen Spalten sortieren
           this.sortTasksIntoColumns();
         },
         error: (error) => {
           // Error loading tasks
-        }
+        },
       });
-      
     } catch (error) {
       // Error loading tasks
     }
@@ -138,7 +137,7 @@ export class BoardComponent implements OnInit {
 
   /**
    * Gets the initials from a contact name.
-   * 
+   *
    * @param name - The full name of the contact
    * @returns The initials (first letters of first and last name)
    */
@@ -148,7 +147,7 @@ export class BoardComponent implements OnInit {
 
   /**
    * Gets a deterministic color for a contact based on their name.
-   * 
+   *
    * @param name - The full name of the contact
    * @returns A CSS color string for the contact's avatar
    */
@@ -158,10 +157,18 @@ export class BoardComponent implements OnInit {
 
   // Lokale Arrays mit Service synchronisieren und nach Priorität sortieren
   private updateLocalArrays() {
-    this.todoTasks = this.utilsService.sortTasksByPriority(this.taskService.getTasksByColumn('todo'));
-    this.inProgressTasks = this.utilsService.sortTasksByPriority(this.taskService.getTasksByColumn('inprogress'));
-    this.awaitingFeedbackTasks = this.utilsService.sortTasksByPriority(this.taskService.getTasksByColumn('awaiting'));
-    this.doneTasks = this.utilsService.sortTasksByPriority(this.taskService.getTasksByColumn('done'));
+    this.todoTasks = this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('todo')
+    );
+    this.inProgressTasks = this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('inprogress')
+    );
+    this.awaitingFeedbackTasks = this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('awaiting')
+    );
+    this.doneTasks = this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('done')
+    );
   }
 
   private loadContacts() {
@@ -169,9 +176,9 @@ export class BoardComponent implements OnInit {
     collectionData(contactsCollection, { idField: 'id' }).subscribe(
       (contacts) => {
         this.contacts = contacts as Contact[];
-        
+
         // Alphabetisch sortieren
-        this.contacts.sort((a, b) => 
+        this.contacts.sort((a, b) =>
           a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         );
       },
@@ -189,7 +196,7 @@ export class BoardComponent implements OnInit {
     this.doneTasks = [];
 
     // Tasks in die richtigen Spalten sortieren
-    this.tasks.forEach(task => {
+    this.tasks.forEach((task) => {
       switch (task.column) {
         case 'todo':
           this.todoTasks.push(task);
@@ -205,15 +212,21 @@ export class BoardComponent implements OnInit {
           break;
         default:
           // Fallback: Wenn keine Spalte definiert, in "todo" einordnen
-          console.warn(`Task "${task.title}" hat keine gültige Spalte, wird in "todo" eingeordnet`);
+          console.warn(
+            `Task "${task.title}" hat keine gültige Spalte, wird in "todo" eingeordnet`
+          );
           this.todoTasks.push(task);
       }
     });
 
     // Nach der Aufteilung: Jede Spalte nach Priorität sortieren
     this.todoTasks = this.utilsService.sortTasksByPriority(this.todoTasks);
-    this.inProgressTasks = this.utilsService.sortTasksByPriority(this.inProgressTasks);
-    this.awaitingFeedbackTasks = this.utilsService.sortTasksByPriority(this.awaitingFeedbackTasks);
+    this.inProgressTasks = this.utilsService.sortTasksByPriority(
+      this.inProgressTasks
+    );
+    this.awaitingFeedbackTasks = this.utilsService.sortTasksByPriority(
+      this.awaitingFeedbackTasks
+    );
     this.doneTasks = this.utilsService.sortTasksByPriority(this.doneTasks);
   }
 
@@ -224,12 +237,32 @@ export class BoardComponent implements OnInit {
   // Callback for updating local arrays after task changes
   private updateTaskArrays() {
     // Update local tasks array and sort into columns
-    const taskIndex = this.tasks.findIndex(t => t.id === this.formService.selectedTask?.id);
+    const taskIndex = this.tasks.findIndex(
+      (t) => t.id === this.formService.selectedTask?.id
+    );
     if (taskIndex !== -1 && this.formService.selectedTask) {
       this.tasks[taskIndex] = this.formService.selectedTask;
     }
     this.sortTasksIntoColumns();
   }
+
+ /**
+ * Safely truncate any string (or null/undefined) to a max length,
+ * appending “…” if it was longer.
+ */
+truncate(text: string | null | undefined, limit: number = 200): string {
+  // Normalize null/undefined to an empty string
+  const content = text ?? '';
+  
+  // If short enough, return as-is
+  if (content.length <= limit) {
+    return content;
+  }
+  
+  // Otherwise cut and add ellipsis
+  return content.slice(0, limit) + '…';
+}
+
 
   // Delegate methods to services for template access
 
@@ -271,14 +304,18 @@ export class BoardComponent implements OnInit {
 
   async deleteTask() {
     await this.formService.deleteTask(() => {
-      this.tasks = this.tasks.filter(t => t.id !== this.formService.selectedTask!.id);
+      this.tasks = this.tasks.filter(
+        (t) => t.id !== this.formService.selectedTask!.id
+      );
       this.sortTasksIntoColumns();
     });
   }
 
   async confirmDeleteTask() {
     await this.formService.confirmDeleteTask(() => {
-      this.tasks = this.tasks.filter(t => t.id !== this.formService.taskToDelete!.id);
+      this.tasks = this.tasks.filter(
+        (t) => t.id !== this.formService.taskToDelete!.id
+      );
       this.sortTasksIntoColumns();
     });
   }
@@ -288,15 +325,21 @@ export class BoardComponent implements OnInit {
   }
 
   async toggleSubtask(subtaskIndex: number) {
-    await this.formService.toggleSubtask(subtaskIndex, () => this.updateTaskArrays());
+    await this.formService.toggleSubtask(subtaskIndex, () =>
+      this.updateTaskArrays()
+    );
   }
 
   // Drag & Drop Service delegates
   async onTaskMouseDown(event: MouseEvent, task: Task) {
-    const wasDragged = await this.dragDropService.onTaskMouseDown(event, task, () => {
-      this.updateTaskArrays();
-    });
-    
+    const wasDragged = await this.dragDropService.onTaskMouseDown(
+      event,
+      task,
+      () => {
+        this.updateTaskArrays();
+      }
+    );
+
     // If it wasn't a drag, treat it as a click to open task details
     if (!wasDragged) {
       setTimeout(() => {
@@ -306,10 +349,14 @@ export class BoardComponent implements OnInit {
   }
 
   async onTaskTouchStart(event: TouchEvent, task: Task) {
-    const wasDragged = await this.dragDropService.onTaskTouchStart(event, task, () => {
-      this.updateTaskArrays();
-    });
-    
+    const wasDragged = await this.dragDropService.onTaskTouchStart(
+      event,
+      task,
+      () => {
+        this.updateTaskArrays();
+      }
+    );
+
     // If it wasn't a drag, treat it as a tap to open task details
     if (!wasDragged) {
       setTimeout(() => {
@@ -385,7 +432,9 @@ export class BoardComponent implements OnInit {
   }
 
   getCompletedSubtasksCount(): number {
-    return this.utilsService.getCompletedSubtasksCount(this.formService.selectedTask);
+    return this.utilsService.getCompletedSubtasksCount(
+      this.formService.selectedTask
+    );
   }
 
   get noSearchResults(): boolean {
@@ -425,7 +474,9 @@ export class BoardComponent implements OnInit {
    */
   editSubtask(index: number): void {
     setTimeout(() => {
-      const inputElement = document.querySelector(`.taskEditOverlay [formGroupName="${index}"] input[formControlName="title"]`) as HTMLInputElement;
+      const inputElement = document.querySelector(
+        `.taskEditOverlay [formGroupName="${index}"] input[formControlName="title"]`
+      ) as HTMLInputElement;
       if (inputElement) {
         inputElement.focus();
         inputElement.select(); // Select all text for easy editing
