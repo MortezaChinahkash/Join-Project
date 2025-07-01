@@ -1095,7 +1095,10 @@
       
       .cancelBtn,
       .createBtn {
-        width: 100%; // Make buttons full width when stacked
+        width: auto; // Keep natural button width instead of stretching
+        min-width: fit-content; // Ensure text fits properly
+        max-width: 200px; // Prevent buttons from getting too wide
+        align-self: center; // Center the buttons in the column layout
         box-sizing: border-box;
       }
     }
