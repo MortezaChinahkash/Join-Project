@@ -1,7 +1,7 @@
 // Responsive Media Queries
 @media (min-width: 1001px) and (max-width: 1750px) {
   .board-scroll-wrapper {
-    overflow-x: auto;
+    overflow-x: visible;
   }
   
   .board-container {
