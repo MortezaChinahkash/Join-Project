@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Task, TaskColumn } from '../interfaces/task.interface';
 import { TaskService } from './task.service';
+import { BoardThumbnailService } from './board-thumbnail.service';
 
 /**
  * Service for handling drag & drop functionality in the board component.
@@ -40,7 +41,10 @@ export class BoardDragDropService {
   isAutoScrolling = false;
   currentCursorY = 0; // Track current cursor position for auto-scroll
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private boardThumbnailService: BoardThumbnailService
+  ) {}
 
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
@@ -426,6 +430,8 @@ export class BoardDragDropService {
           const speed = this.getAdaptiveScrollSpeed(distanceFromTop);
           // Scroll up in container
           scrollableContainer.scrollBy(0, -speed);
+          // Update board overview viewport after scrolling
+          this.boardThumbnailService.updateScrollPosition();
           console.log('⬆️ Auto-scrolling UP (container), speed:', speed, 'cursorY:', this.currentCursorY);
         } else if (currentInBottomZone) {
           // Speed increases as we get closer to the bottom
@@ -433,6 +439,8 @@ export class BoardDragDropService {
           const speed = this.getAdaptiveScrollSpeed(distanceFromBottom);
           // Scroll down in container
           scrollableContainer.scrollBy(0, speed);
+          // Update board overview viewport after scrolling
+          this.boardThumbnailService.updateScrollPosition();
           console.log('⬇️ Auto-scrolling DOWN (container), speed:', speed, 'cursorY:', this.currentCursorY);
         } else {
           // Stop if we've moved out of the zones or reached limits
