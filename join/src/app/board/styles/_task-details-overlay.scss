@@ -65,7 +65,9 @@
 }
 
 .task-details-title {
-  font-size: 47px;
+  /* font-size: 47px; */
+  font-size: clamp(1em, 5vh, 3em);
+
   font-weight: 700;
   color: #2A3647;
   margin: 8px 0 0 0;
