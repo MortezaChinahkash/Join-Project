@@ -62,7 +62,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   // Subscriptions
   private contactsSubscription?: Subscription;
-  private resizeListener?: () => void;
+  private resizeListener?: (event: UIEvent) => void;
 
   /**
    * Initializes the contacts component with required services and form.
@@ -149,8 +149,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * Sets up window resize listener for responsive behavior.
    */
   private setupResizeListener(): void {
-    this.resizeListener = this.updateMobileViewStatus.bind(this);
-    window.addEventListener('resize', this.resizeListener);
+    this.resizeListener = (event: UIEvent) => this.updateMobileViewStatus();
+    window.addEventListener('resize', this.resizeListener as EventListener);
   }
 
   /**
@@ -158,7 +158,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    */
   private removeResizeListener(): void {
     if (this.resizeListener) {
-      window.removeEventListener('resize', this.resizeListener);
+      window.removeEventListener('resize', this.resizeListener as EventListener);
     }
   }
 

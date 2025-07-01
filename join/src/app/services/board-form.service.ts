@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { Contact } from '../contacts/contacts.component';
+import { Contact } from './contact-data.service';
 import { Task, TaskColumn } from '../interfaces/task.interface';
 import { TaskService } from './task.service';
 

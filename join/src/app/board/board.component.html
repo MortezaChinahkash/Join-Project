@@ -66,7 +66,7 @@
               <div class="task-footer">
                 <div class="task-avatars" *ngIf="task.assignedTo && task.assignedTo.length > 0">
                   <div class="avatar-group">
-                    <div class="avatar" *ngFor="let contact of getDisplayedContacts(task.assignedTo); let i = index" [style.background-color]="getInitialsColor(contact)" [style.z-index]="getDisplayedContacts(task.assignedTo).length - i + 1">{{ getInitials(contact) }}</div>
+                    <div class="avatar" *ngFor="let contact of getDisplayedContacts(task.assignedTo); let i = index" [style.background-color]="getInitialsColor(contact.name)" [style.z-index]="getDisplayedContacts(task.assignedTo).length - i + 1">{{ getInitials(contact.name) }}</div>
                     <div class="remaining-contacts" *ngIf="hasRemainingContacts(task.assignedTo)" [style.z-index]="1">+{{ getRemainingContactsCount(task.assignedTo) }}</div>
                   </div>
                 </div>
