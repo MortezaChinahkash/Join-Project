@@ -503,3 +503,8 @@
   flex-shrink: 0;
   padding: 16px 40px 32px 40px;
 }
+@media (max-height: 900px){
+  .task-details-header-fixed {
+    padding: 0;
+  }
+}
