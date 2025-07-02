@@ -1,0 +1,380 @@
+// Layout, structure, and responsive rules for Add Task Overlay
+
+.addTaskOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  .addTaskOverlay-content {
+    background-color: white;
+    border-radius: 30px;
+    max-width: 1200px;
+    width: 100%;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .taskProperties {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    .leftSide {
+      padding: 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .devider {
+      width: 1px;
+      background-color: #d1d7db;
+      margin: 2rem 0;
+      flex-shrink: 0;
+    }
+
+    .rightSide {
+      padding: 2rem;
+      flex: 1;
+    }
+  }
+
+  .buttonArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: white;
+    border-top: 1px solid #d1d7db;
+    margin-top: auto;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+// --- Responsive Layout & Media Queries (copy all @media blocks here) ---
+
+@media (max-width: 1300px) {
+  .addTaskOverlay {
+    .taskProperties {
+      .rightSide {
+        flex: 0 0 450px;
+        min-width: 450px;
+        max-width: 450px;
+      }
+      .leftSide {
+        flex: 1;
+        min-width: 300px;
+        max-width: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 1130px) {
+  .addTaskOverlay {
+    .addTaskOverlay-content {
+      max-width: fit-content;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .addTaskOverlay {
+    .taskProperties {
+      .rightSide {
+        flex: 0 0 460px;
+        min-width: 460px;
+        max-width: 460px;
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .addTaskOverlay {
+    padding: 0.5rem;
+    .addTaskOverlay-content {
+      max-height: calc(100vh - 1rem);
+      border-radius: 20px;
+    }
+    .taskProperties {
+      flex-direction: column;
+      .devider {
+        width: 100%;
+        height: 1px;
+        margin: 1rem 0;
+      }
+      .leftSide,
+      .rightSide {
+        padding: 1rem;
+        flex: none;
+        max-width: none;
+        min-width: auto;
+      }
+    }
+    .form-group {
+      max-width: 600px;
+      input,
+      textarea,
+      select {
+        max-width: 100%;
+      }
+    }
+    .subtasks-container {
+      max-width: 600px;
+      .form-input {
+        max-width: 100%;
+      }
+    }
+    .custom-select-wrapper {
+      max-width: 600px;
+    }
+    .priority-buttons {
+      max-width: 600px;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      .priority-btn {
+        flex: 0 0 auto;
+        min-width: auto;
+      }
+    }
+    .buttonArea {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+      span {
+        text-align: center;
+      }
+      .button-group {
+        flex-direction: row;
+        gap: 0.75rem;
+        max-width: 600px;
+        margin: 0 auto;
+        justify-content: center;
+      }
+      .cancelBtn,
+      .createBtn {
+        justify-content: center;
+        flex: 0 0 auto;
+      }
+    }
+  }
+}
+
+@media (max-width: 1130px) and (min-width: 1001px) {
+  .addTaskOverlay {
+    .buttonArea {
+      padding: 1.5rem 2rem;
+      gap: 1rem;
+      width: 100%;
+      box-sizing: border-box;
+      span {
+        margin-right: 1rem;
+        flex-shrink: 0;
+        min-width: fit-content;
+      }
+      .button-group {
+        flex-shrink: 0;
+        gap: 0.75rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) and (min-width: 552px) {
+  .addTaskOverlay .taskProperties .rightSide .form-group {
+    .priority-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      max-width: 100%;
+      .priority-btn {
+        width: auto;
+        max-width: 200px;
+        align-self: flex-start;
+        flex: 0 0 auto;
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .addTaskOverlay {
+    padding: 0.25rem;
+    .addTaskOverlay-content {
+      border-radius: 15px;
+    }
+    h2 {
+      padding: 1rem 1rem 0;
+      font-size: 1.25rem;
+    }
+    .taskProperties {
+      .leftSide,
+      .rightSide {
+        padding: 0.5rem;
+      }
+    }
+    .form-group {
+      max-width: 100%;
+    }
+    .subtasks-container {
+      max-width: 100%;
+    }
+    .custom-select-wrapper {
+      max-width: 100%;
+    }
+    .priority-buttons {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      gap: 0.5rem;
+      .priority-btn {
+        width: auto;
+        max-width: 200px;
+        align-self: flex-start;
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+    .buttonArea {
+      padding: 0.5rem;
+      .button-group {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .addTaskOverlay {
+    padding: 0.125rem;
+    .addTaskOverlay-content {
+      border-radius: 10px;
+      width: calc(100vw - 0.25rem);
+      max-width: calc(100vw - 0.25rem);
+      box-sizing: border-box;
+    }
+    h2 {
+      padding: 0.75rem 0.75rem 0;
+      font-size: 1.125rem;
+    }
+    .taskProperties {
+      .leftSide,
+      .rightSide {
+        padding: 0.25rem;
+      }
+    }
+    .buttonArea {
+      padding: 0.25rem;
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+      }
+      .cancelBtn,
+      .createBtn {
+        width: auto;
+        min-width: fit-content;
+        max-width: 200px;
+        align-self: center;
+        box-sizing: border-box;
+      }
+    }
+    .form-group {
+      margin-bottom: 0.75rem;
+      .form-input,
+      .form-textarea,
+      .form-select {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+    .priority-buttons {
+      gap: 0.375rem;
+      .priority-btn {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.5rem;
+        max-width: 160px;
+      }
+    }
+    .custom-select-wrapper .custom-select {
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+    .dropdown-options .dropdown-option {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+}
+
+@media (max-width: 330px) {
+  .addTaskOverlay {
+    padding: 0.0625rem;
+    .addTaskOverlay-content {
+      width: calc(100vw - 0.125rem);
+      max-width: calc(100vw - 0.125rem);
+      min-width: 0;
+    }
+    h2 {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .taskProperties {
+      .leftSide,
+      .rightSide {
+        padding: 0.125rem;
+      }
+    }
+    .form-group {
+      margin-bottom: 0.5rem;
+      label {
+        font-size: 0.875rem;
+      }
+      .form-input,
+      .form-textarea,
+      .form-select {
+        font-size: 0.8125rem;
+        padding: 0.4375rem 0.625rem;
+      }
+    }
+    .priority-buttons {
+      .priority-btn {
+        font-size: 0.6875rem;
+        padding: 0.3125rem 0.4375rem;
+        max-width: 140px;
+      }
+    }
+    .buttonArea {
+      padding: 0.125rem;
+      span {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

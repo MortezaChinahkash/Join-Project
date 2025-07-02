@@ -1,0 +1,1197 @@
+// Add Task Overlay Styles
+.addTaskOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  box-sizing: border-box;
+  overflow: hidden; // Prevent any overflow issues
+
+  .addTaskOverlay-content {
+    background-color: white;
+    border-radius: 30px;
+    max-width: 1200px;
+    width: 100%;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    overflow-x: hidden; // Prevent horizontal scroll
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    min-width: 0; // Allow shrinking below content width
+  }
+
+  h2 {
+    padding: 2rem 2rem 0;
+    margin: 0;
+    font-size: 1.5rem;
+    color: #2a3647;
+  }
+
+  .taskProperties {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+
+    .leftSide {
+      padding: 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          font-size: 1rem;
+          font-weight: 400;
+          color: #2a3647;
+
+          .required {
+            color: #ff8190;
+            margin-left: 2px;
+          }
+        }
+
+        .form-input,
+        .form-textarea {
+          padding: 0.75rem 1rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          font-size: 1rem;
+          color: #2a3647;
+          background-color: white;
+
+          &::placeholder {
+            color: #d1d7db;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: #29abe2;
+          }
+
+          &.error {
+            border-color: #ff8190;
+
+            &::placeholder {
+              color: #ff8190;
+            }
+          }
+        }
+
+        .form-textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        .error-message {
+          color: #ff8190;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+
+        &.date-group {
+          .date-input-wrapper {
+            position: relative;
+            display: block;
+            width: 100%;
+
+            .date-input {
+              padding-right: 3rem;
+              width: 100%;
+              box-sizing: border-box;
+
+              // Hide default calendar icon
+              &::-webkit-calendar-picker-indicator {
+                opacity: 0;
+                position: absolute;
+                right: 0.75rem;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+              }
+
+              &::-webkit-inner-spin-button,
+              &::-webkit-clear-button {
+                display: none;
+              }
+            }
+
+            .date-icon {
+              position: absolute;
+              right: 0.75rem;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 20px;
+              height: 20px;
+              pointer-events: none;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+
+    .devider {
+      width: 1px;
+      background-color: #d1d7db;
+      margin: 2rem 0;
+      flex-shrink: 0;
+    }
+
+    .rightSide {
+      padding: 2rem;
+      flex: 1;
+
+      .form-group {
+        margin-bottom: 1.5rem;
+
+        label {
+          font-size: 1rem;
+          font-weight: 400;
+          color: #2a3647;
+          margin-bottom: 0.5rem;
+          display: block;
+
+          .required {
+            color: #ff8190;
+            margin-left: 2px;
+          }
+        }
+
+        .priority-buttons {
+          display: flex;
+          gap: 1rem;
+
+          .priority-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid #d1d7db;
+            border-radius: 10px;
+            background-color: white;
+            color: #2a3647;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+
+            // Default state - subtle priority colors in borders and icons
+            &:nth-child(1) { // Urgent
+              border-color: var(--color-prio-urgent);
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
+              }
+              &:hover:not(.active) {
+                background-color: rgba(255, 61, 0, 0.1);
+                border-color: var(--color-prio-urgent);
+              }
+            }
+
+            &:nth-child(2) { // Medium
+              border-color: var(--color-prio-medium);
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
+              }
+              &:hover:not(.active) {
+                background-color: rgba(255, 168, 0, 0.1);
+                border-color: var(--color-prio-medium);
+              }
+            }
+
+            &:nth-child(3) { // Low
+              border-color: var(--color-prio-low);
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
+              }
+              &:hover:not(.active) {
+                background-color: rgba(122, 226, 41, 0.1);
+                border-color: var(--color-prio-low);
+              }
+            }
+
+            &.active {
+              color: white;
+              border-color: transparent;
+              font-weight: 600;
+
+              // Active state - white icons
+              .priority-icon-overlay {
+                filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+              }
+
+              // Specific background colors for each priority level
+              &:nth-child(1) {
+                background-color: var(--color-prio-urgent);
+                box-shadow: 0 2px 8px rgba(255, 61, 0, 0.3);
+              }
+
+              &:nth-child(2) {
+                background-color: var(--color-prio-medium);
+                box-shadow: 0 2px 8px rgba(255, 168, 0, 0.3);
+              }
+
+              &:nth-child(3) {
+                background-color: var(--color-prio-low);
+                box-shadow: 0 2px 8px rgba(122, 226, 41, 0.3);
+              }
+            }
+
+            .priority-icon,
+            .priority-icon-overlay {
+              font-size: 1rem;
+              width: 1.25rem;
+              height: 1.25rem;
+              transition: filter 0.2s ease;
+            }
+          }
+        }
+
+        .form-select {
+          width: 100%;
+          padding: 0.75rem 1rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          font-size: 1rem;
+          color: #2a3647;
+          background-color: white;
+          cursor: pointer;
+
+          &:focus {
+            outline: none;
+            border-color: #29abe2;
+          }
+
+          &.error {
+            border-color: #ff8190;
+          }
+        }
+
+        .error-message {
+          color: #ff8190;
+          font-size: 0.875rem;
+          margin-top: 0.25rem;
+        }
+
+        .subtasks-input-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          .subtask-input {
+            width: 100%;
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            border: 1px solid #d1d7db;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #2a3647;
+            background-color: white;
+
+            &::placeholder {
+              color: #d1d7db;
+            }
+
+            &:focus {
+              outline: none;
+              border-color: #29abe2;
+            }
+          }
+
+          .subtask-add-icon {
+            position: absolute;
+            right: 0.75rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+          }
+        }
+
+        .subtasks-container {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .subtask-item {
+            .subtask-input-group {
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              padding: 0.75rem;
+              border-radius: 8px;
+              transition: background-color 0.2s ease;
+              position: relative;
+              
+              // Sehr leichter Hover-Effekt für die ganze Zeile
+              &:hover {
+                background-color: rgba(0, 0, 0, 0.02); // Minimal grauer Hintergrund
+                
+                .subtask-hover-actions {
+                  opacity: 1;
+                  visibility: visible;
+                }
+              }
+              
+              // Input nimmt verfügbaren Platz
+              .form-input {
+                flex: 1;
+                margin-right: auto;
+                padding: 0.75rem 1rem;
+                border: 1px solid #d1d7db;
+                border-radius: 10px;
+                font-size: 1rem;
+                color: #2a3647;
+                background-color: white;
+                transition: all 0.2s ease;
+
+                &::placeholder {
+                  color: #d1d7db;
+                }
+
+                &:focus {
+                  outline: none;
+                  border-color: #29abe2;
+                }
+
+                // Style for completed subtasks - strikethrough and muted colors
+                &.completed {
+                  text-decoration: line-through;
+                  color: #999;
+                  background-color: #f8f9fa;
+                  border-color: #e0e0e0;
+                }
+              }
+
+              .subtask-checkbox {
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+
+                &:hover {
+                  transform: scale(1.1);
+                }
+
+                img {
+                  width: 20px;
+                  height: 20px;
+                }
+              }
+
+              // Additional styling for completed subtask row
+              &.completed-subtask {
+                opacity: 0.7;
+                
+                .form-input {
+                  text-decoration: line-through;
+                  color: #999;
+                  background-color: #f8f9fa;
+                  border-color: #e0e0e0;
+                }
+              }
+            }
+            
+            // Hover Actions Container - versteckt bis hover
+            .subtask-hover-actions {
+              display: flex;
+              gap: 16px; // Fester Abstand zwischen den Buttons
+              align-items: center;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.2s ease;
+              position: relative; // Für den Divider
+              
+              .edit-subtask-btn,
+              .remove-subtask-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border: none;
+                background: transparent;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: transform 0.2s ease; // Nur Transform-Animation
+                
+                img {
+                  width: 18px;
+                  height: 18px;
+                  opacity: 0.6;
+                  transition: opacity 0.15s ease;
+                }
+                
+                // Hover-Effekt: Leichte Vergrößerung + Opacity
+                &:hover {
+                  transform: scale(1.1); // 10% Vergrößerung
+                  
+                  img {
+                    opacity: 1; // Vollständige Sichtbarkeit
+                  }
+                }
+                
+                // Active-State für besseres Feedback
+                &:active {
+                  transform: scale(1.05); // Leicht kleiner beim Klick
+                }
+              }
+              
+              // Divider genau mittig zwischen den Buttons - UNABHÄNGIG von Hover
+              &::after {
+                content: '';
+                position: absolute;
+                left: 50%; // Genau in der Mitte
+                top: 50%;
+                transform: translate(-50%, -50%); // Perfekte Zentrierung
+                width: 1px;
+                height: 20px;
+                background-color: rgba(0, 0, 0, 0.2);
+                z-index: 1;
+                pointer-events: none; // Kein Hover-Effekt auf den Divider
+              }
+            }
+          }
+
+          .add-subtask-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d7db;
+            border-radius: 10px;
+            background-color: white;
+            color: #2a3647;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+
+            &:hover {
+              background-color: #f8f9fa;
+              border-color: #29abe2;
+            }
+
+            img {
+              width: 16px;
+              height: 16px;
+              filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .buttonArea {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem;
+    background-color: white;
+    border-top: 1px solid #d1d7db;
+    margin-top: auto;
+    width: 100%; // Ensure full width
+    box-sizing: border-box; // Include padding in width calculation
+
+    span {
+      color: #000000;
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .cancelBtn {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid #2a3647;
+      border-radius: 10px;
+      background-color: white;
+      color: #2a3647;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #f8f9fa;
+        border-color: #1a2532;
+      }
+
+      &:active {
+        background-color: #e9ecef;
+      }
+    }
+
+    .createBtn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 10px;
+      background-color: #2a3647;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #1a2532;
+        box-shadow: 0 4px 12px rgba(42, 54, 71, 0.25);
+      }
+
+      &:active {
+        background-color: #0f1419;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+        filter: brightness(0) invert(1);
+      }
+    }
+  }
+
+  // Custom select component for contacts
+  .custom-select-wrapper {
+    position: relative;
+    width: 100%;
+
+    .custom-select {
+      width: 100%;
+      padding: 0.75rem 3rem 0.75rem 1rem;
+      border: 1px solid #d1d7db;
+      border-radius: 10px;
+      background-color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      position: relative;
+      box-sizing: border-box;
+
+      &:hover {
+        border-color: #29abe2;
+      }
+
+      .selected-option {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+
+        .contact-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          flex-shrink: 0;
+        }
+      }
+      
+      .selected-contacts {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        width: 100%;
+        
+        .selected-contact-avatars {
+          display: flex;
+          align-items: center;
+          gap: -0.25rem;
+          
+          .contact-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            
+            &:not(:first-child) {
+              margin-left: -8px;
+            }
+          }
+          
+          .more-contacts {
+            background-color: #e0e0e0;
+            color: #666;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+            border: 2px solid white;
+            margin-left: -8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          }
+        }
+        
+        .selected-text {
+          color: #2a3647;
+          font-size: 1rem;
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+
+      .placeholder {
+        color: #d1d7db;
+        font-size: 1rem;
+      }
+
+      .dropdown-arrow {
+        position: absolute;
+        right: 1rem;
+        color: #2a3647;
+        transition: transform 0.2s ease;
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .dropdown-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: white;
+      border: 1px solid #d1d7db;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-sizing: border-box;
+
+      .dropdown-option {
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #f8f9fa;
+        }
+
+        .contact-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          flex-shrink: 0;
+        }
+
+        .contact-name {
+          color: #2a3647;
+          font-size: 1rem;
+          flex: 1;
+        }
+
+        .checkbox-wrapper {
+          margin-left: auto;
+          position: relative;
+
+          input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            cursor: pointer;
+
+            &:checked + .checkbox-label {
+              background-color: #2a3647;
+              border-color: #2a3647;
+
+              &::after {
+                opacity: 1;
+                transform: rotate(45deg) scale(1);
+              }
+            }
+          }
+
+          .checkbox-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #d1d7db;
+            border-radius: 3px;
+            background-color: white;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+
+            &::after {
+              content: "";
+              width: 4px;
+              height: 8px;
+              border: solid white;
+              border-width: 0 2px 2px 0;
+              transform: rotate(45deg) scale(0);
+              opacity: 0;
+              transition: all 0.2s ease;
+              margin-top: -1px;
+            }
+
+            &:hover {
+              border-color: #29abe2;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Ensure all form groups have the same width
+  .form-group {
+    width: 100%;
+    margin-bottom: 1rem;
+
+    .form-select,
+    .form-input,
+    .custom-select-wrapper {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+
+  // Task form wrapper that spans both sides
+  .task-form-wrapper {
+    display: contents;
+    width: 100%;
+  }
+}
+
+// Priority icon overlays
+.priority-icon-overlay {
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+.low-icon {
+  filter: invert(89%) sepia(30%) saturate(1542%) hue-rotate(35deg)
+    brightness(99%) contrast(79%);
+}
+
+.urgent-icon {
+  filter: invert(28%) sepia(73%) saturate(3774%) hue-rotate(6deg)
+    brightness(104%) contrast(106%);
+}
+
+// Responsive Layout - Intermediate breakpoint for better UX
+@media (max-width: 1300px) {
+  .addTaskOverlay {
+    .taskProperties {
+      .rightSide {
+        flex: 0 0 450px; // Fixed width, no shrinking
+        min-width: 450px;
+        max-width: 450px;
+      }
+
+      .leftSide {
+        flex: 1; // Can shrink as needed
+        min-width: 300px; // Minimum width to keep usable
+        max-width: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 1130px) {
+  .addTaskOverlay {
+    .addTaskOverlay-content {
+      max-width: fit-content;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+  }
+}
+
+// Tablet breakpoint - ensure enough width for priority buttons
+@media (max-width: 1100px) {
+  .addTaskOverlay {
+    .taskProperties {
+      .rightSide {
+        flex: 0 0 460px; // Extra space for Low button at narrow widths
+        min-width: 460px;
+        max-width: 460px;
+      }
+    }
+  }
+}
+
+// Mobile Responsive
+@media (max-width: 1000px) {
+  .addTaskOverlay {
+    padding: 0.5rem;
+    
+    .addTaskOverlay-content {
+      max-height: calc(100vh - 1rem);
+      border-radius: 20px;
+    }
+
+    .taskProperties {
+      flex-direction: column;
+
+      .devider {
+        width: 100%;
+        height: 1px;
+        margin: 1rem 0;
+      }
+
+      .leftSide,
+      .rightSide {
+        padding: 1rem;
+        flex: none; // Reset flex properties for mobile
+        max-width: none;
+        min-width: auto;
+      }
+    }
+
+    // Constrain form field widths in column layout
+    .form-group {
+      max-width: 600px; // Reasonable max width for mobile forms
+      
+      input,
+      textarea,
+      select {
+        max-width: 100%;
+      }
+    }
+
+    .subtasks-container {
+      max-width: 600px;
+      
+      .form-input {
+        max-width: 100%;
+      }
+    }
+
+    .custom-select-wrapper {
+      max-width: 600px;
+    }
+
+    .priority-buttons {
+      max-width: 600px;
+      justify-content: flex-start; // Changed from space-between to flex-start
+      gap: 0.75rem; // Tighter gap for better mobile experience
+      flex-wrap: wrap; // Allow wrapping if needed
+      
+      .priority-btn {
+        flex: 0 0 auto; // Don't grow or shrink
+        min-width: auto; // Remove minimum width constraints
+      }
+    }
+
+    .buttonArea {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: stretch;
+
+      span {
+        text-align: center;
+      }
+
+      .button-group {
+        flex-direction: row;
+        gap: 0.75rem;
+        max-width: 600px;
+        margin: 0 auto;
+        justify-content: center;
+      }
+
+      .cancelBtn,
+      .createBtn {
+        justify-content: center;
+        flex: 0 0 auto; // Don't grow or shrink, maintain natural size
+      }
+    }
+  }
+}
+
+// Fix for medium screen sizes where button area gets cramped
+@media (max-width: 1130px) and (min-width: 1001px) {
+  .addTaskOverlay {
+    .buttonArea {
+      padding: 1.5rem 2rem;
+      gap: 1rem; // Add explicit gap between required text and buttons
+      width: 100%; // Ensure full width
+      box-sizing: border-box; // Include padding in width
+      
+      span {
+        margin-right: 1rem; // Extra margin to prevent smooshing
+        flex-shrink: 0; // Prevent text from shrinking
+        min-width: fit-content; // Ensure text has enough space
+      }
+      
+      .button-group {
+        flex-shrink: 0; // Prevent buttons from shrinking
+        gap: 0.75rem; // Slightly tighter gap between buttons if needed
+      }
+    }
+  }
+}
+
+// Tablet specific fixes for priority buttons (more specific to override mobile styles)
+@media (max-width: 768px) and (min-width: 552px) {
+  .addTaskOverlay .taskProperties .rightSide .form-group {
+    .priority-buttons {
+      display: flex;
+      flex-direction: column; // Stack vertically like below 550px
+      gap: 0.75rem; // Slightly larger gap for tablet
+      max-width: 100%;
+      
+      .priority-btn {
+        width: auto; // Keep natural button width
+        max-width: 200px; // Prevent them from getting too wide
+        align-self: flex-start; // Align to left instead of stretching
+        flex: 0 0 auto; // Don't grow or shrink
+        font-size: 1rem; // Keep original font size, don't shrink
+        padding: 0.75rem 1.5rem; // Keep original padding, don't shrink
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .addTaskOverlay {
+    padding: 0.25rem;
+    
+    .addTaskOverlay-content {
+      border-radius: 15px;
+    }
+    
+    h2 {
+      padding: 1rem 1rem 0;
+      font-size: 1.25rem;
+    }
+
+    .taskProperties {
+      .leftSide,
+      .rightSide {
+        padding: 0.5rem;
+      }
+    }
+
+    // Tighter constraints for small mobile screens
+    .form-group {
+      max-width: 100%;
+    }
+
+    .subtasks-container {
+      max-width: 100%;
+    }
+
+    .custom-select-wrapper {
+      max-width: 100%;
+    }
+
+    .priority-buttons {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      gap: 0.5rem;
+      
+      .priority-btn {
+        width: auto; // Keep natural button width
+        max-width: 200px; // Prevent them from getting too wide
+        align-self: flex-start; // Align to left instead of stretching
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+      }
+    }
+
+    .buttonArea {
+      padding: 0.5rem;
+      
+      .button-group {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .addTaskOverlay {
+    padding: 0.125rem; // Even tighter padding for very small screens
+    
+    .addTaskOverlay-content {
+      border-radius: 10px;
+      width: calc(100vw - 0.25rem); // Ensure it never exceeds viewport
+      max-width: calc(100vw - 0.25rem);
+      box-sizing: border-box;
+    }
+    
+    h2 {
+      padding: 0.75rem 0.75rem 0;
+      font-size: 1.125rem;
+    }
+
+    .taskProperties {
+      .leftSide,
+      .rightSide {
+        padding: 0.25rem;
+      }
+    }
+    
+    .buttonArea {
+      padding: 0.25rem;
+      
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        max-width: 100%;
+      }
+      
+      .cancelBtn,
+      .createBtn {
+        width: auto; // Keep natural button width instead of stretching
+        min-width: fit-content; // Ensure text fits properly
+        max-width: 200px; // Prevent buttons from getting too wide
+        align-self: center; // Center the buttons in the column layout
+        box-sizing: border-box;
+      }
+    }
+
+    // Extra tight constraints for very small screens
+    .form-group {
+      margin-bottom: 0.75rem;
+      
+      .form-input,
+      .form-textarea,
+      .form-select {
+        font-size: 0.875rem; // Slightly smaller font
+        padding: 0.5rem 0.75rem; // Tighter padding
+      }
+    }
+
+    .priority-buttons {
+      gap: 0.375rem; // Even tighter gap
+      
+      .priority-btn {
+        font-size: 0.75rem; // Smaller font for very small screens
+        padding: 0.375rem 0.5rem; // Tighter padding
+        max-width: 160px; // Smaller max width
+      }
+    }
+
+    .custom-select-wrapper .custom-select {
+      padding: 0.5rem 2rem 0.5rem 0.75rem; // Tighter padding
+      font-size: 0.875rem;
+    }
+
+    .dropdown-options .dropdown-option {
+      padding: 0.5rem 0.75rem; // Tighter padding
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Extra small screens (320px and below)
+@media (max-width: 330px) {
+  .addTaskOverlay {
+    padding: 0.0625rem; // Minimal padding
+    
+    .addTaskOverlay-content {
+      width: calc(100vw - 0.125rem);
+      max-width: calc(100vw - 0.125rem);
+      min-width: 0;
+    }
+
+    h2 {
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .taskProperties {
+      .leftSide,
+      .rightSide {
+        padding: 0.125rem;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 0.5rem;
+      
+      label {
+        font-size: 0.875rem;
+      }
+      
+      .form-input,
+      .form-textarea,
+      .form-select {
+        font-size: 0.8125rem;
+        padding: 0.4375rem 0.625rem;
+      }
+    }
+
+    .priority-buttons {
+      .priority-btn {
+        font-size: 0.6875rem;
+        padding: 0.3125rem 0.4375rem;
+        max-width: 140px;
+      }
+    }
+
+    .buttonArea {
+      padding: 0.125rem;
+      
+      span {
+        font-size: 0.75rem;
+      }
+    }
+  }
+}
