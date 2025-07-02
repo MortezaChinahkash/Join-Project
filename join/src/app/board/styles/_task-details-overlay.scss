@@ -479,6 +479,9 @@
   /* Custom scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: #d1d1d1 transparent;
+  .task-priority{
+    margin-bottom: 24px;
+  }
   
   &::-webkit-scrollbar {
     width: 6px;
@@ -506,5 +509,12 @@
 @media (max-height: 900px){
   .task-details-header-fixed {
     padding: 0;
+  }
+  .task-details-scrollable-content{
+    padding: 10px 0px 16px 0px;
+    margin-top: 20px;
+  }
+  .task-details-actions-fixed {
+    padding: 16px 0px 0px 0px;
   }
 }
