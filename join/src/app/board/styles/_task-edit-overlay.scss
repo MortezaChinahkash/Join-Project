@@ -15,14 +15,13 @@
 .taskEditOverlay-content {
   background: white;
   border-radius: 30px;
-  width: 50vh;
+  width: 600px;
   height: 70vh;
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 32px;
   
   /* Custom scrollbar styling - inset */
   scrollbar-width: thin;
@@ -54,6 +53,7 @@
   align-items: center;
   margin-bottom: 8px;
   flex-shrink: 0;
+    padding: 32px 32px 0 32px;
   
   h2 {
     font-size: 20px;
@@ -86,6 +86,8 @@
   gap: 8px;
   flex: 1;
   overflow-y: auto;
+    padding: 32px;
+
   
   /* Custom scrollbar styling */
   scrollbar-width: thin;
@@ -316,9 +318,10 @@
   justify-content: flex-end;
   gap: 12px;
   border-top: 1px solid #d1d1d1;
-  padding-top: 12px;
   margin-top: 8px;
   flex-shrink: 0;
+    padding: 32px;
+
   
   button {
     padding: 8px 16px;
