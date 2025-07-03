@@ -17,7 +17,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
  * Main board component for task management with kanban-style columns.
- * Handles task creation, editing, deletion, and drag & drop functionality.
+ * Handles task creation, editing, deletion, card animation, and drag & drop functionality.
  *
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
