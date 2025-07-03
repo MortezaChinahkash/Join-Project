@@ -212,7 +212,7 @@
 
       <!-- Task Details Overlay -->
       <div class="taskDetailsOverlay" *ngIf="formService.showTaskDetailsOverlay">
-        <div class="taskDetailsOverlay-content" *ngIf="formService.selectedTask">
+        <div class="taskDetailsOverlay-content" *ngIf="formService.selectedTask" @slideInRight>
           <!-- Fixed Header Container (1st & 2nd Container) -->
           <div class="task-details-header-fixed">
             <div class="task-details-header">
