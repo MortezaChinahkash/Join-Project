@@ -559,9 +559,7 @@
 
 // Additional responsive fixes for very small screens
 @media (max-width: 450px) {
-  .taskEditOverlay {
-    padding: 0.5rem; // Add padding to prevent edge touching
-  }
+  
   
   .taskEditOverlay-content {
     width: calc(100vw - 1rem); // Full width minus padding

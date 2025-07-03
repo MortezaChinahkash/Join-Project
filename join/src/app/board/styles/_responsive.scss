@@ -128,18 +128,26 @@
   .addTaskOverlay-content {
     min-width: auto;
     width: 95vw;
-    padding: 24px;
+    height: 70vh;
+    margin: 10px;
+    
     border-radius: 20px;
   }
-  
+  .task-details-scrollable-content{
+    padding: 0 0px 16px 0px;
+  }
   .task-details-title {
     font-size: 20px;
   }
-  
+  .task-details-header-fixed{
+    padding: 16px 16px 16px 16px;
+  }
   .task-edit-header h2 {
     font-size: 24px;
   }
-  
+  .task-details-actions-fixed{
+    padding: 16px 0 0 0;
+  }
   .task-details-content h3 {
     font-size: 18px;
   }
