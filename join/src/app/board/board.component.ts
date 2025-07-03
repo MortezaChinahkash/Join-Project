@@ -322,6 +322,7 @@ export class BoardComponent implements OnInit {
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
+    this.editingSubtaskIndex = null; // Reset subtask editing state
     this.formService.closeTaskDetailsOverlay();
   }
 
@@ -329,6 +330,7 @@ export class BoardComponent implements OnInit {
    * Enters edit mode for the selected task.
    */
   editTask(): void {
+    this.editingSubtaskIndex = null; // Reset subtask editing state when entering edit mode
     this.formService.editTask(this.contacts);
   }
 
@@ -336,6 +338,7 @@ export class BoardComponent implements OnInit {
    * Cancels task editing and reverts changes.
    */
   cancelEditTask(): void {
+    this.editingSubtaskIndex = null; // Reset subtask editing state
     this.formService.cancelEditTask();
   }
 
@@ -343,6 +346,7 @@ export class BoardComponent implements OnInit {
    * Saves task changes and updates arrays.
    */
   async saveTaskChanges(): Promise<void> {
+    this.editingSubtaskIndex = null; // Reset subtask editing state
     await this.formService.saveTaskChanges(() => this.updateTaskArrays());
   }
 
@@ -800,4 +804,8 @@ export class BoardComponent implements OnInit {
         break;
     }
   }
+
+  stopEditingSubtask() {
+  this.editingSubtaskIndex = null;
+}
 }
