@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, inject, HostListener } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormGroup, FormArray } from '@angular/forms';
 import { ContactsComponent } from '../contacts/contacts.component';
@@ -35,6 +35,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   isDropdownOpen = false;
   isSubmitting = false;
   maxTitleLength: number = 40;
+
+  // SHOW TASK ADDED NOTIFICATION
+  taskAddedNotif: boolean = false;
+  taskNotifDelay: number = 1000;
   
   private firestore = inject(Firestore);
 
@@ -45,7 +49,8 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     public boardFormService: BoardFormService,
     private formService: AddTaskFormService,
-    private contactService: AddTaskContactService
+    private contactService: AddTaskContactService,
+    private router: Router
   ) {
     this.taskForm = this.formService.createTaskForm();
   }
@@ -188,10 +193,18 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       const taskData = this.prepareTaskData();
       await this.taskService.addTaskToFirebase(taskData, 'todo');
       this.resetForm();
+
+      this.taskAddedNotif = true;
+
     } catch (error) {
       console.error('Error creating task:', error);
     } finally {
       this.isSubmitting = false;
+
+      setTimeout(() => {
+        this.taskAddedNotif = false;
+        this.router.navigate(['/board']); 
+      }, this.taskNotifDelay); 
     }
   }
 

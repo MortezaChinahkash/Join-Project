@@ -224,3 +224,10 @@
     </form>
   </div>
 </div>
+
+<div class="task-overlay">
+  <div class="task-added" [class.show]="taskAddedNotif">
+    Task added to board
+    <div [inlineSvg]="'assets/icons/board.svg'" class="btn-icon"></div>
+  </div>
+</div>
