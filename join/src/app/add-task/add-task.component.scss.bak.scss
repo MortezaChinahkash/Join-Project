@@ -1,0 +1,814 @@
+.add-task-content {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.task-form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.taskProperties {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  overflow: hidden;
+
+  .leftSide {
+    padding: 2rem;
+    flex: 1;
+    max-width: 50%;
+    box-sizing: border-box;
+
+    .task-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        label {
+          font-size: 1rem;
+          font-weight: 400;
+          color: var(--bg-dark-grey);
+
+          .required {
+            color: #ff8190;
+            margin-left: 2px;
+          }
+        }
+
+        .form-input,
+        .form-textarea {
+          padding: 0.75rem 1rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          font-size: 1rem;
+          color: var(--bg-dark-grey);
+          background-color: var(--bg-white);
+          box-sizing: border-box;
+
+          &::placeholder {
+            color: #d1d7db;
+          }
+
+          &:focus {
+            outline: none;
+            border-color: var(--color-accent);
+          }
+
+          &.error {
+            border-color: #ff8190;
+
+            &::placeholder {
+              color: #ff8190;
+            }
+          }
+        }
+
+        .form-textarea {
+          resize: vertical;
+          min-height: 100px;
+        }
+
+        &.date-group {
+          .date-input-wrapper {
+            position: relative;
+
+            .date-input {
+              width: 100%;
+              padding-right: 3rem;
+              box-sizing: border-box;
+
+              // Hide default calendar icon
+              &::-webkit-calendar-picker-indicator {
+                opacity: 0;
+                position: absolute;
+                right: 0.75rem;
+                width: 20px;
+                height: 20px;
+                cursor: pointer;
+              }
+
+              &::-webkit-inner-spin-button,
+              &::-webkit-clear-button {
+                display: none;
+              }
+            }
+
+            .date-icon {
+              position: absolute;
+              right: 0.75rem;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 20px;
+              height: 20px;
+              pointer-events: none;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .divider {
+    width: 1px;
+    background-color: #d1d7db;
+    margin: 2rem 0;
+    flex-shrink: 0;
+  }
+
+  .rightSide {
+    padding: 2rem;
+    flex: 1;
+    max-width: 50%;
+    box-sizing: border-box;
+
+    .form-group {
+      margin-bottom: 1.5rem;
+
+      label {
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--bg-dark-grey);
+        margin-bottom: 0.5rem;
+        display: block;
+
+        .required {
+          color: #ff8190;
+          margin-left: 2px;
+        }
+      }
+
+      .priority-buttons {
+        display: flex;
+        gap: 1rem;
+
+        .priority-btn {
+          padding: 0.75rem 1.5rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          background-color: var(--bg-white);
+          color: var(--bg-dark-grey);
+          cursor: pointer;
+          font-size: 1rem;
+          font-family: var(--font-main);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background-color: #f8f9fa;
+            border-color: #c1c7cb;
+          }
+
+          // Non-selected state - icons in priority colors
+          &:nth-child(1) .priority-icon-overlay {
+            filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
+          }
+
+          &:nth-child(2) .priority-icon-overlay {
+            filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
+          }
+
+          &:nth-child(3) .priority-icon-overlay {
+            filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
+          }
+
+          &.active {
+            color: var(--bg-white);
+            border-color: transparent;
+
+            // Active state - white icons
+            .priority-icon-overlay {
+              filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+            }
+
+            // Specific background colors for each priority level
+            &:nth-child(1) {
+              background-color: var(--color-prio-urgent);
+            }
+
+            &:nth-child(2) {
+              background-color: var(--color-prio-medium);
+            }
+
+            &:nth-child(3) {
+              background-color: var(--color-prio-low);
+            }
+          }
+
+          .priority-icon-overlay {
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: filter 0.2s ease;
+          }
+        }
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #d1d7db;
+        border-radius: 10px;
+        font-size: 1rem;
+        color: var(--bg-dark-grey);
+        background-color: var(--bg-white);
+        cursor: pointer;
+        appearance: none;
+        box-sizing: border-box;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.5rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+
+        &:focus {
+          outline: none;
+          border-color: var(--color-accent);
+        }
+
+        &.error {
+          border-color: #ff8190;
+        }
+      }
+
+      .subtasks-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        .subtask-item {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+
+          .subtask-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            width: 100%;
+
+            .form-input {
+              flex: 1;
+              padding: 0.75rem 1rem;
+              border: 1px solid #d1d7db;
+              border-radius: 10px;
+              font-size: 1rem;
+              color: #2a3647;
+              background-color: white;
+              transition: all 0.2s ease;
+
+              &::placeholder {
+                color: #d1d7db;
+              }
+
+              &:focus {
+                outline: none;
+                border-color: #29abe2;
+              }
+
+              // Style for completed subtasks - strikethrough and muted colors
+              &.completed {
+                text-decoration: line-through;
+                color: #999;
+                background-color: #f8f9fa;
+                border-color: #e0e0e0;
+              }
+            }
+
+            .subtask-checkbox {
+              width: 24px;
+              height: 24px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              transition: transform 0.2s ease;
+
+              &:hover {
+                transform: scale(1.1);
+              }
+
+              img {
+                width: 20px;
+                height: 20px;
+              }
+            }
+
+            .remove-subtask-btn {
+              background: none;
+              border: none;
+              cursor: pointer;
+              padding: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              transition: background-color 0.2s ease;
+
+              &:hover {
+                background-color: #f8f9fa;
+              }
+
+              img {
+                width: 16px;
+                height: 16px;
+                filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+              }
+            }
+
+            // Additional styling for completed subtask row
+            &.completed-subtask {
+              opacity: 0.7;
+              
+              .form-input {
+                text-decoration: line-through;
+                color: #999;
+                background-color: #f8f9fa;
+                border-color: #e0e0e0;
+              }
+            }
+          }
+        }
+
+        .add-subtask-btn {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1rem;
+          border: 1px solid #d1d7db;
+          border-radius: 10px;
+          background-color: white;
+          color: #2a3647;
+          cursor: pointer;
+          font-size: 1rem;
+          transition: all 0.2s ease;
+          margin-top: 0.5rem;
+
+          &:hover {
+            background-color: #f8f9fa;
+            border-color: #29abe2;
+          }
+
+          img {
+            width: 16px;
+            height: 16px;
+            filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Custom Select Styling
+.custom-select-wrapper {
+  position: relative;
+  width: 100%;
+
+  .custom-select {
+    width: 100%;
+    padding: 0.75rem 3rem 0.75rem 1rem;
+    border: 1px solid #d1d7db;
+    border-radius: 10px;
+    background-color: var(--bg-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    position: relative;
+    box-sizing: border-box;
+
+    &:hover {
+      border-color: var(--color-accent);
+    }
+
+    .selected-contacts {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      width: 100%;
+      
+      .selected-contact-avatars {
+        display: flex;
+        align-items: center;
+        gap: -0.25rem;
+        
+        .contact-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 0.7rem;
+          font-weight: 600;
+          flex-shrink: 0;
+          border: 2px solid white;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          position: relative;
+          
+          &:not(:first-child) {
+            margin-left: -8px;
+          }
+        }
+        
+        .more-contacts {
+          background-color: #e0e0e0;
+          color: #666;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.6rem;
+          font-weight: 600;
+          border: 2px solid white;
+          margin-left: -8px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+      }
+      
+      .selected-text {
+        color: var(--bg-dark-grey);
+        font-size: 1rem;
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+
+    .placeholder {
+      color: #d1d7db;
+      font-size: 1rem;
+    }
+
+    .dropdown-arrow {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: #666;
+      transition: transform 0.2s ease;
+
+      &.open {
+        transform: translateY(-50%) rotate(180deg);
+      }
+    }
+  }
+
+  .dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--bg-white);
+    border: 1px solid #d1d7db;
+    border-radius: 10px;
+    margin-top: 0.25rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+
+    .dropdown-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #f8f9fa;
+      }
+
+      .contact-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 0.75rem;
+      }
+
+      .contact-name {
+        flex: 1;
+        font-size: 1rem;
+        color: var(--bg-dark-grey);
+      }
+
+      .checkbox-wrapper {
+        position: relative;
+
+        input[type="checkbox"] {
+          opacity: 0;
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          margin-left: 2px;
+        }
+
+        .checkbox-label {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 2px solid #d1d7db;
+          border-radius: 3px;
+          background-color: var(--bg-white);
+          cursor: pointer;
+          position: relative;
+
+          &::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+          }
+        }
+
+        input[type="checkbox"]:checked + .checkbox-label {
+          background-color: var(--color-accent);
+          border-color: var(--color-accent);
+
+          &::after {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+.error-message {
+  color: #ff8190;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+// Form Actions
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding: 2rem;
+  border-top: 1px solid #d1d7db;
+
+  .required-text {
+    color: #666;
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: var(--font-main);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: none;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.btn-primary {
+      background-color: var(--bg-dark-grey);
+      color: var(--bg-white);
+
+      &:hover:not(:disabled) {
+        background-color: var(--color-accent);
+      }
+    }
+
+    &.btn-secondary {
+      background-color: transparent;
+      color: var(--bg-dark-grey);
+      border: 1px solid var(--bg-dark-grey);
+
+      &:hover:not(:disabled) {
+        background-color: var(--bg-dark-grey);
+        color: var(--bg-white);
+      }
+    }
+  }
+
+  .btn-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
+
+// Responsive Layout - Intermediate breakpoint for better UX
+@media (max-width: 1300px) {
+  .taskProperties {
+    .rightSide {
+      flex: 0 0 450px; // Fixed width, no shrinking
+      min-width: 450px;
+      max-width: 450px;
+    }
+
+    .leftSide {
+      flex: 1; // Can shrink as needed
+      min-width: 300px; // Minimum width to keep usable
+      max-width: none;
+    }
+  }
+}
+
+@media (max-width: 1130px) {
+  .default-content-container {
+  max-width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 3rem;
+  padding-top: 5rem;
+  padding-left: 3rem;
+  padding-right: 2rem;
+  padding-bottom: 2rem;
+}
+}
+
+// Tablet breakpoint - ensure enough width for priority buttons
+@media (max-width: 1100px) {
+  .taskProperties {
+    .rightSide {
+      flex: 0 0 460px; // Extra space for Low button at narrow widths
+      min-width: 460px;
+      max-width: 460px;
+    }
+  }
+}
+
+// Mobile Responsive
+@media (max-width: 1000px) {
+  .taskProperties {
+    flex-direction: column;
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      margin: 1rem 0;
+    }
+
+    .leftSide,
+    .rightSide {
+      padding: 1rem;
+      flex: none; // Reset flex properties for mobile
+      max-width: none;
+      min-width: auto;
+    }
+  }
+
+  // Constrain form field widths in column layout
+  .form-group {
+    max-width: 600px; // Reasonable max width for mobile forms
+    
+    input,
+    textarea,
+    select {
+      max-width: 100%;
+    }
+  }
+
+  .subtask-input-wrapper {
+    max-width: 600px;
+    
+    input {
+      max-width: 100%;
+    }
+  }
+
+  .assignedTo .dropdown-wrapper {
+    max-width: 600px;
+  }
+
+  .priority-section .priority-buttons {
+    max-width: 600px;
+    justify-content: space-between;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+
+    .required-text {
+      text-align: center;
+    }
+
+    .button-group {
+      flex-direction: row;
+      gap: 0.75rem;
+      max-width: 600px;
+      margin: 0 auto;
+      justify-content: center;
+    }
+
+    .btn {
+      justify-content: center;
+      flex: 0 0 auto; // Don't grow or shrink, maintain natural size
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .taskProperties {
+    .leftSide,
+    .rightSide {
+      padding: 0.5rem;
+    }
+  }
+
+  // Tighter constraints for small mobile screens
+  .form-group {
+    max-width: 100%;
+  }
+
+  .subtask-input-wrapper {
+    max-width: 100%;
+  }
+
+  .assignedTo .dropdown-wrapper {
+    max-width: 100%;
+  }
+
+.priority-buttons {
+  display: flex;
+  flex-direction: column;
+  
+  .priority-btn {
+    width: auto; // Keep natural button width
+    max-width: 200px; // Prevent them from getting too wide
+    align-self: flex-start; // Align to left instead of stretching
+  }
+}
+
+  .priority-section .priority-buttons {
+    max-width: 100%;
+    gap: 0.5rem;
+    
+    .btn {
+      font-size: 0.875rem;
+      padding: 0.5rem 0.75rem;
+    }
+  }
+
+  .form-actions {
+    padding: 0.5rem;
+    
+    .button-group {
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 380px) {
+  .form-actions {
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .btn {
+      width: 100%; // Make buttons full width when stacked
+    }
+  }
+}
