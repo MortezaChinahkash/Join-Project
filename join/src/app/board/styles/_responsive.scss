@@ -351,6 +351,12 @@
   .mobile-move-btn {
     display: flex;
   }
+
+  .taskEditOverlay .subtask-item .subtask-hover-actions {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static;
+  }
 }
 
 @media (min-width: 1001px) {
