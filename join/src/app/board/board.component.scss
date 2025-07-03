@@ -346,3 +346,26 @@
 .add-subtask-input-wrapper .form-input:focus {
   border-color: #5ba4cf;
 }
+
+// Spezifisches Styling für ausgegraute Subtasks im Edit-Overlay
+.taskEditOverlay .subtask-item .form-input.grayed {
+  background: #f4f4f4 !important;
+  color: #b0b0b0 !important;
+  border: 1px solid #e0e0e0 !important;
+  cursor: not-allowed !important;
+}
+
+// Noch spezifischer für readonly Felder
+.taskEditOverlay input[readonly].form-input.grayed {
+  background: #f4f4f4 !important;
+  color: #b0b0b0 !important;
+  border: 1px solid #e0e0e0 !important;
+  cursor: not-allowed !important;
+}
+
+.form-input.grayed {
+  background: #f4f4f4;
+  color: #b0b0b0;
+  border: 1px solid #e0e0e0;
+  cursor: not-allowed;
+}
