@@ -13,10 +13,11 @@ import { BoardUtilsService } from '../services/board-utils.service';
 import { BoardDataService } from '../services/board-data.service';
 import { BoardMobileService } from '../services/board-mobile.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
  * Main board component for task management with kanban-style columns.
- * Handles task creation, editing, deletion, and drag & drop functionality.
+ * Handles task creation, editing, deletion, card animation, and drag & drop functionality.
  *
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
@@ -26,6 +27,17 @@ import { BoardSubtaskService } from '../services/board-subtask.service';
   imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
+  animations: [
+    trigger('slideInRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+      ])
+    ])
+  ]
 })
 export class BoardComponent implements OnInit {
   contacts: Contact[] = [];
