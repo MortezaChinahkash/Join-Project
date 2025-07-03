@@ -808,4 +808,16 @@ export class BoardComponent implements OnInit {
   stopEditingSubtask() {
   this.editingSubtaskIndex = null;
 }
+
+/**
+   * Handles subtask input focus - only allows editing if not readonly.
+   * @param index - Index of the subtask
+   */
+  onSubtaskInputFocus(index: number): void {
+    // Nur bearbeiten wenn das Feld nicht readonly ist (also bereits bearbeitet wird)
+    if (this.editingSubtaskIndex === index) {
+      this.editSubtask(index);
+    }
+    // Bei readonly Feldern passiert nichts
+  }
 }
