@@ -180,14 +180,9 @@
   .task-due-date, .task-priority, .task-assigned-to, .task-subtasks{
     padding: 0px 16px 0px 16px;
   }
-
-  .priority-buttons {
-    flex-direction: column;
-    
-    .priority-btn {
-      justify-content: center;
-      padding: 12px 16px;
-    }
+  .priority-btn {
+    justify-content: center;
+    padding: 12px 16px;
   }
 
   // Add Task Overlay mobile adjustments  

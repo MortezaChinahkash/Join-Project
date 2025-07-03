@@ -520,7 +520,6 @@
   
   .priority-buttons {
     display: flex !important; // Force override
-    flex-direction: row !important; // Force row layout
     gap: 6px; // Keep buttons in a row at this breakpoint
     
     .priority-btn {
@@ -539,22 +538,7 @@
 }
 
 // Priority buttons stack at smaller screens
-@media (max-width: 550px) {
-  .priority-buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 0.5rem;
-    
-    .priority-btn {
-      width: auto !important; // Keep natural button width
-      max-width: 200px; // Prevent them from getting too wide
-      align-self: flex-start; // Align to left instead of stretching
-      font-size: 13px;
-      padding: 8px 12px;
-      flex: 0 0 auto !important; // Force override the base flex: 1
-    }
-  }
-}
+
 
 // Additional responsive fixes for very small screens
 
