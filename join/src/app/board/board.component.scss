@@ -62,6 +62,7 @@
 .taskEditOverlay {
   .subtask-item {
     .subtask-input-group {
+      position: relative;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -84,6 +85,9 @@
       .form-input {
         flex: 1;
         margin-right: auto;
+        width: 100%;
+        padding-right: 60px; // Weniger Padding - Icons sind jetzt kleiner
+        box-sizing: border-box;
       }
     }
     
@@ -368,4 +372,46 @@
   color: #b0b0b0;
   border: 1px solid #e0e0e0;
   cursor: not-allowed;
+}
+
+/* Neue Styles für die Subtask-Icons im Edit-Overlay */
+.subtask-input-actions {
+  position: absolute;
+  right: 60px; // Mehr Abstand vom rechten Rand
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px; // Weniger Abstand zwischen Icons
+  z-index: 2;
+  background: transparent;
+  height: 24px; // Begrenzte Höhe
+}
+
+.subtask-input-actions .remove-subtask-btn,
+.subtask-input-actions .save-subtask-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.subtask-input-actions img {
+  width: 16px !important;
+  height: 16px !important;
+  filter: brightness(0) saturate(100%) invert(35%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(100%);
+  opacity: 0.7;
+}
+
+.subtask-divider {
+  width: 1px;
+  height: 16px; // Kleinere Höhe
+  background: #999;
+  margin: 0 2px; // Weniger Margin
+  display: inline-block;
 }

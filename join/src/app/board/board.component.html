@@ -404,14 +404,31 @@
               <div class="subtasks-container" formArrayName="subtasks">
                 <div class="subtask-item" *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" [formGroupName]="i">
                   <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
-                    <input type="text" [readonly]="editingSubtaskIndex !== i" formControlName="title" class="form-input" [class.completed]="subtask.get('completed')?.value" [class.grayed]="editingSubtaskIndex !== i" placeholder="Enter subtask title" />
+                    <input
+                      type="text"
+                      [readonly]="editingSubtaskIndex !== i"
+                      formControlName="title"
+                      class="form-input"
+                      [class.completed]="subtask.get('completed')?.value"
+                      [class.grayed]="editingSubtaskIndex !== i"
+                      placeholder="Enter subtask title"
+                      (focus)="onSubtaskInputFocus(i)"
+                    />
+                    <div class="subtask-input-actions" *ngIf="editingSubtaskIndex === i">
+                      <button type="button" class="remove-subtask-btn" (click)="formService.removeSubtask(i)" title="Delete subtask">
+                        <img src="./assets/img/icon_delete.svg" alt="Delete" />
+                      </button>
+                      <span class="subtask-divider"></span>
+                      <button type="button" class="save-subtask-btn" (click)="stopEditingSubtask()" title="Save subtask">
+                        <img src="./assets/img/icon_check.svg" alt="Save" />
+                      </button>
+                    </div>
                     <div class="subtask-checkbox" (click)="subtask.get('completed')?.setValue(!subtask.get('completed')?.value)">
                       <img *ngIf="subtask.get('completed')?.value" src="./assets/img/icon_checkbox_checked.svg" alt="Checked" />
                       <img *ngIf="!subtask.get('completed')?.value" src="./assets/img/icon_checkbox_unchecked.svg" alt="Unchecked" />
                     </div>
-                    
-                    <!-- Hover Actions Container - NEU -->
-                    <div class="subtask-hover-actions">
+                    <!-- Hover Actions bleiben außerhalb -->
+                    <div class="subtask-hover-actions" *ngIf="editingSubtaskIndex !== i">
                       <button type="button" class="edit-subtask-btn" (click)="editSubtask(i)" title="Edit subtask">
                         <img src="./assets/img/icon_todo.svg" alt="Edit" />
                       </button>
