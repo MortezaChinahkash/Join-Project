@@ -97,7 +97,7 @@
       </div>
 
       <div class="addTaskOverlay" *ngIf="formService.showAddTaskOverlay">
-        <div class="addTaskOverlay-content">
+        <div class="addTaskOverlay-content" @slideInRight>
           <h2>Add Task</h2>
           <form [formGroup]="formService.taskForm" (ngSubmit)="onSubmit()" class="task-form-wrapper">
             <div class="taskProperties">
