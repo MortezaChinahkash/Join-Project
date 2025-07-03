@@ -168,6 +168,9 @@
   .task-description{
     padding: 0px 16px 16px 16px;
   }
+  .task-edit-form, .task-edit-header, .task-edit-actions{
+    padding: 16px;
+  }
   .task-edit-form .form-input,
   .task-edit-form .form-textarea,
   .task-edit-form .form-select {
