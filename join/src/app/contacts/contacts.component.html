@@ -1,9 +1,6 @@
 <div class="content-wrapper">
   <div class="contacts-contents">
-    <div
-      class="contacts-list"
-      *ngIf="!isMobileView || !showMobileSingleContact"
-    >
+    <div class="contacts-list" *ngIf="!isMobileView || !showMobileSingleContact">
       <div class="addNewContactBtn desktop-only">
         <button (click)="openAddContactOverlay()">
           Add new contact
@@ -11,627 +8,53 @@
         </button>
       </div>
       <div class="listContent">
-        <div class="letterWrapperA" *ngIf="groupedContacts['A']?.length">
-          <div class="firstLetter">A</div>
-          <div class="contactsA">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['A']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
+        <ng-container *ngFor="let letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')">
+          <div class="letterWrapper{{letter}}" *ngIf="groupedContacts[letter]?.length">
+            <div class="firstLetter">{{letter}}</div>
+            <div class="contacts{{letter}}">
               <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
+                class="contactContainer" *ngFor="let contact of groupedContacts[letter]"
+                (click)="selectContact(contact)" [ngClass]="{ active: selectedContact === contact }"
               >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
+                <div  class="initials" [style.background]="getInitialsColor(contact.name)" >
+                  {{ getInitials(contact.name) }}
+                </div>
+                <div class="contactNameAndMail">
+                  <div class="contactName">{{ contact.name }}</div>
+                  <div class="contactMail">{{ contact.email }}</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="letterWrapperB" *ngIf="groupedContacts['B']?.length">
-          <div class="firstLetter">B</div>
-          <div class="contactsB">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['B']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperC" *ngIf="groupedContacts['C']?.length">
-          <div class="firstLetter">C</div>
-          <div class="contactsC">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['C']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperD" *ngIf="groupedContacts['D']?.length">
-          <div class="firstLetter">D</div>
-          <div class="contactsD">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['D']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperE" *ngIf="groupedContacts['E']?.length">
-          <div class="firstLetter">E</div>
-          <div class="contactsE">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['E']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperF" *ngIf="groupedContacts['F']?.length">
-          <div class="firstLetter">F</div>
-          <div class="contactsF">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['F']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperG" *ngIf="groupedContacts['G']?.length">
-          <div class="firstLetter">G</div>
-          <div class="contactsG">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['G']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperH" *ngIf="groupedContacts['H']?.length">
-          <div class="firstLetter">H</div>
-          <div class="contactsH">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['H']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperI" *ngIf="groupedContacts['I']?.length">
-          <div class="firstLetter">I</div>
-          <div class="contactsI">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['I']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperJ" *ngIf="groupedContacts['J']?.length">
-          <div class="firstLetter">J</div>
-          <div class="contactsJ">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['J']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperK" *ngIf="groupedContacts['K']?.length">
-          <div class="firstLetter">K</div>
-          <div class="contactsK">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['K']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperL" *ngIf="groupedContacts['L']?.length">
-          <div class="firstLetter">L</div>
-          <div class="contactsL">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['L']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperM" *ngIf="groupedContacts['M']?.length">
-          <div class="firstLetter">M</div>
-          <div class="contactsM">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['M']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperN" *ngIf="groupedContacts['N']?.length">
-          <div class="firstLetter">N</div>
-          <div class="contactsN">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['N']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperO" *ngIf="groupedContacts['O']?.length">
-          <div class="firstLetter">O</div>
-          <div class="contactsO">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['O']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperP" *ngIf="groupedContacts['P']?.length">
-          <div class="firstLetter">P</div>
-          <div class="contactsP">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['P']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperQ" *ngIf="groupedContacts['Q']?.length">
-          <div class="firstLetter">Q</div>
-          <div class="contactsQ">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['Q']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperR" *ngIf="groupedContacts['R']?.length">
-          <div class="firstLetter">R</div>
-          <div class="contactsR">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['R']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperS" *ngIf="groupedContacts['S']?.length">
-          <div class="firstLetter">S</div>
-          <div class="contactsS">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['S']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperT" *ngIf="groupedContacts['T']?.length">
-          <div class="firstLetter">T</div>
-          <div class="contactsT">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['T']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperU" *ngIf="groupedContacts['U']?.length">
-          <div class="firstLetter">U</div>
-          <div class="contactsU">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['U']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperV" *ngIf="groupedContacts['V']?.length">
-          <div class="firstLetter">V</div>
-          <div class="contactsV">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['V']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperW" *ngIf="groupedContacts['W']?.length">
-          <div class="firstLetter">W</div>
-          <div class="contactsW">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['W']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperX" *ngIf="groupedContacts['X']?.length">
-          <div class="firstLetter">X</div>
-          <div class="contactsX">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['X']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperY" *ngIf="groupedContacts['Y']?.length">
-          <div class="firstLetter">Y</div>
-          <div class="contactsY">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['Y']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="letterWrapperZ" *ngIf="groupedContacts['Z']?.length">
-          <div class="firstLetter">Z</div>
-          <div class="contactsZ">
-            <div
-              class="contactContainer"
-              *ngFor="let contact of groupedContacts['Z']"
-              (click)="selectContact(contact)"
-              [ngClass]="{ active: selectedContact === contact }"
-            >
-              <div
-                class="initials"
-                [style.background]="getInitialsColor(contact.name)"
-              >
-                {{ getInitials(contact.name) }}
-              </div>
-              <div class="contactNameAndMail">
-                <div class="contactName">{{ contact.name }}</div>
-                <div class="contactMail">{{ contact.email }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        </ng-container>
       </div>
     </div>
 
-    <div
-      class="contacts-right default-content-container"
-      *ngIf="selectedContact && (!isMobileView || showMobileSingleContact)"
-    >
-
+    <div class="contacts-right default-content-container" *ngIf="selectedContact && (!isMobileView || showMobileSingleContact)">
       <div class="component-header">
         <div class="component-title-bar">
-          <h1 class="component-title">Contacts</h1> <button *ngIf="isMobileView" class="back-btn" (click)="backToList()" aria-label="Back to contact list">
-          <img src="./assets/img/back-arrow.png" />
-        </button>
+          <h1 class="component-title">Contacts</h1>
+          <button *ngIf="isMobileView" class="back-btn" (click)="backToList()" aria-label="Back to contact list">
+            <img src="./assets/img/back-arrow.png" />
+          </button>
         </div>
         <hr class="header-divider" />
         <span class="component-subtitle">Better with a team</span>
-            
       </div>
-      <div
-        class="single-contact-container"
-        *ngIf="selectedContact"
-        @slideInRight
-        [@slideInRight]="suppressAnimation ? 'suppress' : selectedContact.id"
-      >
+      <div class="single-contact-container" *ngIf="selectedContact" @slideInRight [@slideInRight]="suppressAnimation ? 'suppress' : selectedContact.id">
         <div class="single-contact-header">
-          <div
-            class="single-contact-initials"
-            [style.background]="getInitialsColor(selectedContact.name)"
-          >
+          <div class="single-contact-initials" [style.background]="getInitialsColor(selectedContact.name)">
             {{ getInitials(selectedContact.name) }}
           </div>
           <div class="single-contact-name-block">
             <h2 class="single-contact-name">{{ selectedContact.name }}</h2>
             <div class="single-contact-edit-row desktop-only">
-              <div
-                class="single-ctc-edit-btn"
-                (click)="openEditContactOverlay(selectedContact)"
-              >
-                <img
-                  class="single-ctc-edit-icon"
-                  src="./assets/img/icon_todo.svg"
-                />
+              <div class="single-ctc-edit-btn" (click)="openEditContactOverlay(selectedContact)">
+                <img class="single-ctc-edit-icon" src="./assets/img/icon_todo.svg" />
                 <span class="single-ctc-edit-text">Edit</span>
               </div>
               <div class="single-ctc-edit-btn" (click)="deleteContact()">
-                <img
-                  class="single-ctc-edit-icon"
-                  src="./assets/img/icon_delete.svg"
-                />
+                <img class="single-ctc-edit-icon" src="./assets/img/icon_delete.svg" />
                 <span class="single-ctc-edit-text">Delete</span>
               </div>
             </div>
@@ -641,10 +64,7 @@
           <h3 class="single-contact-info-title">Contact Information</h3>
           <div class="single-contact-info">
             <p class="single-contact-info-label">Email</p>
-            <a
-              class="single-contact-info-value single-contact-info-email"
-              [href]="'mailto:' + selectedContact.email"
-            >
+            <a class="single-contact-info-value single-contact-info-email" [href]="'mailto:' + selectedContact.email">
               {{ selectedContact.email }}
             </a>
             <p class="single-contact-info-label">Phone</p>
@@ -654,79 +74,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Add Contact Overlay -->
   <div class="contact-overlay" *ngIf="showAddContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
-        <button
-          class="close-btn mobile-only"
-          aria-label="Close"
-          (click)="closeAddContactOverlay()"
-        >
-          &#10005;
-        </button>
+        <button class="close-btn mobile-only" aria-label="Close" (click)="closeAddContactOverlay()">&#10005;</button>
         <div class="logo-placeholder">
-          <svg
-            class="add-logo"
-            width="100%"
-            height="100%"
-            viewBox="0 0 101 122"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            xml:space="preserve"
-            xmlns:serif="http://www.serif.com/"
-            style="
-              fill-rule: evenodd;
-              clip-rule: evenodd;
-              stroke-linejoin: round;
-              stroke-miterlimit: 2;
-            "
-          >
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <rect
-                x="50.497"
-                y="0"
-                width="22.158"
-                height="25.492"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <path
-                d="M50.497,46.225L72.655,46.225L72.655,82.178C72.756,90.829 70.294,99.315 65.582,106.557C60.928,113.594 51.946,121.966 35.328,121.966C17.226,121.966 6.676,113.406 0.983,108.715L14.959,91.474C20.516,96.011 25.868,99.744 35.413,99.744C42.64,99.744 45.52,96.799 47.208,94.231C49.502,90.664 50.688,86.492 50.617,82.246L50.497,46.225Z"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <rect
-                x="17.039"
-                y="30.132"
-                width="22.158"
-                height="22.257"
-                style="fill: rgb(41, 171, 226)"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <path
-                d="M84.262,111.522C84.262,116.265 81.859,118.815 78.501,118.815C75.143,118.815 72.945,115.785 72.945,111.762C72.945,107.739 75.212,104.554 78.689,104.554C82.166,104.554 84.262,107.687 84.262,111.522ZM75.518,111.711C75.518,114.57 76.66,116.675 78.621,116.675C80.581,116.675 81.689,114.45 81.689,111.539C81.689,108.988 80.666,106.592 78.621,106.592C76.575,106.592 75.518,108.903 75.518,111.711Z"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <rect
-                x="86.205"
-                y="104.76"
-                width="2.454"
-                height="13.833"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <path
-                d="M91.319,118.593L91.319,104.76L94.046,104.76L96.978,110.461C97.732,111.952 98.404,113.483 98.989,115.049C98.835,113.337 98.767,111.368 98.767,109.177L98.767,104.76L101.017,104.76L101.017,118.593L98.477,118.593L95.512,112.772C94.727,111.243 94.027,109.671 93.415,108.064C93.415,109.776 93.534,111.711 93.534,114.09L93.534,118.576L91.319,118.593Z"
-                style="fill: white"
-              />
-            </g>
+          <svg class="add-logo" width="100%" height="100%" viewBox="0 0 101 122" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule: evenodd; clip-rule: evenodd; stroke-linejoin: round; stroke-miterlimit: 2;">
+            <g transform="matrix(1,0,0,1,-0.98291,0)"><rect x="50.497" y="0" width="22.158" height="25.492" style="fill: white" /></g>
+            <g transform="matrix(1,0,0,1,-0.98291,0)"><path d="M50.497,46.225L72.655,46.225L72.655,82.178C72.756,90.829 70.294,99.315 65.582,106.557C60.928,113.594 51.946,121.966 35.328,121.966C17.226,121.966 6.676,113.406 0.983,108.715L14.959,91.474C20.516,96.011 25.868,99.744 35.413,99.744C42.64,99.744 45.52,96.799 47.208,94.231C49.502,90.664 50.688,86.492 50.617,82.246L50.497,46.225Z" style="fill: white" /></g>
+            <g transform="matrix(1,0,0,1,-0.98291,0)"><rect x="17.039" y="30.132" width="22.158" height="22.257" style="fill: rgb(41, 171, 226)" /></g>
+            <g transform="matrix(1,0,0,1,-0.98291,0)"><path d="M84.262,111.522C84.262,116.265 81.859,118.815 78.501,118.815C75.143,118.815 72.945,115.785 72.945,111.762C72.945,107.739 75.212,104.554 78.689,104.554C82.166,104.554 84.262,107.687 84.262,111.522ZM75.518,111.711C75.518,114.57 76.66,116.675 78.621,116.675C80.581,116.675 81.689,114.45 81.689,111.539C81.689,108.988 80.666,106.592 78.621,106.592C76.575,106.592 75.518,108.903 75.518,111.711Z" style="fill: white" /></g>
+            <g transform="matrix(1,0,0,1,-0.98291,0)"><rect x="86.205" y="104.76" width="2.454" height="13.833" style="fill: white" /></g>
+            <g transform="matrix(1,0,0,1,-0.98291,0)"><path d="M91.319,118.593L91.319,104.76L94.046,104.76L96.978,110.461C97.732,111.952 98.404,113.483 98.989,115.049C98.835,113.337 98.767,111.368 98.767,109.177L98.767,104.76L101.017,104.76L101.017,118.593L98.477,118.593L95.512,112.772C94.727,111.243 94.027,109.671 93.415,108.064C93.415,109.776 93.534,111.711 93.534,114.09L93.534,118.576L91.319,118.593Z" style="fill: white" /></g>
           </svg>
         </div>
         <h1>Add contact</h1>
@@ -734,198 +95,31 @@
         <div class="underline"></div>
       </div>
       <div class="contact-right">
-        <button
-          class="close-btn"
-          aria-label="Close"
-          (click)="closeAddContactOverlay()"
-        >
-          &#10005;
-        </button>
+        <button class="close-btn" aria-label="Close" (click)="closeAddContactOverlay()">&#10005;</button>
         <div class="contact-right-inner">
           <div class="avatar-and-form">
-            <div
-              class="avatar-placeholder"
-              [style.background]="
-                addContactForm.get('name')?.value
-                  ? getInitialsColor(addContactForm.get('name')?.value)
-                  : 'rgb(237, 237, 237)'
-              "
-            >
-              <span
-                *ngIf="addContactForm.get('name')?.value; else defaultAvatar"
-              >
-                {{ getInitials(addContactForm.get("name")?.value) }}
-              </span>
-              <ng-template #defaultAvatar></ng-template>
-            </div>
-            <form
-              [formGroup]="addContactForm"
-              (ngSubmit)="onSubmitAddContact()"
-            >
+            <div class="avatar-placeholder" [style.background]="addContactForm.get('name')?.value ? getInitialsColor(addContactForm.get('name')?.value) : 'rgb(237, 237, 237)'"><span *ngIf="addContactForm.get('name')?.value; else defaultAvatar">{{ getInitials(addContactForm.get('name')?.value) }}</span><ng-template #defaultAvatar></ng-template></div>
+            <form [formGroup]="addContactForm" (ngSubmit)="onSubmitAddContact()">
               <div class="input-group">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  formControlName="name"
-                  [class.input-error]="
-                    addContactForm.get('name')?.invalid &&
-                    addContactForm.get('name')?.touched
-                  "
-                  autocomplete="off"
-                />
-                <div class="input-icon">
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 43 43"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
-                    style="
-                      fill-rule: evenodd;
-                      clip-rule: evenodd;
-                      stroke-linejoin: round;
-                      stroke-miterlimit: 2;
-                    "
-                  >
-                    <g transform="matrix(1,0,0,1,-0.666748,-0.666748)">
-                      <path
-                        d="M22,22C19.067,22 16.556,20.956 14.467,18.867C12.378,16.778 11.333,14.267 11.333,11.333C11.333,8.4 12.378,5.889 14.467,3.8C16.556,1.711 19.067,0.667 22,0.667C24.933,0.667 27.445,1.711 29.533,3.8C31.622,5.889 32.667,8.4 32.667,11.333C32.667,14.267 31.622,16.778 29.533,18.867C27.445,20.956 24.933,22 22,22ZM38,43.333L6,43.333C4.533,43.333 3.278,42.811 2.233,41.767C1.189,40.722 0.667,39.467 0.667,38L0.667,35.867C0.667,34.356 1.056,32.967 1.833,31.7C2.611,30.433 3.645,29.467 4.933,28.8C7.689,27.422 10.489,26.389 13.333,25.7C16.178,25.011 19.067,24.667 22,24.667C24.933,24.667 27.822,25.011 30.667,25.7C33.511,26.389 36.311,27.422 39.067,28.8C40.356,29.467 41.389,30.433 42.167,31.7C42.945,32.967 43.333,34.356 43.333,35.867L43.333,38C43.333,39.467 42.811,40.722 41.767,41.767C40.722,42.811 39.467,43.333 38,43.333ZM6,38L38,38L38,35.867C38,35.378 37.878,34.933 37.633,34.533C37.389,34.133 37.067,33.822 36.667,33.6C34.267,32.4 31.845,31.5 29.4,30.9C26.956,30.3 24.489,30 22,30C19.511,30 17.045,30.3 14.6,30.9C12.156,31.5 9.733,32.4 7.333,33.6C6.933,33.822 6.611,34.133 6.367,34.533C6.122,34.933 6,35.378 6,35.867L6,38ZM22,16.667C23.467,16.667 24.722,16.145 25.767,15.1C26.811,14.056 27.333,12.8 27.333,11.333C27.333,9.867 26.811,8.611 25.767,7.567C24.722,6.522 23.467,6 22,6C20.533,6 19.278,6.522 18.233,7.567C17.189,8.611 16.667,9.867 16.667,11.333C16.667,12.8 17.189,14.056 18.233,15.1C19.278,16.145 20.533,16.667 22,16.667Z"
-                        style="fill-rule: nonzero"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="
-                    addContactForm.get('name')?.invalid &&
-                    addContactForm.get('name')?.touched
-                  "
-                >
-                  Please type in a name
-                </div>
+                <input type="text" placeholder="Name" formControlName="name" [class.input-error]="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched" autocomplete="off" />
+                <div class="input-icon"><div [inlineSvg]="'assets/icons/person.svg'" class="icon"></div></div>
+                <div class="error-message" *ngIf="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched">Please type in a name</div>
               </div>
               <div class="input-group">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  formControlName="email"
-                  [class.input-error]="
-                    addContactForm.get('email')?.invalid &&
-                    addContactForm.get('email')?.touched
-                  "
-                  autocomplete="off"
-                />
-                <div class="input-icon">
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 18 18"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
-                    style="
-                      fill-rule: evenodd;
-                      clip-rule: evenodd;
-                      stroke-linejoin: round;
-                      stroke-miterlimit: 2;
-                    "
-                  >
-                    <g transform="matrix(1,0,0,1,0,-0.5)">
-                      <path
-                        d="M16.95,18.5C14.867,18.5 12.808,18.046 10.775,17.138C8.742,16.229 6.892,14.942 5.225,13.275C3.558,11.608 2.271,9.758 1.363,7.725C0.454,5.692 0,3.633 0,1.55C0,1.25 0.1,1 0.3,0.8C0.5,0.6 0.75,0.5 1.05,0.5L5.1,0.5C5.333,0.5 5.542,0.579 5.725,0.738C5.908,0.896 6.017,1.083 6.05,1.3L6.7,4.8C6.733,5.067 6.725,5.292 6.675,5.475C6.625,5.658 6.533,5.817 6.4,5.95L3.975,8.4C4.308,9.017 4.704,9.613 5.162,10.188C5.621,10.762 6.125,11.317 6.675,11.85C7.192,12.367 7.733,12.846 8.3,13.288C8.867,13.729 9.467,14.133 10.1,14.5L12.45,12.15C12.6,12 12.796,11.887 13.038,11.813C13.279,11.738 13.517,11.717 13.75,11.75L17.2,12.45C17.433,12.517 17.625,12.637 17.775,12.813C17.925,12.988 18,13.183 18,13.4L18,17.45C18,17.75 17.9,18 17.7,18.2C17.5,18.4 17.25,18.5 16.95,18.5ZM3.025,6.5L4.675,4.85L4.25,2.5L2.025,2.5C2.108,3.183 2.225,3.858 2.375,4.525C2.525,5.192 2.742,5.85 3.025,6.5ZM11.975,15.45C12.625,15.733 13.288,15.958 13.963,16.125C14.637,16.292 15.317,16.4 16,16.45L16,14.25L13.65,13.775L11.975,15.45Z"
-                        style="fill-rule: nonzero"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched"
-                >
-                  Please type in an email
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched"
-                >
-                  Enter a valid email
-                </div>
+                <input type="email" placeholder="Email" formControlName="email" [class.input-error]="addContactForm.get('email')?.invalid && addContactForm.get('email')?.touched" autocomplete="off" />
+                <div class="input-icon"><div [inlineSvg]="'assets/icons/mail.svg'" class="icon"></div></div>
+                <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched">Please type in an email</div>
+                <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched">Enter a valid email</div>
               </div>
               <div class="input-group">
-                <input
-                  type="tel"
-                  placeholder="Phone"
-                  formControlName="phone"
-                  [class.input-error]="
-                    addContactForm.get('phone')?.invalid &&
-                    addContactForm.get('phone')?.touched
-                  "
-                  autocomplete="off"
-                />
-                <div class="input-icon">
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 20 16"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
-                    style="
-                      fill-rule: evenodd;
-                      clip-rule: evenodd;
-                      stroke-linejoin: round;
-                      stroke-miterlimit: 2;
-                    "
-                  >
-                    <g transform="matrix(1,0,0,1,-2,-4)">
-                      <path
-                        d="M4,20C3.45,20 2.979,19.804 2.588,19.413C2.196,19.021 2,18.55 2,18L2,6C2,5.45 2.196,4.979 2.588,4.588C2.979,4.196 3.45,4 4,4L20,4C20.55,4 21.021,4.196 21.413,4.588C21.804,4.979 22,5.45 22,6L22,18C22,18.55 21.804,19.021 21.413,19.413C21.021,19.804 20.55,20 20,20L4,20ZM20,8L12.525,12.675C12.442,12.725 12.354,12.762 12.262,12.788C12.171,12.813 12.083,12.825 12,12.825C11.917,12.825 11.829,12.813 11.738,12.788C11.646,12.762 11.558,12.725 11.475,12.675L4,8L4,18L20,18L20,8ZM12,11L20,6L4,6L12,11ZM4,8.25L4,6.775L4,6.8L4,6.787L4,8.25Z"
-                        style="fill-rule: nonzero"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="
-                    addContactForm.get('phone')?.invalid &&
-                    addContactForm.get('phone')?.touched
-                  "
-                >
-                  Please type in a phone number
-                </div>
+                <input type="tel" placeholder="Phone" formControlName="phone" [class.input-error]="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched" autocomplete="off" />
+                <div class="input-icon"><div [inlineSvg]="'assets/icons/call.svg'" class="icon"></div></div>
+                <div class="error-message" *ngIf="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched">Please type in a phone number</div>
               </div>
               <div class="form-buttons">
-                <button
-                  type="button"
-                  class="cancel-button"
-                  (click)="closeAddContactOverlay()"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  class="create-button"
-                  [disabled]="addContactForm.invalid"
-                  [class.disabled]="addContactForm.invalid"
-                >
-                  Create contact
-                </button>
-                <button
-                  type="submit"
-                  class="create-button mobile-only"                  
-                >
-                  Create contact
-                  <img src="assets/img/icon_check.svg" alt="check" class="btn-check-icon" />
-                </button>
+                <button type="button" class="cancel-button" (click)="closeAddContactOverlay()">Cancel</button>
+                <button type="submit" class="create-button" [disabled]="addContactForm.invalid" [class.disabled]="addContactForm.invalid">Create contact</button>
+                <button type="submit" class="create-button mobile-only">Create contact <img src="assets/img/icon_check.svg" alt="check" class="btn-check-icon" /></button>
               </div>
             </form>
           </div>
@@ -933,284 +127,45 @@
       </div>
     </div>
   </div>
+
+  <!-- Edit Contact Overlay -->
   <div class="contact-overlay" *ngIf="showEditContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
-        <button
-        class="close-btn mobile-only"
-        aria-label="Close"
-        (click)="closeEditContactOverlay()"
-      >
-        &#10005;
-      </button>
+        <button class="close-btn mobile-only" aria-label="Close" (click)="closeEditContactOverlay()">&#10005;</button>
         <div class="logo-placeholder">
-          <svg
-            class="add-logo"
-            width="100%"
-            height="100%"
-            viewBox="0 0 101 122"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            xml:space="preserve"
-            xmlns:serif="http://www.serif.com/"
-            style="
-              fill-rule: evenodd;
-              clip-rule: evenodd;
-              stroke-linejoin: round;
-              stroke-miterlimit: 2;
-            "
-          >
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <rect
-                x="50.497"
-                y="0"
-                width="22.158"
-                height="25.492"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <path
-                d="M50.497,46.225L72.655,46.225L72.655,82.178C72.756,90.829 70.294,99.315 65.582,106.557C60.928,113.594 51.946,121.966 35.328,121.966C17.226,121.966 6.676,113.406 0.983,108.715L14.959,91.474C20.516,96.011 25.868,99.744 35.413,99.744C42.64,99.744 45.52,96.799 47.208,94.231C49.502,90.664 50.688,86.492 50.617,82.246L50.497,46.225Z"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <rect
-                x="17.039"
-                y="30.132"
-                width="22.158"
-                height="22.257"
-                style="fill: rgb(41, 171, 226)"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <path
-                d="M84.262,111.522C84.262,116.265 81.859,118.815 78.501,118.815C75.143,118.815 72.945,115.785 72.945,111.762C72.945,107.739 75.212,104.554 78.689,104.554C82.166,104.554 84.262,107.687 84.262,111.522ZM75.518,111.711C75.518,114.57 76.66,116.675 78.621,116.675C80.581,116.675 81.689,114.45 81.689,111.539C81.689,108.988 80.666,106.592 78.621,106.592C76.575,106.592 75.518,108.903 75.518,111.711Z"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <rect
-                x="86.205"
-                y="104.76"
-                width="2.454"
-                height="13.833"
-                style="fill: white"
-              />
-            </g>
-            <g transform="matrix(1,0,0,1,-0.98291,0)">
-              <path
-                d="M91.319,118.593L91.319,104.76L94.046,104.76L96.978,110.461C97.732,111.952 98.404,113.483 98.989,115.049C98.835,113.337 98.767,111.368 98.767,109.177L98.767,104.76L101.017,104.76L101.017,118.593L98.477,118.593L95.512,112.772C94.727,111.243 94.027,109.671 93.415,108.064C93.415,109.776 93.534,111.711 93.534,114.09L93.534,118.576L91.319,118.593Z"
-                style="fill: white"
-              />
-            </g>
-          </svg>
+          <div [inlineSvg]="'assets/icons/logo.svg'" class="add-logo"></div>
         </div>
         <h1>Edit contact</h1>
         <div class="underline"></div>
       </div>
       <div class="contact-right">
-        <button
-          class="close-btn"
-          aria-label="Close"
-          (click)="closeEditContactOverlay()"
-        >
-          &#10005;
-        </button>
+        <button class="close-btn" aria-label="Close" (click)="closeEditContactOverlay()">&#10005;</button>
         <div class="contact-right-inner">
           <div class="avatar-and-form">
-            <div
-              class="avatar-placeholder"
-              [style.background]="
-                addContactForm.get('name')?.value
-                  ? getInitialsColor(addContactForm.get('name')?.value)
-                  : 'rgb(237, 237, 237)'
-              "
-            >
-              <span
-                *ngIf="addContactForm.get('name')?.value; else defaultAvatar"
-              >
-                {{ getInitials(addContactForm.get("name")?.value) }}
-              </span>
-              <ng-template #defaultAvatar></ng-template>
-            </div>
-            <form
-              [formGroup]="addContactForm"
-              (ngSubmit)="onSubmitUpdateContact()"
-            >
+            <div class="avatar-placeholder" [style.background]="addContactForm.get('name')?.value ? getInitialsColor(addContactForm.get('name')?.value) : 'rgb(237, 237, 237)'"><span *ngIf="addContactForm.get('name')?.value; else defaultAvatar">{{ getInitials(addContactForm.get('name')?.value) }}</span><ng-template #defaultAvatar></ng-template></div>
+            <form [formGroup]="addContactForm" (ngSubmit)="onSubmitUpdateContact()">
               <div class="input-group">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  formControlName="name"
-                  [class.input-error]="
-                    addContactForm.get('name')?.invalid &&
-                    addContactForm.get('name')?.touched
-                  "
-                  autocomplete="off"
-                />
-                <div class="input-icon">
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 43 43"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
-                    style="
-                      fill-rule: evenodd;
-                      clip-rule: evenodd;
-                      stroke-linejoin: round;
-                      stroke-miterlimit: 2;
-                    "
-                  >
-                    <g transform="matrix(1,0,0,1,-0.666748,-0.666748)">
-                      <path
-                        d="M22,22C19.067,22 16.556,20.956 14.467,18.867C12.378,16.778 11.333,14.267 11.333,11.333C11.333,8.4 12.378,5.889 14.467,3.8C16.556,1.711 19.067,0.667 22,0.667C24.933,0.667 27.445,1.711 29.533,3.8C31.622,5.889 32.667,8.4 32.667,11.333C32.667,14.267 31.622,16.778 29.533,18.867C27.445,20.956 24.933,22 22,22ZM38,43.333L6,43.333C4.533,43.333 3.278,42.811 2.233,41.767C1.189,40.722 0.667,39.467 0.667,38L0.667,35.867C0.667,34.356 1.056,32.967 1.833,31.7C2.611,30.433 3.645,29.467 4.933,28.8C7.689,27.422 10.489,26.389 13.333,25.7C16.178,25.011 19.067,24.667 22,24.667C24.933,24.667 27.822,25.011 30.667,25.7C33.511,26.389 36.311,27.422 39.067,28.8C40.356,29.467 41.389,30.433 42.167,31.7C42.945,32.967 43.333,34.356 43.333,35.867L43.333,38C43.333,39.467 42.811,40.722 41.767,41.767C40.722,42.811 39.467,43.333 38,43.333ZM6,38L38,38L38,35.867C38,35.378 37.878,34.933 37.633,34.533C37.389,34.133 37.067,33.822 36.667,33.6C34.267,32.4 31.845,31.5 29.4,30.9C26.956,30.3 24.489,30 22,30C19.511,30 17.045,30.3 14.6,30.9C12.156,31.5 9.733,32.4 7.333,33.6C6.933,33.822 6.611,34.133 6.367,34.533C6.122,34.933 6,35.378 6,35.867L6,38ZM22,16.667C23.467,16.667 24.722,16.145 25.767,15.1C26.811,14.056 27.333,12.8 27.333,11.333C27.333,9.867 26.811,8.611 25.767,7.567C24.722,6.522 23.467,6 22,6C20.533,6 19.278,6.522 18.233,7.567C17.189,8.611 16.667,9.867 16.667,11.333C16.667,12.8 17.189,14.056 18.233,15.1C19.278,16.145 20.533,16.667 22,16.667Z"
-                        style="fill-rule: nonzero"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="
-                    addContactForm.get('name')?.invalid &&
-                    addContactForm.get('name')?.touched
-                  "
-                >
-                  Please type in a name
-                </div>
+                <input type="text" placeholder="Name" formControlName="name" [class.input-error]="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched" autocomplete="off" />
+                <div class="input-icon"><div [inlineSvg]="'assets/icons/person.svg'" class="icon"></div></div>
+                <div class="error-message" *ngIf="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched">Please type in a name</div>
               </div>
               <div class="input-group">
-                <input
-                  type="email"
-                  placeholder="Email"
-                  formControlName="email"
-                  [class.input-error]="
-                    addContactForm.get('email')?.invalid &&
-                    addContactForm.get('email')?.touched
-                  "
-                  autocomplete="off"
-                />
-                <div class="input-icon">
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 20 16"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
-                    style="
-                      fill-rule: evenodd;
-                      clip-rule: evenodd;
-                      stroke-linejoin: round;
-                      stroke-miterlimit: 2;
-                    "
-                  >
-                    <g transform="matrix(1,0,0,1,-2,-4)">
-                      <path
-                        d="M4,20C3.45,20 2.979,19.804 2.588,19.413C2.196,19.021 2,18.55 2,18L2,6C2,5.45 2.196,4.979 2.588,4.588C2.979,4.196 3.45,4 4,4L20,4C20.55,4 21.021,4.196 21.413,4.588C21.804,4.979 22,5.45 22,6L22,18C22,18.55 21.804,19.021 21.413,19.413C21.021,19.804 20.55,20 20,20L4,20ZM20,8L12.525,12.675C12.442,12.725 12.354,12.762 12.262,12.788C12.171,12.813 12.083,12.825 12,12.825C11.917,12.825 11.829,12.813 11.738,12.788C11.646,12.762 11.558,12.725 11.475,12.675L4,8L4,18L20,18L20,8ZM12,11L20,6L4,6L12,11ZM4,8.25L4,6.775L4,6.8L4,6.787L4,8.25Z"
-                        style="fill-rule: nonzero"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched"
-                >
-                  Please type in an email
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched"
-                >
-                  Enter a valid email
-                </div>
+                <input type="email" placeholder="Email" formControlName="email" [class.input-error]="addContactForm.get('email')?.invalid && addContactForm.get('email')?.touched" autocomplete="off" />
+                <div class="input-icon"><div [inlineSvg]="'assets/icons/mail.svg'" class="icon"></div></div>
+                <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched">Please type in an email</div>
+                <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched">Enter a valid email</div>
               </div>
               <div class="input-group">
-                <input
-                  type="tel"
-                  placeholder="Phone"
-                  formControlName="phone"
-                  [class.input-error]="
-                    addContactForm.get('phone')?.invalid &&
-                    addContactForm.get('phone')?.touched
-                  "
-                  autocomplete="off"
-                />
-                <div class="input-icon">
-                  <svg
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 18 18"
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    xml:space="preserve"
-                    xmlns:serif="http://www.serif.com/"
-                    style="
-                      fill-rule: evenodd;
-                      clip-rule: evenodd;
-                      stroke-linejoin: round;
-                      stroke-miterlimit: 2;
-                    "
-                  >
-                    <g transform="matrix(1,0,0,1,0,-0.5)">
-                      <path
-                        d="M16.95,18.5C14.867,18.5 12.808,18.046 10.775,17.138C8.742,16.229 6.892,14.942 5.225,13.275C3.558,11.608 2.271,9.758 1.363,7.725C0.454,5.692 0,3.633 0,1.55C0,1.25 0.1,1 0.3,0.8C0.5,0.6 0.75,0.5 1.05,0.5L5.1,0.5C5.333,0.5 5.542,0.579 5.725,0.738C5.908,0.896 6.017,1.083 6.05,1.3L6.7,4.8C6.733,5.067 6.725,5.292 6.675,5.475C6.625,5.658 6.533,5.817 6.4,5.95L3.975,8.4C4.308,9.017 4.704,9.613 5.162,10.188C5.621,10.762 6.125,11.317 6.675,11.85C7.192,12.367 7.733,12.846 8.3,13.288C8.867,13.729 9.467,14.133 10.1,14.5L12.45,12.15C12.6,12 12.796,11.887 13.038,11.813C13.279,11.738 13.517,11.717 13.75,11.75L17.2,12.45C17.433,12.517 17.625,12.637 17.775,12.813C17.925,12.988 18,13.183 18,13.4L18,17.45C18,17.75 17.9,18 17.7,18.2C17.5,18.4 17.25,18.5 16.95,18.5ZM3.025,6.5L4.675,4.85L4.25,2.5L2.025,2.5C2.108,3.183 2.225,3.858 2.375,4.525C2.525,5.192 2.742,5.85 3.025,6.5ZM11.975,15.45C12.625,15.733 13.288,15.958 13.963,16.125C14.637,16.292 15.317,16.4 16,16.45L16,14.25L13.65,13.775L11.975,15.45Z"
-                        style="fill-rule: nonzero"
-                      />
-                    </g>
-                  </svg>
-                </div>
-                <div
-                  class="error-message"
-                  *ngIf="
-                    addContactForm.get('phone')?.invalid &&
-                    addContactForm.get('phone')?.touched
-                  "
-                >
-                  Please type in a phone number
-                </div>
+                <input type="tel" placeholder="Phone" formControlName="phone" [class.input-error]="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched" autocomplete="off" />
+                <div class="input-icon"><div [inlineSvg]="'assets/icons/call.svg'" class="icon"></div></div>
+                <div class="error-message" *ngIf="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched">Please type in a phone number</div>
               </div>
               <div class="form-buttons">
-                <button
-                  type="button"
-                  class="cancel-button"
-                  (click)="closeEditContactOverlay()"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  class="create-button"
-                  [disabled]="addContactForm.invalid"
-                  [class.disabled]="addContactForm.invalid"
-                >
-                  Save changes
-                </button>
-                <button
-                  type="button"
-                  class="cancel-button mobile-only"
-                  (click)="deleteContact()"
-                >
-                  Delete
-                  
-                </button>
-                <button
-                  type="submit"
-                  class="create-button mobile-only"                  
-                >
-                  Save <img src="/assets/img/icon_check.svg" alt="">
-                </button>
+                <button type="button" class="cancel-button" (click)="closeEditContactOverlay()">Cancel</button>
+                <button type="submit" class="create-button" [disabled]="addContactForm.invalid" [class.disabled]="addContactForm.invalid">Save changes</button>
+                <button type="button" class="cancel-button mobile-only" (click)="closeEditContactOverlay()">Cancel</button>
+                <button type="submit" class="create-button mobile-only">Save changes</button>
               </div>
             </form>
           </div>
@@ -1218,49 +173,28 @@
       </div>
     </div>
   </div>
+
   <div class="success-message" *ngIf="contactSuccessMessageOverlay">
     {{ contactSuccessMessageText }}
   </div>
 
-<button 
-  class="mobile-fab mobile-only" 
-  *ngIf="!showAddContactOverlay && !showEditContactOverlay"
-  [ngClass]="showMobileSingleContact ? 'menu' : 'add'"
-  (click)="handleFabClick()"
-  aria-label="Floating action button">
-  <img 
-    [src]="showMobileSingleContact ? 'assets/img/mobile-contact-more-btn.png' : 'assets/img/mobile-add-contact-btn.png'" 
-    alt=""
-    class="fab-icon"
-  />
-</button>
-
-<div 
-  class="mobile-more-backdrop mobile-only" 
-  *ngIf="showMobileMoreMenu" 
-  (click)="closeMoreMenu()"
-></div>
-
-<div 
-  class="mobile-more-menu mobile-only" 
-  *ngIf="showMobileMoreMenu" 
-  (click)="$event.stopPropagation()"
->
-  <button
-    class="mobile-more-item"
-    *ngIf="selectedContact"
-    (click)="openEditContactOverlay(selectedContact); closeMoreMenu()"
-  >
-    <img src="assets/img/icon_todo.svg" class="mobile-more-icon" />
-    <span>Edit</span>
+  <!-- Mobile FAB, shows "add" or "menu" icon depending on view -->
+  <button class="mobile-fab mobile-only" *ngIf="!showAddContactOverlay && !showEditContactOverlay" [ngClass]="showMobileSingleContact ? 'menu' : 'add'" (click)="handleFabClick()" aria-label="Floating action button">
+    <img [src]="showMobileSingleContact ? 'assets/img/mobile-contact-more-btn.png' : 'assets/img/mobile-add-contact-btn.png'" alt="" class="fab-icon" />
   </button>
 
-  <button
-    class="mobile-more-item"
-    (click)="deleteContact(); closeMoreMenu()"
-  >
-    <img src="assets/img/icon_delete.svg" class="mobile-more-icon" />
-    <span>Delete</span>
-  </button>
-</div>
+  <!-- MOBILE MORE MENU BACKDROP -->
+  <div class="mobile-more-backdrop mobile-only" *ngIf="showMobileMoreMenu" (click)="closeMoreMenu()"></div>
+
+  <!-- MOBILE MORE MENU -->
+  <div class="mobile-more-menu mobile-only" *ngIf="showMobileMoreMenu" (click)="$event.stopPropagation()">
+    <button class="mobile-more-item" *ngIf="selectedContact" (click)="openEditContactOverlay(selectedContact); closeMoreMenu()">
+      <img src="assets/img/icon_todo.svg" class="mobile-more-icon" />
+      <span>Edit</span>
+    </button>
+    <button class="mobile-more-item" (click)="deleteContact(); closeMoreMenu()">
+      <img src="assets/img/icon_delete.svg" class="mobile-more-icon" />
+      <span>Delete</span>
+    </button>
+  </div>
 </div>
