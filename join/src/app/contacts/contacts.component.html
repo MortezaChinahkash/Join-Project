@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="contacts-right default-content-container" *ngIf="selectedContact && (!isMobileView || showMobileSingleContact)">
+    <div class="contacts-right default-content-container" *ngIf="!isMobileView || (selectedContact && showMobileSingleContact)">
       <div class="component-header">
         <div class="component-title-bar">
           <h1 class="component-title">Contacts</h1>
