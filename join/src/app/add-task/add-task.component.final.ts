@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy, inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, HostListener, Injector, runInInjectionContext } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormArray } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ContactsComponent } from '../contacts/contacts.component';
 import { Contact } from '../services/contact-data.service';
 import { Firestore, collectionData, collection, DocumentData } from '@angular/fire/firestore';
@@ -37,6 +37,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   maxTitleLength: number = 40;
   
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
   /**
    * Initializes the component with required services.
@@ -85,12 +86,14 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   private async loadContacts(): Promise<void> {
     try {
-      const contactsCollection = collection(this.firestore, 'contacts');
-      collectionData(contactsCollection, { idField: 'id' }).subscribe(
-        (data: DocumentData[]) => {
-          this.contacts = this.contactService.processContactsData(data as Contact[]);
-        }
-      );
+      runInInjectionContext(this.injector, () => {
+        const contactsCollection = collection(this.firestore, 'contacts');
+        collectionData(contactsCollection, { idField: 'id' }).subscribe(
+          (data: DocumentData[]) => {
+            this.contacts = this.contactService.processContactsData(data as Contact[]);
+          }
+        );
+      });
     } catch (error) {
       console.error('Error loading contacts:', error);
     }

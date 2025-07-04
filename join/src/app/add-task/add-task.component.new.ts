@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, inject, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, HostListener, Injector, runInInjectionContext } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
@@ -36,6 +36,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   maxTitleLength: number = 40;
   
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
   /**
    * Initializes the component with required services and creates the task form.
@@ -115,11 +116,13 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    * @param contactsCollection - Firestore collection reference
    */
   private subscribeToContacts(contactsCollection: any): void {
-    collectionData(contactsCollection, { idField: 'id' }).subscribe(
-      (data: DocumentData[]) => {
-        this.contacts = this.processContactsData(data as Contact[]);
-      }
-    );
+    runInInjectionContext(this.injector, () => {
+      collectionData(contactsCollection, { idField: 'id' }).subscribe(
+        (data: DocumentData[]) => {
+          this.contacts = this.processContactsData(data as Contact[]);
+        }
+      );
+    });
   }
 
   /**

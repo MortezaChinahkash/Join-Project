@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
 import { Firestore, collectionData, collection, addDoc, doc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -25,14 +25,17 @@ export interface Contact {
 })
 export class ContactDataService {
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
   /**
    * Loads all contacts from Firestore.
    * @returns Observable stream of contacts
    */
   loadContactsFromFirestore(): Observable<Contact[]> {
-    const contactsCollection = collection(this.firestore, 'contacts');
-    return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
+    return runInInjectionContext(this.injector, () => {
+      const contactsCollection = collection(this.firestore, 'contacts');
+      return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
+    });
   }
 
   /**

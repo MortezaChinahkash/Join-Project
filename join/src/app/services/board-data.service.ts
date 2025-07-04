@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Task, TaskColumn } from '../interfaces/task.interface';
@@ -16,6 +16,7 @@ import { Contact } from './contact-data.service';
 })
 export class BoardDataService {
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
   /**
    * Loads all tasks from Firebase and returns an observable.
@@ -23,8 +24,10 @@ export class BoardDataService {
    * @returns Observable stream of tasks from Firebase
    */
   loadTasksFromFirebase(): Observable<Task[]> {
-    const taskRef = collection(this.firestore, 'tasks');
-    return collectionData(taskRef, { idField: 'id' }) as Observable<Task[]>;
+    return runInInjectionContext(this.injector, () => {
+      const taskRef = collection(this.firestore, 'tasks');
+      return collectionData(taskRef, { idField: 'id' }) as Observable<Task[]>;
+    });
   }
 
   /**
@@ -33,8 +36,10 @@ export class BoardDataService {
    * @returns Observable stream of contacts from Firebase
    */
   loadContactsFromFirebase(): Observable<Contact[]> {
-    const contactsCollection = collection(this.firestore, 'contacts');
-    return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
+    return runInInjectionContext(this.injector, () => {
+      const contactsCollection = collection(this.firestore, 'contacts');
+      return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
+    });
   }
 
   /**

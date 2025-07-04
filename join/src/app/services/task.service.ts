@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
 import { Firestore, addDoc, collection, updateDoc, deleteDoc, doc } from '@angular/fire/firestore';
 import { Task, TaskColumn, Subtask } from '../interfaces/task.interface';
 
@@ -26,6 +26,7 @@ export class TaskService {
 
   /** Firebase Firestore instance */
   private firestore = inject(Firestore);
+  private injector = inject(Injector);
 
   /**
    * Constructor for TaskService.
@@ -42,7 +43,9 @@ export class TaskService {
   async addTaskToFirebase(task: Omit<Task, 'id'>, column: TaskColumn): Promise<string> {
     try {
       const taskData = this.prepareTaskData(task, column);
-      const docRef = await addDoc(collection(this.firestore, this.taskCollection), taskData);
+      const docRef = await runInInjectionContext(this.injector, () => 
+        addDoc(collection(this.firestore, this.taskCollection), taskData)
+      );
       return docRef.id;
     } catch (error) {
       console.error('❌ Firebase Fehler:', error);
@@ -298,9 +301,11 @@ export class TaskService {
   async updateTaskInFirebase(task: Task): Promise<void> {
     try {
       this.validateTaskForUpdate(task);
-      const taskRef = doc(this.firestore, this.taskCollection, task.id!);
-      const { id, ...taskData } = task;
-      await updateDoc(taskRef, taskData);
+      await runInInjectionContext(this.injector, async () => {
+        const taskRef = doc(this.firestore, this.taskCollection, task.id!);
+        const { id, ...taskData } = task;
+        await updateDoc(taskRef, taskData);
+      });
     } catch (error) {
       console.error('❌ Error updating task in Firebase:', error);
       throw error;
@@ -325,8 +330,10 @@ export class TaskService {
    */
   async deleteTaskFromFirebase(taskId: string): Promise<void> {
     try {
-      const taskRef = doc(this.firestore, this.taskCollection, taskId);
-      await deleteDoc(taskRef);
+      await runInInjectionContext(this.injector, async () => {
+        const taskRef = doc(this.firestore, this.taskCollection, taskId);
+        await deleteDoc(taskRef);
+      });
     } catch (error) {
       console.error('❌ Error deleting task from Firebase:', error);
       throw error;
