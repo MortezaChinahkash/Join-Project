@@ -1,7 +1,11 @@
 // Responsive Media Queries
 @media (min-width: 1001px) and (max-width: 1750px) {
   .board-scroll-wrapper {
-    overflow-x: visible;
+    /* overflow-x: visible; - Removed to allow board overview scrolling */
+    /* Enable overflow-x: visible only during drag operations */
+    &.dragging {
+      overflow-x: visible;
+    }
   }
   
   .board-container {
@@ -18,7 +22,11 @@
 
 @media (min-width: 1751px) {
   .board-scroll-wrapper {
-    overflow-x: visible;
+    /* overflow-x: visible; - Removed to allow board overview scrolling */
+    /* Enable overflow-x: visible only during drag operations */
+    &.dragging {
+      overflow-x: visible;
+    }
   }
   
   .board-container {

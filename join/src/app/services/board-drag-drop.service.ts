@@ -199,7 +199,7 @@ export class BoardDragDropService {
    * Creates a rotated clone of the task card and calculates the drag offset for smooth positioning.
    * 
    * @param clientX - The X coordinate of the mouse/touch position
-   * @param clientY - The Y coordinate of the mouse/touch position  
+   * @param clientY - The Y Coordinate of the mouse/touch position  
    * @param task - The task object being dragged
    * @param element - The HTML element that triggered the drag
    * @private
@@ -208,6 +208,9 @@ export class BoardDragDropService {
     this.draggedTask = task;
     this.isDraggingTask = true;
     this.dragStartPosition = { x: clientX, y: clientY };
+    
+    // Enable overflow-x: visible for drag operations
+    this.enableDragOverflow();
     
     // Find the task card element
     const taskCard = element.closest('.task-card') as HTMLElement;
@@ -537,6 +540,9 @@ export class BoardDragDropService {
     this.dragPlaceholderVisible = false;
     this.dragPlaceholderHeight = 0;
     
+    // Disable overflow-x: visible after drag operations
+    this.disableDragOverflow();
+    
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
       this.longPressTimeout = null;
@@ -599,6 +605,9 @@ export class BoardDragDropService {
     this.dragPlaceholderVisible = false;
     this.dragPlaceholderHeight = 0;
     this.currentCursorY = 0;
+    
+    // Disable overflow-x: visible after drag operations
+    this.disableDragOverflow();
     
     // Stop auto-scrolling
     this.stopAutoScroll();
@@ -735,5 +744,32 @@ export class BoardDragDropService {
   private isScrollable(element: HTMLElement): boolean {
     const style = window.getComputedStyle(element);
     return style.overflowY === 'scroll' || style.overflowY === 'auto' || style.overflow === 'scroll' || style.overflow === 'auto';
+  }
+
+  /**
+   * Enables overflow-x: visible on the board scroll wrapper during drag operations.
+   * This allows tasks to be dragged outside the visible area while still maintaining
+   * horizontal scrolling capability when not dragging.
+   * 
+   * @private
+   */
+  private enableDragOverflow() {
+    const scrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (scrollWrapper) {
+      scrollWrapper.classList.add('dragging');
+    }
+  }
+
+  /**
+   * Disables overflow-x: visible on the board scroll wrapper after drag operations.
+   * This restores normal horizontal scrolling behavior for the board overview.
+   * 
+   * @private
+   */
+  private disableDragOverflow() {
+    const scrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (scrollWrapper) {
+      scrollWrapper.classList.remove('dragging');
+    }
   }
 }

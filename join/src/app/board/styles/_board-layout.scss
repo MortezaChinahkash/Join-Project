@@ -50,6 +50,11 @@
       background: #a8a8a8;
     }
   }
+  
+  /* Enable overflow-x: visible during drag operations */
+  &.dragging {
+    overflow-x: visible;
+  }
 }
 
 .board-column {
