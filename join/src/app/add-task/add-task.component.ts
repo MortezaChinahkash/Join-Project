@@ -36,6 +36,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   isSubmitting = false;
   maxTitleLength: number = 40;
   newSubtaskTitle: string = ''; // New property for subtask input
+  editingSubtaskIndex: number | null = null; // For tracking which subtask is being edited
 
   // SHOW TASK ADDED NOTIFICATION
   taskAddedNotif: boolean = false;
@@ -186,6 +187,29 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   removeSubtask(index: number): void {
     this.formService.removeSubtask(this.taskForm, index);
+  }
+
+  /**
+   * Starts editing a subtask by setting the editing index.
+   */
+  editSubtask(index: number): void {
+    this.editingSubtaskIndex = index;
+  }
+
+  /**
+   * Stops editing a subtask by clearing the editing index.
+   */
+  stopEditingSubtask(): void {
+    this.editingSubtaskIndex = null;
+  }
+
+  /**
+   * Handles subtask input focus - only allows editing if not readonly.
+   */
+  onSubtaskInputFocus(index: number): void {
+    if (this.editingSubtaskIndex === index) {
+      this.editSubtask(index);
+    }
   }
 
   /**

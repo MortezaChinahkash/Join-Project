@@ -268,24 +268,47 @@
                   background-color: #f8f9fa;
                   border-color: #e0e0e0;
                 }
+
+                // Greyed out styling for readonly subtasks in add task overlay
+                &.grayed {
+                  background: #f4f4f4 !important;
+                  color: #b0b0b0 !important;
+                  border: 1px solid #e0e0e0 !important;
+                  cursor: not-allowed !important;
+                }
               }
 
-              .subtask-checkbox {
-                width: 24px;
-                height: 24px;
+              // Input action buttons (delete/save) that appear when editing
+              .subtask-input-actions {
                 display: flex;
+                gap: 8px;
                 align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: transform 0.2s ease;
+                
+                .remove-subtask-btn,
+                .save-subtask-btn {
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  padding: 4px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  transition: transform 0.2s ease;
 
-                &:hover {
-                  transform: scale(1.1);
+                  &:hover {
+                    transform: scale(1.1);
+                  }
+
+                  img {
+                    width: 16px;
+                    height: 16px;
+                  }
                 }
 
-                img {
-                  width: 20px;
-                  height: 20px;
+                .subtask-divider {
+                  width: 1px;
+                  height: 16px;
+                  background-color: #d1d7db;
                 }
               }
 

@@ -253,6 +253,19 @@
             align-items: center;
             gap: 0.75rem;
             width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+            position: relative;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.02);
+
+              .subtask-hover-actions {
+                opacity: 1;
+                visibility: visible;
+              }
+            }
 
             .form-input {
               flex: 1;
@@ -280,46 +293,104 @@
                 background-color: #f8f9fa;
                 border-color: #e0e0e0;
               }
-            }
 
-            .subtask-checkbox {
-              width: 24px;
-              height: 24px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              cursor: pointer;
-              transition: transform 0.2s ease;
-
-              &:hover {
-                transform: scale(1.1);
-              }
-
-              img {
-                width: 20px;
-                height: 20px;
+              // Greyed out styling for readonly subtasks in add task component
+              &.grayed {
+                background: #f4f4f4 !important;
+                color: #b0b0b0 !important;
+                border: 1px solid #e0e0e0 !important;
+                cursor: not-allowed !important;
               }
             }
 
-            .remove-subtask-btn {
-              background: none;
-              border: none;
-              cursor: pointer;
-              padding: 4px;
+            // Input action buttons (delete/save) that appear when editing
+            .subtask-input-actions {
               display: flex;
+              gap: 8px;
               align-items: center;
-              justify-content: center;
-              border-radius: 50%;
-              transition: background-color 0.2s ease;
+              
+              .remove-subtask-btn,
+              .save-subtask-btn {
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 4px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: transform 0.2s ease;
 
-              &:hover {
-                background-color: #f8f9fa;
+                &:hover {
+                  transform: scale(1.1);
+                }
+
+                img {
+                  width: 16px;
+                  height: 16px;
+                }
               }
 
-              img {
-                width: 16px;
+              .subtask-divider {
+                width: 1px;
                 height: 16px;
-                filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+                background-color: #d1d7db;
+              }
+            }
+
+            // Hover actions for subtasks (edit and delete buttons)
+            .subtask-hover-actions {
+              display: flex;
+              gap: 16px;
+              align-items: center;
+              opacity: 0;
+              visibility: hidden;
+              transition: all 0.2s ease;
+              position: relative;
+
+              .edit-subtask-btn,
+              .remove-subtask-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 32px;
+                height: 32px;
+                border: none;
+                background: transparent;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: transform 0.2s ease;
+
+                img {
+                  width: 18px;
+                  height: 18px;
+                  opacity: 0.6;
+                  transition: opacity 0.15s ease;
+                }
+
+                &:hover {
+                  transform: scale(1.1);
+
+                  img {
+                    opacity: 1;
+                  }
+                }
+
+                &:active {
+                  transform: scale(1.05);
+                }
+              }
+
+              &::after {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 1px;
+                height: 20px;
+                background-color: rgba(0, 0, 0, 0.2);
+                z-index: 1;
+                pointer-events: none;
               }
             }
 
