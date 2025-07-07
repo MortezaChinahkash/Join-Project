@@ -35,6 +35,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   isDropdownOpen = false;
   isSubmitting = false;
   maxTitleLength: number = 40;
+  newSubtaskTitle: string = ''; // New property for subtask input
 
   // SHOW TASK ADDED NOTIFICATION
   taskAddedNotif: boolean = false;
@@ -162,10 +163,22 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Adds new subtask.
+   * Adds new subtask (old method - creates empty subtask immediately).
    */
   addSubtask(): void {
     this.formService.addSubtask(this.taskForm);
+  }
+
+  /**
+   * Adds new subtask from input field (only when Enter is pressed or + clicked).
+   */
+  addNewSubtask(): void {
+    if (this.newSubtaskTitle.trim()) {
+      // Create new subtask with the entered title
+      const subtaskGroup = this.formService.createSubtaskGroup(this.newSubtaskTitle.trim(), false);
+      this.subtasksFormArray.push(subtaskGroup);
+      this.newSubtaskTitle = ''; // Clear the input
+    }
   }
 
   /**

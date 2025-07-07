@@ -383,6 +383,63 @@
               filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
             }
           }
+
+          .add-subtask-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+
+            .form-input {
+              flex: 1;
+              padding: 0.75rem 3rem 0.75rem 1rem;
+              border: 1px solid #d1d7db;
+              border-radius: 10px;
+              font-size: 1rem;
+              color: #2a3647;
+              background-color: white;
+              transition: all 0.2s ease;
+
+              &::placeholder {
+                color: #d1d7db;
+              }
+
+              &:focus {
+                outline: none;
+                border-color: #29abe2;
+              }
+            }
+
+            .plus-btn {
+              position: absolute;
+              right: 0.5rem;
+              top: 50%;
+              transform: translateY(-50%);
+              height: 28px;
+              width: 28px;
+              border: none;
+              background: none;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              cursor: pointer;
+              padding: 0;
+
+              img {
+                width: 20px;
+                height: 20px;
+                opacity: 0.6;
+              }
+
+              &:disabled img {
+                opacity: 0.3;
+              }
+
+              &:focus {
+                border-color: #5ba4cf;
+              }
+            }
+          }
         }
       }
     }

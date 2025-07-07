@@ -534,7 +534,7 @@ export class BoardComponent implements OnInit {
   }
 
   /**
-   * Adds a new subtask to the form array.
+   * Adds a new subtask to the form array (for edit task overlay).
    */
   addNewSubtask(): void {
     this.subtaskService.addSubtaskToForm(
@@ -543,6 +543,18 @@ export class BoardComponent implements OnInit {
       this.formService.createSubtaskGroup.bind(this.formService)
     );
     this.newSubtaskTitle = '';
+  }
+
+  /**
+   * Adds a new subtask to the add task overlay form array.
+   */
+  addNewSubtaskToAddTask(): void {
+    if (this.newSubtaskTitle.trim()) {
+      // Create new subtask with the entered title
+      const subtaskGroup = this.formService.createSubtaskGroup(this.newSubtaskTitle.trim(), false);
+      this.formService.subtasksFormArray.push(subtaskGroup);
+      this.newSubtaskTitle = ''; // Clear the input
+    }
   }
 
   /**

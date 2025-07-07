@@ -190,10 +190,20 @@
                   </button>
                 </div>
               </div>
-              <button type="button" class="add-subtask-btn" (click)="addSubtask()">
-                <img src="./assets/img/icon_plus.svg" alt="Add" />
-                Add new subtask
-              </button>
+              <div class="add-subtask-input-wrapper">
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="Add new subtask"
+                  [(ngModel)]="newSubtaskTitle"
+                  name="newSubtaskTitle"
+                  [ngModelOptions]="{standalone: true}"
+                  (keyup.enter)="addNewSubtask()"
+                />
+                <button type="button" class="plus-btn" (click)="addNewSubtask()" [disabled]="!newSubtaskTitle.trim()">
+                  <img src="./assets/img/icon_plus.svg" alt="Add" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
