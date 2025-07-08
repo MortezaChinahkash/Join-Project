@@ -173,7 +173,7 @@
     }
     
     .btn {
-      width: 100%; // Make buttons full width when stacked
+      width: 100%; 
     }
   }
 }
@@ -188,13 +188,13 @@
 
   .priority-btn {
     flex: 1;
-    font-size: 12px !important; /* Kleinere Schriftgröße */
-    padding: 5px !important; /* Kleinere Innenabstände */
-    margin: 2px !important; /* Weniger Abstand zwischen Buttons */
+    font-size: 12px !important; 
+    padding: 5px !important;
+    margin: 2px !important; 
   }
 
   .priority-btn img {
-    width: 16px !important; /* Kleinere Icons */
+    width: 16px !important;
     height: 16px !important;
   }
 }
@@ -205,18 +205,18 @@
     flex-wrap: nowrap !important;
     justify-content: space-between !important;
     flex-direction: row;
-    max-width: 100%; /* Sicherstellen, dass die Buttons nicht über den Container hinausgehen */
+    max-width: 100%; 
   }
 
   .priority-btn {
     flex: 1;
-    font-size: 10px !important; /* Noch kleinere Schriftgröße */
-    padding: 3px !important; /* Kleinere Innenabstände */
-    margin: 1px !important; /* Weniger Abstand zwischen Buttons */
+    font-size: 10px !important; 
+    padding: 3px !important; 
+    margin: 1px !important; 
   }
 
   .priority-btn img {
-    width: 12px !important; /* Noch kleinere Icons */
+    width: 12px !important; 
     height: 12px !important;
   }
 }
@@ -229,18 +229,18 @@
     flex-direction: row;
     width: 100%;
     max-width: 100%;
-    gap: 2px; /* Minimaler Abstand zwischen den Buttons */
+    gap: 2px; 
   }
 
   .priority-btn {
-    flex: 1 1 0; /* Alle Buttons gleich groß */
-    min-width: 0; /* Ermöglicht das Schrumpfen */
+    flex: 1 1 0; 
+    min-width: 0;
     font-size: 9px !important;
     padding: 4px 2px !important;
     margin: 0 !important;
     text-align: center;
-    white-space: nowrap; /* Verhindert Zeilenumbruch */
-    overflow: hidden; /* Versteckt überlaufenden Text */
+    white-space: nowrap; 
+    overflow: hidden; 
   }
 
   .priority-btn img {
