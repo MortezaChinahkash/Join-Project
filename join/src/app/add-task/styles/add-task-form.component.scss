@@ -147,7 +147,7 @@
 
       .priority-buttons {
         display: flex;
-        gap: 1rem;
+        gap: 1rem; // sorgt für Abstand zwischen den Buttons
 
         .priority-btn {
           padding: 0.75rem 1.5rem;
@@ -162,10 +162,12 @@
           align-items: center;
           gap: 0.5rem;
           transition: all 0.2s ease;
+          position: relative; // wichtig für z-index
+          z-index: 1;         // hebt den Button über die Nachbarn
 
           &:hover:not(.active) {
-            border: white;
             box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+            // kein border mehr ändern!
           }
 
           &.selected:hover {
