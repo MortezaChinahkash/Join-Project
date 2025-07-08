@@ -118,32 +118,29 @@
             font-weight: 500;
 
             &:nth-child(1) {
-              border-color: var(--color-prio-urgent);
               .priority-icon-overlay {
                 filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
               }
               &:hover:not(.active) {
-                background-color: rgba(255, 61, 0, 0.1);
+                background-color: white;
               }
             }
 
             &:nth-child(2) {
-              border-color: var(--color-prio-medium);
               .priority-icon-overlay {
                 filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
               }
               &:hover:not(.active) {
-                background-color: rgba(255, 168, 0, 0.1);
+                background-color: white;
               }
             }
 
             &:nth-child(3) {
-              border-color: var(--color-prio-low);
               .priority-icon-overlay {
                 filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
               }
               &:hover:not(.active) {
-                background-color: rgba(122, 226, 41, 0.1);
+                background-color: white
               }
             }
 
