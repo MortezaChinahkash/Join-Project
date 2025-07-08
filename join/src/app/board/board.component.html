@@ -11,7 +11,7 @@
           <!-- Desktop Search -->
           <div class="search-add-box desktop-only">
             <div class="search-input-wrapper">
-              <input type="text" class="search-input" placeholder="Find task by title or description" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+              <input type="text" id="desktop-search" name="desktop-search" class="search-input" placeholder="Find task by title or description" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
               <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
             </div>
             <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task</button>
@@ -19,7 +19,7 @@
           
           <!-- Mobile Search -->
           <div class="mobile-only mobile-search-box">
-            <input type="text" class="search-input" placeholder="Find task by title or description" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+            <input type="text" id="mobile-search" name="mobile-search" class="search-input" placeholder="Find task by title or description" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
             <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
           </div>
         </div>
@@ -202,6 +202,8 @@
                         <div class="subtask-input-group">
                           <input 
                             type="text" 
+                            [id]="'subtask-' + i"
+                            name="subtask-{{i}}"
                             [readonly]="editingSubtaskIndex !== i"
                             formControlName="title" 
                             class="form-input" 
@@ -233,10 +235,11 @@
                       <div class="add-subtask-input-wrapper">
                         <input
                           type="text"
+                          id="add-new-subtask"
+                          name="newSubtaskTitle"
                           class="form-input"
                           placeholder="Add new subtask"
                           [(ngModel)]="newSubtaskTitle"
-                          name="newSubtaskTitle"
                           [ngModelOptions]="{standalone: true}"
                           (keyup.enter)="addNewSubtaskToAddTask()"
                         />
@@ -449,6 +452,8 @@
                   <div class="subtask-input-group" [class.completed-subtask]="subtask.get('completed')?.value">
                     <input
                       type="text"
+                      [id]="'edit-subtask-' + i"
+                      name="edit-subtask-{{i}}"
                       [readonly]="editingSubtaskIndex !== i"
                       formControlName="title"
                       class="form-input"
@@ -481,10 +486,11 @@
                 <div class="add-subtask-input-wrapper">
   <input
     type="text"
+    id="edit-add-new-subtask"
+    name="newSubtaskTitle"
     class="form-input"
     placeholder="Add new subtask"
     [(ngModel)]="newSubtaskTitle"
-    name="newSubtaskTitle"
     [ngModelOptions]="{standalone: true}"
     (keyup.enter)="addNewSubtask()"
   />
