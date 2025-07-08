@@ -36,11 +36,15 @@
       flex: 0 0 460px; 
       min-width: 460px;
       max-width: 460px;
+      padding-left: 1rem;
+    }
+    .leftSide {
+      padding-right: 1rem;
     }
   }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1020px) {
   .taskProperties {
     flex-direction: column;
 
@@ -57,6 +61,11 @@
       max-width: none;
       min-width: auto;
     }
+  }
+
+    .taskProperties .rightSide {
+    /* when you’re in stacked mode, push it down instead */
+    margin-top: 1rem;
   }
 
   // Constrain form field widths in column layout
