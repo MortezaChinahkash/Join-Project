@@ -28,14 +28,17 @@
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10);
 
       &:hover {
-        background-color: #f8f9fa;
-        border-color: #1a2532;
+        background-color: #e3f4fd;
+        border-color: #29abe2;
+        color: #29abe2;
+        box-shadow: 0 4px 12px 0 rgba(0,0,0,0.18);
       }
 
       &:active {
-        background-color: #e9ecef;
+        background-color: #d1e7f7;
       }
     }
 
@@ -52,14 +55,16 @@
       align-items: center;
       gap: 0.5rem;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 6px 0 rgba(0,0,0,0.10);
 
       &:hover {
-        background-color: #1a2532;
-        box-shadow: 0 4px 12px rgba(42, 54, 71, 0.25);
+        background-color: #29abe2;
+        color: white;
+        box-shadow: 0 4px 12px 0 rgba(0,0,0,0.18);
       }
 
       &:active {
-        background-color: #0f1419;
+        background-color: #1a93c7;
       }
 
       img {
@@ -290,6 +295,40 @@
   }
 }
 
+// Spezifischere Button-Styles für Add Task Overlay
+.addTaskOverlay .add-task-actions-fixed {
+  .cancelBtn {
+    &:hover {
+      background-color: #e3f4fd !important;
+      border-color: #29abe2 !important;
+      color: #29abe2 !important;
+      box-shadow: 0 4px 12px 0 rgba(0,0,0,0.18) !important;
+    }
+  }
+
+  .createBtn {
+    &:hover {
+      background-color: #29abe2 !important;
+      color: white !important;
+      box-shadow: 0 4px 12px 0 rgba(0,0,0,0.18) !important;
+    }
+  }
+}
+
+// Alternative mit noch höherer Spezifität
+.addTaskOverlay-content .add-task-actions-fixed button.cancelBtn:hover {
+  background-color: #e3f4fd !important;
+  border-color: #29abe2 !important;
+  color: #29abe2 !important;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.18) !important;
+}
+
+.addTaskOverlay-content .add-task-actions-fixed button.createBtn:hover {
+  background-color: #29abe2 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.18) !important;
+}
+
 // Priority icon overlays
 .priority-icon-overlay {
   width: 20px;
@@ -306,3 +345,4 @@
   filter: invert(28%) sepia(73%) saturate(3774%) hue-rotate(6deg)
     brightness(104%) contrast(106%);
 }
+
