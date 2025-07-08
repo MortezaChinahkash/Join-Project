@@ -77,7 +77,7 @@ export class BoardUtilsService {
   }
 
   /**
-   * Filters tasks based on search term in title.
+   * Filters tasks based on search term in title and description.
    * 
    * @param tasks - Array of tasks to filter
    * @param searchTerm - The search term to filter by
@@ -90,7 +90,8 @@ export class BoardUtilsService {
     
     const searchTermLower = searchTerm.toLowerCase().trim();
     return tasks.filter(task => 
-      task.title.toLowerCase().includes(searchTermLower)
+      task.title.toLowerCase().includes(searchTermLower) ||
+      (task.description && task.description.toLowerCase().includes(searchTermLower))
     );
   }
 

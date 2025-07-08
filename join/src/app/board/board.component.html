@@ -11,7 +11,7 @@
           <!-- Desktop Search -->
           <div class="search-add-box desktop-only">
             <div class="search-input-wrapper">
-              <input type="text" class="search-input" placeholder="Find task" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+              <input type="text" class="search-input" placeholder="Find task by title or description" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
               <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
             </div>
             <button class="desktop-header-add-button header-add-task-button" (click)="openAddTaskOverlay()">Add task</button>
@@ -19,7 +19,7 @@
           
           <!-- Mobile Search -->
           <div class="mobile-only mobile-search-box">
-            <input type="text" class="search-input" placeholder="Find task" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+            <input type="text" class="search-input" placeholder="Find task by title or description" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
             <img src="./assets/img/icon_search.png" alt="Search" class="search-icon" />
           </div>
         </div>
