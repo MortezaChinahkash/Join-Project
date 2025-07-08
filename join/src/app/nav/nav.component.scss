@@ -69,15 +69,11 @@
         ul{
             list-style: none;
             padding: 0;  
-
+            margin: 75px 0px 50px 0px;
             width: 100%;
             
             
             color: var(--color-greyed-out);
-
-            li{
-                
-            }
 
             li:hover a{
                 background: var(--nav-hover);
