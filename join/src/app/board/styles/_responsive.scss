@@ -389,20 +389,19 @@
 
 @media (max-width: 500px) {
   .priority-buttons {
-    display: flex !important;
+    gap: 2px !important; /* Weniger Abstand zwischen Buttons */
     flex-wrap: nowrap !important;
-    justify-content: center !important;
   }
 
   .priority-btn {
     flex: 1;
-    font-size: 12px !important; /* Kleinere Schriftgröße */
-    padding: 5px !important; /* Kleinere Innenabstände */
-    margin: 2px !important; /* Weniger Abstand zwischen Buttons */
+    font-size: 14px !important; /* Kleinere Schriftgröße */
+    padding: 10px !important; /* Kleinere Innenabstände */
+    margin: 1px !important; /* Weniger Abstand zwischen Buttons */
   }
 
   .priority-btn img {
-    width: 16px !important; /* Kleinere Icons */
-    height: 16px !important;
+    width: 14px !important; /* Kleinere Icons */
+    height: 14px !important;
   }
 }
