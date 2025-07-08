@@ -49,8 +49,8 @@
               <!-- Mobile move button - positioned top-right -->
               <button class="mobile-move-btn" 
                       (click)="onMobileMoveTask($event, task)"
-                      (mousedown)="onMobileMoveButtonMouseDown($event)"
-                      (touchstart)="onMobileMoveButtonTouchStart($event)">
+                      (touchstart)="onMobileMoveButtonTouchStart($event, task)"
+                      (mousedown)="onMobileMoveButtonMouseDown($event)">
                 <img src="./assets/img/swap_horiz.png" alt="Move task" class="move-icon" />
               </button>
               

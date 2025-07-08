@@ -559,10 +559,11 @@ export class BoardComponent implements OnInit {
 
   /**
    * Shows mobile task move overlay.
-   * @param event - Click event
+   * @param event - Click or Touch event
    * @param task - Task to move
    */
-  onMobileMoveTask(event: MouseEvent, task: Task): void {
+  onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void {
+    event.preventDefault();
     event.stopPropagation();
     
     const button = event.currentTarget as HTMLElement;
@@ -601,10 +602,17 @@ export class BoardComponent implements OnInit {
   /**
    * Handles mobile move button touch start event.
    * @param event - Touch event
+   * @param task - Task to move
    */
-  onMobileMoveButtonTouchStart(event: TouchEvent): void {
+  onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void {
     event.preventDefault();
     event.stopPropagation();
+    
+    // On touch devices, directly trigger the move action
+    const button = event.currentTarget as HTMLElement;
+    this.overlayPosition = this.mobileService.calculateOverlayPosition(button);
+    this.selectedTaskForMove = task;
+    this.showMobileMoveOverlay = true;
   }
 
   /**
