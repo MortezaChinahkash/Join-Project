@@ -174,10 +174,12 @@
       transition: all 0.2s ease;
       flex: 0 0 auto; // Default to natural width instead of flex: 1
       justify-content: center;
+      position: relative;
+      z-index: 1;
 
       &:hover:not(.active) {
-        border: white;
         box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+        // border: white; // ENTFERNEN!
       }
 
       &.selected:hover {

@@ -101,7 +101,7 @@
 
         .priority-buttons {
           display: flex;
-          gap: 1rem;
+          gap: 1rem; // sorgt für Abstand zwischen den Buttons
 
           .priority-btn {
             padding: 0.75rem 1.5rem;
@@ -116,14 +116,16 @@
             gap: 0.5rem;
             transition: all 0.1s ease;
             font-weight: 500;
+            position: relative;
+            z-index: 1;
 
             &:nth-child(1) {
               .priority-icon-overlay {
                 filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
               }
               &:hover:not(.active) {
-                border: white;
                 box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
+                // border: white; // ENTFERNEN!
               }
             }
 
