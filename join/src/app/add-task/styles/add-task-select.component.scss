@@ -251,8 +251,9 @@
       border: 1px solid var(--bg-dark-grey);
 
       &:hover:not(:disabled) {
-        background-color: var(--bg-dark-grey);
-        color: var(--bg-white);
+        background-color: transparent;
+        color: var(--color-accent);
+        border: 1px solid var(--color-accent);
       }
     }
   }
