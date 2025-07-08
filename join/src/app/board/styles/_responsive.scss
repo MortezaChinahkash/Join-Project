@@ -386,3 +386,23 @@
     gap: 8px;
   }
 }
+
+@media (max-width: 500px) {
+  .priority-buttons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+  }
+
+  .priority-btn {
+    flex: 1;
+    font-size: 12px !important; /* Kleinere Schriftgröße */
+    padding: 5px !important; /* Kleinere Innenabstände */
+    margin: 2px !important; /* Weniger Abstand zwischen Buttons */
+  }
+
+  .priority-btn img {
+    width: 16px !important; /* Kleinere Icons */
+    height: 16px !important;
+  }
+}
