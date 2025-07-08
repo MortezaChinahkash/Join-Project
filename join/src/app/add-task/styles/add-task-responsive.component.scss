@@ -177,3 +177,74 @@
     }
   }
 }
+
+@media (max-width: 550px) {
+  .priority-buttons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    flex-direction: row;
+  }
+
+  .priority-btn {
+    flex: 1;
+    font-size: 12px !important; /* Kleinere Schriftgröße */
+    padding: 5px !important; /* Kleinere Innenabstände */
+    margin: 2px !important; /* Weniger Abstand zwischen Buttons */
+  }
+
+  .priority-btn img {
+    width: 16px !important; /* Kleinere Icons */
+    height: 16px !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .priority-buttons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    flex-direction: row;
+    max-width: 100%; /* Sicherstellen, dass die Buttons nicht über den Container hinausgehen */
+  }
+
+  .priority-btn {
+    flex: 1;
+    font-size: 10px !important; /* Noch kleinere Schriftgröße */
+    padding: 3px !important; /* Kleinere Innenabstände */
+    margin: 1px !important; /* Weniger Abstand zwischen Buttons */
+  }
+
+  .priority-btn img {
+    width: 12px !important; /* Noch kleinere Icons */
+    height: 12px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .priority-buttons {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    flex-direction: row;
+    width: 100%;
+    max-width: 100%;
+    gap: 2px; /* Minimaler Abstand zwischen den Buttons */
+  }
+
+  .priority-btn {
+    flex: 1 1 0; /* Alle Buttons gleich groß */
+    min-width: 0; /* Ermöglicht das Schrumpfen */
+    font-size: 9px !important;
+    padding: 4px 2px !important;
+    margin: 0 !important;
+    text-align: center;
+    white-space: nowrap; /* Verhindert Zeilenumbruch */
+    overflow: hidden; /* Versteckt überlaufenden Text */
+  }
+
+  .priority-btn img {
+    width: 10px !important;
+    height: 10px !important;
+  }
+}
