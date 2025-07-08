@@ -1,5 +1,5 @@
 // Responsive Media Queries
-@media (min-width: 1001px) and (max-width: 1750px) {
+@media (min-width: 1001px) and (max-width: 1600px) {
   .board-scroll-wrapper {
     /* overflow-x: visible; - Removed to allow board overview scrolling */
     /* Enable overflow-x: visible only during drag operations */
@@ -13,11 +13,11 @@
     min-width: 100%;
   }
   
-  .board-column {
-    flex: 0 0 320px;
-    min-width: 320px;
-    max-width: 320px;
-  }
+  // .board-column {
+  //   flex: 0 0 320px;
+  //   min-width: 320px;
+  //   max-width: 320px;
+  // }
 }
 
 @media (min-width: 1751px) {
