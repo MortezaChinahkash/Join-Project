@@ -125,7 +125,6 @@
               }
               &:hover:not(.active) {
                 box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-                // border: white; // ENTFERNEN!
               }
             }
 
@@ -134,7 +133,6 @@
                 filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
               }
               &:hover:not(.active) {
-                border: white;
                 box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
               }
             }
@@ -144,7 +142,6 @@
                 filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
               }
               &:hover:not(.active) {
-                border: white;
                 box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
               }
             }
