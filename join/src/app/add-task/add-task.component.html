@@ -208,10 +208,11 @@
               <div class="add-subtask-input-wrapper">
                 <input
                   type="text"
+                  id="add-new-subtask"
+                  name="newSubtaskTitle"
                   class="form-input"
                   placeholder="Add new subtask"
                   [(ngModel)]="newSubtaskTitle"
-                  name="newSubtaskTitle"
                   [ngModelOptions]="{standalone: true}"
                   (keyup.enter)="addNewSubtask()"
                 />
