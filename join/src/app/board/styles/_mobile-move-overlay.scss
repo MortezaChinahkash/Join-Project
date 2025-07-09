@@ -141,10 +141,3 @@
     opacity: 1;
   }
 }
-
-// Hide on desktop
-@media (min-width: 1001px) {
-  .mobileMoveOverlay {
-    display: none;
-  }
-}

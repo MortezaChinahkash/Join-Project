@@ -2,14 +2,14 @@
 @media (max-width: 1300px) {
   .taskProperties {
     .rightSide {
-      flex: 0 0 450px; // Fixed width, no shrinking
+      flex: 0 0 450px; 
       min-width: 450px;
       max-width: 450px;
     }
 
     .leftSide {
-      flex: 1; // Can shrink as needed
-      min-width: 300px; // Minimum width to keep usable
+      flex: 1; 
+      min-width: 300px; 
       max-width: none;
     }
   }
@@ -30,19 +30,21 @@
 }
 }
 
-// Tablet breakpoint - ensure enough width for priority buttons
 @media (max-width: 1100px) {
   .taskProperties {
     .rightSide {
-      flex: 0 0 460px; // Extra space for Low button at narrow widths
+      flex: 0 0 460px; 
       min-width: 460px;
       max-width: 460px;
+      padding-left: 1rem;
+    }
+    .leftSide {
+      padding-right: 1rem;
     }
   }
 }
 
-// Mobile Responsive
-@media (max-width: 1000px) {
+@media (max-width: 1020px) {
   .taskProperties {
     flex-direction: column;
 
@@ -61,9 +63,14 @@
     }
   }
 
+    .taskProperties .rightSide {
+    /* when you’re in stacked mode, push it down instead */
+    margin-top: 1rem;
+  }
+
   // Constrain form field widths in column layout
   .form-group {
-    max-width: 600px; // Reasonable max width for mobile forms
+    max-width: 600px; 
     
     input,
     textarea,

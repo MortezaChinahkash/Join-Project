@@ -13,6 +13,7 @@ import { BoardUtilsService } from '../services/board-utils.service';
 import { BoardDataService } from '../services/board-data.service';
 import { BoardMobileService } from '../services/board-mobile.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
+import { TouchDetectionService } from '../services/touch-detection.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
@@ -103,6 +104,7 @@ export class BoardComponent implements OnInit {
    * @param dataService - Service for data loading and organization
    * @param mobileService - Service for mobile interactions
    * @param subtaskService - Service for subtask management
+   * @param touchDetectionService - Service for touch device detection
    */
   constructor(
     private taskService: TaskService,
@@ -112,7 +114,8 @@ export class BoardComponent implements OnInit {
     public utilsService: BoardUtilsService,
     private dataService: BoardDataService,
     private mobileService: BoardMobileService,
-    private subtaskService: BoardSubtaskService
+    private subtaskService: BoardSubtaskService,
+    public touchDetectionService: TouchDetectionService
   ) {
     this.initializeLocalArrays();
   }
