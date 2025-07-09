@@ -132,37 +132,106 @@ export class BoardThumbnailService {
   }
 
   /**
-   * Handles viewport click events for repositioning.
-   * Moves the viewport to the clicked position within the thumbnail for quick navigation.
+   * Handles viewport touch start for thumbnail navigation on touch devices.
+   * Initiates viewport dragging and sets up touch event listeners for smooth drag interaction.
    * 
-   * @param event - The mouse click event on the viewport
+   * @param event - The touch start event on the viewport
    */
-  onViewportClick(event: MouseEvent) {
-    if (this.isViewportDragging) return; // Don't handle click if we were dragging
-    
+  onViewportTouchStart(event: TouchEvent) {
     event.preventDefault();
     event.stopPropagation();
     
-    const thumbnail = document.querySelector('.thumbnail-content') as HTMLElement;
+    this.isViewportDragging = true;
+    const touch = event.touches[0];
+    this.dragStartX = touch.clientX;
+    
     const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (container) {
+      this.dragStartScrollLeft = container.scrollLeft;
+    }
+
+    // Disable transitions during drag for immediate response
+    const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
+    if (viewport) {
+      viewport.style.transition = 'none';
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!this.isViewportDragging) return;
+      
+      e.preventDefault();
+      
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - this.dragStartX;
+      const thumbnailWidth = 192; // 200px - 8px padding
+      
+      // Calculate the available drag area (thumbnail width minus viewport width)
+      const viewportWidth = this.thumbnailViewport.width;
+      const availableDragWidth = thumbnailWidth - viewportWidth;
+      
+      // Calculate scroll ratio based on available drag area
+      const scrollRatio = availableDragWidth > 0 ? this.maxScrollPosition / availableDragWidth : 0;
+      const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
+      
+      if (container) {
+        const clampedScroll = Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
+        container.scrollLeft = clampedScroll;
+        
+        // Force immediate viewport update during drag
+        requestAnimationFrame(() => {
+          this.updateScrollPosition();
+        });
+      }
+    };
+
+    const handleTouchEnd = () => {
+      this.isViewportDragging = false;
+      
+      // Re-enable transitions
+      if (viewport) {
+        viewport.style.transition = 'all 0.1s ease';
+      }
+      
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchEnd);
+    };
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchcancel', handleTouchEnd); // Handle touch cancel
+  }
+
+  /**
+   * Handles thumbnail touch events for navigation on touch devices.
+   * Calculates scroll position based on touch location and smoothly scrolls to target position.
+   * 
+   * @param event - The touch event on the thumbnail
+   */
+  onThumbnailTouchStart(event: TouchEvent) {
+    if (this.isDragging || this.isViewportDragging) return; // Don't handle touch if we were dragging
     
-    if (!thumbnail || !container) return;
-    
-    const thumbnailRect = thumbnail.getBoundingClientRect();
-    const clickX = event.clientX - thumbnailRect.left - 4; // Account for padding
-    const thumbnailWidth = thumbnailRect.width - 8; // Account for padding
+    event.stopPropagation();
+    const thumbnail = event.currentTarget as HTMLElement;
+    const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
+    const rect = thumbnailContent.getBoundingClientRect();
+    const touch = event.touches[0];
+    const clickX = touch.clientX - rect.left - 4; // Account for padding
+    const thumbnailWidth = rect.width - 8; // Account for padding
     
     // Calculate the available click area (thumbnail width minus viewport width)
     const viewportWidth = this.thumbnailViewport.width;
     const availableClickWidth = thumbnailWidth - viewportWidth;
     
-    // Calculate new viewport position
-    const newViewportLeft = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
-    const percentage = availableClickWidth > 0 ? (newViewportLeft / availableClickWidth) * 100 : 0;
+    // Adjust click position to account for viewport width
+    const adjustedClickX = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
+    const percentage = availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
     
-    // Scroll to the corresponding position
-    const scrollPosition = (percentage / 100) * this.maxScrollPosition;
-    container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (container) {
+      const scrollPosition = (percentage / 100) * this.maxScrollPosition;
+      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+    }
   }
 
   /**
@@ -282,5 +351,17 @@ export class BoardThumbnailService {
     this.scrollPercentage = 0;
     this.thumbWidth = 100;
     this.showScrollOverview = false;
+  }
+
+  /**
+   * Handles viewport click events.
+   * Provides click feedback while preventing drag interference.
+   * 
+   * @param event - The mouse click event on the viewport
+   */
+  onViewportClick(event: MouseEvent): void {
+    // Prevent the click from bubbling to thumbnail click handler
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

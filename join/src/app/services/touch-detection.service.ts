@@ -58,12 +58,14 @@ export class TouchDetectionService {
 
   /**
    * Checks if mobile move buttons should be shown.
-   * Shows on small screens or touch devices.
+   * Only shows on devices that are actually mobile/touch-first devices.
+   * Desktop devices with touchscreens should still use mouse interactions.
    * 
    * @returns True if mobile move buttons should be displayed
    */
   shouldShowMobileControls(): boolean {
-    return this.isMobileDevice() || this.isTouchDevice();
+    // Use the primary touch device detection for more accurate results
+    return this.isPrimaryTouchDevice();
   }
 
   /**
@@ -72,5 +74,34 @@ export class TouchDetectionService {
    */
   resetDetection(): void {
     this._isTouchDevice = null;
+  }
+
+  /**
+   * Determines if this is a primary touch device (mobile/tablet) vs desktop with touchscreen.
+   * Uses screen size and device characteristics to make the distinction.
+   * 
+   * @returns True if this is a primary touch device
+   */
+  isPrimaryTouchDevice(): boolean {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const isTouchCapable = this.isTouchDevice();
+    
+    if (!isTouchCapable) {
+      return false;
+    }
+    
+    // Mobile phone: narrow screen
+    if (screenWidth <= 768) {
+      return true;
+    }
+    
+    // Tablet: medium screen with touch
+    if (screenWidth <= 1200 && isTouchCapable) {
+      return true;
+    }
+    
+    // Desktop with touchscreen: large screen
+    return false;
   }
 }

@@ -461,11 +461,27 @@ export class BoardComponent implements OnInit {
   }
 
   /**
+   * Handles thumbnail touch start events for touch devices.
+   * @param event - Touch event
+   */
+  onThumbnailTouchStart(event: TouchEvent): void {
+    this.thumbnailService.onThumbnailTouchStart(event);
+  }
+
+  /**
    * Handles viewport mouse down events.
    * @param event - Mouse event
    */
   onViewportMouseDown(event: MouseEvent): void {
     this.thumbnailService.onViewportMouseDown(event);
+  }
+
+  /**
+   * Handles viewport touch start events for touch devices.
+   * @param event - Touch event
+   */
+  onViewportTouchStart(event: TouchEvent): void {
+    this.thumbnailService.onViewportTouchStart(event);
   }
 
   /**
