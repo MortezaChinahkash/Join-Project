@@ -46,8 +46,9 @@
             </div>
             <!-- Tasks -->
             <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" (mousedown)="onTaskMouseDown($event, task)" (touchstart)="onTaskTouchStart($event, task)" [attr.data-priority]="task.priority" [class.task-dragging-original]="dragDropService.draggedTask?.id === task.id">
-              <!-- Mobile move button - positioned top-right -->
+              <!-- Mobile move button - positioned top-right, shown on touch devices or mobile screens -->
               <button class="mobile-move-btn" 
+                      *ngIf="touchDetectionService.shouldShowMobileControls()"
                       (click)="onMobileMoveTask($event, task)"
                       (touchstart)="onMobileMoveButtonTouchStart($event, task)"
                       (mousedown)="onMobileMoveButtonMouseDown($event)">

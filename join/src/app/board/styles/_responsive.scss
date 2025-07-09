@@ -322,7 +322,7 @@
   right: 8px;
   width: 32px;
   height: 32px;
-  display: none; // Hidden by default
+  display: flex; // Always show when rendered (controlled by *ngIf in template)
   align-items: center;
   justify-content: center;
   background: white;
@@ -355,11 +355,6 @@
 }
 
 @media (max-width: 1000px) {
-  // Show mobile move button only on mobile
-  .mobile-move-btn {
-    display: flex;
-  }
-
   .taskEditOverlay .subtask-item .subtask-hover-actions {
     opacity: 1 !important;
     visibility: visible !important;
@@ -367,12 +362,7 @@
   }
 }
 
-@media (min-width: 1001px) {
-  // Hide mobile move button on desktop
-  .mobile-move-btn {
-    display: none;
-  }
-}
+
 
 // Update task footer to accommodate new button
 .task-footer {
