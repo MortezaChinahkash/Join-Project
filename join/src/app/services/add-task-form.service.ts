@@ -189,14 +189,34 @@ export class AddTaskFormService {
    * @returns Formatted error message
    */
   private formatErrorMessage(fieldName: string, errors: any): string {
+    const displayName = this.getDisplayFieldName(fieldName);
+    
     if (errors['required']) {
-      return `${fieldName} is required`;
+      return `${displayName} is required`;
     }
     if (errors['minlength']) {
       const requiredLength = errors['minlength'].requiredLength;
-      return `${fieldName} must be at least ${requiredLength} characters`;
+      return `${displayName} must be at least ${requiredLength} characters`;
     }
     return '';
+  }
+
+  /**
+   * Converts field names to proper display names with correct capitalization.
+   * @param fieldName - Internal field name
+   * @returns Properly formatted display name
+   */
+  private getDisplayFieldName(fieldName: string): string {
+    const fieldNameMap: { [key: string]: string } = {
+      'title': 'Title',
+      'category': 'Category', 
+      'dueDate': 'Due date',
+      'priority': 'Priority',
+      'description': 'Description',
+      'assignedTo': 'Assigned to'
+    };
+    
+    return fieldNameMap[fieldName] || fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
   }
 
   /**

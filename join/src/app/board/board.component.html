@@ -121,7 +121,7 @@
                            [class.error]="formService.isFieldInvalid('title')"
                            (blur)="formService.taskForm.get('title')?.markAsTouched()" />
                     <div *ngIf="formService.isFieldInvalid('title')" class="error-message">
-                      This field is required
+                      Title is required
                     </div>
                   </div>
                   <div class="form-group">
@@ -142,7 +142,7 @@
                     </div>
                     
                     <!-- Bestehende Required-Validierung -->
-                    <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">This field is required</div>
+                    <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">Due date is required</div>
                     
                     <!-- Neue Past-Date-Validierung -->
                     <div *ngIf="formService.isDateInvalid('dueDate')" class="error-message">The date cannot be in the past</div>
@@ -193,7 +193,7 @@
                     <option value="technical">Technical Task</option>
                     <option value="user-story">User Story</option>
                   </select>
-                  <div *ngIf="formService.isFieldInvalid('category')" class="error-message">This field is required</div>
+                  <div *ngIf="formService.isFieldInvalid('category')" class="error-message">Category is required</div>
                 </div>
 
                   <div class="form-group">
@@ -407,7 +407,7 @@
               </div>
               
               <!-- Bestehende Required-Validierung -->
-              <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">This field is required</div>
+              <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">Due date is required</div>
               
               <!-- Neue Past-Date-Validierung -->
               <div *ngIf="formService.isDateInvalid('dueDate')" class="error-message">The date cannot be in the past</div>
