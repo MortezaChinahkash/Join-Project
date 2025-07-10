@@ -1,0 +1,249 @@
+$content-bg: #f6f7fb;
+$card-bg: #fff;
+$primary: #29abe2;
+$headline: #222;
+$text: #42526e;
+$urgent: #ff3d00;
+$icon-bg: #2a3647;
+$border-radius: 20px;
+$shadow: 0 4px 16px 0 rgba(0,0,0,0.03);
+
+body, .content-wrapper {
+  background: $content-bg;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.content-wrapper {
+  padding: 40px 0 0 64px; // z.B. 120px, je nach Breite deines Menüs
+}
+
+.headlineAndDescription {
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+
+  h1 {
+    font-size: 48px;
+    font-weight: 700;
+    color: $headline;
+    margin: 0 18px 0 0;
+  }
+
+  span {
+    color: $primary;
+    font-size: 32px;
+    margin-right: 18px;
+    font-weight: 400;
+  }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 400;
+    color: $text;
+    margin: 0;
+  }
+}
+
+.mainContentWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.tasksArea {
+  display: grid;
+  grid-template-columns: repeat(2, 180px);
+  grid-template-rows: repeat(3, 110px);
+  gap: 24px;
+  margin-right: 60px;
+}
+
+.toDoCounter, .doneCounter, .tasksInBoardCounter, .tasksInProgressCounter, .tasksAwaitingCounter {
+  background: $card-bg;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 400;
+  color: $text;
+  position: relative;
+}
+
+.toDoCounter, .doneCounter {
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 28px;
+  gap: 18px;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: $icon-bg;
+    margin-right: 18px;
+  }
+}
+
+.toDoCounter::before {
+  background: $icon-bg url('/assets/icons/todoWhite.png') no-repeat center/24px 24px;
+}
+.doneCounter::before {
+  background: $icon-bg url('/assets/icons/check.svg') no-repeat center/24px 24px;
+}
+
+.toDoCounter span, .doneCounter span {
+  font-size: 36px;
+  font-weight: 700;
+  color: $headline;
+  margin-right: 8px;
+}
+.toDoCounter small, .doneCounter small {
+  font-size: 16px;
+  color: $text;
+  font-weight: 400;
+}
+
+.urgentWrapper {
+  grid-column: 1 / span 2;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  background: $card-bg;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
+  height: 110px;
+  overflow: hidden;
+}
+
+.urgentCounter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  background: transparent;
+  padding-left: 32px;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: $urgent url('/assets/img/icon_priority_urgent.svg') no-repeat center/24px 24px;
+    margin-right: 18px;
+  }
+
+  span {
+    font-size: 36px;
+    font-weight: 700;
+    color: $headline;
+    margin-right: 8px;
+  }
+  small {
+    font-size: 16px;
+    color: $text;
+    font-weight: 400;
+  }
+}
+
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  padding-left: 32px;
+  border-left: 2px solid #f0f0f0;
+
+  span {
+    font-size: 18px;
+    font-weight: 700;
+    color: $headline;
+    margin-bottom: 4px;
+  }
+  small {
+    font-size: 14px;
+    color: $text;
+    font-weight: 400;
+  }
+}
+
+.activeTasksWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  margin-top: 0;
+  margin-bottom: 0;
+  justify-content: flex-start; // Links ausrichten
+  margin-left: 0;              // Kein zusätzlicher Abstand
+}
+
+.tasksInBoardCounter,
+.tasksInProgressCounter,
+.tasksAwaitingCounter {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 170px;      // Feste Breite
+  height: 120px;     // Feste Höhe
+  min-width: 170px;  // Verhindert Schrumpfen
+  min-height: 120px;
+  max-width: 170px;
+  max-height: 120px;
+  font-size: 18px;
+  font-weight: 400;
+  color: #42526e;
+  text-align: center;
+  word-break: break-word;
+
+  span:first-child {
+    font-size: 44px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 4px;
+    margin-top: 8px;
+    line-height: 1;
+  }
+  span:last-child {
+    font-size: 17px;
+    color: #42526e;
+    font-weight: 400;
+    text-align: center;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    word-break: break-word;
+  }
+}
+
+.welcomeMessage {
+  margin-left: 60px;
+  margin-top: 40px;
+
+  p {
+    font-size: 32px;
+    color: $headline;
+    font-weight: 400;
+    margin: 0;
+
+    strong {
+      color: $primary;
+      font-weight: 700;
+      font-size: 38px;
+      display: block;
+      margin-top: 8px;
+    }
+  }
+}
