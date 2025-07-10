@@ -42,12 +42,12 @@
         <span class="component-subtitle">Better with a team</span>
       </div>
       <div class="single-contact-container" *ngIf="selectedContact" @slideInRight [@slideInRight]="suppressAnimation ? 'suppress' : selectedContact.id">
-        <div class="single-contact-header">
+        <div class="single-contact-header" [class.long-name]="isLongName(selectedContact.name)">
           <div class="single-contact-initials" [style.background]="getInitialsColor(selectedContact.name)">
             {{ getInitials(selectedContact.name) }}
           </div>
           <div class="single-contact-name-block">
-            <h2 class="single-contact-name">{{ selectedContact.name }}</h2>
+            <h2 class="single-contact-name">{{ getTruncatedName(selectedContact.name) }}</h2>
             <div class="single-contact-edit-row desktop-only">
               <div class="single-ctc-edit-btn" (click)="openEditContactOverlay(selectedContact)">
                 <img class="single-ctc-edit-icon" src="./assets/img/icon_todo.svg" />
