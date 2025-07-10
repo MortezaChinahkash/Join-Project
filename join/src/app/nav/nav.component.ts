@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { FooterComponent } from "../footer/footer.component";
 import { RouterModule } from '@angular/router';
 import { InlineSvgDirective } from '../inline-svg.directive';
+import { AuthService } from '../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 /**
  * Navigation component that provides the main sidebar navigation.
@@ -14,7 +16,7 @@ import { InlineSvgDirective } from '../inline-svg.directive';
 @Component({
   selector: 'app-nav',
   standalone: true,
-  imports: [FooterComponent, RouterModule, InlineSvgDirective],
+  imports: [FooterComponent, RouterModule, InlineSvgDirective, CommonModule],
   templateUrl: './nav.component.html',
   styleUrl: './nav.component.scss'
 })
@@ -26,8 +28,12 @@ export class NavComponent implements OnInit {
   /**
    * Initializes the navigation component.
    * @param router - Angular router service
+   * @param authService - Authentication service
    */
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   /**
    * Angular lifecycle hook for component initialization.
@@ -84,5 +90,26 @@ export class NavComponent implements OnInit {
    */
   getNavItemClasses(route: string): string {
     return this.isRouteActive(route) ? 'nav-item active' : 'nav-item';
+  }
+
+  /**
+   * Gets the current user from AuthService.
+   */
+  get currentUser() {
+    return this.authService.currentUser;
+  }
+
+  /**
+   * Checks if user is authenticated.
+   */
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated;
+  }
+
+  /**
+   * Navigates to the login page.
+   */
+  navigateToLogin(): void {
+    this.router.navigate(['/auth']);
   }
 }

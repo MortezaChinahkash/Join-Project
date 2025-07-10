@@ -26,7 +26,7 @@
             </svg>
         </div>
 
-        <ul>
+        <ul *ngIf="isAuthenticated">
             <li class="nav-item active" routerLinkActive="active">
                 <a routerLink="summary">
                     <div [inlineSvg]="'assets/icons/summary.svg'" class="icon"></div>
@@ -52,6 +52,14 @@
                 </a>
             </li>
         </ul>
+
+        <!-- Login button for non-authenticated users -->
+        <div class="login-section" *ngIf="!isAuthenticated">
+            <button class="login-btn" (click)="navigateToLogin()">
+                <div [inlineSvg]="'assets/icons/login.svg'" class="login-icon"></div>
+                <span>Log In</span>
+            </button>
+        </div>
 
     </div>
 

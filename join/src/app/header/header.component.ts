@@ -55,6 +55,10 @@ export class HeaderComponent {
     this.closeOverlay();
   }
 
+  navigateToLogin() {
+    this.router.navigate(['/auth']);
+  }
+
   async logout() {
     try {
       await this.authService.logout();

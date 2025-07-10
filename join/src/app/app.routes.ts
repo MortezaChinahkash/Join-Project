@@ -15,19 +15,21 @@ export const routes: Routes = [
   // Auth route - accessible without authentication
   { path: 'auth', component: AuthComponent },
 
-  // Protected routes - require authentication
+  // All routes with MainContentComponent (navbar + content)
   {
     path: '',
     component: MainContentComponent,
-    canActivate: [AuthGuard],
     children: [
-      { path: '', component: SummaryComponent },
-      { path: 'contacts', component: ContactsComponent },
-      { path: 'summary', component: SummaryComponent },
-      { path: 'add-task', component: AddTaskComponent },
+      // Public routes - accessible without authentication
       { path: 'imprint', component: LegalNoticeComponent },
       { path: 'privacy', component: PrivacyPolicyComponent },
-      { path: 'board', component: BoardComponent },
+      
+      // Protected routes - require authentication
+      { path: '', component: SummaryComponent, canActivate: [AuthGuard] },
+      { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+      { path: 'summary', component: SummaryComponent, canActivate: [AuthGuard] },
+      { path: 'add-task', component: AddTaskComponent, canActivate: [AuthGuard] },
+      { path: 'board', component: BoardComponent, canActivate: [AuthGuard] },
     ]
   },
 
