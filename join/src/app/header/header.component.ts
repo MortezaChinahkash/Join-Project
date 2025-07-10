@@ -1,15 +1,41 @@
 import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
+  imports: [CommonModule]
 })
 export class HeaderComponent {
   isOverlayVisible = false;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  get currentUser() {
+    return this.authService.currentUser;
+  }
+
+  get userDisplayName() {
+    return this.authService.getUserDisplayName();
+  }
+
+  get userFullName() {
+    return this.authService.getUserFullName();
+  }
+
+  get userEmail() {
+    return this.authService.getUserEmail();
+  }
+
+  get isGuest() {
+    return this.authService.isGuest;
+  }
 
   toggleOverlay() {
     this.isOverlayVisible = !this.isOverlayVisible;
@@ -29,10 +55,13 @@ export class HeaderComponent {
     this.closeOverlay();
   }
 
-  logout() {
-    // Implement logout logic here
-    console.log('Logout clicked');
-    this.closeOverlay();
+  async logout() {
+    try {
+      await this.authService.logout();
+      this.closeOverlay();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   }
 
   @HostListener('document:click', ['$event'])

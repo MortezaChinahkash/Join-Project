@@ -1,0 +1,214 @@
+<div class="auth-container">
+  <!-- Header with Logo and Sign Up Button -->
+  <header class="auth-header">
+    <div class="logo">
+      <img src="./assets/img/logo.svg" alt="Join Logo" />
+    </div>
+    <div class="header-actions" *ngIf="isLoginMode">
+      <span class="not-user-text">Not a Join user?</span>
+      <button class="sign-up-btn" (click)="toggleMode()">Sign up</button>
+    </div>
+  </header>
+
+  <!-- Main Auth Content -->
+  <main class="auth-main">
+    <!-- Login Form -->
+    <div class="auth-card" *ngIf="isLoginMode">
+      <div class="auth-form-container">
+        <h1 class="auth-title">Log in</h1>
+        <div class="title-underline"></div>
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
+          <!-- Email Field -->
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email"
+                placeholder="Email"
+                class="form-input"
+                [class.error]="isFieldInvalid(loginForm, 'email')"
+                (blur)="loginForm.get('email')?.markAsTouched()" />
+              <img src="./assets/img/icon_mail.svg" alt="Email" class="input-icon" />
+            </div>
+            <div class="error-message" *ngIf="getFieldErrorMessage(loginForm, 'email')">
+              {{ getFieldErrorMessage(loginForm, 'email') }}
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input 
+                type="password" 
+                id="password" 
+                formControlName="password"
+                placeholder="Password"
+                class="form-input"
+                [class.error]="isFieldInvalid(loginForm, 'password')"
+                (blur)="loginForm.get('password')?.markAsTouched()" />
+              <img src="./assets/img/icon_lock.svg" alt="Password" class="input-icon" />
+            </div>
+            <div class="error-message" *ngIf="getFieldErrorMessage(loginForm, 'password')">
+              {{ getFieldErrorMessage(loginForm, 'password') }}
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div class="form-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Login Buttons -->
+          <div class="form-actions">
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              [class.loading]="isLoading"
+              [disabled]="!canSubmitLogin()">
+              <span *ngIf="!isLoading">Log in</span>
+              <span *ngIf="isLoading">Logging in...</span>
+            </button>
+            
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              (click)="onGuestLogin()"
+              [disabled]="isLoading">
+              Guest Log in
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="auth-card" *ngIf="!isLoginMode">
+      <div class="auth-form-container">
+        <h1 class="auth-title">Sign up</h1>
+        <div class="title-underline"></div>
+        
+        <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
+          <!-- Name Field -->
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input 
+                type="text" 
+                id="name" 
+                formControlName="name"
+                placeholder="Name"
+                class="form-input"
+                [class.error]="isFieldInvalid(registerForm, 'name')"
+                (blur)="registerForm.get('name')?.markAsTouched()" />
+              <img src="./assets/img/icon_person.svg" alt="Name" class="input-icon" />
+            </div>
+            <div class="error-message" *ngIf="getFieldErrorMessage(registerForm, 'name')">
+              {{ getFieldErrorMessage(registerForm, 'name') }}
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input 
+                type="email" 
+                id="register-email" 
+                formControlName="email"
+                placeholder="Email"
+                class="form-input"
+                [class.error]="isFieldInvalid(registerForm, 'email')"
+                (blur)="registerForm.get('email')?.markAsTouched()" />
+              <img src="./assets/img/icon_mail.svg" alt="Email" class="input-icon" />
+            </div>
+            <div class="error-message" *ngIf="getFieldErrorMessage(registerForm, 'email')">
+              {{ getFieldErrorMessage(registerForm, 'email') }}
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input 
+                type="password" 
+                id="register-password" 
+                formControlName="password"
+                placeholder="Password"
+                class="form-input"
+                [class.error]="isFieldInvalid(registerForm, 'password')"
+                (blur)="registerForm.get('password')?.markAsTouched()" />
+              <img src="./assets/img/icon_lock.svg" alt="Password" class="input-icon" />
+            </div>
+            <div class="error-message" *ngIf="getFieldErrorMessage(registerForm, 'password')">
+              {{ getFieldErrorMessage(registerForm, 'password') }}
+            </div>
+          </div>
+
+          <!-- Confirm Password Field -->
+          <div class="form-group">
+            <div class="input-wrapper">
+              <input 
+                type="password" 
+                id="confirm-password" 
+                formControlName="confirmPassword"
+                placeholder="Confirm Password"
+                class="form-input"
+                [class.error]="isFieldInvalid(registerForm, 'confirmPassword') || registerForm.errors?.['passwordMismatch']"
+                (blur)="registerForm.get('confirmPassword')?.markAsTouched()" />
+              <img src="./assets/img/icon_lock.svg" alt="Confirm Password" class="input-icon" />
+            </div>
+            <div class="error-message" *ngIf="getFieldErrorMessage(registerForm, 'confirmPassword')">
+              {{ getFieldErrorMessage(registerForm, 'confirmPassword') }}
+            </div>
+          </div>
+
+          <!-- Privacy Policy Checkbox -->
+          <div class="form-group checkbox-group">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                formControlName="acceptPrivacy"
+                class="checkbox-input" />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">
+                I accept the <a href="/privacy" target="_blank" class="privacy-link">Privacy Policy</a>
+              </span>
+            </label>
+            <div class="error-message" *ngIf="isFieldInvalid(registerForm, 'acceptPrivacy')">
+              You must accept the Privacy Policy to continue
+            </div>
+          </div>
+
+          <!-- Error Message -->
+          <div class="form-error" *ngIf="errorMessage">
+            {{ errorMessage }}
+          </div>
+
+          <!-- Register Actions -->
+          <div class="form-actions">
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              [class.loading]="isLoading"
+              [disabled]="!canSubmitRegister()">
+              <span *ngIf="!isLoading">Sign up</span>
+              <span *ngIf="isLoading">Signing up...</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Back to Login -->
+        <div class="form-footer">
+          <span class="footer-text">Already have an account?</span>
+          <button class="link-btn" (click)="toggleMode()">Log in</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="auth-footer">
+    <a href="/privacy" class="footer-link">Privacy Policy</a>
+    <a href="/legal" class="footer-link">Legal notice</a>
+  </footer>
+</div>
