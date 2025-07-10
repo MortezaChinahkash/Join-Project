@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
@@ -8,6 +8,7 @@ export interface User {
   name: string;
   email: string;
   isGuest: boolean;
+  loginTimestamp: number; // Timestamp when user logged in
 }
 
 /**
@@ -21,11 +22,13 @@ export interface User {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   
   private readonly STORAGE_KEY = 'join_user';
+  private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  private sessionCheckInterval: any;
 
   constructor(
     private router: Router,
@@ -33,6 +36,7 @@ export class AuthService {
   ) {
     this.initializeAuthListener();
     this.loadUserFromStorage();
+    this.startSessionCheck();
   }
 
   /**
@@ -44,12 +48,16 @@ export class AuthService {
         const user = this.mapFirebaseUserToUser(firebaseUser);
         this.currentUserSubject.next(user);
         this.saveUserToStorage(user);
+        // Start session monitoring when user logs in
+        this.startSessionCheck();
       } else {
         // Only clear if we're not just starting up
         if (this.currentUserSubject.value) {
           this.currentUserSubject.next(null);
           localStorage.removeItem(this.STORAGE_KEY);
         }
+        // Stop session monitoring when user logs out
+        this.stopSessionCheck();
       }
     });
   }
@@ -81,7 +89,8 @@ export class AuthService {
       id: firebaseUser.uid,
       name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
       email: firebaseUser.email || '',
-      isGuest: firebaseUser.isAnonymous
+      isGuest: firebaseUser.isAnonymous,
+      loginTimestamp: Date.now() // Current timestamp
     };
   }
 
@@ -139,6 +148,8 @@ export class AuthService {
       const user = this.mapFirebaseUserToUser(userCredential.user);
       // Update the user object with the correct name
       user.name = name.trim();
+      // Set current login timestamp
+      user.loginTimestamp = Date.now();
       
       return user;
     } catch (error: any) {
@@ -164,6 +175,7 @@ export class AuthService {
    */
   async logout(): Promise<void> {
     try {
+      this.stopSessionCheck(); // Stop session monitoring
       await signOut(this.auth);
       // Firebase auth state listener will handle clearing the user state
       this.router.navigate(['/auth']);
@@ -201,6 +213,18 @@ export class AuthService {
       const userData = localStorage.getItem(this.STORAGE_KEY);
       if (userData) {
         const user = JSON.parse(userData);
+        
+        // Check if session has expired
+        const currentTime = Date.now();
+        const sessionAge = currentTime - (user.loginTimestamp || 0);
+        
+        if (sessionAge > this.SESSION_DURATION) {
+          // Session expired, remove from storage
+          console.log('Stored session expired, removing from storage');
+          localStorage.removeItem(this.STORAGE_KEY);
+          return;
+        }
+        
         // Only set user if Firebase hasn't already set one
         if (!this.currentUserSubject.value) {
           this.currentUserSubject.next(user);
@@ -220,6 +244,37 @@ export class AuthService {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
     } catch (error) {
       console.error('Error saving user to storage:', error);
+    }
+  }
+
+  /**
+   * Gets remaining session time in milliseconds.
+   */
+  getRemainingSessionTime(): number {
+    const currentUser = this.currentUser;
+    if (!currentUser) return 0;
+    
+    const currentTime = Date.now();
+    const sessionAge = currentTime - currentUser.loginTimestamp;
+    const remainingTime = this.SESSION_DURATION - sessionAge;
+    
+    return Math.max(0, remainingTime);
+  }
+
+  /**
+   * Gets remaining session time formatted as string.
+   */
+  getRemainingSessionTimeFormatted(): string {
+    const remainingMs = this.getRemainingSessionTime();
+    if (remainingMs === 0) return '0 hours';
+    
+    const hours = Math.floor(remainingMs / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    } else {
+      return `${minutes}m`;
     }
   }
 
@@ -247,6 +302,13 @@ export class AuthService {
       default:
         return new Error('An error occurred during authentication');
     }
+  }
+
+  /**
+   * Cleanup method to be called when service is destroyed.
+   */
+  ngOnDestroy(): void {
+    this.stopSessionCheck();
   }
 
   /**
@@ -279,5 +341,45 @@ export class AuthService {
    */
   getUserEmail(): string {
     return this.currentUser?.email || '';
+  }
+
+  /**
+   * Starts periodic session check to auto-logout after 24 hours.
+   */
+  private startSessionCheck(): void {
+    // Check every 5 minutes
+    this.sessionCheckInterval = setInterval(() => {
+      this.checkSessionExpiry();
+    }, 5 * 60 * 1000);
+    
+    // Also check immediately
+    this.checkSessionExpiry();
+  }
+
+  /**
+   * Checks if current session has expired and logs out if necessary.
+   */
+  private checkSessionExpiry(): void {
+    const currentUser = this.currentUser;
+    if (!currentUser) return;
+    
+    const currentTime = Date.now();
+    const sessionAge = currentTime - currentUser.loginTimestamp;
+    
+    // If session is older than 24 hours, auto-logout
+    if (sessionAge > this.SESSION_DURATION) {
+      console.log('Session expired after 24 hours, logging out automatically');
+      this.logout();
+    }
+  }
+
+  /**
+   * Stops the session check interval.
+   */
+  private stopSessionCheck(): void {
+    if (this.sessionCheckInterval) {
+      clearInterval(this.sessionCheckInterval);
+      this.sessionCheckInterval = null;
+    }
   }
 }
