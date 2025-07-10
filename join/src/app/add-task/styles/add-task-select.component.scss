@@ -135,16 +135,19 @@
         font-size: 0.8rem;
         font-weight: 600;
         margin-right: 0.75rem;
+        flex-shrink: 0;
       }
 
       .contact-name {
         flex: 1;
         font-size: 1rem;
         color: var(--bg-dark-grey);
+        margin-right: 0.75rem;
       }
 
       .checkbox-wrapper {
         position: relative;
+        flex-shrink: 0;
 
         input[type="checkbox"] {
           opacity: 0;
@@ -186,6 +189,58 @@
           &::after {
             opacity: 1;
           }
+        }
+      }
+    }
+  }
+}
+
+// Responsive styles für lange Namen in der Kontaktliste
+@media (max-width: 1000px) {
+  .custom-select-wrapper {
+    .dropdown-options {
+      .dropdown-option {
+        .contact-name {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: calc(100% - 120px); // Platz für Avatar (32px + 12px margin) + Checkbox (20px) + Padding (56px)
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-select-wrapper {
+    .dropdown-options {
+      .dropdown-option {
+        .contact-name {
+          max-width: calc(100% - 100px); // Weniger Platz auf sehr kleinen Bildschirmen
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .custom-select-wrapper {
+    .dropdown-options {
+      .dropdown-option {
+        .contact-name {
+          max-width: calc(100% - 80px); // Noch weniger Platz auf sehr kleinen Bildschirmen
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .custom-select-wrapper {
+    .dropdown-options {
+      .dropdown-option {
+        .contact-name {
+          max-width: calc(100% - 70px); // Minimaler Platz für sehr kleine Bildschirme
         }
       }
     }
