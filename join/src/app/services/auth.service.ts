@@ -32,6 +32,7 @@ export class AuthService {
     private auth: Auth
   ) {
     this.initializeAuthListener();
+    this.loadUserFromStorage();
   }
 
   /**
@@ -44,9 +45,31 @@ export class AuthService {
         this.currentUserSubject.next(user);
         this.saveUserToStorage(user);
       } else {
-        this.currentUserSubject.next(null);
-        localStorage.removeItem(this.STORAGE_KEY);
+        // Only clear if we're not just starting up
+        if (this.currentUserSubject.value) {
+          this.currentUserSubject.next(null);
+          localStorage.removeItem(this.STORAGE_KEY);
+        }
       }
+    });
+  }
+
+  /**
+   * Waits for Firebase auth to be ready and returns the current auth state.
+   */
+  async waitForAuthReady(): Promise<User | null> {
+    return new Promise((resolve) => {
+      const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
+        unsubscribe(); // Stop listening after first emission
+        if (firebaseUser) {
+          const user = this.mapFirebaseUserToUser(firebaseUser);
+          this.currentUserSubject.next(user);
+          this.saveUserToStorage(user);
+          resolve(user);
+        } else {
+          resolve(null);
+        }
+      });
     });
   }
 
@@ -171,6 +194,25 @@ export class AuthService {
   }
 
   /**
+   * Loads user from local storage on app initialization.
+   */
+  private loadUserFromStorage(): void {
+    try {
+      const userData = localStorage.getItem(this.STORAGE_KEY);
+      if (userData) {
+        const user = JSON.parse(userData);
+        // Only set user if Firebase hasn't already set one
+        if (!this.currentUserSubject.value) {
+          this.currentUserSubject.next(user);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading user from storage:', error);
+      localStorage.removeItem(this.STORAGE_KEY);
+    }
+  }
+
+  /**
    * Saves user to local storage.
    */
   private saveUserToStorage(user: User): void {
@@ -214,7 +256,7 @@ export class AuthService {
     if (!this.currentUser) return '';
     
     if (this.currentUser.isGuest) {
-      return 'Guest';
+      return 'GU';
     }
     
     // Return initials from name

@@ -22,7 +22,10 @@ export class AuthGuard implements CanActivate {
    * Determines if a route can be activated.
    * @returns true if user is authenticated, false otherwise
    */
-  canActivate(): boolean {
+  async canActivate(): Promise<boolean> {
+    // Wait for Firebase to be ready
+    await this.authService.waitForAuthReady();
+    
     if (this.authService.isAuthenticated) {
       return true;
     }
