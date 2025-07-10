@@ -395,3 +395,8 @@
     height: 14px !important;
   }
 }
+@media (max-width: 710px){
+  .task-card{
+    width: 100%;
+  }
+}
