@@ -31,12 +31,17 @@
 }
 
 .drag-placeholder {
+  min-height: 120px;
+  height: 120px;
   border: 2px dashed #4A90E2;
   border-radius: 10px;
   margin-bottom: 1rem;
   background-color: rgba(74, 144, 226, 0.1);
   position: relative;
   transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   
   &::before {
     content: "Drop task here";
@@ -48,6 +53,8 @@
     font-size: 0.9rem;
     font-weight: 500;
     opacity: 0.8;
+    white-space: nowrap;
+    text-align: center;
   }
   
   // Animation for placeholder appearance
@@ -86,14 +93,42 @@
 }
 
 // Mobile specific adjustments for drag & drop
+@media (max-width: 1000px) {
+  .task-dragging {
+    transform: rotate(3deg) !important; // Smaller rotation on mobile
+  }
+  
+  .drag-placeholder {
+    min-height: 140px !important;
+    height: 140px;
+    border: 3px dashed #4A90E2 !important;
+    background-color: rgba(74, 144, 226, 0.15) !important;
+    
+    &::before {
+      font-size: 1rem !important;
+      font-weight: 600 !important;
+      color: #4A90E2 !important;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .task-dragging {
     transform: rotate(3deg) !important; // Smaller rotation on mobile
   }
   
   .drag-placeholder {
+    min-height: 120px !important;
+    height: 120px;
+    border: 2px dashed #4A90E2 !important;
+    background-color: rgba(74, 144, 226, 0.2) !important;
+    border-radius: 12px;
+    
     &::before {
-      font-size: 0.8rem;
+      font-size: 0.9rem !important;
+      font-weight: 600 !important;
+      color: #4A90E2 !important;
+      content: "Place task here" !important;
     }
   }
 }
