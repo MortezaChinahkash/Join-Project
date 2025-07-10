@@ -64,8 +64,9 @@
           &.error {
             border-color: #ff8190;
 
+            // Placeholder bleibt immer grau, auch bei Fehlern
             &::placeholder {
-              color: #ff8190;
+              color: #d1d7db;
             }
           }
         }

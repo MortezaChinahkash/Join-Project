@@ -415,3 +415,19 @@
   margin: 0 2px; // Weniger Margin
   display: inline-block;
 }
+
+// Global placeholder styles - ensure all placeholders are always gray
+input::placeholder,
+textarea::placeholder,
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #d1d7db !important;
+}
+
+// Error state should NOT change placeholder color
+input.error::placeholder,
+textarea.error::placeholder,
+.form-input.error::placeholder,
+.form-textarea.error::placeholder {
+  color: #d1d7db !important;
+}
