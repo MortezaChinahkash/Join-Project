@@ -45,6 +45,7 @@
 }
 
 @media (max-width: 1020px) {
+  
   .taskProperties {
     flex-direction: column;
 
@@ -122,6 +123,9 @@
 
 // Mobile Responsive
 @media (max-width: 1000px) {
+  .default-content-container{
+    justify-self: center;
+  }
   .taskProperties {
     flex-direction: column;
 
