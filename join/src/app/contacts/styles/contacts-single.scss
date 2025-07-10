@@ -50,6 +50,94 @@
   text-align: left;
 }
 
+// Responsive styles für lange Namen im single-contact-header
+@media (max-width: 1000px) {
+  .single-contact-name {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .single-contact-header {
+    gap: 12px;
+  }
+  
+  .single-contact-initials {
+    width: 64px;
+    height: 64px;
+    font-size: 24px;
+  }
+  
+  .single-contact-name {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .single-contact-header {
+    gap: 8px;
+  }
+  
+  .single-contact-initials {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+  
+  .single-contact-name {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 430px) {
+  .single-contact-header.long-name {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    
+    .single-contact-initials {
+      width: 64px;
+      height: 64px;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+    
+    .single-contact-name-block {
+      width: 100%;
+      align-items: flex-start;
+    }
+    
+    .single-contact-name {
+      font-size: 1.1rem;
+      line-height: 1.3;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    
+    .single-contact-edit-row {
+      margin-top: 8px;
+    }
+  }
+  
+  .single-contact-header:not(.long-name) {
+    gap: 6px;
+    
+    .single-contact-initials {
+      width: 48px;
+      height: 48px;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    
+    .single-contact-name {
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+  }
+}
+
 .single-contact-edit-row {
   display: flex;
   flex-direction: row;

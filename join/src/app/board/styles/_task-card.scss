@@ -9,6 +9,12 @@
   cursor: pointer;
   transition: box-shadow 0.2s ease, transform 0.1s ease;
   position: relative;
+  height: 280px;
+  min-height: 280px;
+  max-height: 280px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   &:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
@@ -22,6 +28,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     margin-bottom: 0.8rem;
+    flex-shrink: 0;
 
     &.category-technical {
       background-color: #1cb7d6;
@@ -40,6 +47,14 @@
     font-weight: 600;
     color: var(--bg-dark-grey);
     line-height: 1.3;
+    flex-shrink: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 2.6em;
   }
 
   .task-description {
@@ -47,10 +62,19 @@
     font-size: 0.9rem;
     color: #666;
     line-height: 1.4;
+    flex: 1;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    max-height: 4.2em;
   }
 
   .task-progress {
     margin-bottom: 1rem;
+    flex-shrink: 0;
 
     .progress-bar {
       width: 100%;
@@ -78,6 +102,8 @@
     justify-content: space-between;
     align-items: center;
     min-height: 32px;
+    flex-shrink: 0;
+    margin-top: auto;
 
     .task-avatars {
       display: flex;
@@ -179,4 +205,39 @@
 .drag-over {
   background-color: rgba(41, 171, 226, 0.1);
   border-color: #29abe2;
+}
+
+// Responsive adjustments for task cards
+@media (max-width: 768px) {
+  .task-card {
+    height: 260px;
+    min-height: 260px;
+    max-height: 260px;
+    padding: 0.8rem;
+    
+    .task-title {
+      font-size: 0.9rem;
+    }
+    
+    .task-description {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .task-card {
+    height: 240px;
+    min-height: 240px;
+    max-height: 240px;
+    padding: 0.7rem;
+    
+    .task-title {
+      font-size: 0.85rem;
+    }
+    
+    .task-description {
+      font-size: 0.75rem;
+    }
+  }
 }

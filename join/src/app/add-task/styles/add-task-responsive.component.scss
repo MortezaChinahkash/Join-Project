@@ -424,7 +424,7 @@
   // Responsive styles for existing subtask items
   .subtask-input-group {
     .form-input {
-      padding: 0.6rem 4rem 0.6rem 0.8rem !important; // Adjusted for always visible buttons
+      padding: 0.6rem 2.5rem 0.6rem 0.8rem !important; // Adjusted for always visible buttons
       font-size: 0.9rem !important;
       margin-right: 0.5rem !important; // Add margin to prevent clipping at right edge
     }
@@ -525,7 +525,7 @@
 
     .subtask-input-actions,
     .subtask-hover-actions {
-      right: 1.4rem !important; // Moved further left into the field
+      right: 1.0rem !important; // Moved further left into the field
       gap: 0.2rem !important;
       
       .remove-subtask-btn,

@@ -509,6 +509,27 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Truncates contact name if longer than 25 characters.
+   * @param name - Contact name
+   * @returns Truncated name with ellipsis or original name
+   */
+  getTruncatedName(name: string): string {
+    if (name.length > 25) {
+      return name.substring(0, 25) + '...';
+    }
+    return name;
+  }
+
+  /**
+   * Checks if a contact name is considered long (>25 characters).
+   * @param name - Contact name
+   * @returns True if name is longer than 25 characters
+   */
+  isLongName(name: string): boolean {
+    return name.length > 25;
+  }
+
+  /**
    * Static method for getting initials (for external use).
    * @param name - Contact name
    * @returns Initials string

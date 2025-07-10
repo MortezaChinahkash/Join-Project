@@ -10,6 +10,56 @@
   justify-content: center;
   align-items: center;
   z-index: 1001;
+  .custom-select-wrapper {
+    .custom-select {
+      padding: 8px 12px;
+      border: 1px solid #d1d1d1;
+      border-radius: 6px;
+      min-height: 35px;
+      height: 35px;
+      box-sizing: border-box;
+      
+      &:hover {
+        border-color: #29abe2;
+      }
+      
+      &:focus {
+        outline: none;
+        border-color: #29abe2;
+      }
+    }
+  }
+
+  .add-subtask-input-wrapper {
+    .form-input {
+      padding: 8px 12px;
+      border: 1px solid #d1d1d1;
+      border-radius: 6px;
+      font-size: 13px;
+      height: 35px;
+      box-sizing: border-box;
+      
+      &:focus {
+        outline: none;
+        border-color: #29abe2;
+      }
+      
+      &::placeholder {
+        color: #999;
+      }
+    }
+    
+    .plus-btn {
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
 }
 
 .taskEditOverlay-content {
