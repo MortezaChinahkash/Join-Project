@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
 
 export interface User {
   id: string;
@@ -12,6 +13,7 @@ export interface User {
 /**
  * Authentication service for handling user login, registration, and session management.
  * Manages user authentication state and provides methods for login, registration, and logout.
+ * Integrated with Firebase Authentication.
  *
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
@@ -25,8 +27,39 @@ export class AuthService {
   
   private readonly STORAGE_KEY = 'join_user';
 
-  constructor(private router: Router) {
-    this.loadUserFromStorage();
+  constructor(
+    private router: Router,
+    private auth: Auth
+  ) {
+    this.initializeAuthListener();
+  }
+
+  /**
+   * Initializes Firebase auth state listener.
+   */
+  private initializeAuthListener(): void {
+    onAuthStateChanged(this.auth, (firebaseUser) => {
+      if (firebaseUser) {
+        const user = this.mapFirebaseUserToUser(firebaseUser);
+        this.currentUserSubject.next(user);
+        this.saveUserToStorage(user);
+      } else {
+        this.currentUserSubject.next(null);
+        localStorage.removeItem(this.STORAGE_KEY);
+      }
+    });
+  }
+
+  /**
+   * Maps Firebase user to our User interface.
+   */
+  private mapFirebaseUserToUser(firebaseUser: FirebaseUser): User {
+    return {
+      id: firebaseUser.uid,
+      name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
+      email: firebaseUser.email || '',
+      isGuest: firebaseUser.isAnonymous
+    };
   }
 
   /**
@@ -51,100 +84,69 @@ export class AuthService {
   }
 
   /**
-   * Authenticates user with email and password.
+   * Authenticates user with email and password using Firebase.
    * @param email - User's email address
    * @param password - User's password
    */
   async login(email: string, password: string): Promise<User> {
     try {
-      // Simulate API call delay
-      await this.delay(1000);
-
-      // In a real app, this would be an API call
-      // For demo purposes, we'll simulate user validation
-      const user = await this.validateUser(email, password);
-      
-      if (!user) {
-        throw new Error('Invalid email or password');
-      }
-
-      this.setCurrentUser(user);
+      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
-    } catch (error) {
+    } catch (error: any) {
       throw this.handleAuthError(error);
     }
   }
 
   /**
-   * Registers a new user.
+   * Registers a new user with Firebase Authentication.
    * @param name - User's full name
    * @param email - User's email address
    * @param password - User's password
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      // Simulate API call delay
-      await this.delay(1000);
-
-      // Check if user already exists
-      const existingUser = await this.checkUserExists(email);
-      if (existingUser) {
-        throw new Error('User with this email already exists');
-      }
-
-      // Create new user
-      const newUser: User = {
-        id: this.generateUserId(),
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        isGuest: false
-      };
-
-      // In a real app, this would save to database
-      await this.saveUser(newUser);
+      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       
-      this.setCurrentUser(newUser);
-      return newUser;
-    } catch (error) {
+      // Update the user's display name
+      await updateProfile(userCredential.user, {
+        displayName: name.trim()
+      });
+
+      const user = this.mapFirebaseUserToUser(userCredential.user);
+      // Update the user object with the correct name
+      user.name = name.trim();
+      
+      return user;
+    } catch (error: any) {
       throw this.handleAuthError(error);
     }
   }
 
   /**
-   * Logs in user as guest.
+   * Logs in user as guest using Firebase Anonymous Authentication.
    */
   async loginAsGuest(): Promise<User> {
     try {
-      // Simulate API call delay
-      await this.delay(500);
-
-      const guestUser: User = {
-        id: 'guest_' + Date.now(),
-        name: 'Guest User',
-        email: 'guest@join.com',
-        isGuest: true
-      };
-
-      this.setCurrentUser(guestUser);
-      return guestUser;
-    } catch (error) {
-      throw new Error('Guest login failed');
+      const userCredential = await signInAnonymously(this.auth);
+      const user = this.mapFirebaseUserToUser(userCredential.user);
+      return user;
+    } catch (error: any) {
+      throw this.handleAuthError(error);
     }
   }
 
   /**
-   * Logs out the current user.
+   * Logs out the current user using Firebase.
    */
   async logout(): Promise<void> {
     try {
-      // Clear user data
-      this.currentUserSubject.next(null);
-      localStorage.removeItem(this.STORAGE_KEY);
-      
-      // Redirect to auth page
+      await signOut(this.auth);
+      // Firebase auth state listener will handle clearing the user state
       this.router.navigate(['/auth']);
     } catch (error) {
       console.error('Logout error:', error);
+      throw new Error('Logout failed');
     }
   }
 
@@ -169,22 +171,6 @@ export class AuthService {
   }
 
   /**
-   * Loads user from local storage on app initialization.
-   */
-  private loadUserFromStorage(): void {
-    try {
-      const storedUser = localStorage.getItem(this.STORAGE_KEY);
-      if (storedUser) {
-        const user = JSON.parse(storedUser);
-        this.currentUserSubject.next(user);
-      }
-    } catch (error) {
-      console.error('Error loading user from storage:', error);
-      localStorage.removeItem(this.STORAGE_KEY);
-    }
-  }
-
-  /**
    * Saves user to local storage.
    */
   private saveUserToStorage(user: User): void {
@@ -196,83 +182,29 @@ export class AuthService {
   }
 
   /**
-   * Simulates user validation (replace with real API call).
-   */
-  private async validateUser(email: string, password: string): Promise<User | null> {
-    // Demo users for testing
-    const demoUsers = [
-      {
-        id: 'user_1',
-        name: 'Demo User',
-        email: 'demo@join.com',
-        password: 'password123',
-        isGuest: false
-      },
-      {
-        id: 'user_2',
-        name: 'Test User',
-        email: 'test@join.com',
-        password: 'test123',
-        isGuest: false
-      }
-    ];
-
-    const user = demoUsers.find(u => 
-      u.email.toLowerCase() === email.toLowerCase() && u.password === password
-    );
-
-    if (user) {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        isGuest: user.isGuest
-      };
-    }
-
-    return null;
-  }
-
-  /**
-   * Checks if user already exists (replace with real API call).
-   */
-  private async checkUserExists(email: string): Promise<boolean> {
-    // In a real app, this would check the database
-    const demoUsers = ['demo@join.com', 'test@join.com'];
-    return demoUsers.includes(email.toLowerCase());
-  }
-
-  /**
-   * Saves new user (replace with real API call).
-   */
-  private async saveUser(user: User): Promise<void> {
-    // In a real app, this would save to database
-    console.log('User saved:', user);
-  }
-
-  /**
-   * Generates a unique user ID.
-   */
-  private generateUserId(): string {
-    return 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-  }
-
-  /**
    * Handles authentication errors and returns user-friendly messages.
    */
   private handleAuthError(error: any): Error {
-    if (error instanceof Error) {
-      return error;
-    }
+    console.error('Auth error:', error);
     
-    return new Error('An unexpected error occurred during authentication');
-  }
-
-  /**
-   * Utility method to simulate async operations.
-   */
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    // Firebase auth error codes
+    switch (error.code) {
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        return new Error('Invalid email or password');
+      case 'auth/email-already-in-use':
+        return new Error('An account with this email already exists');
+      case 'auth/weak-password':
+        return new Error('Password should be at least 6 characters');
+      case 'auth/invalid-email':
+        return new Error('Please enter a valid email address');
+      case 'auth/operation-not-allowed':
+        return new Error('This operation is not allowed');
+      case 'auth/too-many-requests':
+        return new Error('Too many failed attempts. Please try again later');
+      default:
+        return new Error('An error occurred during authentication');
+    }
   }
 
   /**
