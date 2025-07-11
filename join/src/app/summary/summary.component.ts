@@ -97,6 +97,19 @@ export class SummaryComponent implements OnInit, OnDestroy {
     }
   }
 
+  getCurrentYear(): number {
+    return new Date().getFullYear();
+  }
+
+  getCurrentMonth(): string {
+    const options: Intl.DateTimeFormatOptions = { month: 'long' };
+    return new Date().toLocaleDateString('en-US', options);
+  };
+
+  getCurrentDay(): number {
+    return new Date().getDate();
+  }
+
   /**
    * Gets the display name for the current user.
    * Returns 'Guest' for guest users, otherwise the user's name or 'User' as fallback.
