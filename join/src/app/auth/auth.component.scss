@@ -20,6 +20,8 @@
     width: auto;
   }
 
+
+
   .header-actions {
     display: flex;
     align-items: center;
@@ -420,3 +422,20 @@
     }
   }
 }
+
+// ANIMATION 
+  .auth-container .logo{
+      transform: matrix(1, 0, 0, 1, 0, 0) translate(calc(0vw), calc(0vh));
+      transition: transform 0.5s linear;
+  }
+  .auth-container.anim .logo{
+      transform: matrix(4, 0, 0, 4, 0, 0) translate(calc(11vw), calc(11vh));
+  }
+  .auth-container .auth-main{
+    opacity: 1;
+    transition: opacity 0.5s linear;
+  }
+  .auth-container.anim .auth-main{
+    opacity: 0;
+    transition: opacity 0.5s linear;
+  }
