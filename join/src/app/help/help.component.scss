@@ -5,7 +5,29 @@
     margin-bottom: 1em;
   }
 
+  ul{
+    list-style: auto;
+  }
+
   ul li{
     margin-bottom: 1em;
+  }
+
+  h1{
+    font-size: 3em;
+    
+  }
+
+  h1,h2,h3,h4,h5,h6{
+    margin-bottom: 0.5em;
+  }
+
+  a{
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .help-container {
+    gap: 1em;
   }
 }
