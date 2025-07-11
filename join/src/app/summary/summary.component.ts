@@ -188,6 +188,20 @@ export class SummaryComponent implements OnInit, OnDestroy {
     ).length;
   }
 
+  getToDoTasksCount(): number {
+    return this.tasks.filter(task =>        
+      task.column === 'todo'
+      
+    ).length;
+  }
+
+  getDoneTasksCount(): number {
+    return this.tasks.filter(task =>        
+      task.column === 'done'
+      
+    ).length;
+  }
+
   /**
    * Gets the count of urgent tasks that have their deadline today.
    * @returns Number of urgent tasks due today
