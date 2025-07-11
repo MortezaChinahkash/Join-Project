@@ -6,6 +6,7 @@ import { SummaryComponent } from './summary/summary.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { LegalNoticeComponent } from './legal-notice/legal-notice.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { HelpComponent } from './help/help.component';
 import { BoardComponent } from './board/board.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { AuthComponent } from './auth/auth.component';
@@ -23,6 +24,7 @@ export const routes: Routes = [
       // Public routes - accessible without authentication
       { path: 'imprint', component: LegalNoticeComponent },
       { path: 'privacy', component: PrivacyPolicyComponent },
+      { path: 'help', component: HelpComponent },
       
       // Protected routes - require authentication
       { path: '', component: SummaryComponent, canActivate: [AuthGuard] },
