@@ -24,9 +24,9 @@
 
           <div class="activeTasksWrapper">
 
-          <div class="tasksInBoardCounter"><span>5</span> <span>Tasks in Board</span></div>
-          <div class="tasksInProgressCounter"><span>2</span> <span>Tasks in Progress</span></div>
-          <div class="tasksAwaitingCounter"> <span>2</span> <span>Awaiting Feedback</span></div>
+          <div class="tasksInBoardCounter"><span>{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
+          <div class="tasksInProgressCounter"><span>{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
+          <div class="tasksAwaitingCounter"> <span>{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
           </div>
         </div>
         <div class="welcomeMessage">

@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthService, User } from '../services/auth.service';
+import { TaskService } from '../services/task.service';
+import { BoardDataService } from '../services/board-data.service';
+import { Task } from '../interfaces/task.interface';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
@@ -20,8 +23,14 @@ import { CommonModule } from '@angular/common';
 export class SummaryComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   private userSubscription?: Subscription;
+  private tasksSubscription?: Subscription;
+  private tasks: Task[] = [];
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private taskService: TaskService,
+    private boardDataService: BoardDataService
+  ) {}
 
   /**
    * Angular lifecycle hook for component initialization.
@@ -29,6 +38,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeSummaryData();
     this.subscribeToUser();
+    this.loadAllTasks();
   }
 
   /**
@@ -37,6 +47,9 @@ export class SummaryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.tasksSubscription) {
+      this.tasksSubscription.unsubscribe();
     }
   }
 
@@ -134,4 +147,45 @@ export class SummaryComponent implements OnInit, OnDestroy {
   navigateToSection(section: string): void {
     // Implementation for section navigation
   }
+
+  /**
+   * Loads all tasks for the current user.
+   */
+  private loadAllTasks(): void {
+    this.tasksSubscription = this.boardDataService.loadTasksFromFirebase().subscribe({
+      next: (tasks) => {
+        this.tasks = tasks;
+      },
+      error: (error) => {
+        console.error('Error loading tasks:', error);
+      }
+    });
+  }
+
+  /**
+   * Gets the count of open tasks (todo, in progress, awaiting feedback).
+   * @returns Number of open tasks
+   */
+  getOpenTasksCount(): number {
+    return this.tasks.filter(task => 
+      task.column === 'todo' || 
+      task.column === 'inprogress' || 
+      task.column === 'awaiting'
+    ).length;
+  }
+
+  getInProgressTasksCount(): number {
+    return this.tasks.filter(task =>        
+      task.column === 'inprogress'
+      
+    ).length;
+  }
+
+   getAwaitingTasksCount(): number {
+    return this.tasks.filter(task =>        
+      task.column === 'awaiting'
+      
+    ).length;
+  }
+
 }
