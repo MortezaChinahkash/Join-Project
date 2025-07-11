@@ -18,7 +18,7 @@
           <div class="toDoCounter" aria-label="To-do tasks count"></div>
           <div class="doneCounter" aria-label="done tasks count"></div>
           <div class="urgentWrapper">
-            <div class="urgentCounter" aria-label="urgent tasks count"></div>
+            <div class="urgentCounter" aria-label="urgent tasks count"><span>1</span> <span>urgent </span></div>
             <div class="dateContainer" aria-label="date tasks deadline"><span>July 10, 2025</span><span>Upcoming Deadline</span></div>
           </div>
 
@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="welcomeMessage">
-            <p>Good morning, <strong>John Doe</strong></p>
+            <p>{{ getTimeBasedGreeting() }}, <strong>{{ currentUser?.name || 'User' }}</strong></p>
         </div>
       </div>
     </div>
