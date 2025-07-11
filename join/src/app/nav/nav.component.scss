@@ -67,7 +67,7 @@
 
             display: block;
             width: calc(100% - 30%);
-            height: 100%;
+            height: auto;
 
             padding: 5% 15%;
 
@@ -105,8 +105,12 @@
         // Login section styles
         .login-section {
             width: 100%;
-            padding: 75px 0px 50px 0px;
-            
+            // padding: 75px 0px 50px 0px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+                
             .login-btn {
                 display: flex;
                 align-items: center;

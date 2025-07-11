@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,8 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './auth.component.scss'
 })
 export class AuthComponent implements OnInit {
+  @ViewChild('containerElement', { static: false }) containerElement!: ElementRef;
+  
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   isLoginMode = true;
@@ -33,6 +35,20 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForms();
+    this.removeAnimClass();
+  }
+
+  /**
+   * Removes the 'anim' class from the container element.
+   */
+  private removeAnimClass(): void {
+    setTimeout(() => {
+      const container = document.querySelector('.auth-container');
+      if (container) { container.classList.remove('anim'); }
+      if (this.containerElement?.nativeElement) {
+        this.containerElement.nativeElement.classList.remove('anim');
+      }
+    }, 500);
   }
 
   /**
