@@ -55,9 +55,9 @@ body, .content-wrapper {
 
 .tasksArea {
   display: grid;
-  grid-template-columns: repeat(2, 180px);
-  grid-template-rows: repeat(3, 110px);
-  gap: 24px;
+  grid-template-columns: repeat(2, 200px);
+  grid-template-rows: repeat(2, 120px) 140px;
+  gap: 28px;
   margin-right: 60px;
 }
 
@@ -76,41 +76,47 @@ body, .content-wrapper {
 }
 
 .toDoCounter, .doneCounter {
+  display: flex;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 28px;
-  gap: 18px;
+  padding: 20px;
+  gap: 16px;
 
   &::before {
     content: '';
     display: block;
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
     background: $icon-bg;
-    margin-right: 18px;
+    flex-shrink: 0;
+  }
+
+  span:first-child {
+    font-size: 48px;
+    font-weight: 700;
+    color: $headline;
+    margin-right: 8px;
+    line-height: 1;
+  }
+
+  span:last-child {
+    font-size: 20px;
+    color: $text;
+    font-weight: 400;
+    line-height: 1;
   }
 }
 
 .toDoCounter::before {
-  background: $icon-bg url('/assets/icons/todoWhite.png') no-repeat center/24px 24px;
+  background: $icon-bg url('/assets/icons/todoWhite.png') no-repeat center/30px 30px;
 }
 .doneCounter::before {
-  background: $icon-bg url('/assets/icons/check.svg') no-repeat center/24px 24px;
+  background: $icon-bg url('/assets/icons/check.svg') no-repeat center/30px 30px;
 }
 
-.toDoCounter span, .doneCounter span {
-  font-size: 36px;
-  font-weight: 700;
-  color: $headline;
-  margin-right: 8px;
-}
-.toDoCounter small, .doneCounter small {
-  font-size: 16px;
-  color: $text;
-  font-weight: 400;
-}
+
 
 .urgentWrapper {
   grid-column: 1 / span 2;
@@ -120,38 +126,43 @@ body, .content-wrapper {
   background: $card-bg;
   border-radius: $border-radius;
   box-shadow: $shadow;
-  height: 110px;
+  height: 140px;
   overflow: hidden;
 }
 
 .urgentCounter {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   width: 50%;
   background: transparent;
-  padding-left: 32px;
+  padding: 20px;
+  gap: 16px;
 
   &::before {
     content: '';
     display: block;
-    width: 48px;
-    height: 48px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background: $urgent url('/assets/icons/urgent_arrows.png') no-repeat center/24px 24px;
-    margin-right: 18px;
+    background: $urgent url('/assets/icons/urgent_arrows.png') no-repeat center/30px 30px;
+    flex-shrink: 0;
   }
 
-  span {
-    font-size: 36px;
+  span:first-child {
+    font-size: 48px;
     font-weight: 700;
     color: $headline;
     margin-right: 8px;
+    line-height: 1;
   }
-  small {
-    font-size: 16px;
+  
+  span:last-child {
+    font-size: 20px;
     color: $text;
     font-weight: 400;
+    line-height: 1;
   }
 }
 
@@ -160,19 +171,22 @@ body, .content-wrapper {
   flex-direction: column;
   justify-content: center;
   width: 50%;
-  padding-left: 32px;
+  padding: 20px;
   border-left: 2px solid #f0f0f0;
+  text-align: center;
 
-  span {
-    font-size: 18px;
+  span:first-child {
+    font-size: 20px;
     font-weight: 700;
     color: $headline;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+    line-height: 1.2;
   }
-  small {
-    font-size: 14px;
+  span:last-child {
+    font-size: 16px;
     color: $text;
     font-weight: 400;
+    line-height: 1;
   }
 }
 
@@ -246,4 +260,10 @@ body, .content-wrapper {
       margin-top: 8px;
     }
   }
+}
+
+.counterWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

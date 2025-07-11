@@ -15,10 +15,10 @@
 
       <div class="mainContentWrapper">
         <div class="tasksArea">
-          <div class="toDoCounter" aria-label="To-do tasks count"></div>
-          <div class="doneCounter" aria-label="done tasks count"></div>
+          <div class="toDoCounter" aria-label="To-do tasks count"><div class="counterWrapper"><span>1</span> <span>To-do</span></div></div>
+          <div class="doneCounter" aria-label="done tasks count"><div class="counterWrapper"><span>1</span> <span>Done</span></div></div>
           <div class="urgentWrapper">
-            <div class="urgentCounter" aria-label="urgent tasks count"><span>1</span> <span>urgent </span></div>
+            <div class="urgentCounter" aria-label="urgent tasks count"><span>{{ getUrgentTasksDueToday() }}</span> <span>Urgent</span></div>
             <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
           </div>
 

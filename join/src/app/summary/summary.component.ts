@@ -188,4 +188,31 @@ export class SummaryComponent implements OnInit, OnDestroy {
     ).length;
   }
 
+  /**
+   * Gets the count of urgent tasks that have their deadline today.
+   * @returns Number of urgent tasks due today
+   */
+  getUrgentTasksDueToday(): number {
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    
+    return this.tasks.filter(task => {
+      // Check if task is urgent
+      if (task.priority !== 'urgent') {
+        return false;
+      }
+      
+      // Check if due date is today
+      if (!task.dueDate) {
+        return false;
+      }
+      
+      // Convert task due date to comparable format
+      const taskDueDate = new Date(task.dueDate);
+      const taskDueDateString = taskDueDate.toISOString().split('T')[0];
+      
+      return taskDueDateString === todayString;
+    }).length;
+  }
+
 }
