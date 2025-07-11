@@ -47,6 +47,6 @@ Thumbs.db
 .runtimeconfig.json
 
 # Environment files with sensitive data
-# /src/environments/environment.ts  # Commented out - now committed to repo
+/src/environments/environment.ts  # Contains sensitive Firebase config
 /src/environments/environment.prod.ts
 /src/environments/firebase.config.ts
