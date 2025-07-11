@@ -98,6 +98,23 @@ export class SummaryComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Gets the display name for the current user.
+   * Returns 'Guest' for guest users, otherwise the user's name or 'User' as fallback.
+   * @returns Display name string
+   */
+  getUserDisplayName(): string {
+    if (!this.currentUser) {
+      return 'Guest';
+    }
+    
+    if (this.currentUser.isGuest) {
+      return 'Guest';
+    }
+    
+    return this.currentUser.name || 'User';
+  }
+
+  /**
    * Handles navigation to a specific section.
    * @param section - Section to navigate to
    */
