@@ -54,12 +54,14 @@
         </ul>
 
         <!-- Login button for non-authenticated users -->
-        <div class="login-section" *ngIf="!isAuthenticated">
-            <button class="login-btn" (click)="navigateToLogin()">
-                <div [inlineSvg]="'assets/icons/login.svg'" class="login-icon"></div>
-                <span>Log In</span>
-            </button>
-        </div>
+        <ul class="login-section" *ngIf="!isAuthenticated">
+            <li class="nav-item" routerLinkActive="active">
+                <a class="login-btn" (click)="navigateToLogin()">
+                    <div [inlineSvg]="'assets/icons/login.svg'" class="icon login-icon"></div>
+                    <span>Log In</span>
+                </a>
+            </li>
+        </ul>
 
     </div>
 
