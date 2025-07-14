@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { AuthService, User } from '../services/auth.service';
 import { TaskService } from '../services/task.service';
 import { BoardDataService } from '../services/board-data.service';
@@ -29,7 +29,8 @@ export class SummaryComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private taskService: TaskService,
-    private boardDataService: BoardDataService
+    private boardDataService: BoardDataService,
+    private router: Router
   ) {}
 
   /**
@@ -146,6 +147,48 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   navigateToSection(section: string): void {
     // Implementation for section navigation
+  }
+
+  /**
+   * Navigates to the board component.
+   */
+  navigateToBoard(): void {
+    this.router.navigate(['/board']);
+  }
+
+  /**
+   * Navigates to the board component filtered by todo tasks.
+   */
+  navigateToTodoTasks(): void {
+    this.router.navigate(['/board'], { queryParams: { filter: 'todo' } });
+  }
+
+  /**
+   * Navigates to the board component filtered by done tasks.
+   */
+  navigateToDoneTasks(): void {
+    this.router.navigate(['/board'], { queryParams: { filter: 'done' } });
+  }
+
+  /**
+   * Navigates to the board component filtered by tasks in board.
+   */
+  navigateToTasksInBoard(): void {
+    this.router.navigate(['/board'], { queryParams: { filter: 'todo' } });
+  }
+
+  /**
+   * Navigates to the board component filtered by tasks in progress.
+   */
+  navigateToTasksInProgress(): void {
+    this.router.navigate(['/board'], { queryParams: { filter: 'inprogress' } });
+  }
+
+  /**
+   * Navigates to the board component filtered by awaiting feedback tasks.
+   */
+  navigateToAwaitingTasks(): void {
+    this.router.navigate(['/board'], { queryParams: { filter: 'awaiting' } });
   }
 
   /**

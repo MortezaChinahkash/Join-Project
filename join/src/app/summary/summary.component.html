@@ -16,12 +16,12 @@
       <div class="mainContentWrapper">
         <div class="tasksArea">
           <div class="topRow">
-            <div class="toDoCounter" aria-label="To-do tasks count"><div class="counterWrapper"><span>{{getToDoTasksCount()}}</span> <span>To-do</span></div></div>
-            <div class="doneCounter" aria-label="done tasks count"><div class="counterWrapper"><span>{{getDoneTasksCount()}}</span> <span>Done</span></div></div>
+            <div class="toDoCounter" (click)="navigateToTodoTasks()" aria-label="To-do tasks count"><div class="counterWrapper"><span>{{getToDoTasksCount()}}</span> <span>To-do</span></div></div>
+            <div class="doneCounter" (click)="navigateToDoneTasks()" aria-label="done tasks count"><div class="counterWrapper"><span>{{getDoneTasksCount()}}</span> <span>Done</span></div></div>
           </div>
           
           <div class="middleRow">
-            <div class="urgentWrapper">
+            <div class="urgentWrapper" (click)="navigateToBoard()">
               <div class="urgentCounter" aria-label="urgent tasks count"><span>{{ getUrgentTasksDueToday() }}</span> <span>Urgent</span></div>
               <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
             </div>
@@ -31,9 +31,9 @@
           </div>
 
           <div class="bottomRow">
-            <div class="tasksInBoardCounter"><span>{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
-            <div class="tasksInProgressCounter"><span>{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
-            <div class="tasksAwaitingCounter"> <span>{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
+            <div class="tasksInBoardCounter" (click)="navigateToTasksInBoard()"><span>{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
+            <div class="tasksInProgressCounter" (click)="navigateToTasksInProgress()"><span>{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
+            <div class="tasksAwaitingCounter" (click)="navigateToAwaitingTasks()"> <span>{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
           </div>
         </div>
       </div>
