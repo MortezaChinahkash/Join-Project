@@ -160,35 +160,50 @@ export class SummaryComponent implements OnInit, OnDestroy {
    * Navigates to the board component filtered by todo tasks.
    */
   navigateToTodoTasks(): void {
-    this.router.navigate(['/board'], { queryParams: { filter: 'todo' } });
+    this.router.navigate(['/board'], { 
+      queryParams: { filter: 'todo' },
+      fragment: 'todo-column'
+    });
   }
 
   /**
-   * Navigates to the board component filtered by done tasks.
+   * Navigates to the board component filtered by done tasks and scrolls to done section.
    */
   navigateToDoneTasks(): void {
-    this.router.navigate(['/board'], { queryParams: { filter: 'done' } });
+    this.router.navigate(['/board'], { 
+      queryParams: { filter: 'done' },
+      fragment: 'done-column'
+    });
   }
 
   /**
    * Navigates to the board component filtered by tasks in board.
    */
   navigateToTasksInBoard(): void {
-    this.router.navigate(['/board'], { queryParams: { filter: 'todo' } });
+    this.router.navigate(['/board'], { 
+      queryParams: { filter: 'todo' },
+      fragment: 'todo-column'
+    });
   }
 
   /**
    * Navigates to the board component filtered by tasks in progress.
    */
   navigateToTasksInProgress(): void {
-    this.router.navigate(['/board'], { queryParams: { filter: 'inprogress' } });
+    this.router.navigate(['/board'], { 
+      queryParams: { filter: 'inprogress' },
+      fragment: 'inprogress-column'
+    });
   }
 
   /**
    * Navigates to the board component filtered by awaiting feedback tasks.
    */
   navigateToAwaitingTasks(): void {
-    this.router.navigate(['/board'], { queryParams: { filter: 'awaiting' } });
+    this.router.navigate(['/board'], { 
+      queryParams: { filter: 'awaiting' },
+      fragment: 'awaiting-column'
+    });
   }
 
   /**

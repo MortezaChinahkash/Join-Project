@@ -103,7 +103,7 @@ body, .content-wrapper {
   width: 200px;
   height: 120px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   &::before {
     content: '';
@@ -113,7 +113,7 @@ body, .content-wrapper {
     border-radius: 50%;
     background: $icon-bg;
     flex-shrink: 0;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
   }
 
   span:first-child {
@@ -122,6 +122,7 @@ body, .content-wrapper {
     color: $headline;
     margin-right: 8px;
     line-height: 1;
+    transition: all 0.3s ease;
   }
 
   span:last-child {
@@ -129,11 +130,14 @@ body, .content-wrapper {
     color: $text;
     font-weight: 400;
     line-height: 1;
+    transition: all 0.3s ease;
   }
 }
 
 .toDoCounter:hover {
   background: $icon-bg;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
   
   &::before {
     background: $card-bg url('/assets/icons/todo.svg') no-repeat center/30px 30px;
@@ -146,6 +150,8 @@ body, .content-wrapper {
 
 .doneCounter:hover {
   background: $icon-bg;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
   
   &::before {
     background: $card-bg url('/assets/icons/done.svg') no-repeat center/30px 30px;
@@ -176,11 +182,13 @@ body, .content-wrapper {
   width: 512px; // Breite für zwei normale Container plus Gap (200px + 28px + 200px + 28px)
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .urgentWrapper:hover {
   background: $icon-bg;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
   
   .urgentCounter {
     span {
@@ -286,7 +294,7 @@ body, .content-wrapper {
   text-align: center;
   word-break: break-word;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 
   span:first-child {
     font-size: 44px;
@@ -295,7 +303,7 @@ body, .content-wrapper {
     margin-bottom: 4px;
     margin-top: 8px;
     line-height: 1;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
   }
   span:last-child {
     font-size: 17px;
@@ -306,7 +314,7 @@ body, .content-wrapper {
     display: block;
     width: 100%;
     word-break: break-word;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
   }
 }
 
@@ -314,6 +322,8 @@ body, .content-wrapper {
 .tasksInProgressCounter:hover,
 .tasksAwaitingCounter:hover {
   background: $icon-bg;
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
   
   span {
     color: $card-bg !important;

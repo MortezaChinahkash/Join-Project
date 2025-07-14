@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Contact } from '../services/contact-data.service';
@@ -115,7 +115,8 @@ export class BoardComponent implements OnInit {
     private dataService: BoardDataService,
     private mobileService: BoardMobileService,
     private subtaskService: BoardSubtaskService,
-    public touchDetectionService: TouchDetectionService
+    public touchDetectionService: TouchDetectionService,
+    private route: ActivatedRoute
   ) {
     this.initializeLocalArrays();
   }
@@ -127,6 +128,27 @@ export class BoardComponent implements OnInit {
     this.loadContactsData();
     this.loadTasksData();
     this.setupScrollListener();
+    this.handleFragmentNavigation();
+  }
+
+  /**
+   * Handles fragment navigation to scroll to specific columns.
+   */
+  private handleFragmentNavigation(): void {
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        setTimeout(() => {
+          const targetElement = document.getElementById(fragment);
+          if (targetElement) {
+            targetElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            });
+          }
+        }, 500); // Wait for data to load
+      }
+    });
   }
 
   /**

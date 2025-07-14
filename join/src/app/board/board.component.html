@@ -32,7 +32,7 @@
             <h2>no search results found</h2>
           </div>
           
-          <div class="board-column" *ngFor="let column of boardColumns" [style.display]="noSearchResults ? 'none' : 'flex'" [attr.data-column]="column.id" (dragover)="onColumnDragOver($event, column.id)" (dragleave)="onColumnDragLeave($event)" (drop)="onColumnDrop($event, column.id)">
+          <div class="board-column" *ngFor="let column of boardColumns" [id]="column.id + '-column'" [style.display]="noSearchResults ? 'none' : 'flex'" [attr.data-column]="column.id" (dragover)="onColumnDragOver($event, column.id)" (dragleave)="onColumnDragLeave($event)" (drop)="onColumnDrop($event, column.id)">
             <div class="column-header">
               <h2 class="column-title">{{ column.title }}</h2>
               <button class="board-add-task-button" *ngIf="column.showAddButton" (click)="openAddTaskOverlay(column.id)">+</button>
