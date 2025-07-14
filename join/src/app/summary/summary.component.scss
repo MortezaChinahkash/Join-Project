@@ -136,8 +136,8 @@ body, .content-wrapper {
 
 .toDoCounter:hover {
   background: $icon-bg;
-  transform: scale(1.02);
-  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
+  transform: scale(1.1);
+  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
   
   &::before {
     background: $card-bg url('/assets/icons/todo.svg') no-repeat center/30px 30px;
@@ -150,8 +150,8 @@ body, .content-wrapper {
 
 .doneCounter:hover {
   background: $icon-bg;
-  transform: scale(1.02);
-  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
+  transform: scale(1.1);
+  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
   
   &::before {
     background: $card-bg url('/assets/icons/done.svg') no-repeat center/30px 30px;
@@ -187,8 +187,8 @@ body, .content-wrapper {
 
 .urgentWrapper:hover {
   background: $icon-bg;
-  transform: scale(1.02);
-  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
+  transform: scale(1.1);
+  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
   
   .urgentCounter {
     span {
@@ -322,8 +322,8 @@ body, .content-wrapper {
 .tasksInProgressCounter:hover,
 .tasksAwaitingCounter:hover {
   background: $icon-bg;
-  transform: scale(1.02);
-  box-shadow: 0 8px 24px 0 rgba(0,0,0,0.15);
+ transform: scale(1.1);
+  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
   
   span {
     color: $card-bg !important;
