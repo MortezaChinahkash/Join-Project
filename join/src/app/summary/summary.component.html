@@ -15,22 +15,26 @@
 
       <div class="mainContentWrapper">
         <div class="tasksArea">
-          <div class="toDoCounter" aria-label="To-do tasks count"><div class="counterWrapper"><span>{{getToDoTasksCount()}}</span> <span>To-do</span></div></div>
-          <div class="doneCounter" aria-label="done tasks count"><div class="counterWrapper"><span>{{getDoneTasksCount()}}</span> <span>Done</span></div></div>
-          <div class="urgentWrapper">
-            <div class="urgentCounter" aria-label="urgent tasks count"><span>{{ getUrgentTasksDueToday() }}</span> <span>Urgent</span></div>
-            <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
+          <div class="topRow">
+            <div class="toDoCounter" aria-label="To-do tasks count"><div class="counterWrapper"><span>{{getToDoTasksCount()}}</span> <span>To-do</span></div></div>
+            <div class="doneCounter" aria-label="done tasks count"><div class="counterWrapper"><span>{{getDoneTasksCount()}}</span> <span>Done</span></div></div>
+          </div>
+          
+          <div class="middleRow">
+            <div class="urgentWrapper">
+              <div class="urgentCounter" aria-label="urgent tasks count"><span>{{ getUrgentTasksDueToday() }}</span> <span>Urgent</span></div>
+              <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
+            </div>
+            <div class="welcomeMessage">
+              <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
+            </div>
           </div>
 
-          <div class="activeTasksWrapper">
-
-          <div class="tasksInBoardCounter"><span>{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
-          <div class="tasksInProgressCounter"><span>{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
-          <div class="tasksAwaitingCounter"> <span>{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
+          <div class="bottomRow">
+            <div class="tasksInBoardCounter"><span>{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
+            <div class="tasksInProgressCounter"><span>{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
+            <div class="tasksAwaitingCounter"> <span>{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
           </div>
-        </div>
-        <div class="welcomeMessage">
-            <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
         </div>
       </div>
     </div>
