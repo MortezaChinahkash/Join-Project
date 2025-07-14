@@ -17,6 +17,7 @@ body, .content-wrapper {
 
 .content-wrapper {
   padding: 40px 0 0 64px; // z.B. 120px, je nach Breite deines Menüs
+  max-width: 1440px;
 }
 
 .headlineAndDescription {
