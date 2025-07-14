@@ -151,6 +151,9 @@ export class AuthService implements OnDestroy {
       // Set current login timestamp
       user.loginTimestamp = Date.now();
       
+      // Mark that this is a new user for onboarding
+      localStorage.setItem('join_new_user', 'true');
+      
       return user;
     } catch (error: any) {
       throw this.handleAuthError(error);

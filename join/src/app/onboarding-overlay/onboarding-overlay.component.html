@@ -1,0 +1,76 @@
+<div class="onboarding-overlay" *ngIf="showOnboarding" #overlayContainer (click)="onOverlayClick($event)">
+  <!-- Dark background overlay -->
+  <div class="overlay-background"></div>
+  
+  <!-- Highlight ring around target element -->
+  <div class="highlight-ring" 
+       [style.top]="highlightPosition.top"
+       [style.left]="highlightPosition.left"
+       [style.width]="highlightPosition.width"
+       [style.height]="highlightPosition.height">
+  </div>
+  
+  <!-- Tooltip with instructions -->
+  <div class="onboarding-tooltip" 
+       [ngStyle]="getTooltipPosition()"
+       [class]="getArrowClass()"
+       *ngIf="currentStep">
+    
+    <!-- Tooltip Header -->
+    <div class="tooltip-header">
+      <h3 class="tooltip-title">{{ currentStep.title }}</h3>
+      <button class="close-btn" (click)="onClose()" aria-label="Close onboarding">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Tooltip Content -->
+    <div class="tooltip-content">
+      <p class="tooltip-description">{{ currentStep.description }}</p>
+    </div>
+    
+    <!-- Tooltip Footer -->
+    <div class="tooltip-footer">
+      <!-- Step indicator -->
+      <div class="step-indicator">
+        <span class="step-counter">{{ currentStepNumber }} of {{ totalSteps }}</span>
+        <div class="step-dots">
+          <span class="dot" 
+                *ngFor="let step of [].constructor(totalSteps); let i = index"
+                [class.active]="i === currentStepNumber - 1">
+          </span>
+        </div>
+      </div>
+      
+      <!-- Navigation buttons -->
+      <div class="tooltip-actions">
+        <button class="btn btn-skip" (click)="onSkip()">Skip Tour</button>
+        
+        <div class="nav-buttons">
+          <button class="btn btn-secondary" 
+                  (click)="onPrevious()" 
+                  [disabled]="isFirstStep()"
+                  *ngIf="!isFirstStep()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+            Previous
+          </button>
+          
+          <button class="btn btn-primary" (click)="onNext()">
+            {{ getNextButtonText() }}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="!isLastStep()">
+              <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" *ngIf="isLastStep()">
+              <polyline points="20,6 9,17 4,12"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
