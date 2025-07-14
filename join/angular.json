@@ -50,7 +50,16 @@
                   "maximumError": "100kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "baseHref": "/Join/",
+              "deployUrl": "/Join/",
+              "externalDependencies": [
+                "assets/icons/todo.svg",
+                "assets/icons/done.svg", 
+                "assets/icons/todoWhite.png",
+                "assets/icons/check.svg",
+                "assets/icons/urgent_arrows.png"
+              ]
             },
             "development": {
               "optimization": false,
