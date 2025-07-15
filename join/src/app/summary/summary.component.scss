@@ -194,7 +194,7 @@ body,
   border-radius: $border-radius;
   box-shadow: $shadow;
   height: 140px;
-  width: 512px; 
+  width: 512px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -308,7 +308,7 @@ body,
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 144px; // Etwas schmaler für bessere Ausrichtung
+  width: 144px;
   height: 120px;
   min-width: 144px;
   min-height: 120px;
@@ -492,10 +492,11 @@ body,
 }
 
 @media (max-width: 480px) {
-  .toDoCounter, .doneCounter {
-  padding: 0.5rem;
-} 
-    .urgentWrapper {
+  .toDoCounter,
+  .doneCounter {
+    padding: 0.5rem;
+  }
+  .urgentWrapper {
     width: 280px;
   }
 
@@ -503,20 +504,28 @@ body,
     padding: 0.5rem;
   }
 
-   .topRow {
+  .topRow {
     width: 280px;
     gap: 0.6rem;
-   }
-
-   .bottomRow {
-    width: 280px;
-    gap: 0.6rem;
-   }
-}
-
-@media (max-width: 480px) {
-  .bottomRow {
-    flex-wrap: wrap;
-    justify-content: center;
   }
+
+  .bottomRow {
+    width: 280px;
+    gap: 0.6rem;
+    box-sizing: border-box;
+  }
+
+  .tasksInBoardCounter,
+  .tasksInProgressCounter,
+  .tasksAwaitingCounter {
+    padding: 0.5rem;
+    max-width: 90px !important;
+    flex-wrap: wrap;
+    text-wrap: wrap;
+  }
+
+  //.bottomRow {
+  //  flex-wrap: wrap;
+  // justify-content: center;
+  // }
 }
