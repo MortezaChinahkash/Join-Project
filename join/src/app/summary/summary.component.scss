@@ -6,17 +6,18 @@ $text: #42526e;
 $urgent: #ff3d00;
 $icon-bg: #2a3647;
 $border-radius: 20px;
-$shadow: 0 4px 16px 0 rgba(0,0,0,0.03);
+$shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
 
-body, .content-wrapper {
+body,
+.content-wrapper {
   background: $content-bg;
   min-height: 100vh;
   margin: 0;
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
 }
 
 .content-wrapper {
-  padding: 40px 0 0 64px; 
+  padding: 40px 0 0 64px;
   max-width: 1440px;
 }
 
@@ -79,7 +80,11 @@ body, .content-wrapper {
   justify-content: flex-start;
 }
 
-.toDoCounter, .doneCounter, .tasksInBoardCounter, .tasksInProgressCounter, .tasksAwaitingCounter {
+.toDoCounter,
+.doneCounter,
+.tasksInBoardCounter,
+.tasksInProgressCounter,
+.tasksAwaitingCounter {
   background: $card-bg;
   border-radius: $border-radius;
   box-shadow: $shadow;
@@ -93,7 +98,8 @@ body, .content-wrapper {
   position: relative;
 }
 
-.toDoCounter, .doneCounter {
+.toDoCounter,
+.doneCounter {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -146,15 +152,16 @@ body, .content-wrapper {
   background: $icon-bg;
   transform: scale(1.1);
   box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
+
   .icon-circle {
     background: $card-bg;
-    
+
     .counter-icon {
-      filter: brightness(0) saturate(100%) invert(13%) sepia(16%) saturate(1532%) hue-rotate(185deg) brightness(94%) contrast(88%);
+      filter: brightness(0) saturate(100%) invert(13%) sepia(16%)
+        saturate(1532%) hue-rotate(185deg) brightness(94%) contrast(88%);
     }
   }
-  
+
   span {
     color: $card-bg !important;
   }
@@ -164,15 +171,16 @@ body, .content-wrapper {
   background: $icon-bg;
   transform: scale(1.1);
   box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
+
   .icon-circle {
     background: $card-bg;
-    
+
     .counter-icon {
-      filter: brightness(0) saturate(100%) invert(13%) sepia(16%) saturate(1532%) hue-rotate(185deg) brightness(94%) contrast(88%);
+      filter: brightness(0) saturate(100%) invert(13%) sepia(16%)
+        saturate(1532%) hue-rotate(185deg) brightness(94%) contrast(88%);
     }
   }
-  
+
   span {
     color: $card-bg !important;
   }
@@ -196,16 +204,16 @@ body, .content-wrapper {
   background: $icon-bg;
   transform: scale(1.1);
   box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
+
   .urgentCounter {
     span {
       color: $card-bg !important;
     }
   }
-  
+
   .dateContainer {
     border-left: 2px solid rgba(255, 255, 255, 0.3);
-    
+
     span {
       color: $card-bg !important;
     }
@@ -253,7 +261,7 @@ body, .content-wrapper {
     line-height: 1;
     transition: all 0.2s ease;
   }
-  
+
   span:last-child {
     font-size: 20px;
     color: $text;
@@ -295,14 +303,14 @@ body, .content-wrapper {
 .tasksAwaitingCounter {
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.03);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 144px;      // Etwas schmaler für bessere Ausrichtung
-  height: 120px;     
-  min-width: 144px;  
+  width: 144px; // Etwas schmaler für bessere Ausrichtung
+  height: 120px;
+  min-width: 144px;
   min-height: 120px;
   max-width: 144px;
   max-height: 120px;
@@ -340,9 +348,9 @@ body, .content-wrapper {
 .tasksInProgressCounter:hover,
 .tasksAwaitingCounter:hover {
   background: $icon-bg;
- transform: scale(1.1);
+  transform: scale(1.1);
   box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
+
   span {
     color: $card-bg !important;
   }
@@ -370,7 +378,7 @@ body, .content-wrapper {
   }
 }
 
-.counterWrapper{
+.counterWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -393,18 +401,20 @@ body, .content-wrapper {
     display: none;
   }
 
-   .content-wrapper {
+  .content-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-inline: 1rem;
-   }
+  }
 }
 
 .overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background: var(--bg-grey);
   display: flex;
   align-items: center;
@@ -433,5 +443,40 @@ body, .content-wrapper {
     flex-direction: column;
     align-items: center;
     padding-inline: 1rem;
+  }
+
+  .tasksArea {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+  }
+
+  .topRow {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .middleRow {
+    display: flex;
+    gap: 3.75rem;
+    justify-content: center;
+  }
+
+  .bottomRow {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .icon-circle {
+    width: 2.8rem !important;
+    height: 2.8rem !important;
+  }
+
+  .counter-icon {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
   }
 }
