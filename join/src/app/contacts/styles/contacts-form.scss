@@ -43,6 +43,18 @@ form {
   background: #fff5f5 !important;
 }
 
+.readonly-input {
+  background: #f0f0f0 !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  border-color: #ccc !important;
+}
+
+.readonly-input:focus {
+  border-color: #ccc !important;
+  background: #f0f0f0 !important;
+}
+
 .error-message {
   color: #ff3b3b;
   font-size: 0.95rem;
@@ -51,6 +63,42 @@ form {
   position: absolute;
   left: 0;
   bottom: -22px;
+}
+
+.info-message {
+  color: #999;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  margin-left: 4px;
+  font-style: italic;
+}
+
+// ===================
+// Readonly Input Styles
+// ===================
+
+.input-readonly {
+  background: #f5f5f5 !important;
+  color: #6c757d !important;
+  cursor: not-allowed !important;
+  border-color: #dee2e6 !important;
+
+  &:focus {
+    border-color: #dee2e6 !important;
+    background: #f5f5f5 !important;
+  }
+}
+
+.readonly-info {
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 4px;
+  margin-left: 4px;
+  position: absolute;
+  left: 0;
+  bottom: -22px;
+  font-style: italic;
 }
 
 // ===================
