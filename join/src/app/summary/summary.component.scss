@@ -453,6 +453,7 @@ body,
   }
 
   .topRow {
+    width: 420px;
     display: flex;
     gap: 1rem;
     justify-content: space-between;
@@ -465,6 +466,7 @@ body,
   }
 
   .bottomRow {
+    width: 420px;
     display: flex;
     gap: 1rem;
     justify-content: space-between;
@@ -490,7 +492,31 @@ body,
 }
 
 @media (max-width: 480px) {
+  .toDoCounter, .doneCounter {
+  padding: 0.5rem;
+} 
     .urgentWrapper {
     width: 280px;
+  }
+
+  .urgentCounter {
+    padding: 0.5rem;
+  }
+
+   .topRow {
+    width: 280px;
+    gap: 0.6rem;
+   }
+
+   .bottomRow {
+    width: 280px;
+    gap: 0.6rem;
+   }
+}
+
+@media (max-width: 480px) {
+  .bottomRow {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
