@@ -194,7 +194,7 @@ body,
   border-radius: $border-radius;
   box-shadow: $shadow;
   height: 140px;
-  width: 512px; // Breite für zwei normale Container plus Gap (200px + 28px + 200px + 28px)
+  width: 512px; 
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -482,5 +482,15 @@ body,
 
   .count-number {
     font-size: 2rem !important;
+  }
+
+  .urgentWrapper {
+    width: 420px;
+  }
+}
+
+@media (max-width: 480px) {
+    .urgentWrapper {
+    width: 280px;
   }
 }
