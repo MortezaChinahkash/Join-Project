@@ -252,11 +252,16 @@
         }
 
         footer {
-            display: none;
+            display: block;
+            z-index: 10;
         }
 
-        header{
-            width: 100%;
+        nav {
+            z-index: 5; 
+        }
+
+        header {
+            z-index: 5; 
         }
 
     }
