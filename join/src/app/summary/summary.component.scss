@@ -423,7 +423,7 @@ body,
 
 @media (min-width: 1001px) {
   .mobile-only {
-    display: none;
+    display: none !important;
   }
   .desktop-only {
     display: flex;
