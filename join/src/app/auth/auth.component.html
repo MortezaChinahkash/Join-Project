@@ -171,7 +171,7 @@
                 class="checkbox-input" />
               <span class="checkbox-custom"></span>
               <span class="checkbox-text">
-                I accept the <a href="/privacy" target="_blank" class="privacy-link">Privacy Policy</a>
+                I accept the <a routerLink="/privacy" target="_blank" class="privacy-link">Privacy Policy</a>
               </span>
             </label>
             <div class="error-message" *ngIf="isFieldInvalid(registerForm, 'acceptPrivacy')">
@@ -208,7 +208,7 @@
 
   <!-- Footer -->
   <footer class="auth-footer">
-    <a href="/privacy" class="footer-link">Privacy Policy</a>
-    <a href="/legal" class="footer-link">Legal notice</a>
+    <a routerLink="/privacy" class="footer-link">Privacy Policy</a>
+    <a routerLink="/legal" class="footer-link">Legal notice</a>
   </footer>
 </div>

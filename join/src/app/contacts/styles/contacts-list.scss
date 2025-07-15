@@ -42,7 +42,7 @@
     }
     
     &.active {
-      background: #29abe2;
+      background: #2d3a4a; // Dunkelblaue Farbe wie bei normalen Kontakten
       color: white;
       
       .contactName, .contactMail {
@@ -155,7 +155,6 @@
   color: #007cee;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
   max-width: 100%;
 }
 

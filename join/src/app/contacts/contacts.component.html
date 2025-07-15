@@ -19,7 +19,7 @@
           </div>
           <div class="contactNameAndMail">
             <div class="contactName">{{ getCurrentUserDisplayName() }}</div>
-            <div class="contactMail">{{ getCurrentUser()?.email }}</div>
+            <div class="contactMail">{{ truncateEmail(getCurrentUser()?.email || '') }}</div>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
                 </div>
                 <div class="contactNameAndMail">
                   <div class="contactName">{{ contact.name }}</div>
-                  <div class="contactMail">{{ contact.email }}</div>
+                  <div class="contactMail">{{ truncateEmail(contact.email) }}</div>
                 </div>
               </div>
             </div>

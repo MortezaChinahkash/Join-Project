@@ -565,6 +565,17 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Truncates email if longer than 23 characters with ellipsis ending
+   * @param email - Email to truncate
+   * @returns Truncated email or original if short enough
+   */
+  truncateEmail(email: string): string {
+    if (!email) return '';
+    if (email.length <= 23) return email;
+    return email.substring(0, 20) + '...';
+  }
+
+  /**
    * Gets the current logged-in user.
    * @returns Current user or null
    */
