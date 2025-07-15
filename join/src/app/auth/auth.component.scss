@@ -125,7 +125,7 @@
 
 .form-input {
   width: 100%;
-  padding: 1rem 1rem 1rem 3rem;
+  padding: 1rem 3rem 1rem 1rem;
   border: 1px solid #d1d7db;
   border-radius: 10px;
   font-size: 1rem;
@@ -136,6 +136,23 @@
 
   &::placeholder {
     color: #a8a8a8;
+    transition: color 0.2s ease;
+  }
+
+  // Browser-specific placeholder styles
+  &::-webkit-input-placeholder {
+    color: #a8a8a8;
+    transition: color 0.2s ease;
+  }
+
+  &::-moz-placeholder {
+    color: #a8a8a8;
+    transition: color 0.2s ease;
+  }
+
+  &:-ms-input-placeholder {
+    color: #a8a8a8;
+    transition: color 0.2s ease;
   }
 
   &:focus {
@@ -146,6 +163,27 @@
 
   &.error {
     border-color: #ff8190;
+    
+    &::placeholder {
+      color: #ff8190 !important;
+      font-style: italic;
+    }
+
+    // Browser-specific error placeholder styles
+    &::-webkit-input-placeholder {
+      color: #ff8190 !important;
+      font-style: italic;
+    }
+
+    &::-moz-placeholder {
+      color: #ff8190 !important;
+      font-style: italic;
+    }
+
+    &:-ms-input-placeholder {
+      color: #ff8190 !important;
+      font-style: italic;
+    }
   }
 }
 
@@ -384,7 +422,7 @@
   }
 
   .form-input {
-    padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+    padding: 0.875rem 2.75rem 0.875rem 0.875rem;
   }
 
   .input-icon {

@@ -231,6 +231,14 @@ export class AuthComponent implements OnInit {
   }
 
   /**
+   * Gets the placeholder text for input fields - shows error or default placeholder.
+   */
+  getPlaceholderText(form: FormGroup, fieldName: string, defaultPlaceholder: string): string {
+    const errorMessage = this.getFieldErrorMessage(form, fieldName);
+    return errorMessage || defaultPlaceholder;
+  }
+
+  /**
    * Gets display name for form fields.
    */
   private getFieldDisplayName(fieldName: string): string {
