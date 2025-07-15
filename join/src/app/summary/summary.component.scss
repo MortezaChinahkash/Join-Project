@@ -16,7 +16,7 @@ body, .content-wrapper {
 }
 
 .content-wrapper {
-  padding: 40px 0 0 64px; // z.B. 120px, je nach Breite deines Menüs
+  padding: 40px 0 0 64px; 
   max-width: 1440px;
 }
 
@@ -177,10 +177,6 @@ body, .content-wrapper {
     color: $card-bg !important;
   }
 }
-
-
-
-
 
 .urgentWrapper {
   display: flex;
@@ -380,6 +376,15 @@ body, .content-wrapper {
   align-items: center;
 }
 
+@media (min-width: 1001px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: flex;
+  }
+}
+
 @media (max-width: 1000px) {
   .mobile-only {
     display: flex;
@@ -388,8 +393,6 @@ body, .content-wrapper {
     display: none;
   }
 }
-
-// At the bottom of summary-component.scss
 
 .overlay {
   position: fixed;
