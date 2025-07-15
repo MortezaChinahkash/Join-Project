@@ -399,7 +399,7 @@ body,
   }
 
   .urgentWrapper {
-    width: 480px !important;
+    width: 480px;
     flex-shrink: 0;
   }
 
@@ -423,7 +423,7 @@ body,
 
 @media (min-width: 1001px) {
   .mobile-only {
-    display: none !important;
+    display: none;
   }
   .desktop-only {
     display: flex;
@@ -509,44 +509,77 @@ body,
     justify-content: space-between;
   }
 
-  .icon-circle {
-    width: 2.8rem !important;
-    height: 2.8rem !important;
-  }
+  .toDoCounter,
+  .doneCounter {
+    .icon-circle {
+      width: 2.8rem;
+      height: 2.8rem;
 
-  .counter-icon {
-    width: 1.5rem !important;
-    height: 1.5rem !important;
-  }
+      .counter-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
 
-  .count-number {
-    font-size: 2rem !important;
+    .count-number {
+      font-size: 2rem;
+    }
   }
 
   .urgentWrapper {
-    width: 420px !important;
+    width: 420px;
+
+    .urgentCounter {
+      .icon-circle {
+        width: 2.8rem;
+        height: 2.8rem;
+
+        .counter-icon {
+          width: 1.5rem;
+          height: 1.5rem;
+        }
+      }
+
+      span:first-child {
+        font-size: 2rem;
+      }
+
+      span:last-child {
+        font-size: 1rem;
+      }
+    }
+
+    .dateContainer {
+      span:first-child {
+        font-size: 1rem;
+      }
+
+      span:last-child {
+        font-size: 0.875rem;
+      }
+    }
   }
 
   .tasksInBoardCounter,
   .tasksInProgressCounter,
   .tasksAwaitingCounter {
-    width: 100px !important;
-    max-width: 100px !important;
-    min-width: 100px !important;
-    height: 80px !important;
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+    height: 80px;
     padding: 0.4rem;
     
     span:first-child {
-      font-size: 1.6rem !important;
-      margin-bottom: 0.1rem !important;
+      font-size: 1.6rem;
+      margin-bottom: 0.1rem;
     }
     
     span:last-child {
-      font-size: 0.75rem !important;
-      line-height: 1.0 !important;
-      word-wrap: break-word !important;
-      hyphens: auto !important;
-      text-align: center !important;
+      font-size: 0.75rem;
+      line-height: 1.0;
+      word-wrap: break-word;
+      hyphens: auto;
+      text-align: center;
     }
   }
 }
@@ -590,23 +623,67 @@ body,
   .toDoCounter,
   .doneCounter {
     padding: 0.4rem;
-    width: 140px !important;
-    height: 90px !important;
+    width: 140px;
+    height: 90px;
     box-sizing: border-box;
+    
+    .icon-circle {
+      width: 50px;
+      height: 50px;
+
+      .counter-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    span:first-child {
+      font-size: 32px;
+    }
+
+    span:last-child {
+      font-size: 16px;
+    }
   }
   
   .urgentWrapper {
-    width: 285px !important;
-    height: 100px !important;
+    width: 285px;
+    height: 100px;
     box-sizing: border-box;
-  }
 
-  .urgentCounter {
-    padding: 0.4rem;
-  }
+    .urgentCounter {
+      padding: 0.4rem;
 
-  .dateContainer {
-    padding: 0.4rem;
+      .icon-circle {
+        width: 50px;
+        height: 50px;
+
+        .counter-icon {
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      span:first-child {
+        font-size: 24px;
+      }
+
+      span:last-child {
+        font-size: 14px;
+      }
+    }
+
+    .dateContainer {
+      padding: 0.4rem;
+
+      span:first-child {
+        font-size: 14px;
+      }
+
+      span:last-child {
+        font-size: 12px;
+      }
+    }
   }
 
   .topRow {
@@ -633,10 +710,10 @@ body,
   .tasksInBoardCounter,
   .tasksInProgressCounter,
   .tasksAwaitingCounter {
-    width: 90px !important;
-    max-width: 90px !important;
-    min-width: 90px !important;
-    height: 70px !important;
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+    height: 70px;
     padding: 0.2rem;
     box-sizing: border-box;
     
