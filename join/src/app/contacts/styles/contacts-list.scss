@@ -26,13 +26,30 @@
   }
 }
 
-.contactNameAndMail {
-  gap: 2px;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  flex: 1;
-  overflow: hidden;
+// ===================
+// Current User Section
+// ===================
+
+.current-user-section {
+  .contactContainer.current-user {
+    margin: 0 24px 24px 24px;
+    // Removed: background, border, border-radius to look like normal contacts
+    
+    &:hover {
+      background: #f5f5f5;
+      transform: none;
+      box-shadow: none;
+    }
+    
+    &.active {
+      background: #29abe2;
+      color: white;
+      
+      .contactName, .contactMail {
+        color: white;
+      }
+    }
+  }
 }
 
 // ===================

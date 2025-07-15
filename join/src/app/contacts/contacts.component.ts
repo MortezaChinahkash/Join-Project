@@ -8,6 +8,7 @@ import { InlineSvgDirective } from '../inline-svg.directive';
 import { Contact, ContactDataService } from '../services/contact-data.service';
 import { ContactOrganizationService } from '../services/contact-organization.service';
 import { ContactUiService } from '../services/contact-ui.service';
+import { AuthService, User } from '../services/auth.service';
 
 /**
  * Component for managing contacts with full CRUD operations.
@@ -71,12 +72,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @param dataService - Service for data operations
    * @param organizationService - Service for contact organization
    * @param uiService - Service for UI logic
+   * @param authService - Service for authentication
    */
   constructor(
     private fb: FormBuilder,
     private dataService: ContactDataService,
     private organizationService: ContactOrganizationService,
-    private uiService: ContactUiService
+    private uiService: ContactUiService,
+    private authService: AuthService
   ) {
     this.addContactForm = this.createContactForm();
   }
@@ -530,9 +533,48 @@ export class ContactsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Static method for getting initials (for external use).
+   * Gets the current logged-in user.
+   * @returns Current user or null
+   */
+  getCurrentUser(): User | null {
+    return this.authService.currentUser;
+  }
+
+  /**
+   * Gets the display name for the current user.
+   * @returns Display name or email
+   */
+  getCurrentUserDisplayName(): string {
+    const user = this.getCurrentUser();
+    return user?.name || user?.email || 'Unknown User';
+  }
+
+  /**
+   * Selects the current user and creates a contact-like object for display.
+   */
+  selectCurrentUser(): void {
+    const user = this.getCurrentUser();
+    if (user) {
+      // Create a temporary contact object for the current user
+      const currentUserContact: Contact = {
+        id: 'current-user',
+        name: user.name || user.email || 'Current User',
+        email: user.email || '',
+        phone: '', // Phone will be empty for current user initially
+        isCurrentUser: true
+      };
+      this.selectedContact = currentUserContact;
+      
+      if (this.isMobileView) {
+        this.showMobileSingleContact = true;
+      }
+    }
+  }
+
+  /**
+   * Static method for getting contact initials (for external use).
    * @param name - Contact name
-   * @returns Initials string
+   * @returns Contact initials
    */
   static getInitials(name: string): string {
     const service = new ContactOrganizationService();
