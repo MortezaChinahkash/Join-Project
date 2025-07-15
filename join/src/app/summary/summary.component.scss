@@ -392,8 +392,15 @@ body,
     justify-content: space-between;
   }
 
+  .middleRow {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
   .urgentWrapper {
     width: 480px !important;
+    flex-shrink: 0;
   }
 
   .bottomRow {
@@ -401,6 +408,16 @@ body,
     display: flex;
     gap: 1rem;
     justify-content: space-between;
+  }
+
+  .welcomeMessage {
+    p {
+      font-size: 26px;
+      
+      strong {
+        font-size: 30px;
+      }
+    }
   }
 }
 
