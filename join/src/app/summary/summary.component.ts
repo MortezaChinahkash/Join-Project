@@ -373,4 +373,40 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const deadline = this.getNearestUrgentTaskDeadline();
     return deadline ? 'Upcoming Deadline' : 'No Urgent Deadlines';
   }
+
+  /**
+   * Navigates to the board and opens the task details for the nearest urgent task.
+   * Falls back to general board navigation if no urgent task with deadline exists.
+   */
+  navigateToNearestUrgentTask(): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    const urgentTasksWithDueDate = this.tasks.filter(task => 
+      task.priority === 'urgent' && 
+      task.dueDate && 
+      new Date(task.dueDate) >= today
+    );
+
+    if (urgentTasksWithDueDate.length === 0) {
+      // Fallback: Navigate to board if no urgent tasks with deadlines
+      this.router.navigate(['/board']);
+      return;
+    }
+
+    // Find the task with the earliest due date
+    const nearestUrgentTask = urgentTasksWithDueDate.reduce((nearest, current) => {
+      const currentDate = new Date(current.dueDate!);
+      const nearestDate = new Date(nearest.dueDate!);
+      return currentDate < nearestDate ? current : nearest;
+    });
+
+    // Navigate to board with the specific task selected
+    this.router.navigate(['/board'], { 
+      queryParams: { 
+        selectedTask: nearestUrgentTask.id,
+        filter: 'urgent'
+      }
+    });
+  }
 }
