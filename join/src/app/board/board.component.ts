@@ -129,6 +129,7 @@ export class BoardComponent implements OnInit {
     this.loadTasksData();
     this.setupScrollListener();
     this.handleFragmentNavigation();
+    this.handleQueryParams();
   }
 
   /**
@@ -880,5 +881,40 @@ export class BoardComponent implements OnInit {
       this.editSubtask(index);
     }
     // Bei readonly Feldern passiert nichts
+  }
+
+  /**
+   * Handles query parameters to open specific tasks or apply filters.
+   */
+  private handleQueryParams(): void {
+    this.route.queryParams.subscribe(params => {
+      if (params['selectedTask']) {
+        // Wait for tasks to load before trying to open the selected task
+        setTimeout(() => {
+          this.openTaskById(params['selectedTask']);
+        }, 1000); // Wait for data to load
+      }
+    });
+  }
+
+  /**
+   * Opens task details for a specific task by its ID.
+   * @param taskId - ID of the task to open
+   */
+  private openTaskById(taskId: string): void {
+    // Find the task in all columns
+    const allTasks = [
+      ...this.todoTasks,
+      ...this.inProgressTasks,
+      ...this.awaitingFeedbackTasks,
+      ...this.doneTasks
+    ];
+    
+    const targetTask = allTasks.find(task => task.id === taskId);
+    
+    if (targetTask) {
+      // Open the task details overlay
+      this.openTaskDetails(targetTask);
+    }
   }
 }

@@ -40,14 +40,14 @@
           </div>
           
           <div class="middleRow">
-            <div class="urgentWrapper" (click)="navigateToBoard()">
+            <div class="urgentWrapper" (click)="navigateToNearestUrgentTask()">
               <div class="urgentCounter" aria-label="urgent tasks count">
                 <div class="icon-circle urgent-icon">
                   <img src="./assets/icons/urgent_arrows.png" alt="Urgent icon" class="counter-icon">
                 </div>
-                <div class="counterWrapper"><span class="count-number">{{ getUrgentTasksDueToday() }}</span> <span>Urgent</span></div>
+                <div class="counterWrapper"><span class="count-number">{{ getUrgentTasksCount() }}</span> <span>Urgent</span></div>
               </div>
-              <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
+              <div class="dateContainer" aria-label="date tasks deadline"><span>{{getUrgentDeadlineMonth()}} {{getUrgentDeadlineDay()}}, {{getUrgentDeadlineYear()}}</span><span>{{getDeadlineText()}}</span></div>
             </div>
             <div class="welcomeMessage desktop-only">
               <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
