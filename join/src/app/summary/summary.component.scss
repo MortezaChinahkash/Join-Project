@@ -384,7 +384,7 @@ body,
   align-items: center;
 }
 
-@media (max-width: 1100px) and (min-width: 1001px) {
+@media (max-width: 1100px) {
   .topRow {
     width: 480px;
     display: flex;
@@ -396,7 +396,6 @@ body,
     display: flex;
     gap: 2rem;
     align-items: flex-start;
-    justify-content: flex-start;
   }
 
   .urgentWrapper {
@@ -412,15 +411,11 @@ body,
   }
 
   .welcomeMessage {
-    flex-shrink: 0;
-    margin-left: 0;
-    margin-top: 0;
-    
     p {
-      font-size: 28px;
+      font-size: 1.625rem;
       
       strong {
-        font-size: 32px;
+        font-size: 1.875rem;
       }
     }
   }
@@ -448,31 +443,6 @@ body,
     flex-direction: column;
     align-items: center;
     padding-inline: 1rem;
-  }
-
-  .topRow {
-    width: 480px;
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-
-  .middleRow {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  .urgentWrapper {
-    width: 480px !important;
-  }
-
-  .bottomRow {
-    width: 480px;
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
   }
 }
 
@@ -554,17 +524,25 @@ body,
   }
 
   .urgentWrapper {
-    width: 420px;
+    width: 420px !important;
   }
 }
 
 @media (max-width: 480px) {
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 1rem;
+  }
+
   .toDoCounter,
   .doneCounter {
     padding: 0.5rem;
   }
+  
   .urgentWrapper {
-    width: 280px;
+    width: 280px !important;
   }
 
   .urgentCounter {
@@ -590,9 +568,4 @@ body,
     flex-wrap: wrap;
     text-wrap: wrap;
   }
-
-  //.bottomRow {
-  //  flex-wrap: wrap;
-  // justify-content: center;
-  // }
 }
