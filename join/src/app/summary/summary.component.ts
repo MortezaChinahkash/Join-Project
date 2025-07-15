@@ -25,6 +25,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   private userSubscription?: Subscription;
   private tasksSubscription?: Subscription;
   private tasks: Task[] = [];
+  visible = true;
 
   constructor(
     private authService: AuthService,
@@ -40,6 +41,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     this.initializeSummaryData();
     this.subscribeToUser();
     this.loadAllTasks();
+    setTimeout(() => this.visible = false, 3000);
   }
 
   /**

@@ -379,3 +379,41 @@ body, .content-wrapper {
   flex-direction: column;
   align-items: center;
 }
+
+@media (max-width: 1000px) {
+  .mobile-only {
+    display: flex;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
+
+// At the bottom of summary-component.scss
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: var(--bg-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+
+  .welcomeMessage {
+    padding: 1.5rem 2rem;
+    
+    p {
+      font-size: 1.5rem;
+      margin: 0;
+      strong {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 1.75rem;
+      }
+    }
+  }
+}
+
+

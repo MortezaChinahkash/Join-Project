@@ -7,6 +7,11 @@
   </head>
   <body>
     <div class="content-wrapper">
+      <div *ngIf="visible" class="overlay mobile-only">
+        <div class="welcomeMessage">
+          <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
+        </div>
+      </div>
       <header class="headlineAndDescription">
         <h1>Join 360</h1>
         <span>|</span>
@@ -40,7 +45,7 @@
               </div>
               <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
             </div>
-            <div class="welcomeMessage">
+            <div class="welcomeMessage desktop-only">
               <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
             </div>
           </div>
