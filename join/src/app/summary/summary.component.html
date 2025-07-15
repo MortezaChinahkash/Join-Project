@@ -12,13 +12,17 @@
           <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
         </div>
       </div>
-      <header class="headlineAndDescription">
-        <h1>Join 360</h1>
-        <span>|</span>
-        <h3>Key Metrics at a Glance</h3>
-      </header>
+      
+      <div class="default-content-container">
+        <header class="component-header">
+          <div class="component-title-bar">
+            <h1 class="component-title">Join 360</h1>
+          </div>
+          <div class="header-divider"></div>
+          <h3 class="component-subtitle">Key Metrics at a Glance</h3>
+        </header>
 
-      <div class="mainContentWrapper">
+        <div class="mainContentWrapper">
         <div class="tasksArea">
           <div class="topRow">
             <div class="toDoCounter" (click)="navigateToTodoTasks()" aria-label="To-do tasks count">
@@ -57,6 +61,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
   </body>
 </html>

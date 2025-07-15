@@ -8,44 +8,12 @@ $icon-bg: #2a3647;
 $border-radius: 20px;
 $shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
 
-body,
 .content-wrapper {
   background: $content-bg;
   min-height: 100vh;
   margin: 0;
   font-family: "Inter", Arial, sans-serif;
-}
-
-.content-wrapper {
-  padding: 40px 0 0 64px;
   max-width: 1440px;
-}
-
-.headlineAndDescription {
-  display: flex;
-  align-items: center;
-  margin-bottom: 40px;
-
-  h1 {
-    font-size: 48px;
-    font-weight: 700;
-    color: $headline;
-    margin: 0 18px 0 0;
-  }
-
-  span {
-    color: $primary;
-    font-size: 32px;
-    margin-right: 18px;
-    font-weight: 400;
-  }
-
-  h3 {
-    font-size: 20px;
-    font-weight: 400;
-    color: $text;
-    margin: 0;
-  }
 }
 
 .mainContentWrapper {
@@ -444,143 +412,10 @@ body,
     align-items: center;
     padding-inline: 1rem;
   }
-}
 
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--bg-grey);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 4;
-
-  .welcomeMessage {
-    padding: 1.5rem 2rem;
-    text-align: center;
-
-    p {
-      font-size: 2.5rem;
-      margin: 0;
-      strong {
-        display: block;
-        margin-top: 0.5rem;
-        font-size: 3rem;
-      }
-    }
-  }
-}
-
-@media (max-width: 620px) {
-  .content-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-inline: 1rem;
-  }
-
-  .tasksArea {
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-    width: 100%;
-  }
-
-  .topRow {
-    width: 420px;
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-
-  .middleRow {
-    display: flex;
-    gap: 3.75rem;
-    justify-content: center;
-  }
-
-  .bottomRow {
-    width: 420px;
-    display: flex;
-    gap: 1rem;
-    justify-content: space-between;
-  }
-
-  .toDoCounter,
-  .doneCounter {
-    .icon-circle {
-      width: 2.8rem;
-      height: 2.8rem;
-
-      .counter-icon {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-    }
-
-    .count-number {
-      font-size: 2rem;
-    }
-  }
-
-  .urgentWrapper {
-    width: 420px;
-
-    .urgentCounter {
-      .icon-circle {
-        width: 2.8rem;
-        height: 2.8rem;
-
-        .counter-icon {
-          width: 1.5rem;
-          height: 1.5rem;
-        }
-      }
-
-      span:first-child {
-        font-size: 2rem;
-      }
-
-      span:last-child {
-        font-size: 1rem;
-      }
-    }
-
-    .dateContainer {
-      span:first-child {
-        font-size: 1rem;
-      }
-
-      span:last-child {
-        font-size: 0.875rem;
-      }
-    }
-  }
-
-  .tasksInBoardCounter,
-  .tasksInProgressCounter,
-  .tasksAwaitingCounter {
-    width: 100px;
-    max-width: 100px;
-    min-width: 100px;
-    height: 80px;
-    padding: 0.4rem;
-    
-    span:first-child {
-      font-size: 1.6rem;
-      margin-bottom: 0.1rem;
-    }
-    
-    span:last-child {
-      font-size: 0.75rem;
-      line-height: 1.0;
-      word-wrap: break-word;
-      hyphens: auto;
-      text-align: center;
-    }
+  // Mobile spacing for header
+  .component-header {
+    margin-bottom: 2rem;
   }
 }
 
@@ -593,25 +428,6 @@ body,
     max-width: 100vw;
     overflow-x: hidden;
     box-sizing: border-box;
-  }
-
-  .headlineAndDescription {
-    margin-left: 0;
-    margin-bottom: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    
-    h1 {
-      font-size: 36px;
-    }
-    
-    span {
-      font-size: 24px;
-    }
-    
-    h3 {
-      font-size: 16px;
-    }
   }
 
   .tasksArea {
