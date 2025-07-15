@@ -7,36 +7,61 @@
   </head>
   <body>
     <div class="content-wrapper">
-      <header class="headlineAndDescription">
-        <h1>Join 360</h1>
-        <span>|</span>
-        <h3>Key Metrics at a Glance</h3>
-      </header>
+      <div *ngIf="visible" class="overlay mobile-only">
+        <div class="welcomeMessage">
+          <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
+        </div>
+      </div>
+      
+      <div class="default-content-container">
+        <header class="component-header">
+          <div class="component-title-bar">
+            <h1 class="component-title">Join 360</h1>
+          </div>
+          <div class="header-divider"></div>
+          <h3 class="component-subtitle">Key Metrics at a Glance</h3>
+        </header>
 
-      <div class="mainContentWrapper">
+        <div class="mainContentWrapper">
         <div class="tasksArea">
           <div class="topRow">
-            <div class="toDoCounter" (click)="navigateToTodoTasks()" aria-label="To-do tasks count"><div class="counterWrapper"><span>{{getToDoTasksCount()}}</span> <span>To-do</span></div></div>
-            <div class="doneCounter" (click)="navigateToDoneTasks()" aria-label="done tasks count"><div class="counterWrapper"><span>{{getDoneTasksCount()}}</span> <span>Done</span></div></div>
+            <div class="toDoCounter" (click)="navigateToTodoTasks()" aria-label="To-do tasks count">
+              <div class="icon-circle">
+                <img src="./assets/icons/todoWhite.png" alt="To-do icon" class="counter-icon">
+              </div>
+              <div class="counterWrapper"><span class="count-number">{{getToDoTasksCount()}}</span> <span>To-do</span></div>
+            </div>
+            <div class="doneCounter" (click)="navigateToDoneTasks()" aria-label="done tasks count">
+              <div class="icon-circle">
+                <img src="./assets/icons/check.svg" alt="Done icon" class="counter-icon">
+              </div>
+              <div class="counterWrapper"><span class="count-number">{{getDoneTasksCount()}}</span> <span>Done</span></div>
+            </div>
           </div>
           
           <div class="middleRow">
-            <div class="urgentWrapper" (click)="navigateToBoard()">
-              <div class="urgentCounter" aria-label="urgent tasks count"><span>{{ getUrgentTasksDueToday() }}</span> <span>Urgent</span></div>
-              <div class="dateContainer" aria-label="date tasks deadline"><span>{{getCurrentMonth()}} {{getCurrentDay()}}, {{getCurrentYear()}}</span><span>Upcoming Deadline</span></div>
+            <div class="urgentWrapper" (click)="navigateToNearestUrgentTask()">
+              <div class="urgentCounter" aria-label="urgent tasks count">
+                <div class="icon-circle urgent-icon">
+                  <img src="./assets/icons/urgent_arrows.png" alt="Urgent icon" class="counter-icon">
+                </div>
+                <div class="counterWrapper"><span class="count-number">{{ getUrgentTasksCount() }}</span> <span>Urgent</span></div>
+              </div>
+              <div class="dateContainer" aria-label="date tasks deadline"><span>{{getUrgentDeadlineMonth()}} {{getUrgentDeadlineDay()}}, {{getUrgentDeadlineYear()}}</span><span>{{getDeadlineText()}}</span></div>
             </div>
-            <div class="welcomeMessage">
+            <div class="welcomeMessage desktop-only">
               <p>{{ getTimeBasedGreeting() }}, <strong>{{ getUserDisplayName() }}</strong></p>
             </div>
           </div>
 
           <div class="bottomRow">
-            <div class="tasksInBoardCounter" (click)="navigateToTasksInBoard()"><span>{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
-            <div class="tasksInProgressCounter" (click)="navigateToTasksInProgress()"><span>{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
-            <div class="tasksAwaitingCounter" (click)="navigateToAwaitingTasks()"> <span>{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
+            <div class="tasksInBoardCounter" (click)="navigateToTasksInBoard()"><span class="count-number">{{getOpenTasksCount()}}</span> <span>Tasks in Board</span></div>
+            <div class="tasksInProgressCounter" (click)="navigateToTasksInProgress()"><span class="count-number">{{getInProgressTasksCount()}}</span> <span>Tasks in Progress</span></div>
+            <div class="tasksAwaitingCounter" (click)="navigateToAwaitingTasks()"> <span class="count-number">{{getAwaitingTasksCount()}}</span> <span>Awaiting Feedback</span></div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   </body>
 </html>

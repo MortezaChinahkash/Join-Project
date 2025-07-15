@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject, Injector, runInInjectionContext } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
@@ -29,36 +29,42 @@ export class AuthService implements OnDestroy {
   private readonly STORAGE_KEY = 'join_user';
   private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   private sessionCheckInterval: any;
+  private injector = inject(Injector);
 
   constructor(
     private router: Router,
     private auth: Auth
   ) {
-    this.initializeAuthListener();
-    this.loadUserFromStorage();
-    this.startSessionCheck();
+    // Defer Firebase initialization to avoid injection context warnings
+    setTimeout(() => {
+      this.initializeAuthListener();
+      this.loadUserFromStorage();
+      this.startSessionCheck();
+    }, 0);
   }
 
   /**
    * Initializes Firebase auth state listener.
    */
   private initializeAuthListener(): void {
-    onAuthStateChanged(this.auth, (firebaseUser) => {
-      if (firebaseUser) {
-        const user = this.mapFirebaseUserToUser(firebaseUser);
-        this.currentUserSubject.next(user);
-        this.saveUserToStorage(user);
-        // Start session monitoring when user logs in
-        this.startSessionCheck();
-      } else {
-        // Only clear if we're not just starting up
-        if (this.currentUserSubject.value) {
-          this.currentUserSubject.next(null);
-          localStorage.removeItem(this.STORAGE_KEY);
+    runInInjectionContext(this.injector, () => {
+      onAuthStateChanged(this.auth, (firebaseUser) => {
+        if (firebaseUser) {
+          const user = this.mapFirebaseUserToUser(firebaseUser);
+          this.currentUserSubject.next(user);
+          this.saveUserToStorage(user);
+          // Start session monitoring when user logs in
+          this.startSessionCheck();
+        } else {
+          // Only clear if we're not just starting up
+          if (this.currentUserSubject.value) {
+            this.currentUserSubject.next(null);
+            localStorage.removeItem(this.STORAGE_KEY);
+          }
+          // Stop session monitoring when user logs out
+          this.stopSessionCheck();
         }
-        // Stop session monitoring when user logs out
-        this.stopSessionCheck();
-      }
+      });
     });
   }
 
@@ -67,16 +73,18 @@ export class AuthService implements OnDestroy {
    */
   async waitForAuthReady(): Promise<User | null> {
     return new Promise((resolve) => {
-      const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
-        unsubscribe(); // Stop listening after first emission
-        if (firebaseUser) {
-          const user = this.mapFirebaseUserToUser(firebaseUser);
-          this.currentUserSubject.next(user);
-          this.saveUserToStorage(user);
-          resolve(user);
-        } else {
-          resolve(null);
-        }
+      runInInjectionContext(this.injector, () => {
+        const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
+          unsubscribe(); // Stop listening after first emission
+          if (firebaseUser) {
+            const user = this.mapFirebaseUserToUser(firebaseUser);
+            this.currentUserSubject.next(user);
+            this.saveUserToStorage(user);
+            resolve(user);
+          } else {
+            resolve(null);
+          }
+        });
       });
     });
   }
@@ -122,7 +130,9 @@ export class AuthService implements OnDestroy {
    */
   async login(email: string, password: string): Promise<User> {
     try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        signInWithEmailAndPassword(this.auth, email, password)
+      );
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
@@ -138,12 +148,16 @@ export class AuthService implements OnDestroy {
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        createUserWithEmailAndPassword(this.auth, email, password)
+      );
       
       // Update the user's display name
-      await updateProfile(userCredential.user, {
-        displayName: name.trim()
-      });
+      await runInInjectionContext(this.injector, () => 
+        updateProfile(userCredential.user, {
+          displayName: name.trim()
+        })
+      );
 
       const user = this.mapFirebaseUserToUser(userCredential.user);
       // Update the user object with the correct name
@@ -165,7 +179,9 @@ export class AuthService implements OnDestroy {
    */
   async loginAsGuest(): Promise<User> {
     try {
-      const userCredential = await signInAnonymously(this.auth);
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        signInAnonymously(this.auth)
+      );
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
@@ -179,7 +195,9 @@ export class AuthService implements OnDestroy {
   async logout(): Promise<void> {
     try {
       this.stopSessionCheck(); // Stop session monitoring
-      await signOut(this.auth);
+      await runInInjectionContext(this.injector, () => 
+        signOut(this.auth)
+      );
       // Firebase auth state listener will handle clearing the user state
       this.router.navigate(['/auth']);
     } catch (error) {
@@ -344,6 +362,35 @@ export class AuthService implements OnDestroy {
    */
   getUserEmail(): string {
     return this.currentUser?.email || '';
+  }
+
+  /**
+   * Updates the current user's profile in Firebase Auth.
+   * @param name - New display name
+   */
+  async updateUserProfile(name: string): Promise<void> {
+    if (!this.auth.currentUser) {
+      throw new Error('No authenticated user found');
+    }
+
+    try {
+      await runInInjectionContext(this.injector, () => 
+        updateProfile(this.auth.currentUser!, {
+          displayName: name.trim()
+        })
+      );
+
+      // Update our local user object
+      const currentUser = this.currentUser;
+      if (currentUser) {
+        currentUser.name = name.trim();
+        this.currentUserSubject.next(currentUser);
+        this.saveUserToStorage(currentUser);
+      }
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw new Error('Failed to update user profile');
+    }
   }
 
   /**

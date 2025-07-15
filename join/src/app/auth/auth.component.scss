@@ -12,11 +12,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 4rem;
+  padding: 1rem 2rem;
   background: transparent;
+  flex-shrink: 0;
 
   .logo img {
-    height: 60px;
+    height: 50px;
     width: auto;
   }
 
@@ -62,7 +63,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 1rem;
+  min-height: 0;
 }
 
 // Auth Card
@@ -76,12 +78,12 @@
 }
 
 .auth-form-container {
-  padding: 3rem 2.5rem;
+  padding: 2rem 2rem;
 }
 
 // Title Styles
 .auth-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: #2a3647;
   text-align: center;
@@ -93,7 +95,7 @@
   width: 100px;
   height: 3px;
   background: #29abe2;
-  margin: 0 auto 2.5rem auto;
+  margin: 0 auto 1.5rem auto;
   border-radius: 2px;
 }
 
@@ -101,7 +103,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .form-group {
@@ -328,8 +330,9 @@
   display: flex;
   justify-content: center;
   gap: 2rem;
-  padding: 2rem;
+  padding: 1rem;
   background: transparent;
+  flex-shrink: 0;
 
   .footer-link {
     color: #666;

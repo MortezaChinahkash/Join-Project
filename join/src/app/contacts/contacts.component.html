@@ -7,6 +7,23 @@
           <img src="./assets/img/icon_person_add.svg" alt="Add" class="icon" />
         </button>
       </div>
+      
+      <!-- Current User Section -->
+      <div class="current-user-section" *ngIf="getCurrentUser()">
+        <div class="firstLetter">Current User</div>
+        <div class="contactContainer current-user" 
+             (click)="selectCurrentUser()" 
+             [ngClass]="{ active: selectedContact?.isCurrentUser }">
+          <div class="initials" [style.background]="getInitialsColor(getCurrentUserDisplayName())">
+            {{ getInitials(getCurrentUserDisplayName()) }}
+          </div>
+          <div class="contactNameAndMail">
+            <div class="contactName">{{ getCurrentUserDisplayName() }}</div>
+            <div class="contactMail">{{ truncateEmail(getCurrentUser()?.email || '') }}</div>
+          </div>
+        </div>
+      </div>
+      
       <div class="listContent">
         <ng-container *ngFor="let letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')">
           <div class="letterWrapper{{letter}}" *ngIf="groupedContacts[letter]?.length">
@@ -21,7 +38,7 @@
                 </div>
                 <div class="contactNameAndMail">
                   <div class="contactName">{{ contact.name }}</div>
-                  <div class="contactMail">{{ contact.email }}</div>
+                  <div class="contactMail">{{ truncateEmail(contact.email) }}</div>
                 </div>
               </div>
             </div>
@@ -53,7 +70,7 @@
                 <img class="single-ctc-edit-icon" src="./assets/img/icon_todo.svg" />
                 <span class="single-ctc-edit-text">Edit</span>
               </div>
-              <div class="single-ctc-edit-btn" (click)="deleteContact()">
+              <div class="single-ctc-edit-btn" *ngIf="!selectedContact?.isCurrentUser" (click)="deleteContact()">
                 <img class="single-ctc-edit-icon" src="./assets/img/icon_delete.svg" />
                 <span class="single-ctc-edit-text">Delete</span>
               </div>
@@ -151,11 +168,16 @@
                 <div class="error-message" *ngIf="addContactForm.get('name')?.invalid && addContactForm.get('name')?.touched">Please type in a name</div>
               </div>
               <div class="input-group">
-                <input type="email" placeholder="Email" formControlName="email" [class.input-error]="addContactForm.get('email')?.invalid && addContactForm.get('email')?.touched" autocomplete="off" />
+                <input type="email" placeholder="Email" formControlName="email" 
+                       [class.input-error]="addContactForm.get('email')?.invalid && addContactForm.get('email')?.touched" 
+                       [class.readonly-input]="selectedContact?.isCurrentUser"
+                       [readonly]="selectedContact?.isCurrentUser"
+                       autocomplete="off" />
                 <div class="input-icon"><div [inlineSvg]="'assets/icons/mail.svg'" class="icon"></div></div>
                 <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['required'] && addContactForm.get('email')?.touched">Please type in an email</div>
                 <div class="error-message" *ngIf="addContactForm.get('email')?.errors?.['email'] && addContactForm.get('email')?.touched">Enter a valid email</div>
               </div>
+              <div class="info-message" *ngIf="selectedContact?.isCurrentUser">Email cannot be edited for current user</div>
               <div class="input-group">
                 <input type="tel" placeholder="Phone" formControlName="phone" [class.input-error]="addContactForm.get('phone')?.invalid && addContactForm.get('phone')?.touched" autocomplete="off" />
                 <div class="input-icon"><div [inlineSvg]="'assets/icons/call.svg'" class="icon"></div></div>
@@ -192,7 +214,7 @@
       <img src="assets/img/icon_todo.svg" class="mobile-more-icon" />
       <span>Edit</span>
     </button>
-    <button class="mobile-more-item" (click)="deleteContact(); closeMoreMenu()">
+    <button class="mobile-more-item" *ngIf="!selectedContact?.isCurrentUser" (click)="deleteContact(); closeMoreMenu()">
       <img src="assets/img/icon_delete.svg" class="mobile-more-icon" />
       <span>Delete</span>
     </button>

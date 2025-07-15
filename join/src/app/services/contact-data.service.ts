@@ -11,6 +11,8 @@ export interface Contact {
   email: string;
   /** Contact's phone number (optional) */
   phone?: string;
+  /** Flag to indicate if this is the current user */
+  isCurrentUser?: boolean;
 }
 
 /**

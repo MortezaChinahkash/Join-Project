@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  imports: [CommonModule]
+  imports: [CommonModule, RouterModule]
 })
 export class HeaderComponent {
   isOverlayVisible = false;

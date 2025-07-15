@@ -6,45 +6,16 @@ $text: #42526e;
 $urgent: #ff3d00;
 $icon-bg: #2a3647;
 $border-radius: 20px;
-$shadow: 0 4px 16px 0 rgba(0,0,0,0.03);
-
-body, .content-wrapper {
-  background: $content-bg;
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'Inter', Arial, sans-serif;
-}
+$shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
 
 .content-wrapper {
-  padding: 40px 0 0 64px; // z.B. 120px, je nach Breite deines Menüs
+  background: var(--bg-grey);
+  min-height: auto;
+  height: 100%;
+  margin: 0;
+  font-family: "Inter", Arial, sans-serif;
   max-width: 1440px;
-}
-
-.headlineAndDescription {
-  display: flex;
-  align-items: center;
-  margin-bottom: 40px;
-
-  h1 {
-    font-size: 48px;
-    font-weight: 700;
-    color: $headline;
-    margin: 0 18px 0 0;
-  }
-
-  span {
-    color: $primary;
-    font-size: 32px;
-    margin-right: 18px;
-    font-weight: 400;
-  }
-
-  h3 {
-    font-size: 20px;
-    font-weight: 400;
-    color: $text;
-    margin: 0;
-  }
+  box-sizing: border-box;
 }
 
 .mainContentWrapper {
@@ -79,7 +50,11 @@ body, .content-wrapper {
   justify-content: flex-start;
 }
 
-.toDoCounter, .doneCounter, .tasksInBoardCounter, .tasksInProgressCounter, .tasksAwaitingCounter {
+.toDoCounter,
+.doneCounter,
+.tasksInBoardCounter,
+.tasksInProgressCounter,
+.tasksAwaitingCounter {
   background: $card-bg;
   border-radius: $border-radius;
   box-shadow: $shadow;
@@ -93,7 +68,8 @@ body, .content-wrapper {
   position: relative;
 }
 
-.toDoCounter, .doneCounter {
+.toDoCounter,
+.doneCounter {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -105,15 +81,23 @@ body, .content-wrapper {
   cursor: pointer;
   transition: all 0.3s ease;
 
-  &::before {
-    content: '';
-    display: block;
+  .icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 60px;
     height: 60px;
     border-radius: 50%;
     background: $icon-bg;
     flex-shrink: 0;
     transition: all 0.3s ease;
+
+    .counter-icon {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      transition: all 0.3s ease;
+    }
   }
 
   span:first-child {
@@ -137,12 +121,17 @@ body, .content-wrapper {
 .toDoCounter:hover {
   background: $icon-bg;
   transform: scale(1.1);
-  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
-  &::before {
-    background: $card-bg url('/assets/icons/todo.svg') no-repeat center/30px 30px;
+  box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.15);
+
+  .icon-circle {
+    background: $card-bg;
+
+    .counter-icon {
+      filter: brightness(0) saturate(100%) invert(13%) sepia(16%)
+        saturate(1532%) hue-rotate(185deg) brightness(94%) contrast(88%);
+    }
   }
-  
+
   span {
     color: $card-bg !important;
   }
@@ -151,25 +140,21 @@ body, .content-wrapper {
 .doneCounter:hover {
   background: $icon-bg;
   transform: scale(1.1);
-  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
-  &::before {
-    background: $card-bg url('/assets/icons/done.svg') no-repeat center/30px 30px;
+  box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.15);
+
+  .icon-circle {
+    background: $card-bg;
+
+    .counter-icon {
+      filter: brightness(0) saturate(100%) invert(13%) sepia(16%)
+        saturate(1532%) hue-rotate(185deg) brightness(94%) contrast(88%);
+    }
   }
-  
+
   span {
     color: $card-bg !important;
   }
 }
-
-.toDoCounter::before {
-  background: $icon-bg url('/assets/icons/todoWhite.png') no-repeat center/30px 30px;
-}
-.doneCounter::before {
-  background: $icon-bg url('/assets/icons/check.svg') no-repeat center/30px 30px;
-}
-
-
 
 .urgentWrapper {
   display: flex;
@@ -179,7 +164,7 @@ body, .content-wrapper {
   border-radius: $border-radius;
   box-shadow: $shadow;
   height: 140px;
-  width: 512px; // Breite für zwei normale Container plus Gap (200px + 28px + 200px + 28px)
+  width: 512px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -188,17 +173,17 @@ body, .content-wrapper {
 .urgentWrapper:hover {
   background: $icon-bg;
   transform: scale(1.1);
-  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
+  box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.15);
+
   .urgentCounter {
     span {
       color: $card-bg !important;
     }
   }
-  
+
   .dateContainer {
     border-left: 2px solid rgba(255, 255, 255, 0.3);
-    
+
     span {
       color: $card-bg !important;
     }
@@ -216,15 +201,26 @@ body, .content-wrapper {
   gap: 16px;
   transition: all 0.2s ease;
 
-  &::before {
-    content: '';
-    display: block;
+  .icon-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: $urgent url('/assets/icons/urgent_arrows.png') no-repeat center/30px 30px;
     flex-shrink: 0;
     transition: all 0.2s ease;
+
+    &.urgent-icon {
+      background: $urgent;
+    }
+
+    .counter-icon {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      transition: all 0.2s ease;
+    }
   }
 
   span:first-child {
@@ -235,7 +231,7 @@ body, .content-wrapper {
     line-height: 1;
     transition: all 0.2s ease;
   }
-  
+
   span:last-child {
     font-size: 20px;
     color: $text;
@@ -277,14 +273,14 @@ body, .content-wrapper {
 .tasksAwaitingCounter {
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.03);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 144px;      // Etwas schmaler für bessere Ausrichtung
-  height: 120px;     
-  min-width: 144px;  
+  width: 144px;
+  height: 120px;
+  min-width: 144px;
   min-height: 120px;
   max-width: 144px;
   max-height: 120px;
@@ -322,9 +318,9 @@ body, .content-wrapper {
 .tasksInProgressCounter:hover,
 .tasksAwaitingCounter:hover {
   background: $icon-bg;
- transform: scale(1.1);
-  box-shadow: 0px 17px 22px -8px rgba(0, 0, 0);
-  
+  transform: scale(1.1);
+  box-shadow: 0px 8px 16px -4px rgba(0, 0, 0, 0.15);
+
   span {
     color: $card-bg !important;
   }
@@ -352,8 +348,301 @@ body, .content-wrapper {
   }
 }
 
-.counterWrapper{
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--bg-grey);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+
+  .welcomeMessage {
+    padding: 1.5rem 2rem;
+    text-align: center;
+
+    p {
+      font-size: 2.5rem;
+      margin: 0;
+
+      strong {
+        display: block;
+        margin-top: 0.5rem;
+        font-size: 3rem;
+      }
+    }
+  }
+}
+
+.counterWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+@media (max-width: 1100px) {
+  .topRow {
+    width: 480px;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .middleRow {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .urgentWrapper {
+    width: 480px;
+    flex-shrink: 0;
+  }
+
+  .bottomRow {
+    width: 480px;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .welcomeMessage {
+    p {
+      font-size: 1.625rem;
+      
+      strong {
+        font-size: 1.875rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 1001px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: flex;
+  }
+}
+
+@media (max-width: 1000px) {
+  .mobile-only {
+    display: flex;
+  }
+  .desktop-only {
+    display: none;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 1rem;
+  }
+
+  // Mobile spacing for header
+  .component-header {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .topRow {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+  }
+
+  .middleRow {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .urgentWrapper {
+    width: 100%;
+    max-width: 360px;
+    flex-shrink: 0;
+  }
+
+  .bottomRow {
+    width: 100%;
+    max-width: 360px;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+
+  .tasksInBoardCounter,
+  .tasksInProgressCounter,
+  .tasksAwaitingCounter {
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem 0.5rem;
+    box-sizing: border-box;
+    text-align: center;
+    
+    .count-number {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    
+    span:not(.count-number) {
+      font-size: 0.875rem;
+      display: block;
+      line-height: 1.2;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: 0.25rem;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .tasksArea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .toDoCounter,
+  .doneCounter {
+    padding: 0.4rem;
+    width: 140px;
+    height: 90px;
+    box-sizing: border-box;
+    
+    .icon-circle {
+      width: 50px;
+      height: 50px;
+
+      .counter-icon {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    span:first-child {
+      font-size: 32px;
+    }
+
+    span:last-child {
+      font-size: 16px;
+    }
+  }
+  
+  .urgentWrapper {
+    width: 285px;
+    height: 100px;
+    box-sizing: border-box;
+
+    .urgentCounter {
+      padding: 0.4rem;
+
+      .icon-circle {
+        width: 50px;
+        height: 50px;
+
+        .counter-icon {
+          width: 24px;
+          height: 24px;
+        }
+      }
+
+      span:first-child {
+        font-size: 24px;
+      }
+
+      span:last-child {
+        font-size: 14px;
+      }
+    }
+
+    .dateContainer {
+      padding: 0.4rem;
+
+      span:first-child {
+        font-size: 14px;
+      }
+
+      span:last-child {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .topRow {
+    width: 285px;
+    gap: 0.3rem;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .middleRow {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .bottomRow {
+    width: 100%;
+    max-width: 285px;
+    gap: 0.25rem;
+    box-sizing: border-box;
+  }
+
+  .tasksInBoardCounter,
+  .tasksInProgressCounter,
+  .tasksAwaitingCounter {
+    flex: 1;
+    min-width: 0;
+    height: 70px;
+    padding: 0.25rem 0.125rem;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    
+    .count-number {
+      font-size: 1rem;
+      margin-bottom: 0.1rem;
+    }
+    
+    span:not(.count-number) {
+      font-size: 0.6rem;
+      line-height: 0.9;
+      word-wrap: break-word;
+      hyphens: auto;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 350px) and (min-width: 321px) {
+  .content-wrapper {
+    padding-inline: 0.125rem;
+  }
+
+  .default-content-container {
+    padding-left: 0.75rem;
+    padding-right: 0.5rem;
+  }
 }
