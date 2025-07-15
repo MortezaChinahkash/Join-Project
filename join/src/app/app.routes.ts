@@ -15,17 +15,18 @@ import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   // Auth route - accessible without authentication
   { path: 'auth', component: AuthComponent },
+  
+  // Public routes - accessible without authentication, standalone
+  { path: 'privacy', component: PrivacyPolicyComponent },
+  { path: 'imprint', component: LegalNoticeComponent },
+  { path: 'legal', component: LegalNoticeComponent }, // Fallback for old links
+  { path: 'help', component: HelpComponent },
 
   // All routes with MainContentComponent (navbar + content)
   {
     path: '',
     component: MainContentComponent,
     children: [
-      // Public routes - accessible without authentication
-      { path: 'imprint', component: LegalNoticeComponent },
-      { path: 'privacy', component: PrivacyPolicyComponent },
-      { path: 'help', component: HelpComponent },
-      
       // Protected routes - require authentication
       { path: '', component: SummaryComponent, canActivate: [AuthGuard] },
       { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
