@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy, inject, NgZone, Injector, runInInjectionContext } from '@angular/core';
+import { Injectable, OnDestroy, inject, Injector, runInInjectionContext } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
@@ -29,7 +29,6 @@ export class AuthService implements OnDestroy {
   private readonly STORAGE_KEY = 'join_user';
   private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   private sessionCheckInterval: any;
-  private ngZone = inject(NgZone);
   private injector = inject(Injector);
 
   constructor(
@@ -131,7 +130,9 @@ export class AuthService implements OnDestroy {
    */
   async login(email: string, password: string): Promise<User> {
     try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        signInWithEmailAndPassword(this.auth, email, password)
+      );
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
@@ -147,12 +148,16 @@ export class AuthService implements OnDestroy {
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        createUserWithEmailAndPassword(this.auth, email, password)
+      );
       
       // Update the user's display name
-      await updateProfile(userCredential.user, {
-        displayName: name.trim()
-      });
+      await runInInjectionContext(this.injector, () => 
+        updateProfile(userCredential.user, {
+          displayName: name.trim()
+        })
+      );
 
       const user = this.mapFirebaseUserToUser(userCredential.user);
       // Update the user object with the correct name
@@ -174,7 +179,9 @@ export class AuthService implements OnDestroy {
    */
   async loginAsGuest(): Promise<User> {
     try {
-      const userCredential = await signInAnonymously(this.auth);
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        signInAnonymously(this.auth)
+      );
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
@@ -188,7 +195,9 @@ export class AuthService implements OnDestroy {
   async logout(): Promise<void> {
     try {
       this.stopSessionCheck(); // Stop session monitoring
-      await signOut(this.auth);
+      await runInInjectionContext(this.injector, () => 
+        signOut(this.auth)
+      );
       // Firebase auth state listener will handle clearing the user state
       this.router.navigate(['/auth']);
     } catch (error) {
@@ -365,9 +374,11 @@ export class AuthService implements OnDestroy {
     }
 
     try {
-      await updateProfile(this.auth.currentUser, {
-        displayName: name.trim()
-      });
+      await runInInjectionContext(this.injector, () => 
+        updateProfile(this.auth.currentUser!, {
+          displayName: name.trim()
+        })
+      );
 
       // Update our local user object
       const currentUser = this.currentUser;
