@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, inject, NgZone, Injector, runInInjectionContext } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
@@ -29,36 +29,43 @@ export class AuthService implements OnDestroy {
   private readonly STORAGE_KEY = 'join_user';
   private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   private sessionCheckInterval: any;
+  private ngZone = inject(NgZone);
+  private injector = inject(Injector);
 
   constructor(
     private router: Router,
     private auth: Auth
   ) {
-    this.initializeAuthListener();
-    this.loadUserFromStorage();
-    this.startSessionCheck();
+    // Defer Firebase initialization to avoid injection context warnings
+    setTimeout(() => {
+      this.initializeAuthListener();
+      this.loadUserFromStorage();
+      this.startSessionCheck();
+    }, 0);
   }
 
   /**
    * Initializes Firebase auth state listener.
    */
   private initializeAuthListener(): void {
-    onAuthStateChanged(this.auth, (firebaseUser) => {
-      if (firebaseUser) {
-        const user = this.mapFirebaseUserToUser(firebaseUser);
-        this.currentUserSubject.next(user);
-        this.saveUserToStorage(user);
-        // Start session monitoring when user logs in
-        this.startSessionCheck();
-      } else {
-        // Only clear if we're not just starting up
-        if (this.currentUserSubject.value) {
-          this.currentUserSubject.next(null);
-          localStorage.removeItem(this.STORAGE_KEY);
+    runInInjectionContext(this.injector, () => {
+      onAuthStateChanged(this.auth, (firebaseUser) => {
+        if (firebaseUser) {
+          const user = this.mapFirebaseUserToUser(firebaseUser);
+          this.currentUserSubject.next(user);
+          this.saveUserToStorage(user);
+          // Start session monitoring when user logs in
+          this.startSessionCheck();
+        } else {
+          // Only clear if we're not just starting up
+          if (this.currentUserSubject.value) {
+            this.currentUserSubject.next(null);
+            localStorage.removeItem(this.STORAGE_KEY);
+          }
+          // Stop session monitoring when user logs out
+          this.stopSessionCheck();
         }
-        // Stop session monitoring when user logs out
-        this.stopSessionCheck();
-      }
+      });
     });
   }
 
@@ -67,16 +74,18 @@ export class AuthService implements OnDestroy {
    */
   async waitForAuthReady(): Promise<User | null> {
     return new Promise((resolve) => {
-      const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
-        unsubscribe(); // Stop listening after first emission
-        if (firebaseUser) {
-          const user = this.mapFirebaseUserToUser(firebaseUser);
-          this.currentUserSubject.next(user);
-          this.saveUserToStorage(user);
-          resolve(user);
-        } else {
-          resolve(null);
-        }
+      runInInjectionContext(this.injector, () => {
+        const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
+          unsubscribe(); // Stop listening after first emission
+          if (firebaseUser) {
+            const user = this.mapFirebaseUserToUser(firebaseUser);
+            this.currentUserSubject.next(user);
+            this.saveUserToStorage(user);
+            resolve(user);
+          } else {
+            resolve(null);
+          }
+        });
       });
     });
   }
