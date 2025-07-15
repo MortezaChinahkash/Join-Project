@@ -478,7 +478,7 @@ $shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-inline: 0.5rem;
+    padding-inline: 0.25rem;
     max-width: 100vw;
     overflow-x: hidden;
     box-sizing: border-box;
@@ -488,7 +488,6 @@ $shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    padding-inline: 0.5rem;
   }
 
   .toDoCounter,
@@ -603,5 +602,16 @@ $shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.03);
       hyphens: auto;
       text-align: center;
     }
+  }
+}
+
+@media (max-width: 350px) and (min-width: 321px) {
+  .content-wrapper {
+    padding-inline: 0.125rem;
+  }
+
+  .default-content-container {
+    padding-left: 0.75rem;
+    padding-right: 0.5rem;
   }
 }
