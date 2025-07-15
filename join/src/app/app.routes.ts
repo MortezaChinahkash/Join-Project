@@ -15,12 +15,6 @@ import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   // Auth route - accessible without authentication
   { path: 'auth', component: AuthComponent },
-  
-  // Public routes - accessible without authentication, standalone
-  { path: 'privacy', component: PrivacyPolicyComponent },
-  { path: 'imprint', component: LegalNoticeComponent },
-  { path: 'legal', component: LegalNoticeComponent }, // Fallback for old links
-  { path: 'help', component: HelpComponent },
 
   // All routes with MainContentComponent (navbar + content)
   {
@@ -33,6 +27,12 @@ export const routes: Routes = [
       { path: 'summary', component: SummaryComponent, canActivate: [AuthGuard] },
       { path: 'add-task', component: AddTaskComponent, canActivate: [AuthGuard] },
       { path: 'board', component: BoardComponent, canActivate: [AuthGuard] },
+      
+      // Public routes - accessible without authentication, but with navbar + header
+      { path: 'privacy', component: PrivacyPolicyComponent },
+      { path: 'imprint', component: LegalNoticeComponent },
+      { path: 'legal', component: LegalNoticeComponent }, // Fallback for old links
+      { path: 'help', component: HelpComponent },
     ]
   },
 
