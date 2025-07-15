@@ -292,11 +292,35 @@ export class ContactsComponent implements OnInit, OnDestroy {
     }
 
     try {
-      await this.dataService.updateContactInFirestore(this.selectedContact.id, contactData);
+      // Check if this is the current user
+      if (this.selectedContact.isCurrentUser) {
+        await this.updateCurrentUserProfile(contactData);
+      } else {
+        await this.dataService.updateContactInFirestore(this.selectedContact.id, contactData);
+      }
       this.handleContactUpdated(contactData);
     } catch (error) {
       this.handleOperationError('updating', error);
     }
+  }
+
+  /**
+   * Updates the current user's profile in Firebase Auth.
+   * @param contactData - Contact data to update
+   */
+  private async updateCurrentUserProfile(contactData: Partial<Contact>): Promise<void> {
+    const currentUser = this.authService.currentUser;
+    if (!currentUser) {
+      throw new Error('No current user found');
+    }
+
+    // Update Firebase Auth profile if name changed
+    if (contactData.name && contactData.name !== currentUser.name) {
+      await this.authService.updateUserProfile(contactData.name);
+    }
+
+    // Note: Phone is not stored in Firebase Auth, only in the temporary contact object
+    // This is fine since the current user contact is recreated each time
   }
 
   /**
@@ -317,12 +341,20 @@ export class ContactsComponent implements OnInit, OnDestroy {
    */
   private handleContactUpdated(updatedData: Partial<Contact>): void {
     if (this.selectedContact) {
-      Object.assign(this.selectedContact, updatedData);
-      this.contacts = this.organizationService.updateContactInArray(
-        this.contacts, 
-        this.selectedContact
-      );
-      this.groupContacts();
+      if (this.selectedContact.isCurrentUser) {
+        // For current user, update the temporary object and refresh the contact list
+        Object.assign(this.selectedContact, updatedData);
+        // Refresh the contacts list to get the updated current user at the top
+        this.groupContacts();
+      } else {
+        // For regular contacts, update normally
+        Object.assign(this.selectedContact, updatedData);
+        this.contacts = this.organizationService.updateContactInArray(
+          this.contacts, 
+          this.selectedContact
+        );
+        this.groupContacts();
+      }
     }
     
     this.closeEditContactOverlay();

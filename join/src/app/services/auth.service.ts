@@ -347,6 +347,33 @@ export class AuthService implements OnDestroy {
   }
 
   /**
+   * Updates the current user's profile in Firebase Auth.
+   * @param name - New display name
+   */
+  async updateUserProfile(name: string): Promise<void> {
+    if (!this.auth.currentUser) {
+      throw new Error('No authenticated user found');
+    }
+
+    try {
+      await updateProfile(this.auth.currentUser, {
+        displayName: name.trim()
+      });
+
+      // Update our local user object
+      const currentUser = this.currentUser;
+      if (currentUser) {
+        currentUser.name = name.trim();
+        this.currentUserSubject.next(currentUser);
+        this.saveUserToStorage(currentUser);
+      }
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw new Error('Failed to update user profile');
+    }
+  }
+
+  /**
    * Starts periodic session check to auto-logout after 24 hours.
    */
   private startSessionCheck(): void {
