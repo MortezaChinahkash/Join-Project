@@ -289,4 +289,88 @@ export class SummaryComponent implements OnInit, OnDestroy {
     }).length;
   }
 
+  /**
+   * Gets the count of all urgent tasks regardless of due date.
+   * @returns Number of urgent tasks
+   */
+  getUrgentTasksCount(): number {
+    return this.tasks.filter(task => task.priority === 'urgent').length;
+  }
+
+  /**
+   * Gets the nearest upcoming deadline for urgent tasks.
+   * @returns Date object of the nearest urgent task deadline, or null if no urgent tasks with due dates exist
+   */
+  getNearestUrgentTaskDeadline(): Date | null {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
+    
+    const urgentTasksWithDueDate = this.tasks.filter(task => 
+      task.priority === 'urgent' && 
+      task.dueDate && 
+      new Date(task.dueDate) >= today // Only future or today's deadlines
+    );
+
+    if (urgentTasksWithDueDate.length === 0) {
+      return null;
+    }
+
+    // Find the task with the earliest due date
+    const nearestTask = urgentTasksWithDueDate.reduce((nearest, current) => {
+      const currentDate = new Date(current.dueDate!);
+      const nearestDate = new Date(nearest.dueDate!);
+      return currentDate < nearestDate ? current : nearest;
+    });
+
+    return new Date(nearestTask.dueDate!);
+  }
+
+  /**
+   * Gets the formatted month name for the nearest urgent task deadline.
+   * @returns Month name string or current month as fallback
+   */
+  getUrgentDeadlineMonth(): string {
+    const deadline = this.getNearestUrgentTaskDeadline();
+    if (!deadline) {
+      return this.getCurrentMonth(); // Fallback to current month
+    }
+    
+    const options: Intl.DateTimeFormatOptions = { month: 'long' };
+    return deadline.toLocaleDateString('en-US', options);
+  }
+
+  /**
+   * Gets the day number for the nearest urgent task deadline.
+   * @returns Day number or current day as fallback
+   */
+  getUrgentDeadlineDay(): number {
+    const deadline = this.getNearestUrgentTaskDeadline();
+    if (!deadline) {
+      return this.getCurrentDay(); // Fallback to current day
+    }
+    
+    return deadline.getDate();
+  }
+
+  /**
+   * Gets the year for the nearest urgent task deadline.
+   * @returns Year number or current year as fallback
+   */
+  getUrgentDeadlineYear(): number {
+    const deadline = this.getNearestUrgentTaskDeadline();
+    if (!deadline) {
+      return this.getCurrentYear(); // Fallback to current year
+    }
+    
+    return deadline.getFullYear();
+  }
+
+  /**
+   * Gets the appropriate deadline text based on whether urgent tasks with deadlines exist.
+   * @returns Deadline description text
+   */
+  getDeadlineText(): string {
+    const deadline = this.getNearestUrgentTaskDeadline();
+    return deadline ? 'Upcoming Deadline' : 'No Urgent Deadlines';
+  }
 }
