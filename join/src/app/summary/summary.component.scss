@@ -384,7 +384,27 @@ body,
   align-items: center;
 }
 
-@media (min-width: 1101px) {
+@media (max-width: 1100px) {
+  .topRow {
+    width: 480px;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+
+  .urgentWrapper {
+    width: 480px !important;
+  }
+
+   .bottomRow {
+    width: 480px;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+   }
+}
+
+@media (min-width: 1001px) {
   .mobile-only {
     display: none !important;
   }
@@ -393,7 +413,7 @@ body,
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1000px) {
   .mobile-only {
     display: flex;
   }
