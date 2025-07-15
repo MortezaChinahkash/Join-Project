@@ -357,3 +357,12 @@ body, .content-wrapper {
   flex-direction: column;
   align-items: center;
 }
+
+@media (max-width: 1000px) {
+  .mobile-only {
+    display: flex;
+  }
+  .desktop-only {
+    display: none;
+  }
+}
