@@ -1,3 +1,42 @@
 @import './styles/add-task-form.component.scss';
 @import './styles/add-task-select.component.scss';
 @import './styles/add-task-responsive.component.scss';
+
+// Custom Flatpickr styling
+:host ::ng-deep .flatpickr-calendar {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-greyed-out);
+  font-family: var(--font-main);
+}
+
+:host ::ng-deep .flatpickr-day {
+  &:hover {
+    background-color: var(--color-accent);
+    color: white;
+  }
+  
+  &.selected {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+  }
+  
+  &.today {
+    border-color: var(--color-accent);
+  }
+}
+
+:host ::ng-deep .flatpickr-months .flatpickr-month {
+  background-color: var(--bg-white);
+  color: var(--color-black);
+}
+
+:host ::ng-deep .flatpickr-weekdaycontainer {
+  background-color: var(--bg-grey);
+}
+
+:host ::ng-deep .flatpickr-current-month .flatpickr-monthDropdown-months {
+  background-color: var(--bg-white);
+  color: var(--color-black);
+}

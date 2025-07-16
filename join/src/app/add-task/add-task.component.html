@@ -45,11 +45,12 @@
               <label for="dueDate">Due date<span class="required">*</span></label>
               <div class="date-input-wrapper">
                 <input 
-                  type="date" 
+                  type="text" 
                   id="dueDate" 
                   formControlName="dueDate" 
-                  [min]="boardFormService.getTodayDateString()"
                   class="form-input date-input"
+                  placeholder="dd.mm.yyyy"
+                  appFlatpickr
                   [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched || boardFormService.isDateInvalid('dueDate', taskForm)"
                   (change)="taskForm.get('dueDate')?.markAsTouched()">
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />

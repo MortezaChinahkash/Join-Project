@@ -8,6 +8,7 @@ import { Firestore, collectionData, collection, DocumentData } from '@angular/fi
 import { Task } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 import { InlineSvgDirective } from '../inline-svg.directive';
+import { FlatpickrDirective } from '../directives/flatpickr.directive';
 import { BoardFormService } from '../services/board-form.service';
 import { AddTaskFormService } from '../services/add-task-form.service';
 import { AddTaskContactService } from '../services/add-task-contact.service';
@@ -22,7 +23,7 @@ import { AddTaskContactService } from '../services/add-task-contact.service';
 @Component({
   selector: 'app-add-task',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, InlineSvgDirective],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, InlineSvgDirective, FlatpickrDirective],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
 })
@@ -35,6 +36,9 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   isDropdownOpen = false;
   isSubmitting = false;
   maxTitleLength: number = 40;
+  taskAddedNotif = false;
+  editingSubtaskIndex: number | null = null;
+  newSubtaskTitle = '';
   
   private firestore = inject(Firestore);
   private injector = inject(Injector);
@@ -161,6 +165,37 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   addSubtask(): void {
     this.formService.addSubtask(this.taskForm);
+  }
+
+  /**
+   * Adds new subtask from input field.
+   */
+  addNewSubtask(): void {
+    if (this.newSubtaskTitle.trim()) {
+      this.formService.addSubtaskWithTitle(this.taskForm, this.newSubtaskTitle.trim());
+      this.newSubtaskTitle = '';
+    }
+  }
+
+  /**
+   * Starts editing a subtask.
+   */
+  editSubtask(index: number): void {
+    this.editingSubtaskIndex = index;
+  }
+
+  /**
+   * Stops editing current subtask.
+   */
+  stopEditingSubtask(): void {
+    this.editingSubtaskIndex = null;
+  }
+
+  /**
+   * Handles subtask input focus.
+   */
+  onSubtaskInputFocus(index: number): void {
+    this.editingSubtaskIndex = index;
   }
 
   /**

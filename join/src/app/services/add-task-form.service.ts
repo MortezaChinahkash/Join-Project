@@ -92,6 +92,17 @@ export class AddTaskFormService {
   }
 
   /**
+   * Adds a new subtask with title to the form.
+   * @param form - Form to add subtask to
+   * @param title - Title for the new subtask
+   */
+  addSubtaskWithTitle(form: FormGroup, title: string): void {
+    const subtaskGroup = this.createSubtaskGroup(title);
+    const subtasksArray = this.getSubtasksFormArray(form);
+    subtasksArray.push(subtaskGroup);
+  }
+
+  /**
    * Removes a subtask from the form.
    * @param form - Form to remove subtask from
    * @param index - Index of subtask to remove

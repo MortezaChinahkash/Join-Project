@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, inject, HostListener, Injector, runInInjectionContext } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormArray } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ContactsComponent } from '../contacts/contacts.component';
 import { Contact } from '../services/contact-data.service';
 import { Firestore, collectionData, collection, DocumentData } from '@angular/fire/firestore';
 import { Task } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 import { InlineSvgDirective } from '../inline-svg.directive';
+import { FlatpickrDirective } from '../directives/flatpickr.directive';
 import { BoardFormService } from '../services/board-form.service';
 import { AddTaskFormService } from '../services/add-task-form.service';
 import { AddTaskContactService } from '../services/add-task-contact.service';
@@ -22,7 +23,7 @@ import { AddTaskContactService } from '../services/add-task-contact.service';
 @Component({
   selector: 'app-add-task',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, InlineSvgDirective],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, InlineSvgDirective, FlatpickrDirective],
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
 })
@@ -35,12 +36,9 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   isDropdownOpen = false;
   isSubmitting = false;
   maxTitleLength: number = 40;
-  newSubtaskTitle: string = ''; // New property for subtask input
-  editingSubtaskIndex: number | null = null; // For tracking which subtask is being edited
-
-  // SHOW TASK ADDED NOTIFICATION
-  taskAddedNotif: boolean = false;
-  taskNotifDelay: number = 1000;
+  taskAddedNotif = false;
+  editingSubtaskIndex: number | null = null;
+  newSubtaskTitle = '';
   
   private firestore = inject(Firestore);
   private injector = inject(Injector);
@@ -52,8 +50,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     private taskService: TaskService,
     public boardFormService: BoardFormService,
     private formService: AddTaskFormService,
-    private contactService: AddTaskContactService,
-    private router: Router
+    private contactService: AddTaskContactService
   ) {
     this.taskForm = this.formService.createTaskForm();
   }
@@ -164,22 +161,41 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Adds new subtask (old method - creates empty subtask immediately).
+   * Adds new subtask.
    */
   addSubtask(): void {
     this.formService.addSubtask(this.taskForm);
   }
 
   /**
-   * Adds new subtask from input field (only when Enter is pressed or + clicked).
+   * Adds new subtask from input field.
    */
   addNewSubtask(): void {
     if (this.newSubtaskTitle.trim()) {
-      // Create new subtask with the entered title
-      const subtaskGroup = this.formService.createSubtaskGroup(this.newSubtaskTitle.trim(), false);
-      this.subtasksFormArray.push(subtaskGroup);
-      this.newSubtaskTitle = ''; // Clear the input
+      this.formService.addSubtaskWithTitle(this.taskForm, this.newSubtaskTitle.trim());
+      this.newSubtaskTitle = '';
     }
+  }
+
+  /**
+   * Starts editing a subtask.
+   */
+  editSubtask(index: number): void {
+    this.editingSubtaskIndex = index;
+  }
+
+  /**
+   * Stops editing current subtask.
+   */
+  stopEditingSubtask(): void {
+    this.editingSubtaskIndex = null;
+  }
+
+  /**
+   * Handles subtask input focus.
+   */
+  onSubtaskInputFocus(index: number): void {
+    this.editingSubtaskIndex = index;
   }
 
   /**
@@ -187,29 +203,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   removeSubtask(index: number): void {
     this.formService.removeSubtask(this.taskForm, index);
-  }
-
-  /**
-   * Starts editing a subtask by setting the editing index.
-   */
-  editSubtask(index: number): void {
-    this.editingSubtaskIndex = index;
-  }
-
-  /**
-   * Stops editing a subtask by clearing the editing index.
-   */
-  stopEditingSubtask(): void {
-    this.editingSubtaskIndex = null;
-  }
-
-  /**
-   * Handles subtask input focus - only allows editing if not readonly.
-   */
-  onSubtaskInputFocus(index: number): void {
-    if (this.editingSubtaskIndex === index) {
-      this.editSubtask(index);
-    }
   }
 
   /**
@@ -233,18 +226,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       const taskData = this.prepareTaskData();
       await this.taskService.addTaskToFirebase(taskData, 'todo');
       this.resetForm();
-
-      this.taskAddedNotif = true;
-
     } catch (error) {
       console.error('Error creating task:', error);
     } finally {
       this.isSubmitting = false;
-
-      setTimeout(() => {
-        this.taskAddedNotif = false;
-        this.router.navigate(['/board']); 
-      }, this.taskNotifDelay); 
     }
   }
 
