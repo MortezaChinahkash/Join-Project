@@ -72,7 +72,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   private initializeSummaryData(): void {
     this.loadTaskStatistics();
-    this.setupWelcomeMessage();
   }
 
   /**
@@ -80,13 +79,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   private loadTaskStatistics(): void {
     // Implementation for loading task statistics
-  }
-
-  /**
-   * Sets up the welcome message for the user.
-   */
-  private setupWelcomeMessage(): void {
-    // Implementation for welcome message setup
   }
 
   /**
