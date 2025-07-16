@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../services/auth.service';
+import { WelcomeOverlayService } from '../services/welcome-overlay.service';
 
 /**
  * Authentication component for login and registration.
@@ -30,7 +31,8 @@ export class AuthComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private welcomeOverlayService: WelcomeOverlayService
   ) {}
 
   ngOnInit(): void {
@@ -110,6 +112,7 @@ export class AuthComponent implements OnInit {
       try {
         const { email, password } = this.loginForm.value;
         await this.authService.login(email, password);
+        this.welcomeOverlayService.markShouldShow();
         this.router.navigate(['/summary']);
       } catch (error: any) {
         this.errorMessage = this.getErrorMessage(error);
@@ -132,6 +135,7 @@ export class AuthComponent implements OnInit {
       try {
         const { name, email, password } = this.registerForm.value;
         await this.authService.register(name, email, password);
+        this.welcomeOverlayService.markShouldShow();
         this.router.navigate(['/summary']);
       } catch (error: any) {
         this.errorMessage = this.getErrorMessage(error);
@@ -153,6 +157,7 @@ export class AuthComponent implements OnInit {
 
       try {
         await this.authService.loginAsGuest();
+        this.welcomeOverlayService.markShouldShow();
         this.router.navigate(['/summary']);
       } catch (error: any) {
         this.errorMessage = 'Guest login failed. Please try again.';

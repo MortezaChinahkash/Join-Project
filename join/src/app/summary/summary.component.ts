@@ -3,6 +3,7 @@ import { RouterModule, Router } from '@angular/router';
 import { AuthService, User } from '../services/auth.service';
 import { TaskService } from '../services/task.service';
 import { BoardDataService } from '../services/board-data.service';
+import { WelcomeOverlayService } from '../services/welcome-overlay.service';
 import { Task } from '../interfaces/task.interface';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -25,13 +26,14 @@ export class SummaryComponent implements OnInit, OnDestroy {
   private userSubscription?: Subscription;
   private tasksSubscription?: Subscription;
   private tasks: Task[] = [];
-  visible = true;
+  visible = false;
 
   constructor(
     private authService: AuthService,
     private taskService: TaskService,
     private boardDataService: BoardDataService,
-    private router: Router
+    private router: Router,
+    private welcomeOverlayService: WelcomeOverlayService
   ) {}
 
   /**
@@ -41,7 +43,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     this.initializeSummaryData();
     this.subscribeToUser();
     this.loadAllTasks();
-    setTimeout(() => this.visible = false, 3000);
+    this.checkAndShowWelcomeOverlay();
   }
 
   /**
@@ -85,6 +87,27 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   private setupWelcomeMessage(): void {
     // Implementation for welcome message setup
+  }
+
+  /**
+   * Checks if the welcome overlay should be shown.
+   * Only shows if user came from login screen and is on mobile.
+   */
+  private checkAndShowWelcomeOverlay(): void {
+    // Check if overlay should be shown (coming from login)
+    if (!this.welcomeOverlayService.shouldShow()) return;
+    
+    // Only show on mobile (1000px or less)
+    const isMobile = window.innerWidth <= 1000;
+    if (!isMobile) return;
+    
+    // Show overlay
+    this.visible = true;
+    
+    // Hide overlay after 1.5 seconds
+    setTimeout(() => {
+      this.visible = false;
+    }, 1500);
   }
 
   /**

@@ -2,6 +2,7 @@ import { Injectable, OnDestroy, inject, Injector, runInInjectionContext } from '
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
+import { WelcomeOverlayService } from './welcome-overlay.service';
 
 export interface User {
   id: string;
@@ -33,7 +34,8 @@ export class AuthService implements OnDestroy {
 
   constructor(
     private router: Router,
-    private auth: Auth
+    private auth: Auth,
+    private welcomeOverlayService: WelcomeOverlayService
   ) {
     // Defer Firebase initialization to avoid injection context warnings
     setTimeout(() => {
@@ -195,6 +197,7 @@ export class AuthService implements OnDestroy {
   async logout(): Promise<void> {
     try {
       this.stopSessionCheck(); // Stop session monitoring
+      this.welcomeOverlayService.clear(); // Clear overlay flag
       await runInInjectionContext(this.injector, () => 
         signOut(this.auth)
       );
