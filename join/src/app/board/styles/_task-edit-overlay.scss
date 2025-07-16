@@ -201,18 +201,32 @@
           color: #d1d7db !important;
         }
       }
-
-      &:disabled {
-        background-color: #f5f5f5;
-        color: #999;
-        cursor: not-allowed;
-        opacity: 0.7;
-      }
     }
 
-    .form-textarea {
-      resize: vertical;
-      min-height: 60px;
+    // Date input wrapper for calendar icon
+    .date-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input.date-input,
+      input.form-input {
+        padding-right: 3rem !important; // Make space for the calendar icon
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .date-icon {
+        position: absolute;
+        right: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        pointer-events: auto;
+        z-index: 10;
+      }
     }
   }
 
@@ -654,3 +668,25 @@
 // Priority buttons stack at smaller screens
 
 // Additional responsive fixes for very small screens
+
+// Specific styles for Edit Task Overlay date input
+.taskEditOverlay {
+  .date-input-wrapper {
+    position: relative !important;
+    
+    input {
+      padding-right: 3rem !important;
+    }
+    
+    .date-icon {
+      position: absolute !important;
+      right: 0.75rem !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      width: 20px !important;
+      height: 20px !important;
+      cursor: pointer !important;
+      z-index: 10 !important;
+    }
+  }
+}

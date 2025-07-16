@@ -153,6 +153,32 @@
   }
 }
 
+// Custom Flatpickr styling for Board overlays
+:host ::ng-deep .flatpickr-calendar {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid var(--color-greyed-out);
+  font-family: var(--font-main);
+  z-index: 10000; // Ensure it's above overlays
+}
+
+:host ::ng-deep .flatpickr-day {
+  &:hover {
+    background-color: var(--color-accent);
+    color: white;
+  }
+  
+  &.selected {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+  }
+  
+  &.today {
+    border-color: var(--color-accent);
+  }
+}
+
 // Responsive Design - 1000px und darunter
 @media (max-width: 1000px) {
   .component-title-bar {

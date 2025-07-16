@@ -131,10 +131,11 @@
                   <div class="form-group date-group">
                     <label for="dueDate">Due date<span class="required">*</span></label>
                     <div class="date-input-wrapper">
-                      <input type="date" 
+                      <input type="text" 
                              id="dueDate" 
                              formControlName="dueDate" 
-                             [min]="formService.getTodayDateString()"
+                             placeholder="dd.mm.yyyy"
+                             appFlatpickr
                              class="form-input date-input" 
                              [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" 
                              (change)="formService.taskForm.get('dueDate')?.markAsTouched()" />
@@ -398,12 +399,14 @@
             <div class="form-group">
               <label for="edit-dueDate">Due date<span class="required">*</span></label>
               <div class="date-input-wrapper">
-                <input type="date" 
+                <input type="text" 
                        id="edit-dueDate" 
                        formControlName="dueDate" 
-                       [min]="formService.getTodayDateString()"
-                       class="form-input" 
-                       [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" />                
+                       placeholder="dd.mm.yyyy"
+                       appFlatpickr
+                       class="form-input date-input" 
+                       [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" />
+                <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
               
               <!-- Bestehende Required-Validierung -->

@@ -14,6 +14,7 @@ import { BoardDataService } from '../services/board-data.service';
 import { BoardMobileService } from '../services/board-mobile.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
 import { TouchDetectionService } from '../services/touch-detection.service';
+import { FlatpickrDirective } from '../directives/flatpickr.directive';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
@@ -25,7 +26,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
  */
 @Component({
   selector: 'app-board',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, FlatpickrDirective],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   animations: [
