@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@angular/animations": "^19.2.14",
-    "@angular/fire": "^19.2.0"
+    "@angular/fire": "^19.2.0",
+    "@types/flatpickr": "^3.0.2",
+    "flatpickr": "^4.6.13"
   }
 }
