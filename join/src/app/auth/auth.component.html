@@ -1,5 +1,4 @@
 <div class="auth-container anim"  #containerElement>
-  <!-- Header with Logo and Sign Up Button -->
   <header class="auth-header">
     <div class="logo">
       <img src="./assets/img/logo.svg" alt="Join Logo" />
@@ -9,17 +8,12 @@
       <button class="sign-up-btn" (click)="toggleMode()">Sign up</button>
     </div>
   </header>
-
-  <!-- Main Auth Content -->
   <main class="auth-main">
-    <!-- Login Form -->
     <div class="auth-card" *ngIf="isLoginMode">
       <div class="auth-form-container">
         <h1 class="auth-title">Log in</h1>
         <div class="title-underline"></div>
-        
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
-          <!-- Email Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -33,8 +27,6 @@
               <img src="./assets/img/icon_mail.svg" alt="Email" class="input-icon" />
             </div>
           </div>
-
-          <!-- Password Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -48,13 +40,9 @@
               <img src="./assets/img/icon_lock.svg" alt="Password" class="input-icon" />
             </div>
           </div>
-
-          <!-- Error Message -->
           <div class="form-error" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>
-
-          <!-- Login Buttons -->
           <div class="form-actions">
             <button 
               type="submit" 
@@ -64,7 +52,6 @@
               <span *ngIf="!isLoading">Log in</span>
               <span *ngIf="isLoading">Logging in...</span>
             </button>
-            
             <button 
               type="button" 
               class="btn btn-secondary"
@@ -76,15 +63,11 @@
         </form>
       </div>
     </div>
-
-    <!-- Registration Form -->
     <div class="auth-card" *ngIf="!isLoginMode">
       <div class="auth-form-container">
         <h1 class="auth-title">Sign up</h1>
         <div class="title-underline"></div>
-        
         <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
-          <!-- Name Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -98,8 +81,6 @@
               <img src="./assets/img/icon_person.svg" alt="Name" class="input-icon" />
             </div>
           </div>
-
-          <!-- Email Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -113,8 +94,6 @@
               <img src="./assets/img/icon_mail.svg" alt="Email" class="input-icon" />
             </div>
           </div>
-
-          <!-- Password Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -128,8 +107,6 @@
               <img src="./assets/img/icon_lock.svg" alt="Password" class="input-icon" />
             </div>
           </div>
-
-          <!-- Confirm Password Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -143,8 +120,6 @@
               <img src="./assets/img/icon_lock.svg" alt="Confirm Password" class="input-icon" />
             </div>
           </div>
-
-          <!-- Privacy Policy Checkbox -->
           <div class="form-group checkbox-group">
             <label class="checkbox-label">
               <input 
@@ -160,13 +135,9 @@
               You must accept the Privacy Policy to continue
             </div>
           </div>
-
-          <!-- Error Message -->
           <div class="form-error" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>
-
-          <!-- Register Actions -->
           <div class="form-actions">
             <button 
               type="submit" 
@@ -178,8 +149,6 @@
             </button>
           </div>
         </form>
-
-        <!-- Back to Login -->
         <div class="form-footer">
           <span class="footer-text">Already have an account?</span>
           <button class="link-btn" (click)="toggleMode()">Log in</button>
@@ -187,8 +156,6 @@
       </div>
     </div>
   </main>
-
-  <!-- Footer -->
   <footer class="auth-footer">
     <a routerLink="/privacy" class="footer-link">Privacy Policy</a>
     <a routerLink="/legal" class="footer-link">Legal notice</a>
