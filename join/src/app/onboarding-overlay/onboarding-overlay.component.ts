@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnboardingService, OnboardingStep } from '../services/onboarding.service';
+import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
 
 /**
@@ -28,7 +29,10 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private onboardingService: OnboardingService) {}
+  constructor(
+    private onboardingService: OnboardingService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.subscribeToOnboarding();
@@ -80,7 +84,7 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
    * Updates the position of the highlight around the target element.
    */
   private updateHighlightPosition(): void {
-    if (!this.currentStep) return;
+    if (!this.currentStep || !this.showOnboarding) return;
 
     const targetElement = document.querySelector(this.currentStep.targetElementSelector);
     if (targetElement) {
@@ -94,8 +98,8 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
         height: `${rect.height + (padding * 2)}px`
       };
     } else {
-      console.warn('Target element not found:', this.currentStep.targetElementSelector);
-      // Fallback position
+      // If target element is not found, hide the onboarding silently
+      // This can happen when the user is on public pages or the nav is not ready
       this.highlightPosition = {
         top: '0px',
         left: '0px',
@@ -312,5 +316,12 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
       // User clicked on the dark overlay, not on the tooltip
       return;
     }
+  }
+
+  /**
+   * Checks if the user is authenticated.
+   */
+  get isAuthenticated(): boolean {
+    return this.authService.isAuthenticated;
   }
 }

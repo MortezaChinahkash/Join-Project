@@ -1,4 +1,4 @@
-<div class="onboarding-overlay" *ngIf="showOnboarding" #overlayContainer (click)="onOverlayClick($event)">
+<div class="onboarding-overlay" *ngIf="showOnboarding && isAuthenticated" #overlayContainer (click)="onOverlayClick($event)">
   <!-- Dark background overlay -->
   <div class="overlay-background"></div>
   

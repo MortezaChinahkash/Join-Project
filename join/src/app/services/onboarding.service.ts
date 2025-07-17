@@ -96,6 +96,11 @@ export class OnboardingService {
    * Checks if onboarding should be shown and starts it if needed.
    */
   private checkAndStartOnboarding(): void {
+    // Only show onboarding for authenticated users
+    if (!this.authService.isAuthenticated) {
+      return;
+    }
+    
     const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
     const isNewUser = localStorage.getItem('join_new_user');
     
@@ -114,6 +119,11 @@ export class OnboardingService {
    * Starts the onboarding tour.
    */
   public startOnboarding(): void {
+    // Only allow onboarding for authenticated users
+    if (!this.authService.isAuthenticated) {
+      return;
+    }
+    
     this.currentStepSubject.next(0);
     this.showOnboardingSubject.next(true);
     
