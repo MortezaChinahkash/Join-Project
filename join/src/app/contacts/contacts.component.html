@@ -7,8 +7,6 @@
           <img src="./assets/img/icon_person_add.svg" alt="Add" class="icon" />
         </button>
       </div>
-      
-      
       <div class="current-user-section" *ngIf="getCurrentUser()">
         <div class="firstLetter">Current User</div>
         <div class="contactContainer current-user" 
@@ -23,7 +21,6 @@
           </div>
         </div>
       </div>
-      
       <div class="listContent">
         <ng-container *ngFor="let letter of 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')">
           <div class="letterWrapper{{letter}}" *ngIf="groupedContacts[letter]?.length">
@@ -46,7 +43,6 @@
         </ng-container>
       </div>
     </div>
-
     <div class="contacts-right default-content-container" *ngIf="!isMobileView || (selectedContact && showMobileSingleContact)">
       <div class="component-header">
         <div class="component-title-bar">
@@ -91,8 +87,6 @@
       </div>
     </div>
   </div>
-
-  
   <div class="contact-overlay" *ngIf="showAddContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
@@ -144,8 +138,6 @@
       </div>
     </div>
   </div>
-
-  
   <div class="contact-overlay" *ngIf="showEditContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
@@ -195,20 +187,13 @@
       </div>
     </div>
   </div>
-
   <div class="success-message" *ngIf="contactSuccessMessageOverlay">
     {{ contactSuccessMessageText }}
   </div>
-
-  
   <button class="mobile-fab mobile-only" *ngIf="!showAddContactOverlay && !showEditContactOverlay" [ngClass]="showMobileSingleContact ? 'menu' : 'add'" (click)="handleFabClick()" aria-label="Floating action button">
     <img [src]="showMobileSingleContact ? 'assets/img/mobile-contact-more-btn.png' : 'assets/img/mobile-add-contact-btn.png'" alt="" class="fab-icon" />
   </button>
-
-  
   <div class="mobile-more-backdrop mobile-only" *ngIf="showMobileMoreMenu" (click)="closeMoreMenu()"></div>
-
-  
   <div class="mobile-more-menu mobile-only" *ngIf="showMobileMoreMenu" (click)="$event.stopPropagation()">
     <button class="mobile-more-item" *ngIf="selectedContact" (click)="openEditContactOverlay(selectedContact); closeMoreMenu()">
       <img src="assets/img/icon_todo.svg" class="mobile-more-icon" />
