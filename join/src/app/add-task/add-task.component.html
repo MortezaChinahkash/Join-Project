@@ -4,15 +4,11 @@
       <h1 class="component-title">Add Task</h1>
     </div>
   </div>
-
   <div class="add-task-content">
     <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="task-form-container">
-      
       <div class="taskProperties">
-        <!-- Left Side -->
         <div class="leftSide">
           <div class="task-form">
-            <!-- Title Field -->
             <div class="form-group">
               <label for="title">Title<span class="required">*</span></label>
               <input 
@@ -27,8 +23,6 @@
                 {{ getErrorMessage('title') }}
               </div>
             </div>
-
-            <!-- Description Field -->
             <div class="form-group">
               <label for="description">Description</label>
               <textarea 
@@ -39,8 +33,6 @@
                 rows="4">
               </textarea>
             </div>
-
-            <!-- Due Date Field -->
             <div class="form-group date-group">
               <label for="dueDate">Due date<span class="required">*</span></label>
               <div class="date-input-wrapper">
@@ -55,26 +47,17 @@
                   (change)="taskForm.get('dueDate')?.markAsTouched()">
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
-              
-              <!-- Required Error -->
               <div class="error-message" *ngIf="getErrorMessage('dueDate') && !boardFormService.isDateInvalid('dueDate', taskForm)">
                 {{ getErrorMessage('dueDate') }}
               </div>
-              
-              <!-- Past Date Error -->
               <div *ngIf="boardFormService.isDateInvalid('dueDate', taskForm)" class="error-message">
                 The date cannot be in the past
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Divider -->
         <div class="divider desktop-only"></div>
-
-        <!-- Right Side -->
         <div class="rightSide">
-          <!-- Priority Field -->
           <div class="form-group">
             <label>Priority</label>
             <div class="priority-buttons">
@@ -107,8 +90,6 @@
               {{ getErrorMessage('priority') }}
             </div>
           </div>
-
-          <!-- Assigned To Field -->
           <div class="form-group">
             <label>Assigned to</label>
             <div class="custom-select-wrapper">
@@ -151,8 +132,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Category Field -->
           <div class="form-group">
             <label for="category">Category<span class="required">*</span></label>
             <select 
@@ -168,8 +147,6 @@
               {{ getErrorMessage('category') }}
             </div>
           </div>
-
-          <!-- Subtasks -->
           <div class="form-group">
             <label>Subtasks</label>
             <div class="subtasks-container" formArrayName="subtasks">
@@ -194,8 +171,6 @@
                       <img src="./assets/img/icon_check.svg" alt="Save" />
                     </button>
                   </div>
-                  
-                  <!-- Hover Actions for non-editing mode -->
                   <div class="subtask-hover-actions" *ngIf="editingSubtaskIndex !== i">
                     <button type="button" class="edit-subtask-btn" (click)="editSubtask(i)" title="Edit subtask">
                       <img src="./assets/img/icon_todo.svg" alt="Edit" />
@@ -225,8 +200,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Form Actions -->
       <div class="form-actions">
         <span class="required-text">*This field is required</span>
         <div class="button-group">
@@ -251,7 +224,6 @@
     </form>
   </div>
 </div>
-
 <div class="task-overlay">
   <div class="task-added" [class.show]="taskAddedNotif">
     Task added to board
