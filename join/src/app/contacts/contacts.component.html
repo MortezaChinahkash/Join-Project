@@ -8,7 +8,7 @@
         </button>
       </div>
       
-      <!-- Current User Section -->
+      
       <div class="current-user-section" *ngIf="getCurrentUser()">
         <div class="firstLetter">Current User</div>
         <div class="contactContainer current-user" 
@@ -92,7 +92,7 @@
     </div>
   </div>
 
-  <!-- Add Contact Overlay -->
+  
   <div class="contact-overlay" *ngIf="showAddContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
@@ -145,7 +145,7 @@
     </div>
   </div>
 
-  <!-- Edit Contact Overlay -->
+  
   <div class="contact-overlay" *ngIf="showEditContactOverlay">
     <div class="contact-container">
       <div class="contact-left">
@@ -200,15 +200,15 @@
     {{ contactSuccessMessageText }}
   </div>
 
-  <!-- Mobile FAB, shows "add" or "menu" icon depending on view -->
+  
   <button class="mobile-fab mobile-only" *ngIf="!showAddContactOverlay && !showEditContactOverlay" [ngClass]="showMobileSingleContact ? 'menu' : 'add'" (click)="handleFabClick()" aria-label="Floating action button">
     <img [src]="showMobileSingleContact ? 'assets/img/mobile-contact-more-btn.png' : 'assets/img/mobile-add-contact-btn.png'" alt="" class="fab-icon" />
   </button>
 
-  <!-- MOBILE MORE MENU BACKDROP -->
+  
   <div class="mobile-more-backdrop mobile-only" *ngIf="showMobileMoreMenu" (click)="closeMoreMenu()"></div>
 
-  <!-- MOBILE MORE MENU -->
+  
   <div class="mobile-more-menu mobile-only" *ngIf="showMobileMoreMenu" (click)="$event.stopPropagation()">
     <button class="mobile-more-item" *ngIf="selectedContact" (click)="openEditContactOverlay(selectedContact); closeMoreMenu()">
       <img src="assets/img/icon_todo.svg" class="mobile-more-icon" />

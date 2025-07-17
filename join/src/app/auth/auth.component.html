@@ -1,5 +1,4 @@
 <div class="auth-container anim"  #containerElement>
-  <!-- Header with Logo and Sign Up Button -->
   <header class="auth-header">
     <div class="logo">
       <img src="./assets/img/logo.svg" alt="Join Logo" />
@@ -10,16 +9,13 @@
     </div>
   </header>
 
-  <!-- Main Auth Content -->
   <main class="auth-main">
-    <!-- Login Form -->
     <div class="auth-card" *ngIf="isLoginMode">
       <div class="auth-form-container">
         <h1 class="auth-title">Log in</h1>
         <div class="title-underline"></div>
         
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="auth-form">
-          <!-- Email Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -35,7 +31,6 @@
             </div>
           </div>
 
-          <!-- Password Field -->
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -51,12 +46,10 @@
             </div>
           </div>
 
-          <!-- Error Message -->
           <div class="form-error" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>
 
-          <!-- Login Buttons -->
           <div class="form-actions">
             <button 
               type="submit" 
@@ -79,14 +72,14 @@
       </div>
     </div>
 
-    <!-- Registration Form -->
+    
     <div class="auth-card" *ngIf="!isLoginMode">
       <div class="auth-form-container">
         <h1 class="auth-title">Sign up</h1>
         <div class="title-underline"></div>
         
         <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="auth-form">
-          <!-- Name Field -->
+          
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -102,7 +95,7 @@
             </div>
           </div>
 
-          <!-- Email Field -->
+          
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -118,7 +111,7 @@
             </div>
           </div>
 
-          <!-- Password Field -->
+          
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -134,7 +127,7 @@
             </div>
           </div>
 
-          <!-- Confirm Password Field -->
+          
           <div class="form-group">
             <div class="input-wrapper">
               <input 
@@ -150,7 +143,7 @@
             </div>
           </div>
 
-          <!-- Privacy Policy Checkbox -->
+          
           <div class="form-group checkbox-group">
             <label class="checkbox-label">
               <input 
@@ -167,12 +160,12 @@
             </div>
           </div>
 
-          <!-- Error Message -->
+          
           <div class="form-error" *ngIf="errorMessage">
             {{ errorMessage }}
           </div>
 
-          <!-- Register Actions -->
+          
           <div class="form-actions">
             <button 
               type="submit" 
@@ -185,7 +178,7 @@
           </div>
         </form>
 
-        <!-- Back to Login -->
+        
         <div class="form-footer">
           <span class="footer-text">Already have an account?</span>
           <button class="link-btn" (click)="toggleMode()">Log in</button>
@@ -194,7 +187,7 @@
     </div>
   </main>
 
-  <!-- Footer -->
+  
   <footer class="auth-footer">
     <a routerLink="/privacy" class="footer-link">Privacy Policy</a>
     <a routerLink="/legal" class="footer-link">Legal notice</a>
