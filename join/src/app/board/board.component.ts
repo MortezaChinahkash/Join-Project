@@ -18,7 +18,11 @@ import { TaskEditOverlayService } from '../services/task-edit-overlay.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
 import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.component';
+<<<<<<< HEAD
 import { BoardThumbnailComponent } from './board-thumbnail/board-thumbnail.component';
+=======
+import { TaskDetailsOverlayComponent } from './task-details-overlay/task-details-overlay.component';
+>>>>>>> 96823a53a276c90bd80632c96d0aaab8f489f21f
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
@@ -30,7 +34,11 @@ import { trigger, transition, style, animate } from '@angular/animations';
  */
 @Component({
   selector: 'app-board',
+<<<<<<< HEAD
   imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, DeleteConfirmationComponent, TaskEditOverlayComponent, AddTaskOverlayComponent, BoardThumbnailComponent],
+=======
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, DeleteConfirmationComponent, TaskEditOverlayComponent, AddTaskOverlayComponent, TaskDetailsOverlayComponent],
+>>>>>>> 96823a53a276c90bd80632c96d0aaab8f489f21f
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   animations: [
@@ -815,36 +823,5 @@ export class BoardComponent implements OnInit {
       // Open the task details overlay
       this.openTaskDetails(targetTask);
     }
-  }
-
-  /**
-   * Gets the selected task's due date for display.
-   * @returns Due date string or null
-   */
-  get selectedTaskDueDate(): string | null {
-    if (!this.formService.selectedTask || !this.formService.selectedTask.dueDate) {
-      return null;
-    }
-    const dueDate = this.formService.selectedTask.dueDate.trim();
-    return dueDate !== '' ? dueDate : null;
-  }
-
-  /**
-   * Checks if the selected task has a due date.
-   * @returns True if task has a due date, false otherwise
-   */
-  hasDueDate(): boolean {
-    return !!(this.formService.selectedTask && this.formService.selectedTask.dueDate && this.formService.selectedTask.dueDate.trim() !== '');
-  }
-
-  /**
-   * Gets the formatted due date for display.
-   * @returns Formatted due date string or null
-   */
-  getFormattedDueDate(): string | null {
-    if (!this.formService.selectedTask || !this.formService.selectedTask.dueDate) {
-      return null;
-    }
-    return this.formService.selectedTask.dueDate;
   }
 }
