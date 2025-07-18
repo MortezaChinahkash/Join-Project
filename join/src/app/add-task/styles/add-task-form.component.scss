@@ -2,46 +2,38 @@
   width: 100%;
   max-width: 1200px;
 }
-
 .task-form-container {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
-
 .taskProperties {
   display: flex;
   flex-direction: row;
   flex: 1;
   overflow: hidden;
-
   .leftSide {
     padding: 2rem;
     flex: 1;
     max-width: 50%;
     box-sizing: border-box;
-
     .task-form {
       display: flex;
       flex-direction: column;
       gap: 1.5rem;
-
       .form-group {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-
         label {
           font-size: 1rem;
           font-weight: 400;
           color: var(--bg-dark-grey);
-
           .required {
             color: #ff8190;
             margin-left: 2px;
           }
         }
-
         .form-input,
         .form-textarea {
           padding: 0.75rem 1rem;
@@ -51,16 +43,13 @@
           color: var(--bg-dark-grey);
           background-color: var(--bg-white);
           box-sizing: border-box;
-
           &::placeholder {
             color: #d1d7db;
           }
-
           &:focus {
             outline: none;
             border-color: var(--color-accent);
           }
-
           &.error {
             border-color: #ff8190;
             &::placeholder {
@@ -68,21 +57,17 @@
             }
           }
         }
-
         .form-textarea {
           resize: vertical;
           min-height: 100px;
         }
-
         &.date-group {
           .date-input-wrapper {
             position: relative;
-
             .date-input {
               width: 100%;
               padding-right: 3rem;
               box-sizing: border-box;
-
               &::-webkit-calendar-picker-indicator {
                 opacity: 0;
                 position: absolute;
@@ -91,13 +76,11 @@
                 height: 20px;
                 cursor: pointer;
               }
-
               &::-webkit-inner-spin-button,
               &::-webkit-clear-button {
                 display: none;
               }
             }
-
             .date-icon {
               position: absolute;
               right: 0.75rem;
@@ -112,40 +95,33 @@
       }
     }
   }
-
   .divider {
     width: 1px;
     background-color: #d1d7db;
     margin: 2rem 0;
     flex-shrink: 0;
   }
-
   .rightSide {
     padding: 2rem;
     flex: 1;
     max-width: 50%;
     box-sizing: border-box;
-
     .form-group {
       margin-bottom: 1.5rem;
-
       label {
         font-size: 1rem;
         font-weight: 400;
         color: var(--bg-dark-grey);
         margin-bottom: 0.5rem;
         display: block;
-
         .required {
           color: #ff8190;
           margin-left: 2px;
         }
       }
-
       .priority-buttons {
         display: flex;
         gap: 1rem;
-
         .priority-btn {
           padding: 0.75rem 1.5rem;
           border: 1px solid #d1d7db;
@@ -171,17 +147,14 @@
             filter: brightness(0) saturate(100%) invert(35%) sepia(96%)
               saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
           }
-
           &:nth-child(2) .priority-icon-overlay {
             filter: brightness(0) saturate(100%) invert(64%) sepia(96%)
               saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
           }
-
           &:nth-child(3) .priority-icon-overlay {
             filter: brightness(0) saturate(100%) invert(75%) sepia(77%)
               saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
           }
-
           &.active {
             color: var(--bg-white);
             border-color: transparent;
@@ -199,7 +172,6 @@
               background-color: var(--color-prio-low);
             }
           }
-
           .priority-icon-overlay {
             width: 1.25rem;
             height: 1.25rem;
@@ -207,7 +179,6 @@
           }
         }
       }
-
       .form-select {
         width: 100%;
         padding: 0.75rem 1rem;
@@ -223,27 +194,22 @@
         background-position: right 0.5rem center;
         background-repeat: no-repeat;
         background-size: 1.5em 1.5em;
-
         &:focus {
           outline: none;
           border-color: var(--color-accent);
         }
-
         &.error {
           border-color: #ff8190;
         }
       }
-
       .subtasks-container {
         display: flex;
         flex-direction: column-reverse;
         gap: 0.75rem;
-
         .subtask-item {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-
           .subtask-input-group {
             display: flex;
             align-items: center;
@@ -253,16 +219,13 @@
             border-radius: 8px;
             transition: background-color 0.2s ease;
             position: relative;
-
             &:hover {
               background-color: rgba(0, 0, 0, 0.02);
-
               .subtask-hover-actions {
                 opacity: 1;
                 visibility: visible;
               }
             }
-
             .form-input {
               flex: 1;
               padding: 0.75rem 1rem;
@@ -272,24 +235,19 @@
               color: #2a3647;
               background-color: white;
               transition: all 0.2s ease;
-
               &::placeholder {
                 color: #d1d7db;
               }
-
               &:focus {
                 outline: none;
                 border-color: #29abe2;
               }
-
-              // Style for completed subtasks - strikethrough and muted colors
               &.completed {
                 text-decoration: line-through;
                 color: #999;
                 background-color: #f8f9fa;
                 border-color: #e0e0e0;
               }
-
               &.grayed {
                 background: #f4f4f4 !important;
                 color: #b0b0b0 !important;
@@ -301,7 +259,6 @@
               display: flex;
               gap: 8px;
               align-items: center;
-
               .remove-subtask-btn,
               .save-subtask-btn {
                 background: none;
@@ -312,17 +269,14 @@
                 align-items: center;
                 justify-content: center;
                 transition: transform 0.2s ease;
-
                 &:hover {
                   transform: scale(1.1);
                 }
-
                 img {
                   width: 16px;
                   height: 16px;
                 }
               }
-
               .subtask-divider {
                 width: 1px;
                 height: 16px;
@@ -337,7 +291,6 @@
               visibility: hidden;
               transition: all 0.2s ease;
               position: relative;
-
               .edit-subtask-btn,
               .remove-subtask-btn {
                 display: flex;
@@ -350,27 +303,22 @@
                 border-radius: 6px;
                 cursor: pointer;
                 transition: transform 0.2s ease;
-
                 img {
                   width: 18px;
                   height: 18px;
                   opacity: 0.6;
                   transition: opacity 0.15s ease;
                 }
-
                 &:hover {
                   transform: scale(1.1);
-
                   img {
                     opacity: 1;
                   }
                 }
-
                 &:active {
                   transform: scale(1.05);
                 }
               }
-
               &::after {
                 content: "";
                 position: absolute;
@@ -386,7 +334,6 @@
             }
             &.completed-subtask {
               opacity: 0.7;
-
               .form-input {
                 text-decoration: line-through;
                 color: #999;
@@ -396,7 +343,6 @@
             }
           }
         }
-
         .add-subtask-btn {
           display: flex;
           align-items: center;
@@ -410,12 +356,10 @@
           font-size: 1rem;
           transition: all 0.2s ease;
           margin-top: 0.5rem;
-
           &:hover {
             background-color: #f8f9fa;
             border-color: #29abe2;
           }
-
           img {
             width: 16px;
             height: 16px;
@@ -423,13 +367,11 @@
               saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
           }
         }
-
         .add-subtask-input-wrapper {
           position: relative;
           display: flex;
           align-items: center;
           margin-top: 0.5rem;
-
           .form-input {
             flex: 1;
             padding: 0.75rem 3rem 0.75rem 1rem;
@@ -439,17 +381,14 @@
             color: #2a3647;
             background-color: white;
             transition: all 0.2s ease;
-
             &::placeholder {
               color: #d1d7db;
             }
-
             &:focus {
               outline: none;
               border-color: #29abe2;
             }
           }
-
           .plus-btn {
             position: absolute;
             right: 0.5rem;
@@ -464,17 +403,14 @@
             justify-content: center;
             cursor: pointer;
             padding: 0;
-
             img {
               width: 20px;
               height: 20px;
               opacity: 0.6;
             }
-
             &:disabled img {
               opacity: 0.3;
             }
-
             &:focus {
               border-color: #5ba4cf;
             }
@@ -484,7 +420,6 @@
     }
   }
 }
-
 .task-overlay {
   display: flex;
   position: fixed;
