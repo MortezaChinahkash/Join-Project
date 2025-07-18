@@ -15,7 +15,9 @@ import { BoardMobileService } from '../services/board-mobile.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
 import { TouchDetectionService } from '../services/touch-detection.service';
 import { DeleteConfirmationService } from '../services/delete-confirmation.service';
+import { TaskEditOverlayService } from '../services/task-edit-overlay.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
+import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
 import { FlatpickrDirective } from '../directives/flatpickr.directive';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -28,7 +30,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
  */
 @Component({
   selector: 'app-board',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, FlatpickrDirective, DeleteConfirmationComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, FlatpickrDirective, DeleteConfirmationComponent, TaskEditOverlayComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   animations: [
@@ -48,7 +50,6 @@ export class BoardComponent implements OnInit {
   searchTerm: string = '';
   newSubtaskTitle: string = '';
   maxTitleLength: number = 40;
-  editingSubtaskIndex: number | null = null;
 
   // Mobile move overlay state
   showMobileMoveOverlay: boolean = false;
@@ -120,6 +121,7 @@ export class BoardComponent implements OnInit {
     private subtaskService: BoardSubtaskService,
     public touchDetectionService: TouchDetectionService,
     public deleteConfirmationService: DeleteConfirmationService,
+    public taskEditOverlayService: TaskEditOverlayService,
     private route: ActivatedRoute
   ) {
     this.initializeLocalArrays();
@@ -352,7 +354,6 @@ export class BoardComponent implements OnInit {
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
-    this.editingSubtaskIndex = null; // Reset subtask editing state
     this.formService.closeTaskDetailsOverlay();
   }
 
@@ -360,24 +361,22 @@ export class BoardComponent implements OnInit {
    * Enters edit mode for the selected task.
    */
   editTask(): void {
-    this.editingSubtaskIndex = null; // Reset subtask editing state when entering edit mode
-    this.formService.editTask(this.contacts);
+    if (!this.formService.selectedTask) return;
+    this.taskEditOverlayService.openEditOverlay(this.formService.selectedTask, this.contacts);
   }
 
   /**
    * Cancels task editing and reverts changes.
    */
   cancelEditTask(): void {
-    this.editingSubtaskIndex = null; // Reset subtask editing state
-    this.formService.cancelEditTask();
+    this.taskEditOverlayService.closeEditOverlay();
   }
 
   /**
    * Saves task changes and updates arrays.
    */
   async saveTaskChanges(): Promise<void> {
-    this.editingSubtaskIndex = null; // Reset subtask editing state
-    await this.formService.saveTaskChanges(() => this.updateTaskArrays());
+    await this.taskEditOverlayService.saveTaskChanges(() => this.updateTaskArrays());
   }
 
   /**
@@ -567,27 +566,6 @@ export class BoardComponent implements OnInit {
       this.awaitingFeedbackTasks,
       this.doneTasks
     );
-  }
-
-  /**
-   * Focuses on a specific subtask input field for editing.
-   * @param index - Index of the subtask to edit
-   */
-  editSubtask(index: number): void {
-    this.editingSubtaskIndex = index;
-    this.subtaskService.focusSubtaskInput(index);
-  }
-
-  /**
-   * Adds a new subtask to the form array (for edit task overlay).
-   */
-  addNewSubtask(): void {
-    this.subtaskService.addSubtaskToForm(
-      this.newSubtaskTitle,
-      this.formService.subtasksFormArray,
-      this.formService.createSubtaskGroup.bind(this.formService)
-    );
-    this.newSubtaskTitle = '';
   }
 
   /**
@@ -868,22 +846,6 @@ export class BoardComponent implements OnInit {
         this.doneTasks.push(task);
         break;
     }
-  }
-
-  stopEditingSubtask() {
-  this.editingSubtaskIndex = null;
-}
-
-/**
-   * Handles subtask input focus - only allows editing if not readonly.
-   * @param index - Index of the subtask
-   */
-  onSubtaskInputFocus(index: number): void {
-    // Nur bearbeiten wenn das Feld nicht readonly ist (also bereits bearbeitet wird)
-    if (this.editingSubtaskIndex === index) {
-      this.editSubtask(index);
-    }
-    // Bei readonly Feldern passiert nichts
   }
 
   /**
