@@ -154,7 +154,6 @@
             }
         }
 
-        // Arrow pointing up to the user icon
         &::before {
             content: '';
             position: absolute;
@@ -188,7 +187,6 @@
             object-fit: contain;
         }
 
-/* === RESPONSIVE === */
 @media screen and (max-width: 1000px) {
     :host{
         .gap{
