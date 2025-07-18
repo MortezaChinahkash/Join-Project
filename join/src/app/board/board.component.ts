@@ -14,6 +14,8 @@ import { BoardDataService } from '../services/board-data.service';
 import { BoardMobileService } from '../services/board-mobile.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
 import { TouchDetectionService } from '../services/touch-detection.service';
+import { DeleteConfirmationService } from '../services/delete-confirmation.service';
+import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { FlatpickrDirective } from '../directives/flatpickr.directive';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -26,7 +28,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
  */
 @Component({
   selector: 'app-board',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, FlatpickrDirective],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, FlatpickrDirective, DeleteConfirmationComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   animations: [
@@ -117,6 +119,7 @@ export class BoardComponent implements OnInit {
     private mobileService: BoardMobileService,
     private subtaskService: BoardSubtaskService,
     public touchDetectionService: TouchDetectionService,
+    public deleteConfirmationService: DeleteConfirmationService,
     private route: ActivatedRoute
   ) {
     this.initializeLocalArrays();
@@ -307,7 +310,7 @@ export class BoardComponent implements OnInit {
    */
   private removeTaskToDeleteFromArray(): void {
     this.tasks = this.tasks.filter(
-      (t) => t.id !== this.formService.taskToDelete!.id
+      (t) => t.id !== this.deleteConfirmationService.taskToDelete!.id
     );
   }
 
@@ -381,19 +384,18 @@ export class BoardComponent implements OnInit {
    * Deletes the selected task and updates arrays.
    */
   async deleteTask(): Promise<void> {
-    await this.formService.deleteTask(() => {
-      this.removeTaskFromArray();
-      this.distributeTasksToColumns();
-    });
+    if (!this.formService.selectedTask) return;
+    this.deleteConfirmationService.deleteTask(this.formService.selectedTask);
   }
 
   /**
    * Confirms task deletion and updates arrays.
    */
   async confirmDeleteTask(): Promise<void> {
-    await this.formService.confirmDeleteTask(() => {
+    await this.deleteConfirmationService.confirmDeleteTask(() => {
       this.removeTaskToDeleteFromArray();
       this.distributeTasksToColumns();
+      this.formService.closeTaskDetailsOverlay();
     });
   }
 
@@ -401,7 +403,7 @@ export class BoardComponent implements OnInit {
    * Closes the delete confirmation dialog.
    */
   closeDeleteConfirmation(): void {
-    this.formService.closeDeleteConfirmation();
+    this.deleteConfirmationService.closeDeleteConfirmation();
   }
 
   /**
