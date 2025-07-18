@@ -10,9 +10,7 @@ import { BoardThumbnailService } from './board-thumbnail.service';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class BoardDragDropService {
   // Task drag and drop properties
   draggedTask: Task | null = null;
@@ -25,7 +23,7 @@ export class BoardDragDropService {
   longPressTimeout: any = null;
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
-  
+
   // New properties for click detection
   isMousePressed = false;
   mouseDownTime = 0;
@@ -41,10 +39,7 @@ export class BoardDragDropService {
   isAutoScrolling = false;
   currentCursorY = 0; // Track current cursor position for auto-scroll
 
-  constructor(
-    private taskService: TaskService,
-    private boardThumbnailService: BoardThumbnailService
-  ) {}
+  constructor(private taskService: TaskService, private boardThumbnailService: BoardThumbnailService) {}
 
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
@@ -62,10 +57,7 @@ export class BoardDragDropService {
       // event.preventDefault();
       
       // Only handle left mouse button
-      if (event.button !== 0) {
-        resolve(false);
-        return;
-      }
+      if (event.button !== 0) { resolve(false); return; }
       
       this.isMousePressed = true;
       this.mouseDownTime = Date.now();
@@ -93,10 +85,7 @@ export class BoardDragDropService {
           
           // Start drag immediately if threshold is exceeded
           if (!dragStarted && !this.isDraggingTask) {
-            if (this.dragDelayTimeout) {
-              clearTimeout(this.dragDelayTimeout);
-              this.dragDelayTimeout = null;
-            }
+            if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
             this.startTaskDrag(e.clientX, e.clientY, task, event.target as HTMLElement);
             dragStarted = true;
           }
@@ -112,10 +101,7 @@ export class BoardDragDropService {
       const handleMouseUp = () => {
         this.isMousePressed = false;
         
-        if (this.dragDelayTimeout) {
-          clearTimeout(this.dragDelayTimeout);
-          this.dragDelayTimeout = null;
-        }
+        if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
         
         if (this.isDraggingTask) {
           this.endTaskDrag(onTaskUpdate);
@@ -165,18 +151,12 @@ export class BoardDragDropService {
           this.updateTaskDrag(touch.clientX, touch.clientY);
         } else {
           // Cancel long press if user moves finger before drag starts
-          if (this.longPressTimeout) {
-            clearTimeout(this.longPressTimeout);
-            this.longPressTimeout = null;
-          }
+          if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
         }
       };
       
       const handleTouchEnd = () => {
-        if (this.longPressTimeout) {
-          clearTimeout(this.longPressTimeout);
-          this.longPressTimeout = null;
-        }
+        if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
         
         if (this.isDraggingTask) {
           this.endTaskDrag(onTaskUpdate);
@@ -226,16 +206,22 @@ export class BoardDragDropService {
       this.dragElement.style.height = taskCard.offsetHeight + 'px';
       this.dragElement.classList.add('task-dragging');
       
-      // Calculate offset from mouse/touch to element
+      // Calculate offset from mouse/touch to element CENTER for better cursor alignment
       const rect = taskCard.getBoundingClientRect();
       this.dragOffset = {
-        x: clientX - rect.left,
-        y: clientY - rect.top
+        x: rect.width / 2,  // Center horizontally
+        y: rect.height / 2  // Center vertically
       };
       
-      // Position the drag element
+      // Position the drag element centered on cursor
       this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
       this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
+      
+      // Ensure the drag element has a fixed size and doesn't inherit problematic styles
+      this.dragElement.style.maxWidth = 'none';
+      this.dragElement.style.maxHeight = 'none';
+      this.dragElement.style.margin = '0';
+      this.dragElement.style.padding = taskCard.style.padding || '16px';
       
       document.body.appendChild(this.dragElement);
       
@@ -266,9 +252,22 @@ export class BoardDragDropService {
     // Also try simple auto-scroll as immediate fallback
     this.simpleAutoScroll(clientY);
     
-    // Update drag element position
-    this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
-    this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
+    // Update drag element position with requestAnimationFrame for smoother movement
+    requestAnimationFrame(() => {
+      if (this.dragElement) {
+        // Ensure the element stays centered on cursor
+        const left = Math.max(0, Math.min(window.innerWidth - this.dragElement.offsetWidth, clientX - this.dragOffset.x));
+        const top = Math.max(0, Math.min(window.innerHeight - this.dragElement.offsetHeight, clientY - this.dragOffset.y));
+        
+        this.dragElement.style.left = left + 'px';
+        this.dragElement.style.top = top + 'px';
+        
+        // Ensure the element maintains its styles during drag
+        this.dragElement.style.position = 'fixed';
+        this.dragElement.style.zIndex = '9999';
+        this.dragElement.style.pointerEvents = 'none';
+      }
+    });
     
     // Primary method: Check which column we're over using elementFromPoint
     const elements = document.elementsFromPoint(clientX, clientY);
@@ -335,10 +334,7 @@ export class BoardDragDropService {
       const rect = column.getBoundingClientRect();
       
       // Check if the cursor is within the column bounds
-      if (clientX >= rect.left && 
-          clientX <= rect.right && 
-          clientY >= rect.top && 
-          clientY <= rect.bottom) {
+      if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
         return column.getAttribute('data-column') as TaskColumn;
       }
     }
@@ -481,13 +477,8 @@ export class BoardDragDropService {
    * @private
    */
   private stopAutoScroll() {
-    if (this.autoScrollInterval) {
-      clearInterval(this.autoScrollInterval);
-      this.autoScrollInterval = null;
-    }
-    if (this.isAutoScrolling) {
-      this.isAutoScrolling = false;
-    }
+    if (this.autoScrollInterval) { clearInterval(this.autoScrollInterval); this.autoScrollInterval = null; }
+    if (this.isAutoScrolling) { this.isAutoScrolling = false; }
   }
 
   /**
@@ -505,24 +496,16 @@ export class BoardDragDropService {
     this.stopAutoScroll();
     
     // Remove drag element
-    if (this.dragElement) {
-      document.body.removeChild(this.dragElement);
-      this.dragElement = null;
-    }
+    if (this.dragElement) { document.body.removeChild(this.dragElement); this.dragElement = null; }
     
     // Remove dragging classes
     const originalElement = document.querySelector('.task-dragging-original');
-    if (originalElement) {
-      originalElement.classList.remove('task-dragging-original');
-    }
+    if (originalElement) { originalElement.classList.remove('task-dragging-original'); }
     
     // If dropped on a different column, move the task
     if (this.dragOverColumn && this.dragOverColumn !== this.draggedTask.column) {
       try {
-        const updatedTask: Task = {
-          ...this.draggedTask,
-          column: this.dragOverColumn
-        };
+        const updatedTask: Task = { ...this.draggedTask, column: this.dragOverColumn };
         
         await this.taskService.updateTaskInFirebase(updatedTask);
         
@@ -543,10 +526,7 @@ export class BoardDragDropService {
     // Disable overflow-x: visible after drag operations
     this.disableDragOverflow();
     
-    if (this.longPressTimeout) {
-      clearTimeout(this.longPressTimeout);
-      this.longPressTimeout = null;
-    }
+    if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
   }
 
   /**
@@ -612,20 +592,11 @@ export class BoardDragDropService {
     // Stop auto-scrolling
     this.stopAutoScroll();
     
-    if (this.longPressTimeout) {
-      clearTimeout(this.longPressTimeout);
-      this.longPressTimeout = null;
-    }
+    if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
     
-    if (this.dragDelayTimeout) {
-      clearTimeout(this.dragDelayTimeout);
-      this.dragDelayTimeout = null;
-    }
+    if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
     
-    if (this.dragElement) {
-      document.body.removeChild(this.dragElement);
-      this.dragElement = null;
-    }
+    if (this.dragElement) { document.body.removeChild(this.dragElement); this.dragElement = null; }
   }
 
   /**
@@ -755,9 +726,7 @@ export class BoardDragDropService {
    */
   private enableDragOverflow() {
     const scrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
-    if (scrollWrapper) {
-      scrollWrapper.classList.add('dragging');
-    }
+    if (scrollWrapper) { scrollWrapper.classList.add('dragging'); }
   }
 
   /**
@@ -768,9 +737,7 @@ export class BoardDragDropService {
    */
   private disableDragOverflow() {
     const scrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
-    if (scrollWrapper) {
-      scrollWrapper.classList.remove('dragging');
-    }
+    if (scrollWrapper) { scrollWrapper.classList.remove('dragging'); }
   }
 }
 
