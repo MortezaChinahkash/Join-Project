@@ -32,7 +32,8 @@
 
 .current-user-section {
   .contactContainer.current-user {
-    margin: 0 0px 24px 10%;
+    margin: 0 0px 24px 0px; // Gleiche Ausrichtung wie normale Kontakte
+    padding-left: 8px; // Gleiche Polsterung wie normale Kontakte
     // Removed: background, border, border-radius to look like normal contacts
     
     &:hover {
@@ -194,4 +195,92 @@
 
 .contactContainer.active .contactMail {
   color: #fff;
+}
+
+// ===================
+// Responsive Media Queries
+// ===================
+
+@media (max-width: 1000px) {
+  .current-user-section {
+    .contactContainer.current-user {
+      margin: 0 0px 24px 0px;
+      padding-left: 8px;
+    }
+  }
+  
+  .contactContainer {
+    padding-left: 8px;
+    margin-bottom: 24px;
+  }
+  
+  .listContent {
+    margin-left: 0%; // Entfernt den linken Margin für bessere Ausrichtung
+  }
+}
+
+@media (max-width: 768px) {
+  .current-user-section {
+    .contactContainer.current-user {
+      margin: 0 0px 20px 0px;
+      padding-left: 6px;
+    }
+  }
+  
+  .contactContainer {
+    padding-left: 6px;
+    margin-bottom: 20px;
+    gap: 8px;
+  }
+  
+  .initials {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .current-user-section {
+    .contactContainer.current-user {
+      margin: 0 0px 16px 0px;
+      padding-left: 4px;
+    }
+  }
+  
+  .contactContainer {
+    padding-left: 4px;
+    margin-bottom: 16px;
+    gap: 6px;
+  }
+  
+  .initials {
+    width: 32px;
+    min-width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 320px) {
+  .current-user-section {
+    .contactContainer.current-user {
+      margin: 0 0px 12px 0px;
+      padding-left: 2px;
+    }
+  }
+  
+  .contactContainer {
+    padding-left: 2px;
+    margin-bottom: 12px;
+    gap: 4px;
+  }
+  
+  .initials {
+    width: 28px;
+    min-width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
 }
