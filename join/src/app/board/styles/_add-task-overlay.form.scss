@@ -52,7 +52,6 @@
           margin-top: 0.25rem;
           margin-bottom: 0.25rem;
         }
-
         &.date-group {
           .date-input-wrapper {
             position: relative;
@@ -84,7 +83,6 @@
             }
           }
         }
-
         .priority-buttons {
           display: flex;
           gap: 1rem;
@@ -153,7 +151,6 @@
             }
           }
         }
-
         .subtasks-input-wrapper {
           position: relative;
           display: flex;
@@ -182,7 +179,6 @@
             cursor: pointer;
           }
         }
-
         .subtasks-container {
           display: flex;
           flex-direction: column-reverse;
@@ -271,7 +267,6 @@
                 }
               }
             }
-
             .subtask-hover-actions {
               display: flex;
               gap: 16px;
@@ -322,7 +317,6 @@
               }
             }
           }
-
           .add-subtask-btn {
             display: flex;
             align-items: center;
@@ -346,7 +340,6 @@
               filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
             }
           }
-
           .add-subtask-input-wrapper {
             position: relative;
             display: flex;
@@ -397,7 +390,6 @@
             }
           }
         }
-
         .custom-select-wrapper {
           position: relative;
           width: 100%;
@@ -470,7 +462,6 @@
               border-color: #29abe2;
             }
           }
-
           .dropdown-options {
             position: absolute;
             top: 100%;
@@ -554,7 +545,6 @@
       }
     }
   }
-
   .task-form-wrapper {
     display: contents;
     width: 100%;
@@ -591,7 +581,7 @@
             flex-direction: row;
             .priority-btn {
               flex: 1;
-              font-size: 12px !important; 
+              font-size: 12px !important;
               padding: 5px !important;
               margin: 2px !important;
               .priority-icon,
@@ -618,16 +608,16 @@
             flex-wrap: nowrap !important;
             justify-content: space-between !important;
             flex-direction: row;
-            max-width: 100%; 
+            max-width: 100%;
             .priority-btn {
               flex: 1;
-              font-size: 10px !important; 
-              padding: 3px !important; 
+              font-size: 10px !important;
+              padding: 3px !important;
               margin: 1px !important;
               .priority-icon,
               .priority-icon-overlay,
               img {
-                width: 12px !important; 
+                width: 12px !important;
                 height: 12px !important;
               }
             }
@@ -650,15 +640,15 @@
             flex-direction: row;
             width: 100%;
             max-width: 100%;
-            gap: 2px; 
+            gap: 2px;
             .priority-btn {
-              flex: 1 1 0; 
+              flex: 1 1 0;
               min-width: 0;
               font-size: 9px !important;
               padding: 4px 2px !important;
               margin: 0 !important;
               text-align: center;
-              white-space: nowrap; 
+              white-space: nowrap;
               overflow: hidden;
               .priority-icon,
               .priority-icon-overlay,
