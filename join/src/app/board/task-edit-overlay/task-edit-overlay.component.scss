@@ -357,19 +357,19 @@
 
   .subtasks-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 8px;
     .subtask-item {
       .subtask-input-group {
         position: relative;
         display: flex;
         align-items: center;
+        gap: 8px;
         &.completed-subtask {
           opacity: 0.6;
         }
         .form-input {
           flex: 1;
-          padding-right: 80px;
           &.completed {
             text-decoration: line-through;
             color: #999;
@@ -381,80 +381,97 @@
         }
         .subtask-input-actions,
         .subtask-hover-actions {
-          position: absolute;
-          right: 8px;
           display: flex;
           align-items: center;
-          gap: 4px;
-          background: white;
-          border-radius: 4px;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-          padding: 2px;
+          gap: 2px;
+          background: none;
+          border: none;
+          border-radius: 6px;
+          padding: 4px;
           z-index: 10;
+          flex-shrink: 0;
           button {
             background: none;
             border: none;
             cursor: pointer;
-            padding: 4px;
+            padding: 6px;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            min-height: 24px;
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            min-height: 28px;
+            transition: background-color 0.2s ease;
             img {
               width: 16px;
               height: 16px;
-              filter: brightness(0);
+              filter: brightness(0) saturate(100%) invert(40%) sepia(10%) saturate(500%) hue-rotate(180deg) brightness(95%) contrast(85%);
+              transition: all 0.2s ease;
             }
             &:hover {
-              background-color: #f0f0f0;
+              background: none !important;
+              img {
+                transform: scale(1.2);
+                filter: brightness(0) saturate(100%) invert(20%) sepia(10%) saturate(500%) hue-rotate(180deg) brightness(70%) contrast(95%);
+              }
             }
           }
           .subtask-divider {
             width: 1px;
-            height: 16px;
-            background-color: #d1d1d1;
-            margin: 0 4px;
+            height: 18px;
+            background-color: #d0d0d0;
+            margin: 0 2px;
           }
           .edit-subtask-btn:hover {
-            background-color: #e3f2fd;
+            background: none !important;
+            img {
+              filter: brightness(0) saturate(100%) invert(40%) sepia(98%) saturate(1034%) hue-rotate(172deg) brightness(85%) contrast(89%);
+              transform: scale(1.2);
+            }
           }
           .save-subtask-btn:hover {
-            background-color: #e8f5e8;
+            background: none !important;
+            img {
+              filter: brightness(0) saturate(100%) invert(30%) sepia(50%) saturate(2466%) hue-rotate(101deg) brightness(80%) contrast(87%);
+              transform: scale(1.2);
+            }
           }
           .remove-subtask-btn:hover {
-            background-color: #ffebee;
+            background: none !important;
+            img {
+              filter: brightness(0) saturate(100%) invert(20%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(85%) contrast(105%);
+              transform: scale(1.2);
+            }
           }
         }
         .subtask-hover-actions {
-          display: none;
-          opacity: 0.7;
-          transition: opacity 0.2s;
-          &:hover {
-            opacity: 1;
-          }
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.2s, visibility 0.2s;
         }
         &:hover .subtask-hover-actions {
-          display: flex;
+          opacity: 1;
+          visibility: visible;
         }
         &.touch-device .subtask-hover-actions {
-          display: flex !important;
-          opacity: 0.8;
+          opacity: 0.8 !important;
+          visibility: visible !important;
           &:hover {
             opacity: 1;
           }
         }
         &.touch-device:not(.editing) .subtask-hover-actions {
-          display: flex !important;
+          opacity: 0.8 !important;
+          visibility: visible !important;
         }
         &.touch-device {
           .subtask-hover-actions {
-            display: flex !important;
-            opacity: 0.8;
-            background: rgba(255, 255, 255, 0.95);
+            opacity: 0.9 !important;
+            visibility: visible !important;
+            background: none;
+            border: none;
             &:active {
               opacity: 1;
             }
@@ -462,9 +479,10 @@
         }
         @media (hover: none) and (pointer: coarse) {
           .subtask-hover-actions {
-            display: flex !important;
-            opacity: 0.8;
-            background: rgba(255, 255, 255, 0.95);
+            opacity: 0.9 !important;
+            visibility: visible !important;
+            background: none;
+            border: none;
           }
         }
       }
