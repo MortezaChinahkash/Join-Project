@@ -152,14 +152,11 @@
     }
   }
 }
-
-// --- Responsive Layout & Media Queries (copy all @media blocks here) ---
 @media (max-width: 1400px) {
   .addTaskOverlay-content {
     margin: 10px;
   }
 }
-
 @media (max-width: 1000px) {
   .addTaskOverlay {
     .addTaskOverlay-content {
@@ -167,15 +164,12 @@
       width: 600px;
       border-radius: 20px;
     }
-
     .add-task-header-fixed {
       padding: 1.5rem 1.5rem 0 1.5rem;
-
       h2 {
         font-size: 32px;
       }
     }
-
     .taskProperties {
       flex-direction: column;
       .devider {
@@ -237,7 +231,6 @@
     }
   }
 }
-
 @media (max-width: 550px) {
   .addTaskOverlay {
     padding: 0.25rem;
@@ -274,7 +267,7 @@
       gap: 0.5rem;
       .priority-btn {
         flex: 1;
-        font-size: 12px !important; 
+        font-size: 12px !important;
         padding: 5px !important;
         margin: 2px !important;
         .priority-icon,
@@ -293,7 +286,6 @@
     }
   }
 }
-
 @media (max-width: 380px) {
   .addTaskOverlay {
     .priority-buttons {
@@ -301,23 +293,22 @@
       flex-wrap: nowrap !important;
       justify-content: space-between !important;
       flex-direction: row;
-      max-width: 100%; 
+      max-width: 100%;
     }
     .priority-btn {
       flex: 1;
-      font-size: 10px !important; 
-      padding: 3px !important; 
+      font-size: 10px !important;
+      padding: 3px !important;
       margin: 1px !important;
       .priority-icon,
       .priority-icon-overlay,
       img {
-        width: 12px !important; 
+        width: 12px !important;
         height: 12px !important;
       }
     }
   }
 }
-
 @media (max-width: 360px) {
   .addTaskOverlay {
     .priority-buttons {
@@ -327,16 +318,16 @@
       flex-direction: row;
       width: 100%;
       max-width: 100%;
-      gap: 2px; 
+      gap: 2px;
     }
     .priority-btn {
-      flex: 1 1 0; 
+      flex: 1 1 0;
       min-width: 0;
       font-size: 9px !important;
       padding: 4px 2px !important;
       margin: 0 !important;
       text-align: center;
-      white-space: nowrap; 
+      white-space: nowrap;
       overflow: hidden;
       .priority-icon,
       .priority-icon-overlay,
