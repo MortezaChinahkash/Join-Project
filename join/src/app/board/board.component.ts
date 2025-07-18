@@ -7,8 +7,10 @@ import { ContactsComponent } from '../contacts/contacts.component';
 import { Task, TaskColumn } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 import { BoardDragDropService } from '../services/board-drag-drop.service';
+import { BoardThumbnailService } from '../services/board-thumbnail.service';
 import { BoardFormService } from '../services/board-form.service';
 import { BoardUtilsService } from '../services/board-utils.service';
+import { BoardDataService } from '../services/board-data.service';
 import { TouchDetectionService } from '../services/touch-detection.service';
 import { DeleteConfirmationService } from '../services/delete-confirmation.service';
 import { TaskEditOverlayService } from '../services/task-edit-overlay.service';
@@ -111,8 +113,10 @@ export class BoardComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     public dragDropService: BoardDragDropService,
+    public thumbnailService: BoardThumbnailService,
     public formService: BoardFormService,
     public utilsService: BoardUtilsService,
+    private dataService: BoardDataService,
     public touchDetectionService: TouchDetectionService,
     public deleteConfirmationService: DeleteConfirmationService,
     public taskEditOverlayService: TaskEditOverlayService,
@@ -170,10 +174,10 @@ export class BoardComponent implements OnInit {
    */
   private loadContactsData(): void {
     this.dataService.loadContactsFromFirebase().subscribe({
-      next: (contacts) => {
+      next: (contacts: Contact[]) => {
         this.contacts = this.dataService.sortContactsAlphabetically(contacts);
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading contacts:', error);
       }
     });
@@ -184,16 +188,14 @@ export class BoardComponent implements OnInit {
    */
   private loadTasksData(): void {
     this.dataService.loadTasksFromFirebase().subscribe({
-      next: (tasks) => {
+      next: (tasks: Task[]) => {
         this.tasks = tasks;
         this.distributeTasksToColumns();
       },
-      (error) => { console.error('Error loading tasks:', error); }
-    );
-    
-    this.lifecycleService.setupScrollListener();
-    this.lifecycleService.handleFragmentNavigation();
-    this.handleQueryParams();
+      error: (error: any) => {
+        console.error('Error loading tasks:', error);
+      }
+    });
   }
 
   /** Distributes tasks into appropriate columns and sorts by priority. */
@@ -401,7 +403,7 @@ export class BoardComponent implements OnInit {
    * @param event - Mouse event
    */
   onThumbnailClick(event: MouseEvent): void {
-    this.thumbnailService.onThumbnailClick(event);
+    this.interactionService.handleThumbnailClick(event);
   }
 
   /**
@@ -409,7 +411,7 @@ export class BoardComponent implements OnInit {
    * @param event - Touch event
    */
   onThumbnailTouchStart(event: TouchEvent): void {
-    this.thumbnailService.onThumbnailTouchStart(event);
+    this.interactionService.handleThumbnailTouchStart(event);
   }
 
   /**
@@ -417,7 +419,7 @@ export class BoardComponent implements OnInit {
    * @param event - Mouse event
    */
   onViewportMouseDown(event: MouseEvent): void {
-    this.thumbnailService.onViewportMouseDown(event);
+    this.interactionService.handleViewportMouseDown(event);
   }
 
   /**
@@ -425,7 +427,7 @@ export class BoardComponent implements OnInit {
    * @param event - Touch event
    */
   onViewportTouchStart(event: TouchEvent): void {
-    this.thumbnailService.onViewportTouchStart(event);
+    this.interactionService.handleViewportTouchStart(event);
   }
 
   /**
@@ -433,7 +435,7 @@ export class BoardComponent implements OnInit {
    * @param event - Mouse event
    */
   onViewportClick(event: MouseEvent): void {
-    this.thumbnailService.onViewportClick(event);
+    this.interactionService.handleViewportClick(event);
   }
 
   // Display Service delegates
