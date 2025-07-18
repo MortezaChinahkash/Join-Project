@@ -101,79 +101,78 @@
 
         .priority-buttons {
           display: flex;
-          gap: 1rem; // sorgt für Abstand zwischen den Buttons
+          gap: 1rem;
 
           .priority-btn {
             padding: 0.75rem 1.5rem;
             border: 1px solid #d1d7db;
             border-radius: 10px;
-            background-color: white;
-            color: #2a3647;
+            background-color: var(--bg-white);
+            color: var(--bg-dark-grey);
             cursor: pointer;
             font-size: 1rem;
+            font-family: var(--font-main);
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.1s ease;
-            font-weight: 500;
+            transition: all 0.2s ease;
             position: relative;
             z-index: 1;
 
-            &:nth-child(1) {
-              .priority-icon-overlay {
-                filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
-              }
-              &:hover:not(.active) {
-                box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-              }
+            &:hover:not(.active):not(.selected) {
+              box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
             }
 
-            &:nth-child(2) {
-              .priority-icon-overlay {
-                filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
-              }
-              &:hover:not(.active) {
-                box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-              }
+            &.selected:hover,
+            &.active:hover {
+              box-shadow: none;
             }
 
-            &:nth-child(3) {
-              .priority-icon-overlay {
-                filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
-              }
-              &:hover:not(.active) {
-                box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-              }
+            &:nth-child(1) .priority-icon-overlay,
+            &:nth-child(1) img {
+              filter: brightness(0) saturate(100%) invert(35%) sepia(96%)
+                saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
             }
 
-            &.active {
-              color: white;
+            &:nth-child(2) .priority-icon-overlay,
+            &:nth-child(2) img {
+              filter: brightness(0) saturate(100%) invert(64%) sepia(96%)
+                saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
+            }
+
+            &:nth-child(3) .priority-icon-overlay,
+            &:nth-child(3) img {
+              filter: brightness(0) saturate(100%) invert(75%) sepia(77%)
+                saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
+            }
+
+            &.active,
+            &.selected {
+              color: var(--bg-white);
               border-color: transparent;
-              font-weight: 600;
 
-              .priority-icon-overlay {
-                filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
+              .priority-icon-overlay,
+              img {
+                filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
+                  saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
               }
 
               &:nth-child(1) {
                 background-color: var(--color-prio-urgent);
-                box-shadow: 0 2px 8px rgba(255, 61, 0, 0.3);
               }
 
               &:nth-child(2) {
                 background-color: var(--color-prio-medium);
-                box-shadow: 0 2px 8px rgba(255, 168, 0, 0.3);
               }
 
               &:nth-child(3) {
                 background-color: var(--color-prio-low);
-                box-shadow: 0 2px 8px rgba(122, 226, 41, 0.3);
               }
             }
 
             .priority-icon,
-            .priority-icon-overlay {
-              font-size: 1rem;
+            .priority-icon-overlay,
+            img {
               width: 1.25rem;
               height: 1.25rem;
               transition: filter 0.2s ease;
