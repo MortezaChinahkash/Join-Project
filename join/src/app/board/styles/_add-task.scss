@@ -1,0 +1,519 @@
+// Add Task Styles Module
+// Base styles for add task functionality
+
+@mixin add-task-base {
+  background: white;
+  border-radius: 30px;
+  padding: 32px;
+  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 525px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+@mixin add-task-overlay-styles {
+  .add-task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+
+    h1 {
+      font-size: 61px;
+      font-weight: 700;
+      color: #2a3647;
+      margin: 0;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #f6f7f8;
+      }
+
+      img {
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+}
+
+@mixin form-layout {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+@mixin form-sections {
+  .title-section,
+  .description-section,
+  .assigned-to-section,
+  .due-date-section,
+  .priority-section,
+  .category-section,
+  .subtasks-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-size: 19px;
+      font-weight: 400;
+      color: #2a3647;
+
+      .required {
+        color: #ff8190;
+        margin-left: 2px;
+      }
+    }
+
+    input,
+    textarea,
+    select {
+      padding: 13px 21px;
+      border: 1px solid #d1d1d1;
+      border-radius: 10px;
+      font-size: 19px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #29abe2;
+      }
+
+      &::placeholder {
+        color: #d1d1d1;
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    select {
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23d1d1d1" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 20px;
+      cursor: pointer;
+    }
+
+    .error-message {
+      color: #ff8190;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+  }
+
+  .due-date-section {
+    .date-input-container {
+      position: relative;
+
+      input {
+        padding-right: 50px;
+      }
+
+      .calendar-icon {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+@mixin buttons {
+  .priority-section {
+    .priority-buttons {
+      display: flex;
+      gap: 16px;
+
+      .priority-btn {
+        flex: 1;
+        padding: 18px 10px;
+        border: 1px solid #d1d1d1;
+        border-radius: 10px;
+        background: white;
+        cursor: pointer;
+        font-size: 19px;
+        font-weight: 400;
+        color: #2a3647;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+        box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+
+        &:hover {
+          box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.16);
+        }
+
+        img {
+          width: 20px;
+          height: 20px;
+        }
+
+        &.urgent {
+          background-color: #ff3d00;
+          color: white;
+          border-color: #ff3d00;
+        }
+
+        &.medium {
+          background-color: #ffa800;
+          color: white;
+          border-color: #ffa800;
+        }
+
+        &.low {
+          background-color: #7ae229;
+          color: white;
+          border-color: #7ae229;
+        }
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+
+    .btn-secondary,
+    .btn-primary {
+      padding: 18px 24px;
+      border-radius: 10px;
+      font-size: 19px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.1);
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #2a3647;
+      border: 1px solid #2a3647;
+
+      &:hover {
+        background-color: #2a3647;
+        color: white;
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.16);
+      }
+    }
+
+    .btn-primary {
+      background: #2a3647;
+      color: white;
+      border: 1px solid #2a3647;
+
+      &:hover:not(:disabled) {
+        background-color: #29abe2;
+        border-color: #29abe2;
+        box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.16);
+      }
+
+      &:disabled {
+        background-color: #d1d1d1;
+        border-color: #d1d1d1;
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+  }
+}
+
+@mixin contact-selection {
+  .assigned-to-section {
+    .contact-selection-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .contact-dropdown {
+        position: relative;
+      }
+
+      .selected-contacts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        .contact-initials {
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin dropdown-styles {
+  .custom-select-wrapper {
+    position: relative;
+
+    .custom-select {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 13px 21px;
+      border: 1px solid #d1d1d1;
+      border-radius: 10px;
+      cursor: pointer;
+      background: white;
+      font-size: 19px;
+      color: #2a3647;
+      transition: border-color 0.3s ease;
+
+      &:hover {
+        border-color: #29abe2;
+      }
+
+      .select-placeholder {
+        color: #d1d1d1;
+      }
+
+      .dropdown-arrow {
+        width: 24px;
+        height: 24px;
+        transition: transform 0.3s ease;
+
+        &.rotated {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .custom-select-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #d1d1d1;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+      .custom-select-option {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 21px;
+        cursor: pointer;
+        font-size: 19px;
+        color: #2a3647;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #f6f7f8;
+        }
+
+        &.selected {
+          background-color: #e7f3ff;
+        }
+
+        .checkbox-icon {
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+}
+
+@mixin subtasks {
+  .subtasks-section {
+    .subtask-input-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      input {
+        flex: 1;
+        padding-right: 60px;
+      }
+
+      .subtask-actions {
+        position: absolute;
+        right: 16px;
+        display: flex;
+        gap: 8px;
+
+        .add-subtask-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #f6f7f8;
+          }
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+
+    .subtasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 16px;
+
+      .subtask-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px;
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        background: #f9f9f9;
+
+        .subtask-checkbox {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+        }
+
+        .subtask-title-input {
+          flex: 1;
+          border: none;
+          background: transparent;
+          font-size: 16px;
+          color: #2a3647;
+          padding: 4px 8px;
+          border-radius: 4px;
+          transition: background-color 0.3s ease;
+
+          &:focus {
+            background-color: white;
+            outline: 1px solid #29abe2;
+          }
+        }
+
+        .remove-subtask-btn {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 4px;
+          transition: background-color 0.3s ease;
+
+          &:hover {
+            background-color: #ff8190;
+          }
+
+          img {
+            width: 16px;
+            height: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin responsive {
+  @media (max-width: 768px) {
+    max-width: 95%;
+    padding: 24px 16px;
+
+    .add-task-header {
+      margin-bottom: 24px;
+
+      h1 {
+        font-size: 48px;
+      }
+    }
+
+    .priority-buttons {
+      flex-direction: column;
+      gap: 12px;
+
+      .priority-btn {
+        padding: 16px;
+      }
+    }
+
+    .form-actions {
+      flex-direction: column;
+
+      .btn-secondary,
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .add-task-header h1 {
+      font-size: 36px;
+    }
+
+    .priority-buttons .priority-btn {
+      font-size: 16px;
+      padding: 14px;
+    }
+  }
+}

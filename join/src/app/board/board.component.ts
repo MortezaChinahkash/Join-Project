@@ -18,7 +18,7 @@ import { DeleteConfirmationService } from '../services/delete-confirmation.servi
 import { TaskEditOverlayService } from '../services/task-edit-overlay.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
-import { FlatpickrDirective } from '../directives/flatpickr.directive';
+import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
@@ -30,7 +30,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
  */
 @Component({
   selector: 'app-board',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, FlatpickrDirective, DeleteConfirmationComponent, TaskEditOverlayComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, DeleteConfirmationComponent, TaskEditOverlayComponent, AddTaskOverlayComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   animations: [
@@ -48,7 +48,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class BoardComponent implements OnInit {
   contacts: Contact[] = [];
   searchTerm: string = '';
-  newSubtaskTitle: string = '';
   maxTitleLength: number = 40;
 
   // Mobile move overlay state
@@ -566,18 +565,6 @@ export class BoardComponent implements OnInit {
       this.awaitingFeedbackTasks,
       this.doneTasks
     );
-  }
-
-  /**
-   * Adds a new subtask to the add task overlay form array.
-   */
-  addNewSubtaskToAddTask(): void {
-    if (this.newSubtaskTitle.trim()) {
-      // Create new subtask with the entered title
-      const subtaskGroup = this.formService.createSubtaskGroup(this.newSubtaskTitle.trim(), false);
-      this.formService.subtasksFormArray.push(subtaskGroup);
-      this.newSubtaskTitle = ''; // Clear the input
-    }
   }
 
   /**

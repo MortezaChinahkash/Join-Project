@@ -82,147 +82,15 @@
           <div class="thumbnail-viewport" [style.left.px]="thumbnailService.thumbnailViewport.left" [style.width.px]="thumbnailService.thumbnailViewport.width" [style.height.px]="thumbnailService.thumbnailViewport.height" (mousedown)="onViewportMouseDown($event)" (touchstart)="onViewportTouchStart($event)" (click)="onViewportClick($event)"></div>
         </div>
       </div>
-      <div class="addTaskOverlay" *ngIf="formService.showAddTaskOverlay">
-        <div class="addTaskOverlay-content" @slideInRight>
-          <div class="add-task-header-fixed">
-            <h2>Add Task</h2>
-            <button class="close-btn" (click)="closeAddTaskOverlay()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
-          </div>
-          <div class="add-task-scrollable-content">
-            <form [formGroup]="formService.taskForm" (ngSubmit)="onSubmit()" class="task-form-wrapper">
-              <div class="taskProperties">
-                <div class="leftSide">
-                  <div class="form-group">
-                    <label for="title">Title<span class="required">*</span></label>
-                    <input type="text"
-                           id="title"
-                           formControlName="title"
-                           [attr.maxlength]="maxTitleLength"
-                           placeholder="Enter a title"
-                           class="form-input"
-                           [class.error]="formService.isFieldInvalid('title')"
-                           (blur)="formService.taskForm.get('title')?.markAsTouched()" />
-                    <div *ngIf="formService.isFieldInvalid('title')" class="error-message">
-                      Title is required
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" formControlName="description" placeholder="Enter a Description" class="form-textarea" rows="4"></textarea>
-                  </div>
-                  <div class="form-group date-group">
-                    <label for="dueDate">Due date<span class="required">*</span></label>
-                    <div class="date-input-wrapper">
-                      <input type="text" 
-                             id="dueDate" 
-                             formControlName="dueDate" 
-                             placeholder="dd.mm.yyyy"
-                             appFlatpickr
-                             class="form-input date-input" 
-                             [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" 
-                             (change)="formService.taskForm.get('dueDate')?.markAsTouched()" />
-                      <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
-                    </div>
-                    <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">Due date is required</div>
-                    <div *ngIf="formService.isDateInvalid('dueDate')" class="error-message">The date cannot be in the past</div>
-                  </div>
-                </div>
-                <div class="devider"></div>
-                <div class="rightSide">
-                <div class="form-group">
-                  <label>Priority</label>
-                  <div class="priority-buttons">
-                    <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'urgent'" (click)="formService.selectPriority('urgent')">Urgent<img src="assets/img/icon_priority_urgent.svg" alt="Urgent" class="priority-icon-overlay urgent-icon" /></button>
-                    <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'medium'" (click)="formService.selectPriority('medium')">Medium<img src="assets/img/icon_priority_medium.svg" alt="Medium" class="priority-icon-overlay medium-icon" /></button>
-                    <button type="button" class="priority-btn" [class.active]="formService.selectedPriority === 'low'" (click)="formService.selectPriority('low')">Low<img src="assets/img/icon_priority_low.svg" alt="Low" class="priority-icon-overlay low-icon" /></button>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="assignedTo">Assigned to</label>
-                  <div class="custom-select-wrapper">
-                    <div class="custom-select" (click)="formService.toggleDropdown()">
-                      <div class="selected-contacts" *ngIf="formService.selectedContacts.length > 0; else placeholder">
-                        <div class="selected-contact-avatars">
-                          <div class="contact-avatar" *ngFor="let contact of formService.selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-                          <div class="more-contacts" *ngIf="formService.selectedContacts.length > 4">+{{ formService.selectedContacts.length - 4 }}</div>
-                        </div>
-                        <span class="selected-text">{{ formService.getSelectedContactsText() }}</span>
-                      </div>
-                      <ng-template #placeholder><span class="placeholder">Select contacts to assign</span></ng-template>
-                      <div class="dropdown-arrow" [class.open]="formService.isDropdownOpen">▼</div>
-                    </div>
-                    <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
-                      <div class="dropdown-option" *ngFor="let contact of contacts" (click)="formService.toggleContactSelection(contact, $event)">
-                        <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-                        <span class="contact-name">{{ contact.name }}</span>
-                        <div class="checkbox-wrapper">
-                          <input type="checkbox" [id]="'contact-' + contact.id" [checked]="formService.isContactSelected(contact)" (click)="$event.stopPropagation()" />
-                          <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="category">Category<span class="required">*</span></label>
-                  <select id="category" formControlName="category" class="form-select" [class.error]="formService.isFieldInvalid('category')" (change)="formService.onCategoryChange($event)">
-                    <option value="">Select task category</option>
-                    <option value="technical">Technical Task</option>
-                    <option value="user-story">User Story</option>
-                  </select>
-                  <div *ngIf="formService.isFieldInvalid('category')" class="error-message">Category is required</div>
-                </div>
-                  <div class="form-group">
-                    <label>Subtasks</label>
-                    <div class="subtasks-container" formArrayName="subtasks">
-                      <div class="subtask-item" *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" [formGroupName]="i">
-                        <div class="subtask-input-group">
-                          <input 
-                            type="text" 
-                            [id]="'subtask-' + i"
-                            name="subtask-{{i}}"
-                            readonly
-                            formControlName="title" 
-                            class="form-input grayed" 
-                            placeholder="Enter subtask title"
-                          />
-                          <div class="subtask-hover-actions">
-                            <button type="button" class="remove-subtask-btn" (click)="formService.removeSubtask(i)" title="Delete subtask">
-                              <img src="./assets/img/icon_delete.svg" alt="Delete" />
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="add-subtask-input-wrapper">
-                        <input
-                          type="text"
-                          id="add-new-subtask"
-                          name="newSubtaskTitle"
-                          class="form-input"
-                          placeholder="Add new subtask"
-                          [(ngModel)]="newSubtaskTitle"
-                          [ngModelOptions]="{standalone: true}"
-                          (keyup.enter)="addNewSubtaskToAddTask()"
-                        />
-                        <button type="button" class="plus-btn" (click)="addNewSubtaskToAddTask()" [disabled]="!newSubtaskTitle.trim()">
-                          <img src="./assets/img/icon_plus.svg" alt="Add" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="add-task-actions-fixed">
-            <span><span class="star">*</span>This field is required</span>
-            <div class="button-group">
-              <button type="button" class="cancelBtn" (click)="closeAddTaskOverlay()">Cancel</button>
-              <button type="button" class="createBtn" (click)="onSubmit()">Create Task <img src="./assets/img/icon_done.svg" alt="" /></button>
-            </div>
-          </div>
-        </div>
-      </div>
+
+      <!-- Add Task Overlay Component -->
+      <app-add-task-overlay
+        [isVisible]="formService.showAddTaskOverlay"
+        [contacts]="contacts"
+        [maxTitleLength]="maxTitleLength"
+        (onClose)="closeAddTaskOverlay()"
+        (onSubmit)="onSubmit()">
+      </app-add-task-overlay>
       <div class="taskDetailsOverlay" *ngIf="formService.showTaskDetailsOverlay">
         <div class="taskDetailsOverlay-content" *ngIf="formService.selectedTask" @slideInRight>
           <div class="task-details-header-fixed">
