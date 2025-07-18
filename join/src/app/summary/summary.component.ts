@@ -37,6 +37,10 @@ export class SummaryComponent implements OnInit, OnDestroy {
   /**
    * Angular lifecycle hook for component initialization.
    */
+  /**
+   * Angular lifecycle hook for component initialization.
+   * Sets up subscriptions, loads data, and shows welcome overlay if needed.
+   */
   ngOnInit(): void {
     this.initializeSummaryData();
     this.subscribeToUser();

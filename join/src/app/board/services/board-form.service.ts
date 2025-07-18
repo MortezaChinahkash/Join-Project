@@ -263,7 +263,10 @@ export class BoardFormService {
     return selectedDate < today; // True if date is in the past
   }
 
-  // Contact selection methods
+  /**
+   * Toggles the contact dropdown visibility and manages click listeners.
+   * Opens or closes the contact selection dropdown and handles outside click detection.
+   */
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
     
@@ -274,7 +277,10 @@ export class BoardFormService {
     }
   }
 
-  // Category dropdown methods
+  /**
+   * Toggles the category dropdown visibility and handles form validation.
+   * Opens or closes the category selection dropdown and triggers validation when appropriate.
+   */
   toggleCategoryDropdown() {
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
     

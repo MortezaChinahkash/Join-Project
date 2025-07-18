@@ -1,4 +1,3 @@
-// Onboarding Overlay Styles
 .onboarding-overlay {
   position: fixed;
   top: 0;
@@ -10,7 +9,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-// Dark background overlay
 .overlay-background {
   position: absolute;
   top: 0;
@@ -21,7 +19,6 @@
   backdrop-filter: blur(2px);
 }
 
-// Highlight ring around target element
 .highlight-ring {
   position: absolute;
   border: 3px solid #29abe2;
@@ -45,7 +42,6 @@
   }
 }
 
-// Tooltip styles
 .onboarding-tooltip {
   position: absolute;
   background: white;
@@ -58,7 +54,6 @@
   pointer-events: auto;
   animation: fadeInScale 0.3s ease-out;
 
-  // Arrow styles
   &::before {
     content: '';
     position: absolute;
@@ -111,7 +106,6 @@
   }
 }
 
-// Tooltip header
 .tooltip-header {
   display: flex;
   justify-content: space-between;
@@ -148,7 +142,6 @@
   }
 }
 
-// Tooltip content
 .tooltip-content {
   padding: 0 20px 20px 20px;
 }
@@ -160,7 +153,6 @@
   margin: 0;
 }
 
-// Tooltip footer
 .tooltip-footer {
   padding: 16px 20px 20px 20px;
   border-top: 1px solid #f0f0f0;
@@ -197,7 +189,6 @@
   }
 }
 
-// Button styles
 .tooltip-actions {
   display: flex;
   justify-content: space-between;
@@ -264,7 +255,6 @@
   }
 }
 
-// Responsive design
 @media (max-width: 1000px) {
   .onboarding-tooltip {
     max-width: calc(100vw - 40px);
@@ -344,7 +334,6 @@
   }
 }
 
-// Animation for smooth transitions
 .onboarding-overlay {
   animation: fadeIn 0.3s ease-out;
 }
@@ -358,7 +347,6 @@
   }
 }
 
-// Ensure the overlay doesn't interfere with other interactions
 .onboarding-overlay {
   .overlay-background {
     pointer-events: auto;
@@ -373,7 +361,6 @@
   }
 }
 
-// High contrast mode support
 @media (prefers-contrast: high) {
   .highlight-ring {
     border-color: #fff;
@@ -385,7 +372,6 @@
   }
 }
 
-// Reduced motion support
 @media (prefers-reduced-motion: reduce) {
   .highlight-ring {
     animation: none;
