@@ -20,31 +20,38 @@ import { Instance } from 'flatpickr/dist/types/instance';
 export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() options: any = {};
   @Output() dateChange = new EventEmitter<Date | null>();
-
   private flatpickrInstance: Instance | null = null;
   private onChange = (value: any) => {};
   private onTouched = () => {};
 
   constructor(private elementRef: ElementRef) {}
 
+  /**
+   * Angular lifecycle hook - initializes the directive.
+   */
   ngOnInit(): void {
     this.initializeFlatpickr();
     this.setupIconClick();
   }
-
+  /**
+   * Angular lifecycle hook - cleans up the flatpickr instance.
+   */
   ngOnDestroy(): void {
     if (this.flatpickrInstance) {
       this.flatpickrInstance.destroy();
     }
   }
 
+  /**
+   * Initializes the flatpickr instance with default and custom options.
+   */
   private initializeFlatpickr(): void {
     const defaultOptions = {
       dateFormat: 'd.m.Y',
       allowInput: true,
       minDate: 'today',
       locale: {
-        firstDayOfWeek: 1 // Monday
+        firstDayOfWeek: 1
       },
       onChange: (selectedDates: Date[]) => {
         const date = selectedDates.length > 0 ? selectedDates[0] : null;
@@ -55,21 +62,25 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
         this.onTouched();
       }
     };
-
     const mergedOptions = { ...defaultOptions, ...this.options };
-    
     this.flatpickrInstance = flatpickr(this.elementRef.nativeElement, mergedOptions);
   }
 
+  /**
+   * Formats a date object to dd.mm.yyyy string format.
+   * @param date - The date to format
+   * @returns The formatted date string
+   */
   private formatDate(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${day}.${month}.${year}`;
   }
-
+  /**
+   * Sets up click handler for the calendar icon to open the date picker.
+   */
   private setupIconClick(): void {
-    // Find the calendar icon in the same wrapper and make it clickable
     setTimeout(() => {
       const wrapper = this.elementRef.nativeElement.parentElement;
       if (wrapper) {
@@ -84,22 +95,33 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
       }
     }, 0);
   }
-
-  // ControlValueAccessor implementation
+  /**
+   * ControlValueAccessor implementation - writes a value to the form control.
+   * @param value - The value to set in the date picker
+   */
   writeValue(value: any): void {
     if (this.flatpickrInstance) {
       this.flatpickrInstance.setDate(value || '', false);
     }
   }
-
+  /**
+   * ControlValueAccessor implementation - registers the onChange callback.
+   * @param fn - The callback function to register
+   */
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
-
+  /**
+   * ControlValueAccessor implementation - registers the onTouched callback.
+   * @param fn - The callback function to register
+   */
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
-
+  /**
+   * ControlValueAccessor implementation - sets the disabled state of the control.
+   * @param isDisabled - Whether the control should be disabled
+   */
   setDisabledState(isDisabled: boolean): void {
     if (this.flatpickrInstance) {
       if (isDisabled) {
