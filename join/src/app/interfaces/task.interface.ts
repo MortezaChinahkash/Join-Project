@@ -1,18 +1,18 @@
 export interface Task {
-  id?: string; // Optional, da Firebase die ID automatisch generiert
+  id?: string;
   title: string;
   description: string;
   dueDate: string;
   priority: 'urgent' | 'medium' | 'low' | '';
-  assignedTo: string[]; // Array für mehrere Kontakte
+  assignedTo: string[];
   category: 'technical' | 'user-story' | '';
   subtasks: Subtask[];
   createdAt: Date;
-  column: TaskColumn; // ← NEU: Spalten-Information
+  column: TaskColumn;
 }
 
 export interface Subtask {
-  id?: string; // Optional, da Firebase die ID automatisch generiert
+  id?: string;
   title: string;
   completed: boolean;
 }
