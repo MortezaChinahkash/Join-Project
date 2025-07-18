@@ -42,7 +42,7 @@
                   formControlName="dueDate" 
                   class="form-input date-input"
                   placeholder="dd.mm.yyyy"
-                  appFlatpickr
+                  flatpickr
                   [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched || boardFormService.isDateInvalid('dueDate', taskForm)"
                   (change)="taskForm.get('dueDate')?.markAsTouched()">
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />

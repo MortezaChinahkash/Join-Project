@@ -7,7 +7,6 @@ import { WelcomeOverlayService } from '../services/welcome-overlay.service';
 import { Task } from '../interfaces/task.interface';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
 /**
  * Component that displays a summary/dashboard view with task statistics and overview.
  * Provides quick access to task metrics and navigation to different sections.
@@ -27,7 +26,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
   private tasksSubscription?: Subscription;
   private tasks: Task[] = [];
   visible = false;
-
   constructor(
     private authService: AuthService,
     private taskService: TaskService,
@@ -45,7 +43,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
     this.loadAllTasks();
     this.checkAndShowWelcomeOverlay();
   }
-
   /**
    * Angular lifecycle hook for component cleanup.
    */
@@ -66,19 +63,16 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.currentUser = user;
     });
   }
-
   /**
    * Initializes summary data and statistics.
    */
   private initializeSummaryData(): void {
     this.loadTaskStatistics();
   }
-
   /**
    * Loads task statistics for display.
    */
   private loadTaskStatistics(): void {
-    // Implementation for loading task statistics
   }
 
   /**
@@ -86,17 +80,10 @@ export class SummaryComponent implements OnInit, OnDestroy {
    * Only shows if user came from login screen and is on mobile.
    */
   private checkAndShowWelcomeOverlay(): void {
-    // Check if overlay should be shown (coming from login)
     if (!this.welcomeOverlayService.shouldShow()) return;
-    
-    // Only show on mobile (1000px or less)
     const isMobile = window.innerWidth <= 1000;
     if (!isMobile) return;
-    
-    // Show overlay
     this.visible = true;
-    
-    // Hide overlay after 1.5 seconds
     setTimeout(() => {
       this.visible = false;
     }, 1500);
@@ -109,14 +96,12 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getCurrentDate(): string {
     return new Date().toLocaleDateString();
   }
-
   /**
    * Gets a time-appropriate greeting based on the current hour.
    * @returns English greeting string
    */
   getTimeBasedGreeting(): string {
     const currentHour = new Date().getHours();
-    
     if (currentHour >= 5 && currentHour < 12) {
       return 'Good morning';
     } else if (currentHour >= 12 && currentHour < 18) {
@@ -127,16 +112,25 @@ export class SummaryComponent implements OnInit, OnDestroy {
       return 'Good night';
     }
   }
-
+  /**
+   * Gets the current year.
+   * @returns Current year as number
+   */
   getCurrentYear(): number {
     return new Date().getFullYear();
   }
-
+  /**
+   * Gets the current month name.
+   * @returns Current month name as string
+   */
   getCurrentMonth(): string {
     const options: Intl.DateTimeFormatOptions = { month: 'long' };
     return new Date().toLocaleDateString('en-US', options);
   };
-
+  /**
+   * Gets the current day of the month.
+   * @returns Current day as number
+   */
   getCurrentDay(): number {
     return new Date().getDate();
   }
@@ -150,20 +144,16 @@ export class SummaryComponent implements OnInit, OnDestroy {
     if (!this.currentUser) {
       return 'Guest';
     }
-    
     if (this.currentUser.isGuest) {
       return 'Guest';
     }
-    
     return this.currentUser.name || 'User';
   }
-
   /**
    * Handles navigation to a specific section.
    * @param section - Section to navigate to
    */
   navigateToSection(section: string): void {
-    // Implementation for section navigation
   }
 
   /**
@@ -172,7 +162,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
   navigateToBoard(): void {
     this.router.navigate(['/board']);
   }
-
   /**
    * Navigates to the board component filtered by todo tasks.
    */
@@ -182,7 +171,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'todo-column'
     });
   }
-
   /**
    * Navigates to the board component filtered by done tasks and scrolls to done section.
    */
@@ -192,7 +180,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'done-column'
     });
   }
-
   /**
    * Navigates to the board component filtered by tasks in board.
    */
@@ -202,7 +189,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'todo-column'
     });
   }
-
   /**
    * Navigates to the board component filtered by tasks in progress.
    */
@@ -212,7 +198,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'inprogress-column'
     });
   }
-
   /**
    * Navigates to the board component filtered by awaiting feedback tasks.
    */
@@ -236,7 +221,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       }
     });
   }
-
   /**
    * Gets the count of open tasks (todo, in progress, awaiting feedback).
    * @returns Number of open tasks
@@ -248,32 +232,40 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'awaiting'
     ).length;
   }
-
+  /**
+   * Gets the count of tasks in progress.
+   * @returns Number of in progress tasks
+   */
   getInProgressTasksCount(): number {
     return this.tasks.filter(task =>        
       task.column === 'inprogress'
-      
     ).length;
   }
-
+  /**
+   * Gets the count of tasks awaiting feedback.
+   * @returns Number of awaiting tasks
+   */
    getAwaitingTasksCount(): number {
     return this.tasks.filter(task =>        
       task.column === 'awaiting'
-      
     ).length;
   }
-
+  /**
+   * Gets the count of todo tasks.
+   * @returns Number of todo tasks
+   */
   getToDoTasksCount(): number {
     return this.tasks.filter(task =>        
       task.column === 'todo'
-      
     ).length;
   }
-
+  /**
+   * Gets the count of completed tasks.
+   * @returns Number of done tasks
+   */
   getDoneTasksCount(): number {
     return this.tasks.filter(task =>        
       task.column === 'done'
-      
     ).length;
   }
 
@@ -284,26 +276,18 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getUrgentTasksDueToday(): number {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
     return this.tasks.filter(task => {
-      // Check if task is urgent
       if (task.priority !== 'urgent') {
         return false;
       }
-      
-      // Check if due date is today
       if (!task.dueDate) {
         return false;
       }
-      
-      // Parse task due date and compare with today
       const taskDueDate = this.parseDueDate(task.dueDate);
       taskDueDate.setHours(0, 0, 0, 0);
-      
       return taskDueDate.getTime() === today.getTime();
     }).length;
   }
-
   /**
    * Gets the count of all urgent tasks regardless of due date.
    * @returns Number of urgent tasks
@@ -318,25 +302,20 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   getNearestUrgentTaskDeadline(): Date | null {
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to start of day for accurate comparison
-    
+    today.setHours(0, 0, 0, 0);
     const urgentTasksWithDueDate = this.tasks.filter(task => 
       task.priority === 'urgent' && 
       task.dueDate && 
-      this.parseDueDate(task.dueDate) >= today // Only future or today's deadlines
+      this.parseDueDate(task.dueDate) >= today
     );
-
     if (urgentTasksWithDueDate.length === 0) {
       return null;
     }
-
-    // Find the task with the earliest due date
     const nearestTask = urgentTasksWithDueDate.reduce((nearest, current) => {
       const currentDate = this.parseDueDate(current.dueDate!);
       const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
-
     return this.parseDueDate(nearestTask.dueDate!);
   }
 
@@ -347,29 +326,22 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   private parseDueDate(dateString: string): Date {
     if (!dateString) {
-      return new Date(); // Fallback to current date
+      return new Date();
     }
-
-    // Handle German date format (DD.MM.YYYY)
     if (dateString.includes('.')) {
       const parts = dateString.split('.');
       if (parts.length === 3) {
         const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+        const month = parseInt(parts[1], 10) - 1;
         const year = parseInt(parts[2], 10);
-        
-        // Validate date parts
         if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
           const date = new Date(year, month, day);
-          // Verify the date is valid
           if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
             return date;
           }
         }
       }
     }
-
-    // Fallback: try native Date parsing
     const parsed = new Date(dateString);
     return isNaN(parsed.getTime()) ? new Date() : parsed;
   }
@@ -381,13 +353,11 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getUrgentDeadlineMonth(): string {
     const deadline = this.getNearestUrgentTaskDeadline();
     if (!deadline) {
-      return this.getCurrentMonth(); // Fallback to current month
+      return this.getCurrentMonth();
     }
-    
     const options: Intl.DateTimeFormatOptions = { month: 'long' };
     return deadline.toLocaleDateString('en-US', options);
   }
-
   /**
    * Gets the day number for the nearest urgent task deadline.
    * @returns Day number or current day as fallback
@@ -395,12 +365,10 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getUrgentDeadlineDay(): number {
     const deadline = this.getNearestUrgentTaskDeadline();
     if (!deadline) {
-      return this.getCurrentDay(); // Fallback to current day
+      return this.getCurrentDay();
     }
-    
     return deadline.getDate();
   }
-
   /**
    * Gets the year for the nearest urgent task deadline.
    * @returns Year number or current year as fallback
@@ -408,12 +376,10 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getUrgentDeadlineYear(): number {
     const deadline = this.getNearestUrgentTaskDeadline();
     if (!deadline) {
-      return this.getCurrentYear(); // Fallback to current year
+      return this.getCurrentYear();
     }
-    
     return deadline.getFullYear();
   }
-
   /**
    * Gets the appropriate deadline text based on whether urgent tasks with deadlines exist.
    * @returns Deadline description text
@@ -430,27 +396,20 @@ export class SummaryComponent implements OnInit, OnDestroy {
   navigateToNearestUrgentTask(): void {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
     const urgentTasksWithDueDate = this.tasks.filter(task => 
       task.priority === 'urgent' && 
       task.dueDate && 
       this.parseDueDate(task.dueDate) >= today
     );
-
     if (urgentTasksWithDueDate.length === 0) {
-      // Fallback: Navigate to board if no urgent tasks with deadlines
       this.router.navigate(['/board']);
       return;
     }
-
-    // Find the task with the earliest due date
     const nearestUrgentTask = urgentTasksWithDueDate.reduce((nearest, current) => {
       const currentDate = this.parseDueDate(current.dueDate!);
       const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
-
-    // Navigate to board with the specific task selected
     this.router.navigate(['/board'], { 
       queryParams: { 
         selectedTask: nearestUrgentTask.id,

@@ -68,20 +68,9 @@
         </div>
       </div>
       </div>
-      <div class="board-thumbnail" *ngIf="thumbnailService.showScrollOverview" [class.visible]="thumbnailService.showScrollOverview" (click)="onThumbnailClick($event)" (touchstart)="onThumbnailTouchStart($event)">
-        <div class="thumbnail-header">Board Overview</div>
-        <div class="thumbnail-content">
-          <div class="thumbnail-columns">
-            <div class="thumbnail-column" *ngFor="let column of boardColumns; let i = index" [class.has-tasks]="column.tasks().length > 0">
-              <div class="thumbnail-column-title">{{ column.title }}</div>
-              <div class="thumbnail-tasks">
-                <div class="thumbnail-task" *ngFor="let task of column.tasks().slice(0, 8)" [class]="'priority-' + task.priority"></div>
-              </div>
-            </div>
-          </div>
-          <div class="thumbnail-viewport" [style.left.px]="thumbnailService.thumbnailViewport.left" [style.width.px]="thumbnailService.thumbnailViewport.width" [style.height.px]="thumbnailService.thumbnailViewport.height" (mousedown)="onViewportMouseDown($event)" (touchstart)="onViewportTouchStart($event)" (click)="onViewportClick($event)"></div>
-        </div>
-      </div>
+      
+      <!-- Board Thumbnail Component -->
+      <app-board-thumbnail [boardColumns]="boardColumns"></app-board-thumbnail>
 
       <!-- Add Task Overlay Component -->
       <app-add-task-overlay

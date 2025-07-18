@@ -7,7 +7,7 @@ import { Instance } from 'flatpickr/dist/types/instance';
  * Flatpickr directive for Angular form integration
  */
 @Directive({
-  selector: '[appFlatpickr]',
+  selector: '[flatpickr]',
   standalone: true,
   providers: [
     {

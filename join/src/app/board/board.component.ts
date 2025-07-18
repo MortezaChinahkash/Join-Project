@@ -7,7 +7,6 @@ import { ContactsComponent } from '../contacts/contacts.component';
 import { Task, TaskColumn } from '../interfaces/task.interface';
 import { TaskService } from '../services/task.service';
 import { BoardDragDropService } from '../services/board-drag-drop.service';
-import { BoardThumbnailService } from '../services/board-thumbnail.service';
 import { BoardFormService } from '../services/board-form.service';
 import { BoardUtilsService } from '../services/board-utils.service';
 import { TouchDetectionService } from '../services/touch-detection.service';
@@ -22,6 +21,7 @@ import { BoardLifecycleService } from '../services/board-lifecycle.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
 import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.component';
+import { BoardThumbnailComponent } from './board-thumbnail/board-thumbnail.component';
 import { TaskDetailsOverlayComponent } from './task-details-overlay/task-details-overlay.component';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -34,7 +34,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
  */
 @Component({
   selector: 'app-board',
-  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, DeleteConfirmationComponent, TaskEditOverlayComponent, AddTaskOverlayComponent, TaskDetailsOverlayComponent],
+  imports: [RouterModule, CommonModule, FormsModule, ReactiveFormsModule, DeleteConfirmationComponent, TaskEditOverlayComponent, AddTaskOverlayComponent, BoardThumbnailComponent, TaskDetailsOverlayComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss',
   animations: [
@@ -97,11 +97,20 @@ export class BoardComponent implements OnInit {
 
   /**
    * Initializes the board component with all required services.
+   *
+   * @param taskService - Service for managing task data operations
+   * @param dragDropService - Service for handling drag & drop functionality
+   * @param thumbnailService - Service for thumbnail navigation
+   * @param formService - Service for form management
+   * @param utilsService - Service for utility functions
+   * @param dataService - Service for data loading and organization
+   * @param mobileService - Service for mobile interactions
+   * @param subtaskService - Service for subtask management
+   * @param touchDetectionService - Service for touch device detection
    */
   constructor(
     private taskService: TaskService,
     public dragDropService: BoardDragDropService,
-    public thumbnailService: BoardThumbnailService,
     public formService: BoardFormService,
     public utilsService: BoardUtilsService,
     public touchDetectionService: TouchDetectionService,
@@ -120,13 +129,62 @@ export class BoardComponent implements OnInit {
 
   /** Angular lifecycle hook that runs after component initialization. */
   ngOnInit(): void {
-    this.lifecycleService.loadContacts(
-      (contacts) => { this.contacts = contacts; },
-      (error) => { console.error('Error loading contacts:', error); }
-    );
-    
-    this.lifecycleService.loadTasks(
-      (tasks) => {
+    this.loadContactsData();
+    this.loadTasksData();
+    this.setupScrollListener();
+    this.handleFragmentNavigation();
+    this.handleQueryParams();
+  }
+
+  /**
+   * Handles fragment navigation to scroll to specific columns.
+   */
+  private handleFragmentNavigation(): void {
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        setTimeout(() => {
+          const targetElement = document.getElementById(fragment);
+          if (targetElement) {
+            targetElement.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start',
+              inline: 'nearest'
+            });
+          }
+        }, 500); // Wait for data to load
+      }
+    });
+  }
+
+  /**
+   * Sets up the scroll listener for thumbnail navigation.
+   */
+  private setupScrollListener(): void {
+    setTimeout(() => {
+      this.thumbnailService.setupScrollListener();
+    }, 500);
+  }
+
+  /**
+   * Loads contacts from Firebase and sorts them alphabetically.
+   */
+  private loadContactsData(): void {
+    this.dataService.loadContactsFromFirebase().subscribe({
+      next: (contacts) => {
+        this.contacts = this.dataService.sortContactsAlphabetically(contacts);
+      },
+      error: (error) => {
+        console.error('Error loading contacts:', error);
+      }
+    });
+  }
+
+  /**
+   * Loads tasks from Firebase and subscribes to real-time updates.
+   */
+  private loadTasksData(): void {
+    this.dataService.loadTasksFromFirebase().subscribe({
+      next: (tasks) => {
         this.tasks = tasks;
         this.distributeTasksToColumns();
       },
@@ -337,29 +395,45 @@ export class BoardComponent implements OnInit {
     this.interactionService.handleColumnDrop(event, column);
   }
 
-  /** Handles thumbnail click events. */
+  // Thumbnail Service delegates
+  /**
+   * Handles thumbnail click events.
+   * @param event - Mouse event
+   */
   onThumbnailClick(event: MouseEvent): void {
-    this.interactionService.handleThumbnailClick(event);
+    this.thumbnailService.onThumbnailClick(event);
   }
 
-  /** Handles thumbnail touch start events for touch devices. */
+  /**
+   * Handles thumbnail touch start events for touch devices.
+   * @param event - Touch event
+   */
   onThumbnailTouchStart(event: TouchEvent): void {
-    this.interactionService.handleThumbnailTouchStart(event);
+    this.thumbnailService.onThumbnailTouchStart(event);
   }
 
-  /** Handles viewport mouse down events. */
+  /**
+   * Handles viewport mouse down events.
+   * @param event - Mouse event
+   */
   onViewportMouseDown(event: MouseEvent): void {
-    this.interactionService.handleViewportMouseDown(event);
+    this.thumbnailService.onViewportMouseDown(event);
   }
 
-  /** Handles viewport touch start events for touch devices. */
+  /**
+   * Handles viewport touch start events for touch devices.
+   * @param event - Touch event
+   */
   onViewportTouchStart(event: TouchEvent): void {
-    this.interactionService.handleViewportTouchStart(event);
+    this.thumbnailService.onViewportTouchStart(event);
   }
 
-  /** Handles viewport click events. */
+  /**
+   * Handles viewport click events.
+   * @param event - Mouse event
+   */
   onViewportClick(event: MouseEvent): void {
-    this.interactionService.handleViewportClick(event);
+    this.thumbnailService.onViewportClick(event);
   }
 
   // Display Service delegates

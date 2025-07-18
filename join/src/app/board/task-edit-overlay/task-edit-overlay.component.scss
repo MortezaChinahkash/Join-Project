@@ -1,4 +1,3 @@
-// Task Edit Overlay Component Styles
 .taskEditOverlay {
   position: fixed;
   top: 0;
@@ -10,7 +9,6 @@
   justify-content: center;
   align-items: center;
   z-index: 1001;
-  
   .custom-select-wrapper {
     .custom-select {
       padding: 8px 12px;
@@ -19,18 +17,15 @@
       min-height: 35px;
       height: 35px;
       box-sizing: border-box;
-      
       &:hover {
         border-color: #29abe2;
       }
-      
       &:focus {
         outline: none;
         border-color: #29abe2;
       }
     }
   }
-
   .add-subtask-input-wrapper {
     .form-input {
       padding: 8px 12px;
@@ -39,22 +34,18 @@
       font-size: 13px;
       height: 35px;
       box-sizing: border-box;
-      
       &:focus {
         outline: none;
         border-color: #29abe2;
       }
-      
       &::placeholder {
         color: #999;
       }
     }
-    
     .plus-btn {
       right: 8px;
       width: 24px;
       height: 24px;
-      
       img {
         width: 16px;
         height: 16px;
@@ -73,26 +64,20 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
-  /* Custom scrollbar styling - inset */
   scrollbar-width: thin;
   scrollbar-color: #d1d1d1 transparent;
-
   &::-webkit-scrollbar {
     width: 8px;
   }
-
   &::-webkit-scrollbar-track {
     background: transparent;
     margin: 16px 0;
   }
-
   &::-webkit-scrollbar-thumb {
     background-color: #d1d1d1;
     border-radius: 4px;
     border: 2px solid white;
   }
-
   &::-webkit-scrollbar-thumb:hover {
     background-color: #bbb;
   }
@@ -105,25 +90,21 @@
   margin-bottom: 8px;
   flex-shrink: 0;
   padding: 32px 32px 0 32px;
-
   h2 {
     font-size: 32px;
     font-weight: 700;
     color: #2a3647;
     margin: 0;
   }
-
   .close-btn {
     background: none;
     border: none;
     cursor: pointer;
     padding: 4px;
-
     img {
       width: 18px;
       height: 18px;
     }
-
     &:hover {
       background-color: #f5f5f5;
       border-radius: 50%;
@@ -138,43 +119,33 @@
   flex: 1;
   overflow-y: auto;
   padding: 32px;
-
-  /* Custom scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: #d1d1d1 transparent;
-
   &::-webkit-scrollbar {
     width: 6px;
   }
-
   &::-webkit-scrollbar-track {
     background: transparent;
   }
-
   &::-webkit-scrollbar-thumb {
     background-color: #d1d1d1;
     border-radius: 3px;
   }
-
   &::-webkit-scrollbar-thumb:hover {
     background-color: #bbb;
   }
-
   .form-group {
     display: flex;
     flex-direction: column;
     gap: 4px;
-
     label {
       font-size: 14px;
       font-weight: 400;
       color: #2a3647;
-
       .required {
         color: #ff8190;
       }
     }
-
     .form-input,
     .form-textarea,
     .form-select {
@@ -183,32 +154,24 @@
       border-radius: 6px;
       font-size: 13px;
       font-family: inherit;
-
-      // Ensure placeholder is always gray
       &::placeholder {
         color: #d1d7db !important;
       }
-
       &:focus {
         outline: none;
         border-color: #29abe2;
       }
-
       &.error {
         border-color: #ff8190;
-
-        // Placeholder remains gray even in error state
         &::placeholder {
           color: #d1d7db !important;
         }
       }
     }
-
     .form-textarea {
       resize: vertical;
       min-height: 80px;
     }
-
     .error-message {
       color: #ff8190;
       font-size: 11px;
@@ -220,12 +183,10 @@
     position: relative;
     display: flex;
     align-items: center;
-
     .date-input {
       padding-right: 40px !important;
       width: 100%;
     }
-
     .date-icon {
       position: absolute !important;
       right: 8px !important;
@@ -233,16 +194,16 @@
       transform: translateY(-50%) !important;
       width: 16px !important;
       height: 16px !important;
-      pointer-events: none !important;
+      pointer-events: auto !important;
       z-index: 10 !important;
       opacity: 0.6 !important;
+      cursor: pointer !important;
     }
   }
 
   .priority-buttons {
     display: flex;
     gap: 1rem;
-
     .priority-btn {
       padding: 0.75rem 1.5rem;
       border: 1px solid #d1d7db;
@@ -258,58 +219,47 @@
       transition: all 0.2s ease;
       position: relative;
       z-index: 1;
-
       &:hover:not(.active):not(.selected) {
         box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
       }
-
       &.selected:hover,
       &.active:hover {
         box-shadow: none;
       }
-
       &:nth-child(1) .priority-icon-overlay,
       &:nth-child(1) img {
         filter: brightness(0) saturate(100%) invert(35%) sepia(96%)
           saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
       }
-
       &:nth-child(2) .priority-icon-overlay,
       &:nth-child(2) img {
         filter: brightness(0) saturate(100%) invert(64%) sepia(96%)
           saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
       }
-
       &:nth-child(3) .priority-icon-overlay,
       &:nth-child(3) img {
         filter: brightness(0) saturate(100%) invert(75%) sepia(77%)
           saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
       }
-
       &.active,
       &.selected {
         color: var(--bg-white);
         border-color: transparent;
-
         .priority-icon-overlay,
         img {
           filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
             saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
         }
-
         &:nth-child(1) {
           background-color: var(--color-prio-urgent);
         }
-
         &:nth-child(2) {
           background-color: var(--color-prio-medium);
         }
-
         &:nth-child(3) {
           background-color: var(--color-prio-low);
         }
       }
-
       .priority-icon-overlay,
       img {
         width: 1.25rem;
@@ -321,7 +271,6 @@
 
   .contacts-dropdown {
     position: relative;
-
     .dropdown-trigger {
       padding: 8px 12px;
       border: 1px solid #d1d1d1;
@@ -333,23 +282,19 @@
       align-items: center;
       font-size: 13px;
       color: #2a3647;
-
       .dropdown-arrow {
         width: 16px;
         height: 16px;
         transition: transform 0.2s ease;
         color: #666;
-        
         &.open {
           transform: rotate(180deg);
         }
       }
-
       &:hover {
         border-color: #29abe2;
       }
     }
-
     .dropdown-options {
       position: absolute;
       top: 100%;
@@ -365,7 +310,6 @@
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-
       .contact-option {
         padding: 8px 12px;
         display: flex;
@@ -373,30 +317,25 @@
         gap: 8px;
         cursor: pointer;
         font-size: 13px;
-
         &:hover {
           background-color: #f5f5f5;
         }
-
         .contact-checkbox {
           width: 16px;
           height: 16px;
           display: flex;
           align-items: center;
           justify-content: center;
-
           img {
             width: 16px;
             height: 16px;
           }
         }
-
         .contact-info {
           display: flex;
           align-items: center;
           gap: 8px;
           flex: 1;
-
           .contact-avatar {
             width: 24px;
             height: 24px;
@@ -408,7 +347,6 @@
             font-size: 10px;
             font-weight: 500;
           }
-
           .contact-name {
             color: #2a3647;
           }
@@ -421,32 +359,26 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-
     .subtask-item {
       .subtask-input-group {
         position: relative;
         display: flex;
         align-items: center;
-
         &.completed-subtask {
           opacity: 0.6;
         }
-
         .form-input {
           flex: 1;
           padding-right: 80px;
-
           &.completed {
             text-decoration: line-through;
             color: #999;
           }
-
           &.grayed {
             background-color: #f9f9f9;
             color: #666;
           }
         }
-
         .subtask-input-actions,
         .subtask-hover-actions {
           position: absolute;
@@ -459,7 +391,6 @@
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
           padding: 2px;
           z-index: 10;
-
           button {
             background: none;
             border: none;
@@ -469,87 +400,66 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 24px; // Fixed width for consistent button sizes
-            height: 24px; // Fixed height for consistent button sizes
+            width: 24px;
+            height: 24px;
             min-width: 24px;
             min-height: 24px;
-
             img {
               width: 16px;
               height: 16px;
-              filter: brightness(0); // Makes the icon black
+              filter: brightness(0);
             }
-
             &:hover {
               background-color: #f0f0f0;
             }
           }
-
           .subtask-divider {
             width: 1px;
             height: 16px;
             background-color: #d1d1d1;
             margin: 0 4px;
           }
-
           .edit-subtask-btn:hover {
             background-color: #e3f2fd;
           }
-
           .save-subtask-btn:hover {
             background-color: #e8f5e8;
           }
-
           .remove-subtask-btn:hover {
             background-color: #ffebee;
           }
         }
-
         .subtask-hover-actions {
           display: none;
           opacity: 0.7;
           transition: opacity 0.2s;
-
           &:hover {
             opacity: 1;
           }
         }
-
         &:hover .subtask-hover-actions {
           display: flex;
         }
-
-        // Show hover actions always on touch devices
         &.touch-device .subtask-hover-actions {
           display: flex !important;
           opacity: 0.8;
-          
           &:hover {
             opacity: 1;
           }
         }
-
-        // Also show on touch when not editing
         &.touch-device:not(.editing) .subtask-hover-actions {
           display: flex !important;
         }
-
-        // Input actions are always visible when editing
-
-        // Touch device specific styles
         &.touch-device {
           .subtask-hover-actions {
             display: flex !important;
             opacity: 0.8;
             background: rgba(255, 255, 255, 0.95);
-            
             &:active {
               opacity: 1;
             }
           }
         }
-
-        // Media query fallback for touch devices
         @media (hover: none) and (pointer: coarse) {
           .subtask-hover-actions {
             display: flex !important;
@@ -564,12 +474,10 @@
       position: relative;
       display: flex;
       align-items: center;
-
       .form-input {
         flex: 1;
         padding-right: 40px;
       }
-
       .plus-btn {
         position: absolute;
         right: 8px;
@@ -581,16 +489,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
         &:disabled {
           opacity: 0.5;
           cursor: not-allowed;
         }
-
         &:not(:disabled):hover {
           background-color: #f0f0f0;
         }
-
         img {
           width: 16px;
           height: 16px;
@@ -607,7 +512,6 @@
   padding: 24px 32px 32px;
   flex-shrink: 0;
   border-top: 1px solid #f0f0f0;
-
   button {
     padding: 12px 24px;
     border-radius: 8px;
@@ -616,23 +520,19 @@
     cursor: pointer;
     border: 1px solid transparent;
     transition: all 0.2s ease;
-
     &.cancel-btn {
       background-color: #f5f5f5;
       color: #2a3647;
       border-color: #d1d1d1;
-
       &:hover {
         background-color: #e8e8e8;
         border-color: #bbb;
       }
     }
-
     &.save-btn {
       background-color: #2a3647;
       color: white;
       border-color: #2a3647;
-
       &:hover {
         background-color: #1e2a3a;
         border-color: #1e2a3a;
@@ -641,7 +541,6 @@
   }
 }
 
-// Mobile responsiveness
 @media (max-width: 1020px) {
   .taskEditOverlay-content {
     .task-edit-form {
@@ -652,21 +551,18 @@
     }
   }
 }
-
 @media (max-width: 640px) {
   .taskEditOverlay-content {
     width: 95%;
     height: 85vh;
     border-radius: 16px;
     margin: 16px;
-
     .task-edit-header,
     .task-edit-form,
     .task-edit-actions {
       padding-left: 20px;
       padding-right: 20px;
     }
-
     .task-edit-form {
       .priority-buttons {
         max-width: 100%;
@@ -676,7 +572,6 @@
           padding: 0.5rem 0.75rem;
         }
       }
-
       .contacts-dropdown {
         .dropdown-options {
           position: fixed;
@@ -691,11 +586,9 @@
         }
       }
     }
-
     .task-edit-actions {
       flex-direction: column-reverse;
       gap: 12px;
-
       button {
         width: 100%;
         padding: 16px;
@@ -704,7 +597,6 @@
     }
   }
 }
-
 @media (max-width: 550px) {
   .taskEditOverlay-content {
     .task-edit-form {
@@ -714,7 +606,6 @@
         justify-content: center !important;
         flex-direction: row;
       }
-      
       .priority-btn {
         flex: 1;
         font-size: 12px !important; 
@@ -729,7 +620,6 @@
     }
   }
 }
-
 @media (max-width: 380px) {
   .taskEditOverlay-content {
     .task-edit-form {
@@ -740,7 +630,6 @@
         flex-direction: row;
         max-width: 100%; 
       }
-      
       .priority-btn {
         flex: 1;
         font-size: 10px !important; 
@@ -755,7 +644,6 @@
     }
   }
 }
-
 @media (max-width: 360px) {
   .taskEditOverlay-content {
     .task-edit-form {
@@ -768,7 +656,6 @@
         max-width: 100%;
         gap: 2px; 
       }
-      
       .priority-btn {
         flex: 1 1 0; 
         min-width: 0;
