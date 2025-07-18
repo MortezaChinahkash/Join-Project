@@ -1,3 +1,8 @@
+/**
+ * Delete Confirmation Overlay Styles
+ * Styles for the custom delete confirmation popup
+ */
+
 .deleteConfirmationOverlay {
   position: fixed;
   top: 0;
@@ -161,6 +166,7 @@
   }
 }
 
+// Mobile responsiveness
 @media (max-width: 640px) {
   .deleteConfirmationOverlay {
     .deleteConfirmationOverlay-content {
