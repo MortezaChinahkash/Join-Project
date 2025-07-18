@@ -1,7 +1,6 @@
-import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
+﻿import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
 import { Firestore, addDoc, collection, updateDoc, deleteDoc, doc } from '@angular/fire/firestore';
 import { Task, TaskColumn, Subtask } from '../../interfaces/task.interface';
-
 /**
  * Service for managing tasks and their operations.
  * Handles CRUD operations both locally and with Firebase integration.
@@ -20,20 +19,16 @@ export class TaskService {
     awaiting: [],
     done: []
   };
-  
   /** Firebase collection name for tasks */
   taskCollection: string = "tasks"
-
   /** Firebase Firestore instance */
   private firestore = inject(Firestore);
   private injector = inject(Injector);
-
   /**
    * Constructor for TaskService.
    */
   constructor() {
   }
-
   /**
    * Adds a new task to Firebase.
    * @param task - Task data without ID
@@ -48,11 +43,10 @@ export class TaskService {
       );
       return docRef.id;
     } catch (error) {
-      console.error('❌ Firebase Fehler:', error);
+      console.error('âŒ Firebase Fehler:', error);
       throw error;
     }
   }
-
   /**
    * Prepares task data for Firebase storage.
    * @param task - Task data without ID
@@ -66,7 +60,6 @@ export class TaskService {
       createdAt: new Date()
     };
   }
-
   /**
    * Gets tasks for a specific column.
    * @param column - The column to retrieve tasks from
@@ -75,7 +68,6 @@ export class TaskService {
   getTasksByColumn(column: TaskColumn): Task[] {
     return this.tasks[column];
   }
-
   /**
    * Gets all tasks organized by columns.
    * @returns Object containing all tasks grouped by column
@@ -83,7 +75,6 @@ export class TaskService {
   getAllTasks(): { [key in TaskColumn]: Task[] } {
     return this.tasks;
   }
-
   /**
    * Adds a new task to a specific column locally.
    * @param task - Task data without ID and timestamp
@@ -95,7 +86,6 @@ export class TaskService {
     this.tasks[column].push(newTask);
     return newTask;
   }
-
   /**
    * Creates a new task with generated ID and timestamp.
    * @param task - Task data without ID and timestamp
@@ -108,7 +98,6 @@ export class TaskService {
       createdAt: new Date()
     };
   }
-
   /**
    * Adds a task directly to a column (for Firebase integration).
    * @param task - Complete task object
@@ -117,7 +106,6 @@ export class TaskService {
   addTaskDirectly(task: Task, column: TaskColumn): void {
     this.tasks[column].push(task);
   }
-
   /**
    * Generates a temporary ID for local development.
    * @returns Generated string ID
@@ -125,7 +113,6 @@ export class TaskService {
   private generateId(): string {
     return Date.now().toString() + Math.random().toString(36).substr(2, 9);
   }
-
   /**
    * Updates an existing task with new data.
    * @param taskId - ID of the task to update
@@ -139,7 +126,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Updates a task within a specific column.
    * @param column - Column to search in
@@ -162,7 +148,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Moves a task between columns.
    * @param taskId - ID of the task to move
@@ -179,7 +164,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Deletes a task from all columns.
    * @param taskId - ID of the task to delete
@@ -192,7 +176,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Deletes a task from a specific column.
    * @param column - Column to delete from
@@ -207,7 +190,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Adds a subtask to an existing task.
    * @param taskId - ID of the parent task
@@ -221,7 +203,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Adds a subtask to a task in a specific column.
    * @param column - Column to search in
@@ -242,7 +223,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Creates a new subtask object.
    * @param title - Title for the subtask
@@ -255,7 +235,6 @@ export class TaskService {
       completed: false
     };
   }
-
   /**
    * Toggles the completion status of a subtask.
    * @param taskId - ID of the parent task
@@ -269,7 +248,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Toggles a subtask in a specific column.
    * @param column - Column to search in
@@ -292,7 +270,6 @@ export class TaskService {
     }
     return false;
   }
-
   /**
    * Updates a task in Firebase.
    * @param task - Task to update
@@ -307,11 +284,10 @@ export class TaskService {
         await updateDoc(taskRef, taskData);
       });
     } catch (error) {
-      console.error('❌ Error updating task in Firebase:', error);
+      console.error('âŒ Error updating task in Firebase:', error);
       throw error;
     }
   }
-
   /**
    * Validates task data before Firebase update.
    * @param task - Task to validate
@@ -322,7 +298,6 @@ export class TaskService {
       throw new Error('Task ID is required for update');
     }
   }
-
   /**
    * Deletes a task from Firebase.
    * @param taskId - ID of the task to delete
@@ -335,9 +310,8 @@ export class TaskService {
         await deleteDoc(taskRef);
       });
     } catch (error) {
-      console.error('❌ Error deleting task from Firebase:', error);
+      console.error('âŒ Error deleting task from Firebase:', error);
       throw error;
     }
   }
 }
-

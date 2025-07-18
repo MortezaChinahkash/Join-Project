@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
-
 /**
  * Service for managing mobile task movement functionality.
  * Handles column navigation and task positioning on mobile devices.
@@ -12,7 +11,6 @@ import { Task, TaskColumn } from '../../interfaces/task.interface';
   providedIn: 'root'
 })
 export class BoardMobileService {
-  
   /**
    * Calculates the optimal position for the mobile move overlay.
    * 
@@ -23,11 +21,9 @@ export class BoardMobileService {
     const buttonRect = button.getBoundingClientRect();
     const overlayWidth = 180;
     const gapSize = 8;
-    
     const position = this.getInitialPosition(buttonRect, overlayWidth, gapSize);
     return this.adjustPositionForViewport(position, overlayWidth);
   }
-
   /**
    * Gets the initial position based on button location.
    * 
@@ -43,13 +39,10 @@ export class BoardMobileService {
   ): { top: number; right: number } {
     const viewportWidth = window.innerWidth;
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    
     const topPosition = buttonRect.bottom + scrollY + gapSize;
     const rightPosition = Math.max(10, viewportWidth - buttonRect.right);
-    
     return { top: topPosition, right: rightPosition };
   }
-
   /**
    * Adjusts position to ensure overlay stays within viewport bounds.
    * 
@@ -64,26 +57,21 @@ export class BoardMobileService {
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    
     const adjustedPosition = { ...position };
-    
     // Adjust horizontal position
     adjustedPosition.right = this.adjustHorizontalPosition(
       adjustedPosition.right, 
       viewportWidth, 
       overlayWidth
     );
-    
     // Adjust vertical position  
     adjustedPosition.top = this.adjustVerticalPosition(
       adjustedPosition.top, 
       viewportHeight, 
       scrollY
     );
-    
     return adjustedPosition;
   }
-
   /**
    * Adjusts horizontal position to prevent overflow.
    * 
@@ -102,7 +90,6 @@ export class BoardMobileService {
     }
     return rightPosition;
   }
-
   /**
    * Adjusts vertical position to prevent overflow.
    * 
@@ -118,14 +105,11 @@ export class BoardMobileService {
   ): number {
     const overlayHeight = 120;
     const minTopMargin = 10;
-    
     if (topPosition + overlayHeight > scrollY + viewportHeight - 20) {
       return Math.max(scrollY + minTopMargin, topPosition - overlayHeight - 8);
     }
-    
     return Math.max(scrollY + minTopMargin, topPosition);
   }
-
   /**
    * Gets the previous column in the workflow order.
    * 
@@ -135,10 +119,8 @@ export class BoardMobileService {
   getPreviousColumn(currentColumn: TaskColumn): TaskColumn | null {
     const columnOrder: TaskColumn[] = ['todo', 'inprogress', 'awaiting', 'done'];
     const currentIndex = columnOrder.indexOf(currentColumn);
-    
     return this.getColumnAtIndex(columnOrder, currentIndex - 1);
   }
-
   /**
    * Gets the next column in the workflow order.
    * 
@@ -148,10 +130,8 @@ export class BoardMobileService {
   getNextColumn(currentColumn: TaskColumn): TaskColumn | null {
     const columnOrder: TaskColumn[] = ['todo', 'inprogress', 'awaiting', 'done'];
     const currentIndex = columnOrder.indexOf(currentColumn);
-    
     return this.getColumnAtIndex(columnOrder, currentIndex + 1);
   }
-
   /**
    * Safely gets column at specified index.
    * 
@@ -165,7 +145,6 @@ export class BoardMobileService {
     }
     return null;
   }
-
   /**
    * Gets the display name for a column.
    * 
@@ -181,7 +160,6 @@ export class BoardMobileService {
     };
     return columnMap[column];
   }
-
   /**
    * Finds the current column of a task from column arrays.
    * 
@@ -202,11 +180,6 @@ export class BoardMobileService {
     if (columnArrays.inProgressTasks.some(t => t.id === task.id)) return 'inprogress';
     if (columnArrays.awaitingFeedbackTasks.some(t => t.id === task.id)) return 'awaiting';
     if (columnArrays.doneTasks.some(t => t.id === task.id)) return 'done';
-    
     return null;
   }
 }
-
-
-
-

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService, User } from '../shared/services/auth.service';
 import { TaskService } from '../shared/services/task.service';
@@ -33,7 +33,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
     private router: Router,
     private welcomeOverlayService: WelcomeOverlayService
   ) {}
-
   /**
    * Angular lifecycle hook for component initialization.
    */
@@ -58,7 +57,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.tasksSubscription.unsubscribe();
     }
   }
-
   /**
    * Subscribes to the current user observable.
    */
@@ -78,7 +76,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   private loadTaskStatistics(): void {
   }
-
   /**
    * Checks if the welcome overlay should be shown.
    * Only shows if user came from login screen and is on mobile.
@@ -92,7 +89,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.visible = false;
     }, 1500);
   }
-
   /**
    * Gets the current date formatted for display.
    * @returns Formatted date string
@@ -138,7 +134,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getCurrentDay(): number {
     return new Date().getDate();
   }
-
   /**
    * Gets the display name for the current user.
    * Returns 'Guest' for guest users, otherwise the user's name or 'User' as fallback.
@@ -159,7 +154,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   navigateToSection(section: string): void {
   }
-
   /**
    * Navigates to the board component.
    */
@@ -211,7 +205,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'awaiting-column'
     });
   }
-
   /**
    * Loads all tasks for the current user.
    */
@@ -272,7 +265,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'done'
     ).length;
   }
-
   /**
    * Gets the count of urgent tasks that have their deadline today.
    * @returns Number of urgent tasks due today
@@ -299,30 +291,34 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getUrgentTasksCount(): number {
     return this.tasks.filter(task => task.priority === 'urgent').length;
   }
-
   /**
    * Gets the nearest upcoming deadline for urgent tasks.
    * @returns Date object of the nearest urgent task deadline, or null if no urgent tasks with due dates exist
    */
   getNearestUrgentTaskDeadline(): Date | null {
+    const urgentTasksWithDueDate = this.getUrgentTasksWithValidDueDate();
+    if (urgentTasksWithDueDate.length === 0) {
+      return null;
+    }
+    const nearestTask = this.findTaskWithNearestDeadline(urgentTasksWithDueDate);
+    return this.parseDueDate(nearestTask.dueDate!);
+  }
+  private getUrgentTasksWithValidDueDate() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const urgentTasksWithDueDate = this.tasks.filter(task => 
+    return this.tasks.filter(task => 
       task.priority === 'urgent' && 
       task.dueDate && 
       this.parseDueDate(task.dueDate) >= today
     );
-    if (urgentTasksWithDueDate.length === 0) {
-      return null;
-    }
-    const nearestTask = urgentTasksWithDueDate.reduce((nearest, current) => {
+  }
+  private findTaskWithNearestDeadline(urgentTasks: Task[]) {
+    return urgentTasks.reduce((nearest, current) => {
       const currentDate = this.parseDueDate(current.dueDate!);
       const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
-    return this.parseDueDate(nearestTask.dueDate!);
   }
-
   /**
    * Parses a due date string in German format (DD.MM.YYYY) to a Date object.
    * @param dateString - Date string in format DD.MM.YYYY
@@ -333,23 +329,32 @@ export class SummaryComponent implements OnInit, OnDestroy {
       return new Date();
     }
     if (dateString.includes('.')) {
-      const parts = dateString.split('.');
-      if (parts.length === 3) {
-        const day = parseInt(parts[0], 10);
-        const month = parseInt(parts[1], 10) - 1;
-        const year = parseInt(parts[2], 10);
-        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
-          const date = new Date(year, month, day);
-          if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
-            return date;
-          }
-        }
-      }
+      return this.parseGermanDateFormat(dateString);
     }
+    return this.parseStandardDateFormat(dateString);
+  }
+  private parseGermanDateFormat(dateString: string): Date {
+    const parts = dateString.split('.');
+    if (parts.length !== 3) {
+      return new Date();
+    }
+    const [day, month, year] = parts.map(part => parseInt(part, 10));
+    return this.validateAndCreateDate(day, month - 1, year);
+  }
+  private parseStandardDateFormat(dateString: string): Date {
     const parsed = new Date(dateString);
     return isNaN(parsed.getTime()) ? new Date() : parsed;
   }
-
+  private validateAndCreateDate(day: number, month: number, year: number): Date {
+    if (isNaN(day) || isNaN(month) || isNaN(year)) {
+      return new Date();
+    }
+    const date = new Date(year, month, day);
+    const isValid = date.getFullYear() === year && 
+                   date.getMonth() === month && 
+                   date.getDate() === day;
+    return isValid ? date : new Date();
+  }
   /**
    * Gets the formatted month name for the nearest urgent task deadline.
    * @returns Month name string or current month as fallback
@@ -392,7 +397,6 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const deadline = this.getNearestUrgentTaskDeadline();
     return deadline ? 'Upcoming Deadline' : 'No Urgent Deadlines';
   }
-
   /**
    * Navigates to the board and opens the task details for the nearest urgent task.
    * Falls back to general board navigation if no urgent task with deadline exists.

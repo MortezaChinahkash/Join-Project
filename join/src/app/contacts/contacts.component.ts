@@ -1,13 +1,11 @@
-import { CommonModule } from '@angular/common';
+﻿import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
-
 import { InlineSvgDirective } from '../inline-svg.directive';
 import { Contact } from './services/contact-data.service';
 import { ContactsService } from './services/contacts.service';
-
 /**
  * Refactored component for managing contacts with full CRUD operations.
  * Uses specialized services for better separation of concerns and maintainability.
@@ -43,7 +41,6 @@ import { ContactsService } from './services/contacts.service';
   ],
 })
 export class ContactsComponent implements OnInit, OnDestroy {
-  
   // Service observables - initialized after constructor
   showAddContactOverlay$!: any;
   showEditContactOverlay$!: any;
@@ -53,10 +50,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
   showMobileSingleContact$!: any;
   suppressAnimation$!: any;
   contactSuccessMessageText$!: any;
-
   // Local properties for template binding
   private subscriptions: Subscription[] = [];
-
   /**
    * Initializes the contacts component with the main contacts service.
    * 
@@ -66,7 +61,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     // Initialize observables after service injection
     this.initializeObservables();
   }
-
   /**
    * Initializes service observables for template binding.
    */
@@ -80,14 +74,12 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.suppressAnimation$ = this.contactsService.suppressAnimation$;
     this.contactSuccessMessageText$ = this.contactsService.contactSuccessMessageText$;
   }
-
   /**
    * Angular lifecycle hook - component initialization.
    */
   ngOnInit(): void {
     this.contactsService.initialize();
   }
-
   /**
    * Angular lifecycle hook - component cleanup.
    */
@@ -95,7 +87,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.contactsService.cleanup();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
-
   // Expose service properties for template
   get contacts(): Contact[] { return this.contactsService.allContacts; }
   get groupedContacts(): { [key: string]: Contact[] } { return this.contactsService.contactGroups; }
@@ -109,23 +100,19 @@ export class ContactsComponent implements OnInit, OnDestroy {
   get showMobileSingleContact(): boolean { return this.contactsService.showMobileSingleContact; }
   get suppressAnimation(): boolean { return this.contactsService.suppressAnimation; }
   get contactSuccessMessageText(): string { return this.contactsService.contactSuccessMessageText; }
-
   // UI Event Handlers
-
   /**
    * Opens the add contact overlay.
    */
   openAddContactOverlay(): void {
     this.contactsService.openAddContactOverlay();
   }
-
   /**
    * Closes the add contact overlay.
    */
   closeAddContactOverlay(): void {
     this.contactsService.closeAddContactOverlay();
   }
-
   /**
    * Opens edit contact overlay.
    * 
@@ -134,35 +121,30 @@ export class ContactsComponent implements OnInit, OnDestroy {
   openEditContactOverlay(contact: Contact): void {
     this.contactsService.openEditContactOverlay(contact);
   }
-
   /**
    * Closes edit contact overlay.
    */
   closeEditContactOverlay(): void {
     this.contactsService.closeEditContactOverlay();
   }
-
   /**
    * Handles add contact form submission.
    */
   onSubmitAddContact(): void {
     this.contactsService.onSubmitAddContact();
   }
-
   /**
    * Handles update contact form submission.
    */
   onSubmitUpdateContact(): void {
     this.contactsService.onSubmitUpdateContact();
   }
-
   /**
    * Deletes the currently selected contact.
    */
   deleteContact(): void {
     this.contactsService.deleteContact();
   }
-
   /**
    * Selects a contact and handles mobile view.
    * 
@@ -171,51 +153,43 @@ export class ContactsComponent implements OnInit, OnDestroy {
   selectContact(contact: Contact): void {
     this.contactsService.selectContact(contact);
   }
-
   /**
    * Selects the current user and creates a contact-like object for display.
    */
   selectCurrentUser(): void {
     this.contactsService.selectCurrentUser();
   }
-
   /**
    * Navigates back to contact list on mobile.
    */
   backToList(): void {
     this.contactsService.backToList();
   }
-
   /**
    * Handles FAB button click based on current state.
    */
   handleFabClick(): void {
     this.contactsService.handleFabClick();
   }
-
   /**
    * Opens mobile more menu.
    */
   openMoreMenu(): void {
     this.contactsService.openMoreMenu();
   }
-
   /**
    * Closes mobile more menu.
    */
   closeMoreMenu(): void {
     this.contactsService.closeMoreMenu();
   }
-
   /**
    * Updates mobile view status and responsive state.
    */
   updateMobileViewStatus(): void {
     this.contactsService.updateMobileViewStatus();
   }
-
   // Display Methods
-
   /**
    * Gets contact initials for display.
    * 
@@ -225,7 +199,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getInitials(name: string): string {
     return this.contactsService.getInitials(name);
   }
-
   /**
    * Gets contact color for avatar.
    * 
@@ -235,7 +208,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getInitialsColor(name: string): string {
     return this.contactsService.getInitialsColor(name);
   }
-
   /**
    * Truncates contact name if longer than 25 characters.
    * 
@@ -245,7 +217,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getTruncatedName(name: string): string {
     return this.contactsService.getTruncatedName(name);
   }
-
   /**
    * Checks if a contact name is considered long (>25 characters).
    * 
@@ -255,7 +226,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   isLongName(name: string): boolean {
     return this.contactsService.isLongName(name);
   }
-
   /**
    * Truncates email if longer than 23 characters with ellipsis ending.
    * 
@@ -265,7 +235,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   truncateEmail(email: string): string {
     return this.contactsService.truncateEmail(email);
   }
-
   /**
    * Gets the current logged-in user.
    * 
@@ -274,7 +243,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getCurrentUser() {
     return this.contactsService.getCurrentUser();
   }
-
   /**
    * Gets the display name for the current user.
    * 
@@ -283,9 +251,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getCurrentUserDisplayName(): string {
     return this.contactsService.getCurrentUserDisplayName();
   }
-
   // Form Validation Methods
-
   /**
    * Checks if a specific field has errors.
    * 
@@ -295,7 +261,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   hasFieldError(fieldName: string): boolean {
     return this.contactsService.hasFieldError(fieldName);
   }
-
   /**
    * Gets error message for a specific field.
    * 
@@ -305,9 +270,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getFieldError(fieldName: string): string {
     return this.contactsService.getFieldError(fieldName);
   }
-
   // Static Methods for External Use
-
   /**
    * Static method for getting contact initials (for external use).
    * 
@@ -317,7 +280,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   static getInitials(name: string): string {
     return ContactsService.getInitials(name);
   }
-
   /**
    * Static method for getting contact color (for external use).
    * 

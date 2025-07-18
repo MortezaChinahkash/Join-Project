@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule} from '@angular/router';
 import { Routes } from '@angular/router';
 import { MainContentComponent } from './main-content/main-content';
@@ -11,10 +11,8 @@ import { BoardComponent } from './board/board.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './guards/auth.guard';
-
 export const routes: Routes = [
   { path: 'auth', component: AuthComponent },
-
   {
     path: '',
     component: MainContentComponent,
@@ -24,13 +22,11 @@ export const routes: Routes = [
       { path: 'summary', component: SummaryComponent, canActivate: [AuthGuard] },
       { path: 'add-task', component: AddTaskComponent, canActivate: [AuthGuard] },
       { path: 'board', component: BoardComponent, canActivate: [AuthGuard] },
-      
       { path: 'privacy', component: PrivacyPolicyComponent },
       { path: 'imprint', component: LegalNoticeComponent },
       { path: 'legal', component: LegalNoticeComponent },
       { path: 'help', component: HelpComponent },
     ]
   },
-
   { path: '**', redirectTo: '/auth' }
 ];

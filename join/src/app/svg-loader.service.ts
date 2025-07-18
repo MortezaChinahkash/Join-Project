@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
 /**
  * Service for loading SVG files dynamically using HTTP requests.
  * Provides functionality to fetch SVG content as text for inline rendering.
@@ -14,7 +13,6 @@ import { Observable } from 'rxjs';
 })
 export class SvgLoaderService {
   constructor(private http: HttpClient) {}
-
   /**
    * Loads SVG content from a given URL as text.
    * 

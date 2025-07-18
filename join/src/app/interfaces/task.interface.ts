@@ -1,4 +1,4 @@
-export interface Task {
+﻿export interface Task {
   id?: string;
   title: string;
   description: string;
@@ -10,11 +10,9 @@ export interface Task {
   createdAt: Date;
   column: TaskColumn;
 }
-
 export interface Subtask {
   id?: string;
   title: string;
   completed: boolean;
 }
-
 export type TaskColumn = 'todo' | 'inprogress' | 'awaiting' | 'done';

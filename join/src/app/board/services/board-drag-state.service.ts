@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
-
 /**
  * Service for managing drag and drop state in the board component.
  * Handles all drag-related state properties and status tracking.
@@ -10,7 +9,6 @@ import { Task, TaskColumn } from '../../interfaces/task.interface';
  */
 @Injectable({ providedIn: 'root' })
 export class BoardDragStateService {
-  
   // Task drag and drop state properties
   draggedTask: Task | null = null;
   dragStartPosition = { x: 0, y: 0 };
@@ -20,7 +18,6 @@ export class BoardDragStateService {
   dragPlaceholderHeight = 0;
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
-
   // Mouse interaction state
   isMousePressed = false;
   mouseDownTime = 0;
@@ -28,11 +25,9 @@ export class BoardDragStateService {
   dragDelay = 150; // milliseconds before drag starts
   dragDelayTimeout: any = null;
   initialMousePosition = { x: 0, y: 0 };
-
   // Touch interaction state
   touchStartTime = 0;
   longPressTimeout: any = null;
-
   /**
    * Resets all drag state to initial values.
    */
@@ -46,7 +41,6 @@ export class BoardDragStateService {
     this.isMousePressed = false;
     this.clearTimeouts();
   }
-
   /**
    * Clears all active timeouts.
    */
@@ -60,7 +54,6 @@ export class BoardDragStateService {
       this.longPressTimeout = null;
     }
   }
-
   /**
    * Sets the dragged task and initial position.
    * 
@@ -73,7 +66,6 @@ export class BoardDragStateService {
     this.isDraggingTask = true;
     this.dragStartPosition = { x, y };
   }
-
   /**
    * Updates drag position.
    * 
@@ -86,7 +78,6 @@ export class BoardDragStateService {
       this.dragElement.style.top = `${y - this.dragOffset.y}px`;
     }
   }
-
   /**
    * Sets the drag element and calculates offset.
    * 
@@ -102,7 +93,6 @@ export class BoardDragStateService {
       y: mouseY - rect.top
     };
   }
-
   /**
    * Sets the drag element with pre-calculated offset.
    * 
@@ -117,7 +107,6 @@ export class BoardDragStateService {
       y: offsetY
     };
   }
-
   /**
    * Checks if movement exceeds drag threshold.
    * 
@@ -130,7 +119,6 @@ export class BoardDragStateService {
     const deltaY = Math.abs(currentY - this.initialMousePosition.y);
     return deltaX > this.dragThreshold || deltaY > this.dragThreshold;
   }
-
   /**
    * Sets mouse press state and initial position.
    * 
@@ -142,7 +130,6 @@ export class BoardDragStateService {
     this.mouseDownTime = Date.now();
     this.initialMousePosition = { x, y };
   }
-
   /**
    * Checks if drag delay has elapsed.
    * 
@@ -151,7 +138,6 @@ export class BoardDragStateService {
   dragDelayElapsed(): boolean {
     return Date.now() - this.mouseDownTime >= this.dragDelay;
   }
-
   /**
    * Sets drag over column for visual feedback.
    * 
@@ -160,7 +146,6 @@ export class BoardDragStateService {
   setDragOverColumn(column: TaskColumn | null): void {
     this.dragOverColumn = column;
   }
-
   /**
    * Sets placeholder visibility and height.
    * 

@@ -1,7 +1,6 @@
-import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
+﻿import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
 import { Firestore, collectionData, collection, addDoc, doc, deleteDoc, updateDoc } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-
 export interface Contact {
   /** Unique identifier for the contact */
   id?: string;
@@ -14,7 +13,6 @@ export interface Contact {
   /** Flag to indicate if this is the current user */
   isCurrentUser?: boolean;
 }
-
 /**
  * Service for managing contact data operations with Firestore.
  * Handles CRUD operations for contacts including add, update, delete, and fetch.
@@ -53,7 +51,6 @@ export class ContactDataService {
       email: contactData.email,
       phone: contactData.phone,
     });
-    
     return {
       id: docRef.id,
       name: contactData.name,
@@ -102,4 +99,3 @@ export class ContactDataService {
     return phone?.trim() || 'N/A';
   }
 }
-

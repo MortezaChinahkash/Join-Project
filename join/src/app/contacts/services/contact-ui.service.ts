@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact } from './contact-data.service';
-
 /**
  * Service for managing UI state and interactions in the contacts component.
  * Handles overlay visibility, mobile view state, and user interaction logic.
@@ -12,7 +11,6 @@ import { Contact } from './contact-data.service';
   providedIn: 'root'
 })
 export class ContactUiService {
-  
   /**
    * Determines if current view is mobile based on window width.
    * @returns True if mobile view
@@ -20,7 +18,6 @@ export class ContactUiService {
   isMobileView(): boolean {
     return window.innerWidth <= 1000;
   }
-
   /**
    * Shows success message for specified duration.
    * @param message - Message to display
@@ -34,7 +31,6 @@ export class ContactUiService {
       }, duration);
     });
   }
-
   /**
    * Validates email format.
    * @param email - Email to validate
@@ -44,7 +40,6 @@ export class ContactUiService {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
   }
-
   /**
    * Validates contact form data.
    * @param contact - Contact data to validate
@@ -55,23 +50,19 @@ export class ContactUiService {
     errors: string[];
   } {
     const errors: string[] = [];
-
     if (!contact.name?.trim()) {
       errors.push('Name is required');
     }
-
     if (!contact.email?.trim()) {
       errors.push('Email is required');
     } else if (!this.validateEmailFormat(contact.email)) {
       errors.push('Email format is invalid');
     }
-
     return {
       isValid: errors.length === 0,
       errors
     };
   }
-
   /**
    * Sanitizes contact input data.
    * @param contact - Contact data to sanitize
@@ -84,7 +75,6 @@ export class ContactUiService {
       phone: contact.phone?.trim() || 'N/A'
     };
   }
-
   /**
    * Handles responsive behavior updates.
    * @param currentMobileState - Current mobile view state
@@ -99,13 +89,11 @@ export class ContactUiService {
     showMobileSingleContact: boolean;
   } {
     const newMobileState = this.isMobileView();
-    
     return {
       isMobileView: newMobileState,
       showMobileSingleContact: newMobileState ? showSingleContact : false
     };
   }
-
   /**
    * Determines appropriate FAB action based on current state.
    * @param isMobileView - Current mobile view state
@@ -115,7 +103,6 @@ export class ContactUiService {
   getFabAction(isMobileView: boolean, showSingleContact: boolean): 'add' | 'more' {
     return isMobileView && showSingleContact ? 'more' : 'add';
   }
-
   /**
    * Processes overlay transitions with proper timing.
    * @param action - Action to perform during transition
@@ -130,7 +117,6 @@ export class ContactUiService {
       }, delay);
     });
   }
-
   /**
    * Manages animation suppression for smooth transitions.
    * @param suppressCallback - Callback to execute with suppression
@@ -144,7 +130,6 @@ export class ContactUiService {
       }, 200);
     });
   }
-
   /**
    * Formats contact display information.
    * @param contact - Contact to format
@@ -163,7 +148,6 @@ export class ContactUiService {
       hasValidPhone: !!(contact.phone?.trim() && contact.phone !== 'N/A')
     };
   }
-
   /**
    * Handles keyboard navigation for contact selection.
    * @param event - Keyboard event
@@ -188,4 +172,3 @@ export class ContactUiService {
     }
   }
 }
-

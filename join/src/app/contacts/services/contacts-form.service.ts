@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Contact } from './contact-data.service';
-
 /**
  * Service for managing contact forms and validation.
  * Handles form creation, validation, data preparation, and form operations.
@@ -11,13 +10,10 @@ import { Contact } from './contact-data.service';
  */
 @Injectable({ providedIn: 'root' })
 export class ContactsFormService {
-  
   private contactForm: FormGroup;
-
   constructor(private fb: FormBuilder) {
     this.contactForm = this.createContactForm();
   }
-
   /**
    * Creates the reactive form for contact management.
    * 
@@ -30,7 +26,6 @@ export class ContactsFormService {
       phone: ['', [this.phoneValidator]],
     });
   }
-
   /**
    * Custom validator for phone numbers.
    * 
@@ -42,18 +37,14 @@ export class ContactsFormService {
     if (!value || value.trim() === '' || value === 'N/A') {
       return null; // Phone is optional
     }
-    
     // Basic phone validation - allow various formats
     const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
     const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
-    
     if (!phoneRegex.test(cleanPhone)) {
       return { invalidPhone: true };
     }
-    
     return null;
   }
-
   /**
    * Gets the contact form instance.
    * 
@@ -62,7 +53,6 @@ export class ContactsFormService {
   getForm(): FormGroup {
     return this.contactForm;
   }
-
   /**
    * Validates the contact form and marks fields as touched.
    * 
@@ -70,28 +60,23 @@ export class ContactsFormService {
    */
   validateForm(): boolean {
     this.ensurePhoneValue();
-    
     if (!this.contactForm.valid) {
       this.contactForm.markAllAsTouched();
       return false;
     }
-    
     return true;
   }
-
   /**
    * Ensures phone field has a value (sets to 'N/A' if empty).
    */
   private ensurePhoneValue(): void {
     const phoneControl = this.contactForm.get('phone');
     const phoneValue = phoneControl?.value;
-    
     if (!phoneValue?.trim()) {
       phoneControl?.setValue('N/A');
       phoneControl?.updateValueAndValidity();
     }
   }
-
   /**
    * Prepares and sanitizes form data for submission.
    * 
@@ -99,14 +84,12 @@ export class ContactsFormService {
    */
   prepareFormData(): Partial<Contact> {
     const formValue = this.contactForm.value;
-    
     return {
       name: formValue.name?.trim(),
       email: formValue.email?.trim().toLowerCase(),
       phone: formValue.phone?.trim() || 'N/A'
     };
   }
-
   /**
    * Populates form with contact data for editing.
    * 
@@ -119,7 +102,6 @@ export class ContactsFormService {
       phone: contact.phone === 'N/A' ? '' : contact.phone,
     });
   }
-
   /**
    * Resets the form to initial state.
    */
@@ -127,7 +109,6 @@ export class ContactsFormService {
     this.contactForm.reset();
     this.contactForm.markAsUntouched();
   }
-
   /**
    * Checks if a specific field has errors.
    * 
@@ -138,7 +119,6 @@ export class ContactsFormService {
     const field = this.contactForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
-
   /**
    * Gets error message for a specific field.
    * 
@@ -147,13 +127,10 @@ export class ContactsFormService {
    */
   getFieldError(fieldName: string): string {
     const field = this.contactForm.get(fieldName);
-    
     if (!field || !field.errors || !field.touched) {
       return '';
     }
-
     const errors = field.errors;
-    
     switch (fieldName) {
       case 'name':
         if (errors['required']) return 'Name is required';
@@ -167,10 +144,8 @@ export class ContactsFormService {
         if (errors['invalidPhone']) return 'Please enter a valid phone number';
         break;
     }
-    
     return '';
   }
-
   /**
    * Gets all form errors as an object.
    * 
@@ -178,17 +153,14 @@ export class ContactsFormService {
    */
   getAllErrors(): { [key: string]: string } {
     const errors: { [key: string]: string } = {};
-    
     Object.keys(this.contactForm.controls).forEach(key => {
       const error = this.getFieldError(key);
       if (error) {
         errors[key] = error;
       }
     });
-    
     return errors;
   }
-
   /**
    * Checks if form has any validation errors.
    * 
@@ -197,7 +169,6 @@ export class ContactsFormService {
   hasErrors(): boolean {
     return this.contactForm.invalid;
   }
-
   /**
    * Gets form validation status.
    * 
@@ -206,14 +177,12 @@ export class ContactsFormService {
   isValid(): boolean {
     return this.contactForm.valid;
   }
-
   /**
    * Marks all fields as touched to trigger validation display.
    */
   markAllAsTouched(): void {
     this.contactForm.markAllAsTouched();
   }
-
   /**
    * Gets current form values.
    * 
@@ -222,7 +191,6 @@ export class ContactsFormService {
   getFormValues(): any {
     return this.contactForm.value;
   }
-
   /**
    * Validates specific field by name.
    * 
@@ -231,24 +199,19 @@ export class ContactsFormService {
    */
   validateField(fieldName: string): { isValid: boolean; error?: string } {
     const field = this.contactForm.get(fieldName);
-    
     if (!field) {
       return { isValid: false, error: 'Field not found' };
     }
-    
     field.markAsTouched();
     field.updateValueAndValidity();
-    
     if (field.valid) {
       return { isValid: true };
     }
-    
     return {
       isValid: false,
       error: this.getFieldError(fieldName)
     };
   }
-
   /**
    * Sets a specific field value.
    * 
@@ -262,7 +225,6 @@ export class ContactsFormService {
       field.updateValueAndValidity();
     }
   }
-
   /**
    * Gets a specific field value.
    * 
@@ -272,7 +234,6 @@ export class ContactsFormService {
   getFieldValue(fieldName: string): any {
     return this.contactForm.get(fieldName)?.value;
   }
-
   /**
    * Validates form data for consistency and business rules.
    * 
@@ -284,16 +245,13 @@ export class ContactsFormService {
     errors: string[];
   } {
     const errors: string[] = [];
-    
     // Check required fields
     if (!formData.name?.trim()) {
       errors.push('Name is required');
     }
-    
     if (!formData.email?.trim()) {
       errors.push('Email is required');
     }
-    
     // Validate email format
     if (formData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -301,18 +259,15 @@ export class ContactsFormService {
         errors.push('Invalid email format');
       }
     }
-    
     // Validate name length
     if (formData.name && formData.name.length < 2) {
       errors.push('Name must be at least 2 characters long');
     }
-    
     return {
       isValid: errors.length === 0,
       errors
     };
   }
-
   /**
    * Creates a new form instance (useful for multiple forms).
    * 
@@ -321,7 +276,6 @@ export class ContactsFormService {
   createNewForm(): FormGroup {
     return this.createContactForm();
   }
-
   /**
    * Cleanup method for service destruction.
    */

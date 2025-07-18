@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact } from '../../../contacts/services/contact-data.service';
-
 /**
  * Service for managing contact selection in task forms.
  * Handles dropdown states, contact selection, and click listeners.
@@ -17,42 +16,35 @@ export class BoardFormContactService {
   selectedContacts: Contact[] = [];
   showAssignedContactsDropdown = false;
   private preventDropdownClose = false;
-  
   // Category selection state
   isCategoryDropdownOpen = false;
-  
   // Click outside listener cleanup
   private documentClickListener?: (event: Event) => void;
   private assignedContactsClickListener?: (event: Event) => void;
-
   /**
    * Toggles the contact dropdown visibility and manages click listeners.
    * Opens or closes the contact selection dropdown and handles outside click detection.
    */
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
-    
     if (this.isDropdownOpen) {
       this.addDocumentClickListener();
     } else {
       this.removeDocumentClickListener();
     }
   }
-
   /**
    * Toggles the category dropdown visibility and handles form validation.
    * Opens or closes the category selection dropdown and triggers validation when appropriate.
    */
   toggleCategoryDropdown(): void {
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
-    
     if (this.isCategoryDropdownOpen) {
       this.addDocumentClickListener();
     } else {
       this.removeDocumentClickListener();
     }
   }
-
   /**
    * Toggles contact selection in the assigned contacts list.
    * 
@@ -62,9 +54,7 @@ export class BoardFormContactService {
   toggleContactSelection(contact: Contact, event: Event): void {
     event.stopPropagation();
     this.preventDropdownClose = true;
-    
     const existingIndex = this.selectedContacts.findIndex(c => c.id === contact.id);
-    
     if (existingIndex > -1) {
       // Remove contact if already selected
       this.selectedContacts.splice(existingIndex, 1);
@@ -72,13 +62,11 @@ export class BoardFormContactService {
       // Add contact if not selected
       this.selectedContacts.push(contact);
     }
-    
     // Reset flag after a short delay
     setTimeout(() => {
       this.preventDropdownClose = false;
     }, 100);
   }
-
   /**
    * Selects a contact from the dropdown.
    * 
@@ -91,7 +79,6 @@ export class BoardFormContactService {
     this.isDropdownOpen = false;
     this.removeDocumentClickListener();
   }
-
   /**
    * Removes a contact from the selected contacts list.
    * 
@@ -103,14 +90,12 @@ export class BoardFormContactService {
       this.selectedContacts.splice(index, 1);
     }
   }
-
   /**
    * Clears all selected contacts.
    */
   clearSelectedContacts(): void {
     this.selectedContacts = [];
   }
-
   /**
    * Checks if a contact is currently selected.
    * 
@@ -120,7 +105,6 @@ export class BoardFormContactService {
   isContactSelected(contact: Contact): boolean {
     return this.selectedContacts.some(c => c.id === contact.id);
   }
-
   /**
    * Gets the display text for selected contacts.
    * 
@@ -130,18 +114,14 @@ export class BoardFormContactService {
     if (this.selectedContacts.length === 0) {
       return 'Select contacts to assign';
     }
-    
     if (this.selectedContacts.length === 1) {
       return this.selectedContacts[0].name;
     }
-    
     if (this.selectedContacts.length === 2) {
       return `${this.selectedContacts[0].name} and ${this.selectedContacts[1].name}`;
     }
-    
     return `${this.selectedContacts[0].name} and ${this.selectedContacts.length - 1} others`;
   }
-
   /**
    * Sets the selected contacts list.
    * 
@@ -150,7 +130,6 @@ export class BoardFormContactService {
   setSelectedContacts(contacts: Contact[]): void {
     this.selectedContacts = [...contacts];
   }
-
   /**
    * Gets a copy of the selected contacts array.
    * 
@@ -159,7 +138,6 @@ export class BoardFormContactService {
   getSelectedContacts(): Contact[] {
     return [...this.selectedContacts];
   }
-
   /**
    * Resets all contact selection state.
    */
@@ -171,32 +149,26 @@ export class BoardFormContactService {
     this.removeDocumentClickListener();
     this.removeAssignedContactsClickListener();
   }
-
   /**
    * Adds document click listener to close dropdowns when clicking outside.
    * @private
    */
   private addDocumentClickListener(): void {
     this.removeDocumentClickListener(); // Remove existing listener first
-    
     this.documentClickListener = (event: Event) => {
       if (this.preventDropdownClose) return;
-      
       const target = event.target as HTMLElement;
       const isClickInsideDropdown = target.closest('.custom-select') || 
                                    target.closest('.contacts-dropdown') ||
                                    target.closest('.category-dropdown');
-      
       if (!isClickInsideDropdown) {
         this.isDropdownOpen = false;
         this.isCategoryDropdownOpen = false;
         this.removeDocumentClickListener();
       }
     };
-    
     document.addEventListener('click', this.documentClickListener);
   }
-
   /**
    * Removes document click listener.
    * @private
@@ -207,27 +179,22 @@ export class BoardFormContactService {
       this.documentClickListener = undefined;
     }
   }
-
   /**
    * Adds assigned contacts click listener.
    * @private
    */
   private addAssignedContactsClickListener(): void {
     this.removeAssignedContactsClickListener();
-    
     this.assignedContactsClickListener = (event: Event) => {
       const target = event.target as HTMLElement;
       const isClickInsideAssignedContacts = target.closest('.assigned-contacts-dropdown');
-      
       if (!isClickInsideAssignedContacts) {
         this.showAssignedContactsDropdown = false;
         this.removeAssignedContactsClickListener();
       }
     };
-    
     document.addEventListener('click', this.assignedContactsClickListener);
   }
-
   /**
    * Removes assigned contacts click listener.
    * @private
@@ -238,20 +205,17 @@ export class BoardFormContactService {
       this.assignedContactsClickListener = undefined;
     }
   }
-
   /**
    * Toggles the assigned contacts dropdown.
    */
   toggleAssignedContactsDropdown(): void {
     this.showAssignedContactsDropdown = !this.showAssignedContactsDropdown;
-    
     if (this.showAssignedContactsDropdown) {
       this.addAssignedContactsClickListener();
     } else {
       this.removeAssignedContactsClickListener();
     }
   }
-
   /**
    * Cleanup method to remove all event listeners.
    * Should be called when component is destroyed.

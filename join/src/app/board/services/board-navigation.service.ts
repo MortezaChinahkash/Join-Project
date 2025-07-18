@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Task } from '../../interfaces/task.interface';
-
 /**
  * Service for handling navigation and query parameter operations.
  * Manages URL-based task navigation and fragment scrolling.
@@ -29,9 +28,7 @@ import { Task } from '../../interfaces/task.interface';
   providedIn: 'root'
 })
 export class BoardNavigationService {
-
   constructor(private route: ActivatedRoute) {}
-
   /**
    * Handles query parameters to open specific tasks or apply filters.
    * @param taskArrays - Object containing all task arrays
@@ -55,7 +52,6 @@ export class BoardNavigationService {
       }
     });
   }
-
   /**
    * Opens task details for a specific task by its ID.
    * @param taskId - ID of the task to open
@@ -79,15 +75,12 @@ export class BoardNavigationService {
       ...taskArrays.awaitingFeedbackTasks,
       ...taskArrays.doneTasks
     ];
-    
     const targetTask = allTasks.find(task => task.id === taskId);
-    
     if (targetTask) {
       // Open the task details overlay
       openTaskCallback(targetTask);
     }
   }
-
   /**
    * Handles fragment navigation to scroll to specific columns.
    */
@@ -108,7 +101,3 @@ export class BoardNavigationService {
     });
   }
 }
-
-
-
-

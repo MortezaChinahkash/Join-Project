@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
 /**
  * Root application component that serves as the entry point for the Angular application.
  * Handles the main application layout and routing configuration.
@@ -17,7 +16,6 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent {
   /** The application title used throughout the app */
   title = 'join';
-
   /**
    * Gets the current application title.
    * @returns The application title string
@@ -25,7 +23,6 @@ export class AppComponent {
   getTitle(): string {
     return this.title;
   }
-
   /**
    * Sets the application title.
    * @param newTitle - New title to set

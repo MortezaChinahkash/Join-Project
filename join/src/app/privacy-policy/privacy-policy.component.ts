@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 /**
  * Component that displays privacy policy information with language switching
  * Supports both German and English content
@@ -18,7 +17,6 @@ import { CommonModule } from '@angular/common';
 export class PrivacyPolicyComponent {
   /** Currently selected language ('de' for German, 'en' for English) */
   selectedLanguage: string = 'de';
-
   /**
    * Sets the selected language for the privacy policy display
    * @param language - The language code ('de' for German, 'en' for English)

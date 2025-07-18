@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact } from './contact-data.service';
-
 /**
  * Service for contact-related helper functions.
  * Handles contact display logic, avatar generation, and initials calculation.
@@ -86,4 +85,3 @@ export class ContactHelperService {
     return colors[colorIndex % colors.length];
   }
 }
-

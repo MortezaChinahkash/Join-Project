@@ -1,17 +1,14 @@
-import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
+﻿import { Directive, ElementRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SvgLoaderService } from './svg-loader.service';
-
 @Directive({
   selector: '[inlineSvg]'
 })
 export class InlineSvgDirective implements OnChanges {
   @Input('inlineSvg') url!: string;
-
   constructor(
     private el: ElementRef,
     private svgLoader: SvgLoaderService,
   ) {}
-
   ngOnChanges(changes: SimpleChanges) {
     if (changes['url'] && this.url) {
       this.svgLoader.loadSvg(this.url).subscribe(svgText => {

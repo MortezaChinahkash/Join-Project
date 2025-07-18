@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact, ContactDataService } from './contact-data.service';
 import { ContactOrganizationService } from './contact-organization.service';
 import { AuthService } from '../../shared/services/auth.service';
-
 /**
  * Service for managing contact CRUD operations and business logic.
  * Handles contact creation, updates, deletion, and data management.
@@ -12,13 +11,11 @@ import { AuthService } from '../../shared/services/auth.service';
  */
 @Injectable({ providedIn: 'root' })
 export class ContactsCrudService {
-  
   constructor(
     private dataService: ContactDataService,
     private organizationService: ContactOrganizationService,
     private authService: AuthService
   ) {}
-
   /**
    * Creates a new contact.
    * 
@@ -31,27 +28,23 @@ export class ContactsCrudService {
     if (!contactData.name || !contactData.email) {
       throw new Error('Name and email are required for contact creation');
     }
-
     // Check for duplicate email
     const existingContact = this.findContactByEmail(contactData.email, existingContacts);
     if (existingContact) {
       throw new Error('A contact with this email already exists');
     }
-
     try {
       const newContact = await this.dataService.addContactToFirestore({
         name: contactData.name,
         email: contactData.email,
         phone: contactData.phone || 'N/A'
       });
-      
       return newContact;
     } catch (error) {
       console.error('Error creating contact:', error);
       throw new Error('Failed to create contact');
     }
   }
-
   /**
    * Updates an existing contact.
    * 
@@ -63,7 +56,6 @@ export class ContactsCrudService {
     if (!contactId) {
       throw new Error('Contact ID is required for update');
     }
-
     try {
       // Handle current user updates differently
       const contact = await this.getContactById(contactId);
@@ -79,7 +71,6 @@ export class ContactsCrudService {
       throw new Error('Failed to update contact');
     }
   }
-
   /**
    * Deletes a contact.
    * 
@@ -90,13 +81,11 @@ export class ContactsCrudService {
     if (!contactId) {
       throw new Error('Contact ID is required for deletion');
     }
-
     // Prevent deletion of current user
     const contact = await this.getContactById(contactId);
     if (contact?.isCurrentUser) {
       throw new Error('Cannot delete the current user');
     }
-
     try {
       await this.dataService.deleteContactFromFirestore(contactId);
     } catch (error) {
@@ -104,7 +93,6 @@ export class ContactsCrudService {
       throw new Error('Failed to delete contact');
     }
   }
-
   /**
    * Gets a contact by ID.
    * 
@@ -117,7 +105,6 @@ export class ContactsCrudService {
       if (contactId === 'current-user') {
         return this.getCurrentUserAsContact();
       }
-      
       // For regular contacts, we need to get from the current contacts list
       // Since we don't have a direct method, we'll return null and let the component handle it
       return null;
@@ -126,7 +113,6 @@ export class ContactsCrudService {
       return null;
     }
   }
-
   /**
    * Finds a contact by email address.
    * 
@@ -144,7 +130,6 @@ export class ContactsCrudService {
       return null;
     }
   }
-
   /**
    * Gets all contacts with current user included.
    * 
@@ -154,18 +139,15 @@ export class ContactsCrudService {
   getAllContactsWithCurrentUser(existingContacts: Contact[]): Contact[] {
     try {
       const currentUserContact = this.getCurrentUserAsContact();
-      
       if (currentUserContact) {
         return [currentUserContact, ...existingContacts];
       }
-      
       return existingContacts;
     } catch (error) {
       console.error('Error loading contacts:', error);
       throw new Error('Failed to load contacts');
     }
   }
-
   /**
    * Adds a contact to the local array and maintains sort order.
    * 
@@ -176,7 +158,6 @@ export class ContactsCrudService {
   addContactToArray(contacts: Contact[], newContact: Contact): Contact[] {
     return this.organizationService.addContactToArray(contacts, newContact);
   }
-
   /**
    * Updates a contact in the local array.
    * 
@@ -187,7 +168,6 @@ export class ContactsCrudService {
   updateContactInArray(contacts: Contact[], updatedContact: Contact): Contact[] {
     return this.organizationService.updateContactInArray(contacts, updatedContact);
   }
-
   /**
    * Removes a contact from the local array.
    * 
@@ -198,7 +178,6 @@ export class ContactsCrudService {
   removeContactFromArray(contacts: Contact[], contactId: string): Contact[] {
     return this.organizationService.removeContactFromArray(contacts, contactId);
   }
-
   /**
    * Updates the current user's profile in Firebase Auth.
    * 
@@ -209,16 +188,13 @@ export class ContactsCrudService {
     if (!currentUser) {
       throw new Error('No current user found');
     }
-
     // Update Firebase Auth profile if name changed
     if (contactData.name && contactData.name !== currentUser.name) {
       await this.authService.updateUserProfile(contactData.name);
     }
-
     // Note: Phone is not stored in Firebase Auth, only in the temporary contact object
     // This is handled in the component level for display purposes
   }
-
   /**
    * Gets the current user as a contact object.
    * 
@@ -229,7 +205,6 @@ export class ContactsCrudService {
     if (!user) {
       return null;
     }
-
     return {
       id: 'current-user',
       name: user.name || user.email || 'Current User',
@@ -238,7 +213,6 @@ export class ContactsCrudService {
       isCurrentUser: true
     };
   }
-
   /**
    * Validates contact data before operations.
    * 
@@ -250,16 +224,13 @@ export class ContactsCrudService {
     errors: string[];
   } {
     const errors: string[] = [];
-
     // Required field validation
     if (!contactData.name?.trim()) {
       errors.push('Name is required');
     }
-
     if (!contactData.email?.trim()) {
       errors.push('Email is required');
     }
-
     // Email format validation
     if (contactData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -267,12 +238,10 @@ export class ContactsCrudService {
         errors.push('Invalid email format');
       }
     }
-
     // Name length validation
     if (contactData.name && contactData.name.length < 2) {
       errors.push('Name must be at least 2 characters long');
     }
-
     // Phone validation (if provided)
     if (contactData.phone && contactData.phone !== 'N/A') {
       const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
@@ -281,13 +250,11 @@ export class ContactsCrudService {
         errors.push('Invalid phone number format');
       }
     }
-
     return {
       isValid: errors.length === 0,
       errors
     };
   }
-
   /**
    * Searches contacts by name or email.
    * 
@@ -299,15 +266,12 @@ export class ContactsCrudService {
     if (!query?.trim()) {
       return contacts;
     }
-
     const searchTerm = query.toLowerCase().trim();
-    
     return contacts.filter(contact =>
       contact.name.toLowerCase().includes(searchTerm) ||
       contact.email.toLowerCase().includes(searchTerm)
     );
   }
-
   /**
    * Gets contact statistics.
    * 
@@ -322,7 +286,6 @@ export class ContactsCrudService {
   } {
     const withPhone = contacts.filter(c => c.phone && c.phone !== 'N/A').length;
     const groups = Object.keys(this.organizationService.groupContactsByLetter(contacts)).length;
-
     return {
       total: contacts.length,
       withPhone,
@@ -330,7 +293,6 @@ export class ContactsCrudService {
       groups
     };
   }
-
   /**
    * Bulk creates contacts from an array.
    * 
@@ -343,7 +305,6 @@ export class ContactsCrudService {
   }> {
     const successful: Contact[] = [];
     const failed: { data: Partial<Contact>; error: string }[] = [];
-
     for (const contactData of contactsData) {
       try {
         const newContact = await this.createContact(contactData);
@@ -355,10 +316,8 @@ export class ContactsCrudService {
         });
       }
     }
-
     return { successful, failed };
   }
-
   /**
    * Exports contacts to a specific format.
    * 
@@ -370,7 +329,6 @@ export class ContactsCrudService {
     if (format === 'json') {
       return JSON.stringify(contacts, null, 2);
     }
-
     if (format === 'csv') {
       const headers = 'Name,Email,Phone\n';
       const rows = contacts.map(contact =>
@@ -378,10 +336,8 @@ export class ContactsCrudService {
       ).join('\n');
       return headers + rows;
     }
-
     throw new Error('Unsupported export format');
   }
-
   /**
    * Cleanup method for service destruction.
    */

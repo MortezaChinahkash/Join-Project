@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+﻿import { Component } from '@angular/core';
 /**
  * Component that provides help and documentation to users
  */
@@ -9,5 +8,4 @@ import { Component } from '@angular/core';
   styleUrl: './help.component.scss'
 })
 export class HelpComponent {
-
 }

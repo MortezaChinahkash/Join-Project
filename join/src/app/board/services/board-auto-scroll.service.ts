@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-
+﻿import { Injectable } from '@angular/core';
 /**
  * Service for handling auto-scroll functionality during drag operations.
  * Manages smooth scrolling when dragging near screen edges.
@@ -9,14 +8,12 @@ import { Injectable } from '@angular/core';
  */
 @Injectable({ providedIn: 'root' })
 export class BoardAutoScrollService {
-  
   // Auto-scroll configuration
   autoScrollZone = 200; // pixels from top/bottom where auto-scroll activates
   autoScrollSpeed = 8; // pixels per scroll step
   autoScrollInterval: any = null;
   isAutoScrolling = false;
   currentCursorY = 0; // Track current cursor position
-
   /**
    * Starts auto-scroll if cursor is in scroll zone.
    * 
@@ -24,21 +21,17 @@ export class BoardAutoScrollService {
    */
   handleAutoScroll(cursorY: number): void {
     this.currentCursorY = cursorY;
-    
     const container = this.findScrollableContainer();
     if (!container) return;
-
     const containerRect = container.getBoundingClientRect();
     const distanceFromTop = cursorY - containerRect.top;
     const distanceFromBottom = containerRect.bottom - cursorY;
-
     if (distanceFromTop < this.autoScrollZone || distanceFromBottom < this.autoScrollZone) {
       this.startAutoScroll(container, distanceFromTop, distanceFromBottom);
     } else {
       this.stopAutoScroll();
     }
   }
-
   /**
    * Emergency auto-scroll for edge cases.
    * 
@@ -46,17 +39,13 @@ export class BoardAutoScrollService {
    */
   emergencyAutoScroll(event: MouseEvent | TouchEvent): void {
     const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
-    
     const container = this.findScrollableContainer();
     if (!container) return;
-
     const containerRect = container.getBoundingClientRect();
     const relativeY = clientY - containerRect.top;
     const containerHeight = containerRect.height;
-
     const scrollUpZone = containerHeight * 0.15;
     const scrollDownZone = containerHeight * 0.85;
-
     if (relativeY < scrollUpZone && container.scrollTop > 0) {
       const scrollSpeed = this.getAdaptiveScrollSpeed(scrollUpZone - relativeY);
       container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
@@ -68,7 +57,6 @@ export class BoardAutoScrollService {
       }
     }
   }
-
   /**
    * Starts auto-scroll with specified parameters.
    * 
@@ -78,7 +66,6 @@ export class BoardAutoScrollService {
    */
   private startAutoScroll(container: HTMLElement, distanceFromTop: number, distanceFromBottom: number): void {
     if (this.isAutoScrolling) return;
-
     this.isAutoScrolling = true;
     this.autoScrollInterval = setInterval(() => {
       if (distanceFromTop < this.autoScrollZone && container.scrollTop > 0) {
@@ -95,7 +82,6 @@ export class BoardAutoScrollService {
       }
     }, 16); // ~60fps for smooth scrolling
   }
-
   /**
    * Stops auto-scroll.
    */
@@ -106,7 +92,6 @@ export class BoardAutoScrollService {
     }
     this.isAutoScrolling = false;
   }
-
   /**
    * Calculates adaptive scroll speed based on distance from edge.
    * 
@@ -119,7 +104,6 @@ export class BoardAutoScrollService {
     const normalizedDistance = Math.max(0, Math.min(1, distance / this.autoScrollZone));
     return maxSpeed - (normalizedDistance * (maxSpeed - minSpeed));
   }
-
   /**
    * Finds the scrollable container element.
    * 
@@ -131,17 +115,14 @@ export class BoardAutoScrollService {
     if (container && this.isScrollable(container)) {
       return container;
     }
-
     // Fallback to document body
     container = document.body;
     if (this.isScrollable(container)) {
       return container;
     }
-
     // Last resort: document element
     return document.documentElement;
   }
-
   /**
    * Checks if an element is scrollable.
    * 
@@ -154,7 +135,6 @@ export class BoardAutoScrollService {
     return (overflowY === 'scroll' || overflowY === 'auto') && 
            element.scrollHeight > element.clientHeight;
   }
-
   /**
    * Cleanup method to stop all auto-scroll operations.
    */

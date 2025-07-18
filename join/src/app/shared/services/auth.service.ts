@@ -1,9 +1,8 @@
-import { Injectable, OnDestroy, inject, Injector, runInInjectionContext } from '@angular/core';
+﻿import { Injectable, OnDestroy, inject, Injector, runInInjectionContext } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
 import { WelcomeOverlayService } from './welcome-overlay.service';
-
 export interface User {
   id: string;
   name: string;
@@ -11,7 +10,6 @@ export interface User {
   isGuest: boolean;
   loginTimestamp: number; // Timestamp when user logged in
 }
-
 /**
  * Authentication service for handling user login, registration, and session management.
  * Manages user authentication state and provides methods for login, registration, and logout.
@@ -26,12 +24,10 @@ export interface User {
 export class AuthService implements OnDestroy {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-  
   private readonly STORAGE_KEY = 'join_user';
   private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   private sessionCheckInterval: any;
   private injector = inject(Injector);
-
   constructor(
     private router: Router,
     private auth: Auth,
@@ -44,7 +40,6 @@ export class AuthService implements OnDestroy {
       this.startSessionCheck();
     }, 0);
   }
-
   /**
    * Initializes Firebase auth state listener.
    */
@@ -69,7 +64,6 @@ export class AuthService implements OnDestroy {
       });
     });
   }
-
   /**
    * Waits for Firebase auth to be ready and returns the current auth state.
    */
@@ -90,7 +84,6 @@ export class AuthService implements OnDestroy {
       });
     });
   }
-
   /**
    * Maps Firebase user to our User interface.
    */
@@ -103,28 +96,24 @@ export class AuthService implements OnDestroy {
       loginTimestamp: Date.now() // Current timestamp
     };
   }
-
   /**
    * Gets the current user value.
    */
   get currentUser(): User | null {
     return this.currentUserSubject.value;
   }
-
   /**
    * Checks if user is currently authenticated.
    */
   get isAuthenticated(): boolean {
     return this.currentUser !== null;
   }
-
   /**
    * Checks if current user is a guest.
    */
   get isGuest(): boolean {
     return this.currentUser?.isGuest === true;
   }
-
   /**
    * Authenticates user with email and password using Firebase.
    * @param email - User's email address
@@ -141,7 +130,6 @@ export class AuthService implements OnDestroy {
       throw this.handleAuthError(error);
     }
   }
-
   /**
    * Registers a new user with Firebase Authentication.
    * @param name - User's full name
@@ -153,29 +141,24 @@ export class AuthService implements OnDestroy {
       const userCredential = await runInInjectionContext(this.injector, () => 
         createUserWithEmailAndPassword(this.auth, email, password)
       );
-      
       // Update the user's display name
       await runInInjectionContext(this.injector, () => 
         updateProfile(userCredential.user, {
           displayName: name.trim()
         })
       );
-
       const user = this.mapFirebaseUserToUser(userCredential.user);
       // Update the user object with the correct name
       user.name = name.trim();
       // Set current login timestamp
       user.loginTimestamp = Date.now();
-      
       // Mark that this is a new user for onboarding
       localStorage.setItem('join_new_user', 'true');
-      
       return user;
     } catch (error: any) {
       throw this.handleAuthError(error);
     }
   }
-
   /**
    * Logs in user as guest using Firebase Anonymous Authentication.
    */
@@ -190,7 +173,6 @@ export class AuthService implements OnDestroy {
       throw this.handleAuthError(error);
     }
   }
-
   /**
    * Logs out the current user using Firebase.
    */
@@ -208,7 +190,6 @@ export class AuthService implements OnDestroy {
       throw new Error('Logout failed');
     }
   }
-
   /**
    * Checks if user is authorized to access protected routes.
    */
@@ -216,11 +197,9 @@ export class AuthService implements OnDestroy {
     if (this.isAuthenticated) {
       return true;
     }
-    
     this.router.navigate(['/auth']);
     return false;
   }
-
   /**
    * Sets the current user and saves to storage.
    */
@@ -228,7 +207,6 @@ export class AuthService implements OnDestroy {
     this.currentUserSubject.next(user);
     this.saveUserToStorage(user);
   }
-
   /**
    * Loads user from local storage on app initialization.
    */
@@ -237,29 +215,31 @@ export class AuthService implements OnDestroy {
       const userData = localStorage.getItem(this.STORAGE_KEY);
       if (userData) {
         const user = JSON.parse(userData);
-        
-        // Check if session has expired
-        const currentTime = Date.now();
-        const sessionAge = currentTime - (user.loginTimestamp || 0);
-        
-        if (sessionAge > this.SESSION_DURATION) {
-          // Session expired, remove from storage
-          console.log('Stored session expired, removing from storage');
-          localStorage.removeItem(this.STORAGE_KEY);
-          return;
-        }
-        
-        // Only set user if Firebase hasn't already set one
-        if (!this.currentUserSubject.value) {
-          this.currentUserSubject.next(user);
-        }
+        this.validateAndLoadSession(user);
       }
     } catch (error) {
       console.error('Error loading user from storage:', error);
       localStorage.removeItem(this.STORAGE_KEY);
     }
   }
-
+  private validateAndLoadSession(user: any): void {
+    if (!this.isSessionValid(user)) {
+      this.clearExpiredSession();
+      return;
+    }
+    if (!this.currentUserSubject.value) {
+      this.currentUserSubject.next(user);
+    }
+  }
+  private isSessionValid(user: any): boolean {
+    const currentTime = Date.now();
+    const sessionAge = currentTime - (user.loginTimestamp || 0);
+    return sessionAge <= this.SESSION_DURATION;
+  }
+  private clearExpiredSession(): void {
+    console.log('Stored session expired, removing from storage');
+    localStorage.removeItem(this.STORAGE_KEY);
+  }
   /**
    * Saves user to local storage.
    */
@@ -270,44 +250,36 @@ export class AuthService implements OnDestroy {
       console.error('Error saving user to storage:', error);
     }
   }
-
   /**
    * Gets remaining session time in milliseconds.
    */
   getRemainingSessionTime(): number {
     const currentUser = this.currentUser;
     if (!currentUser) return 0;
-    
     const currentTime = Date.now();
     const sessionAge = currentTime - currentUser.loginTimestamp;
     const remainingTime = this.SESSION_DURATION - sessionAge;
-    
     return Math.max(0, remainingTime);
   }
-
   /**
    * Gets remaining session time formatted as string.
    */
   getRemainingSessionTimeFormatted(): string {
     const remainingMs = this.getRemainingSessionTime();
     if (remainingMs === 0) return '0 hours';
-    
     const hours = Math.floor(remainingMs / (1000 * 60 * 60));
     const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-    
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     } else {
       return `${minutes}m`;
     }
   }
-
   /**
    * Handles authentication errors and returns user-friendly messages.
    */
   private handleAuthError(error: any): Error {
     console.error('Auth error:', error);
-    
     // Firebase auth error codes
     switch (error.code) {
       case 'auth/user-not-found':
@@ -327,24 +299,20 @@ export class AuthService implements OnDestroy {
         return new Error('An error occurred during authentication');
     }
   }
-
   /**
    * Cleanup method to be called when service is destroyed.
    */
   ngOnDestroy(): void {
     this.stopSessionCheck();
   }
-
   /**
    * Gets user display name for UI.
    */
   getUserDisplayName(): string {
     if (!this.currentUser) return '';
-    
     if (this.currentUser.isGuest) {
       return 'GU';
     }
-    
     // Return initials from name
     return this.currentUser.name
       .split(' ')
@@ -352,21 +320,18 @@ export class AuthService implements OnDestroy {
       .join('')
       .substring(0, 2);
   }
-
   /**
    * Gets user's full name.
    */
   getUserFullName(): string {
     return this.currentUser?.name || '';
   }
-
   /**
    * Gets user's email.
    */
   getUserEmail(): string {
     return this.currentUser?.email || '';
   }
-
   /**
    * Updates the current user's profile in Firebase Auth.
    * @param name - New display name
@@ -375,14 +340,12 @@ export class AuthService implements OnDestroy {
     if (!this.auth.currentUser) {
       throw new Error('No authenticated user found');
     }
-
     try {
       await runInInjectionContext(this.injector, () => 
         updateProfile(this.auth.currentUser!, {
           displayName: name.trim()
         })
       );
-
       // Update our local user object
       const currentUser = this.currentUser;
       if (currentUser) {
@@ -395,7 +358,6 @@ export class AuthService implements OnDestroy {
       throw new Error('Failed to update user profile');
     }
   }
-
   /**
    * Starts periodic session check to auto-logout after 24 hours.
    */
@@ -404,28 +366,23 @@ export class AuthService implements OnDestroy {
     this.sessionCheckInterval = setInterval(() => {
       this.checkSessionExpiry();
     }, 5 * 60 * 1000);
-    
     // Also check immediately
     this.checkSessionExpiry();
   }
-
   /**
    * Checks if current session has expired and logs out if necessary.
    */
   private checkSessionExpiry(): void {
     const currentUser = this.currentUser;
     if (!currentUser) return;
-    
     const currentTime = Date.now();
     const sessionAge = currentTime - currentUser.loginTimestamp;
-    
     // If session is older than 24 hours, auto-logout
     if (sessionAge > this.SESSION_DURATION) {
       console.log('Session expired after 24 hours, logging out automatically');
       this.logout();
     }
   }
-
   /**
    * Stops the session check interval.
    */
@@ -436,4 +393,3 @@ export class AuthService implements OnDestroy {
     }
   }
 }
-

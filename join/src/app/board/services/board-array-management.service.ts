@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { BoardTaskManagementService } from './board-task-management.service';
-
 /**
  * Service responsible for managing task arrays and column operations.
  * Handles array updates, task distribution, and column state management.
@@ -20,9 +19,7 @@ import { BoardTaskManagementService } from './board-task-management.service';
   providedIn: 'root'
 })
 export class BoardArrayManagementService {
-
   constructor(private taskManagementService: BoardTaskManagementService) {}
-
   /**
    * Updates task arrays after task changes.
    * @param tasks - Current tasks array
@@ -40,7 +37,6 @@ export class BoardArrayManagementService {
       distributeCallback();
       return;
     }
-
     const taskIndex = this.taskManagementService.findTaskIndex(tasks);
     if (taskIndex !== -1) {
       const updatedTasks = this.taskManagementService.updateTaskInArray(tasks, taskIndex);
@@ -48,7 +44,6 @@ export class BoardArrayManagementService {
     }
     distributeCallback();
   }
-
   /**
    * Assigns distributed tasks to component arrays.
    * @param distributed - Object with distributed tasks for each column
@@ -72,7 +67,6 @@ export class BoardArrayManagementService {
       doneTasks: distributed.doneTasks
     };
   }
-
   /**
    * Handles task movement between columns.
    * @param task - Task being moved
@@ -102,13 +96,10 @@ export class BoardArrayManagementService {
     if (fromColumn) {
       updatedColumns = this.taskManagementService.removeTaskFromColumn(task, fromColumn, updatedColumns);
     }
-    
     // Add to target column
     updatedColumns = this.taskManagementService.addTaskToColumn(task, toColumn, updatedColumns);
-    
     return updatedColumns;
   }
-
   /**
    * Removes a task from the main tasks array and redistributes.
    * @param tasks - Current tasks array
@@ -125,7 +116,6 @@ export class BoardArrayManagementService {
     distributeCallback();
     return updatedTasks;
   }
-
   /**
    * Gets the current column arrays as an object.
    * @param todoTasks - Todo column tasks
@@ -152,7 +142,6 @@ export class BoardArrayManagementService {
       doneTasks
     };
   }
-
   /**
    * Updates component arrays with new column data.
    * @param updatedColumns - New column arrays
@@ -175,7 +164,3 @@ export class BoardArrayManagementService {
     updateCallback(updatedColumns);
   }
 }
-
-
-
-

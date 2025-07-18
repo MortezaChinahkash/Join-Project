@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-
 /**
  * Service for handling form validation logic.
  * Manages validation rules, error checking, and validation feedback.
@@ -10,7 +9,6 @@ import { FormGroup, AbstractControl } from '@angular/forms';
  */
 @Injectable({ providedIn: 'root' })
 export class BoardFormValidationService {
-
   /**
    * Checks if a specific form field is invalid and has been touched.
    * 
@@ -22,7 +20,6 @@ export class BoardFormValidationService {
     const field = form.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
-
   /**
    * Checks if a date field is invalid (past date or empty).
    * 
@@ -33,14 +30,11 @@ export class BoardFormValidationService {
   isDateInvalid(form: FormGroup, fieldName: string = 'dueDate'): boolean {
     const field = form.get(fieldName);
     if (!field || !field.value) return false;
-
     const selectedDate = new Date(field.value);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
     return selectedDate < today;
   }
-
   /**
    * Gets validation error message for a specific field.
    * 
@@ -51,9 +45,7 @@ export class BoardFormValidationService {
   getFieldErrorMessage(form: FormGroup, fieldName: string): string {
     const field = form.get(fieldName);
     if (!field || !field.errors) return '';
-
     const errors = field.errors;
-
     if (errors['required']) {
       return `${this.getFieldDisplayName(fieldName)} is required`;
     }
@@ -66,10 +58,8 @@ export class BoardFormValidationService {
     if (errors['email']) {
       return 'Please enter a valid email address';
     }
-
     return 'This field is invalid';
   }
-
   /**
    * Gets display name for a field.
    * 
@@ -85,10 +75,8 @@ export class BoardFormValidationService {
       'category': 'Category',
       'assignedTo': 'Assigned Contacts'
     };
-
     return displayNames[fieldName] || fieldName;
   }
-
   /**
    * Validates the entire form and returns validation summary.
    * 
@@ -102,13 +90,11 @@ export class BoardFormValidationService {
   } {
     const errors: string[] = [];
     const fieldErrors: { [key: string]: string } = {};
-
     // Mark all fields as touched to show validation errors
     Object.keys(form.controls).forEach(key => {
       const control = form.get(key);
       if (control) {
         control.markAsTouched();
-        
         if (control.invalid) {
           const errorMessage = this.getFieldErrorMessage(form, key);
           errors.push(errorMessage);
@@ -116,21 +102,18 @@ export class BoardFormValidationService {
         }
       }
     });
-
     // Check for date-specific validation
     if (this.isDateInvalid(form)) {
       const dateError = 'Due date cannot be in the past';
       errors.push(dateError);
       fieldErrors['dueDate'] = dateError;
     }
-
     return {
       isValid: form.valid && !this.isDateInvalid(form),
       errors,
       fieldErrors
     };
   }
-
   /**
    * Validates required fields for task creation.
    * 
@@ -139,13 +122,11 @@ export class BoardFormValidationService {
    */
   validateRequiredFields(form: FormGroup): boolean {
     const requiredFields = ['title', 'description', 'dueDate'];
-    
     return requiredFields.every(field => {
       const control = form.get(field);
       return control && control.valid && control.value?.trim();
     });
   }
-
   /**
    * Checks if a form control has a specific error.
    * 
@@ -156,7 +137,6 @@ export class BoardFormValidationService {
   hasError(control: AbstractControl, errorType: string): boolean {
     return !!(control && control.errors && control.errors[errorType] && control.touched);
   }
-
   /**
    * Gets today's date string in YYYY-MM-DD format for date inputs.
    * 
@@ -166,7 +146,6 @@ export class BoardFormValidationService {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
-
   /**
    * Validates subtask title.
    * 
@@ -176,7 +155,6 @@ export class BoardFormValidationService {
   validateSubtaskTitle(title: string): boolean {
     return !!(title && title.trim().length >= 2 && title.trim().length <= 50);
   }
-
   /**
    * Sanitizes and validates form input.
    * 
@@ -186,10 +164,8 @@ export class BoardFormValidationService {
    */
   sanitizeInput(value: string, maxLength: number = 255): string {
     if (!value) return '';
-    
     return value.trim().substring(0, maxLength);
   }
-
   /**
    * Resets validation state for all form fields.
    * 

@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { TaskColumn } from '../../../interfaces/task.interface';
-
 /**
  * Service for detecting drag target columns using various detection methods.
  * Handles column detection for drag and drop operations.
@@ -12,7 +11,6 @@ import { TaskColumn } from '../../../interfaces/task.interface';
   providedIn: 'root'
 })
 export class BoardDragDetectionService {
-
   /**
    * Detects which column is at the given position using multiple detection methods.
    * Uses elementsFromPoint as primary method with geometric bounds as fallback.
@@ -25,20 +23,16 @@ export class BoardDragDetectionService {
     // Primary method: Check which column we're over using elementFromPoint
     const elements = document.elementsFromPoint(clientX, clientY);
     let targetColumn: TaskColumn | null = null;
-    
     for (const element of elements) {
       targetColumn = this.checkElementForColumn(element);
       if (targetColumn) break;
     }
-    
     // Fallback method: Use geometric bounds detection if primary method fails
     if (!targetColumn) {
       targetColumn = this.getColumnByGeometricBounds(clientX, clientY);
     }
-    
     return targetColumn;
   }
-
   /**
    * Checks if an element or its parents represent a board column.
    * 
@@ -52,7 +46,6 @@ export class BoardDragDetectionService {
     if (columnElement) {
       return columnElement.getAttribute('data-column') as TaskColumn;
     }
-    
     // Check for task-list element as fallback
     const taskListElement = element.closest('.task-list') as HTMLElement;
     if (taskListElement) {
@@ -61,7 +54,6 @@ export class BoardDragDetectionService {
         return parentColumn.getAttribute('data-column') as TaskColumn;
       }
     }
-    
     // Check for column-header as additional fallback
     const headerElement = element.closest('.column-header') as HTMLElement;
     if (headerElement) {
@@ -70,10 +62,8 @@ export class BoardDragDetectionService {
         return parentColumn.getAttribute('data-column') as TaskColumn;
       }
     }
-    
     return null;
   }
-
   /**
    * Enhanced column detection method using geometric bounds as fallback.
    * Iterates through all board columns and checks if the cursor position is within column boundaries.
@@ -86,10 +76,8 @@ export class BoardDragDetectionService {
   private getColumnByGeometricBounds(clientX: number, clientY: number): TaskColumn | null {
     // Get all board columns
     const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
-    
     for (const column of columns) {
       const rect = column.getBoundingClientRect();
-      
       // Check if the cursor is within the column bounds
       if (clientX >= rect.left && 
           clientX <= rect.right && 
@@ -98,10 +86,8 @@ export class BoardDragDetectionService {
         return column.getAttribute('data-column') as TaskColumn;
       }
     }
-    
     return null;
   }
-
   /**
    * Validates if a column is a valid drop target.
    * 
@@ -113,7 +99,6 @@ export class BoardDragDetectionService {
     if (!column) return false;
     return column !== currentTaskColumn;
   }
-
   /**
    * Gets all available board columns in the DOM.
    * 
@@ -123,7 +108,6 @@ export class BoardDragDetectionService {
     const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
     return Array.from(columns);
   }
-
   /**
    * Finds the closest column to a given position.
    * Useful when exact position detection fails.
@@ -136,22 +120,18 @@ export class BoardDragDetectionService {
     const columns = this.getAllBoardColumns();
     let closestColumn: HTMLElement | null = null;
     let minDistance = Infinity;
-    
     columns.forEach(column => {
       const rect = column.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      
       const distance = Math.sqrt(
         Math.pow(clientX - centerX, 2) + Math.pow(clientY - centerY, 2)
       );
-      
       if (distance < minDistance) {
         minDistance = distance;
         closestColumn = column;
       }
     });
-    
     if (closestColumn) {
       const element = closestColumn as HTMLElement;
       return element.getAttribute('data-column') as TaskColumn;

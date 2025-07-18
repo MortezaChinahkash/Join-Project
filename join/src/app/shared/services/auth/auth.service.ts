@@ -1,9 +1,8 @@
-import { Injectable, inject, computed } from '@angular/core';
+﻿import { Injectable, inject, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthStateService, User } from './auth-state.service';
 import { AuthSessionService } from './auth-session.service';
 import { AuthFirebaseService } from './auth-firebase.service';
-
 /**
  * Main authentication service that orchestrates all auth-related operations.
  * Coordinates between Firebase authentication, user state management, and session handling.
@@ -19,19 +18,16 @@ export class AuthService {
   private readonly authSession = inject(AuthSessionService);
   private readonly authFirebase = inject(AuthFirebaseService);
   private readonly router = inject(Router);
-
   // Public state exposure
   readonly currentUser$ = this.authState.currentUser$;
   readonly currentUser = computed(() => this.authState.currentUser);
   readonly isAuthenticated = computed(() => this.authState.isAuthenticated);
   readonly isGuest = computed(() => this.authState.isGuest);
-
   // Session-related exposures
   readonly sessionTimeRemaining = computed(() => this.authState.getRemainingSessionTime());
   readonly sessionTimeRemainingFormatted = computed(() => 
     this.authState.formatSessionDuration(this.authState.getRemainingSessionTime())
   );
-
   /**
    * Initialize the authentication service.
    * Sets up Firebase auth listener and session monitoring.
@@ -39,7 +35,6 @@ export class AuthService {
   constructor() {
     this.initializeAuth();
   }
-
   /**
    * Authenticates user with email and password.
    * 
@@ -50,13 +45,10 @@ export class AuthService {
   async login(email: string, password: string): Promise<void> {
     try {
       const user = await this.authFirebase.login(email, password);
-      
       // Set user in state
       this.authState.setCurrentUser(user);
-      
       // Start session monitoring
       this.startSessionMonitoring();
-      
       // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
@@ -64,7 +56,6 @@ export class AuthService {
       throw error;
     }
   }
-
   /**
    * Registers a new user account.
    * 
@@ -76,13 +67,10 @@ export class AuthService {
   async register(name: string, email: string, password: string): Promise<void> {
     try {
       const user = await this.authFirebase.register(name, email, password);
-      
       // Set user in state
       this.authState.setCurrentUser(user);
-      
       // Start session monitoring
       this.startSessionMonitoring();
-      
       // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
@@ -90,7 +78,6 @@ export class AuthService {
       throw error;
     }
   }
-
   /**
    * Logs in user as guest.
    * 
@@ -99,13 +86,10 @@ export class AuthService {
   async loginAsGuest(): Promise<void> {
     try {
       const user = await this.authFirebase.loginAsGuest();
-      
       // Set user in state
       this.authState.setCurrentUser(user);
-      
       // Start session monitoring
       this.startSessionMonitoring();
-      
       // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
@@ -113,7 +97,6 @@ export class AuthService {
       throw error;
     }
   }
-
   /**
    * Logs out the current user.
    * 
@@ -122,16 +105,12 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await this.authFirebase.logout();
-      
       // Stop session monitoring
       this.authSession.stopSessionCheck();
-      
       // Clear user state
       this.authState.clearUserState();
-      
       // Clear any cached data
       this.clearUserCache();
-      
       // Navigate to login page
       await this.router.navigate(['/login']);
     } catch (error: any) {
@@ -139,7 +118,6 @@ export class AuthService {
       throw new Error('Failed to logout. Please try again.');
     }
   }
-
   /**
    * Extends the current user session.
    * 
@@ -149,10 +127,8 @@ export class AuthService {
     if (!this.isAuthenticated()) {
       throw new Error('No active session to extend');
     }
-
     this.authState.extendSession();
   }
-
   /**
    * Checks if the current user is authenticated.
    * 
@@ -161,7 +137,6 @@ export class AuthService {
   isAuthenticatedUser(): boolean {
     return this.authState.isAuthenticated;
   }
-
   /**
    * Checks if the current user is a guest.
    * 
@@ -170,7 +145,6 @@ export class AuthService {
   isGuestUser(): boolean {
     return this.authState.isGuest;
   }
-
   /**
    * Gets the current user data.
    * 
@@ -179,7 +153,6 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.authState.currentUser;
   }
-
   /**
    * Waits for authentication to be ready.
    * 
@@ -188,7 +161,6 @@ export class AuthService {
   async waitForAuth(): Promise<User | null> {
     return this.authFirebase.waitForAuthReady();
   }
-
   /**
    * Updates user profile information.
    * 
@@ -199,10 +171,8 @@ export class AuthService {
     if (!this.isAuthenticated()) {
       throw new Error('User must be authenticated to update profile');
     }
-
     try {
       await this.authFirebase.updateUserProfile(updates);
-      
       // Update our user state
       const currentUser = this.getCurrentUser();
       if (currentUser && updates.displayName) {
@@ -214,7 +184,6 @@ export class AuthService {
       throw error;
     }
   }
-
   /**
    * Initializes the authentication system.
    * Sets up Firebase auth listener and checks for existing session.
@@ -225,7 +194,6 @@ export class AuthService {
     try {
       // Load user from storage first
       this.authState.loadUserFromStorage();
-
       // Initialize Firebase auth listener
       this.authFirebase.initializeAuthListener((user) => {
         if (user) {
@@ -236,7 +204,6 @@ export class AuthService {
           this.authSession.stopSessionCheck();
         }
       });
-
       // Wait for initial auth state
       const user = await this.authFirebase.waitForAuthReady();
       if (user) {
@@ -247,7 +214,6 @@ export class AuthService {
       console.error('Error initializing auth:', error);
     }
   }
-
   /**
    * Starts session monitoring for automatic logout.
    * 
@@ -259,7 +225,6 @@ export class AuthService {
       this.logout();
     });
   }
-
   /**
    * Generates initials from a user's name.
    * 
@@ -274,7 +239,6 @@ export class AuthService {
       .slice(0, 2)
       .join('');
   }
-
   /**
    * Generates a random color for the user.
    * 
@@ -288,7 +252,6 @@ export class AuthService {
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
-
   /**
    * Clears any cached user data.
    * 

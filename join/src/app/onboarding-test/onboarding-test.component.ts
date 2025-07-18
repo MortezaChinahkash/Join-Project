@@ -1,10 +1,8 @@
-// Development helper component for testing onboarding
+﻿// Development helper component for testing onboarding
 // This component should be removed in production
-
 import { Component } from '@angular/core';
 import { OnboardingService } from '../shared/services/onboarding.service';
 import { CommonModule } from '@angular/common';
-
 @Component({
   selector: 'app-onboarding-test',
   standalone: true,
@@ -12,10 +10,10 @@ import { CommonModule } from '@angular/common';
   template: `
     <div class="onboarding-test-controls" *ngIf="showControls">
       <button class="test-btn" (click)="startOnboarding()">
-        🎯 Start Onboarding
+        ðŸŽ¯ Start Onboarding
       </button>
       <button class="test-btn" (click)="resetOnboarding()">
-        🔄 Reset Onboarding
+        ðŸ”„ Reset Onboarding
       </button>
     </div>
   `,
@@ -28,7 +26,6 @@ import { CommonModule } from '@angular/common';
       gap: 10px;
       z-index: 1000;
     }
-    
     .test-btn {
       background: #29abe2;
       color: white;
@@ -40,18 +37,15 @@ import { CommonModule } from '@angular/common';
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       transition: all 0.2s ease;
     }
-    
     .test-btn:hover {
       background: #2196c7;
       transform: translateY(-1px);
     }
-    
     @media (max-width: 768px) {
       .onboarding-test-controls {
         bottom: 10px;
         right: 10px;
       }
-      
       .test-btn {
         padding: 6px 10px;
         font-size: 0.7rem;
@@ -62,13 +56,10 @@ import { CommonModule } from '@angular/common';
 export class OnboardingTestComponent {
   // Show controls only in development
   showControls = !window.location.hostname.includes('production');
-  
   constructor(private onboardingService: OnboardingService) {}
-  
   startOnboarding(): void {
     this.onboardingService.manualStartOnboarding();
   }
-  
   resetOnboarding(): void {
     this.onboardingService.resetOnboarding();
   }

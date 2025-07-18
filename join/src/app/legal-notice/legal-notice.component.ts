@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 /**
  * Component that displays legal notice and privacy policy information
  * Supports language switching between German and English
@@ -18,7 +17,6 @@ import { CommonModule } from '@angular/common';
 export class LegalNoticeComponent {
   /** Currently selected language ('de' for German, 'en' for English) */
   selectedLanguage: string = 'de';
-
   /**
    * Sets the selected language for the legal notice display
    * @param language - The language code ('de' for German, 'en' for English)

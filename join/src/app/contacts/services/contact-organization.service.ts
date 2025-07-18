@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact } from './contact-data.service';
-
 /**
  * Service for organizing and managing contact display logic.
  * Handles contact grouping, sorting, and utility functions.
@@ -12,7 +11,6 @@ import { Contact } from './contact-data.service';
   providedIn: 'root'
 })
 export class ContactOrganizationService {
-
   /**
    * Groups contacts alphabetically by first letter of name.
    * @param contacts - Array of contacts to group
@@ -20,13 +18,10 @@ export class ContactOrganizationService {
    */
   groupContactsByLetter(contacts: Contact[]): { [key: string]: Contact[] } {
     const grouped: { [key: string]: Contact[] } = {};
-    
     this.categorizeContactsByLetter(contacts, grouped);
     this.sortContactsWithinGroups(grouped);
-    
     return grouped;
   }
-
   /**
    * Categorizes contacts into letter groups.
    * @param contacts - Contacts to categorize
@@ -43,7 +38,6 @@ export class ContactOrganizationService {
       }
     }
   }
-
   /**
    * Extracts the first letter from a contact name.
    * @param name - Contact name
@@ -53,7 +47,6 @@ export class ContactOrganizationService {
     if (!name?.trim()) return '';
     return name.trim()[0].toUpperCase();
   }
-
   /**
    * Adds a contact to the appropriate letter group.
    * @param grouped - Grouped contacts object
@@ -70,7 +63,6 @@ export class ContactOrganizationService {
     }
     grouped[letter].push(contact);
   }
-
   /**
    * Sorts contacts alphabetically within each letter group.
    * @param grouped - Grouped contacts object
@@ -82,7 +74,6 @@ export class ContactOrganizationService {
       );
     }
   }
-
   /**
    * Updates a contact in the contacts array and re-groups.
    * @param contacts - Array of contacts
@@ -96,7 +87,6 @@ export class ContactOrganizationService {
     }
     return contacts;
   }
-
   /**
    * Removes a contact from the contacts array.
    * @param contacts - Array of contacts
@@ -106,7 +96,6 @@ export class ContactOrganizationService {
   removeContactFromArray(contacts: Contact[], contactId: string): Contact[] {
     return contacts.filter(c => c.id !== contactId);
   }
-
   /**
    * Adds a new contact to the contacts array.
    * @param contacts - Existing contacts array
@@ -116,7 +105,6 @@ export class ContactOrganizationService {
   addContactToArray(contacts: Contact[], newContact: Contact): Contact[] {
     return [...contacts, newContact];
   }
-
   /**
    * Finds a contact by ID.
    * @param contacts - Array of contacts to search
@@ -126,7 +114,6 @@ export class ContactOrganizationService {
   findContactById(contacts: Contact[], contactId: string): Contact | undefined {
     return contacts.find(c => c.id === contactId);
   }
-
   /**
    * Gets initials from a contact name.
    * @param name - Contact name
@@ -134,11 +121,9 @@ export class ContactOrganizationService {
    */
   getContactInitials(name: string): string {
     if (!name?.trim()) return '';
-    
     const parts = this.splitNameIntoParts(name);
     return this.extractInitialsFromParts(parts);
   }
-
   /**
    * Splits a name into meaningful parts.
    * @param name - Full name
@@ -147,7 +132,6 @@ export class ContactOrganizationService {
   private splitNameIntoParts(name: string): string[] {
     return name.trim().split(' ').filter(Boolean);
   }
-
   /**
    * Extracts initials from name parts.
    * @param parts - Array of name parts
@@ -159,7 +143,6 @@ export class ContactOrganizationService {
     }
     return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   }
-
   /**
    * Gets a color for contact avatar based on name.
    * @param name - Contact name
@@ -167,12 +150,10 @@ export class ContactOrganizationService {
    */
   getContactColor(name: string): string {
     if (!name?.trim()) return '#888';
-    
     const colors = this.getColorPalette();
     const colorIndex = this.calculateColorIndex(name);
     return colors[colorIndex % colors.length];
   }
-
   /**
    * Gets the color palette for contact avatars.
    * @returns Array of hex color strings
@@ -188,7 +169,6 @@ export class ContactOrganizationService {
       '#BAD80A', '#FFF100',
     ];
   }
-
   /**
    * Calculates color index based on first letter of name.
    * @param name - Contact name
@@ -199,4 +179,3 @@ export class ContactOrganizationService {
     return letter.charCodeAt(0) - 65; // A=0, B=1, etc.
   }
 }
-

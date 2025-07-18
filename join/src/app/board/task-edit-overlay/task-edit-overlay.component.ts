@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Task } from '../../interfaces/task.interface';
@@ -7,7 +7,6 @@ import { BoardFormService } from '../services/board-form.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
 import { ContactHelperService } from '../../contacts/services/contact-helper.service';
 import { FlatpickrDirective } from '../../directives/flatpickr.directive';
-
 /**
  * Task Edit Overlay Component
  * Standalone component for editing existing tasks with a modal overlay.
@@ -22,57 +21,46 @@ import { FlatpickrDirective } from '../../directives/flatpickr.directive';
   styleUrl: './task-edit-overlay.component.scss'
 })
 export class TaskEditOverlayComponent implements OnDestroy {
-  
   /**
    * Controls the visibility of the edit overlay
    */
   @Input() isVisible: boolean = false;
-
   /**
    * The task being edited
    */
   @Input() selectedTask: Task | null = null;
-
   /**
    * Array of contacts for assignment
    */
   @Input() contacts: Contact[] = [];
-
   /**
    * Current subtask title for adding new subtasks
    */
   newSubtaskTitle: string = '';
-
   /**
    * Index of the subtask currently being edited
    */
   editingSubtaskIndex: number | null = null;
-
   /**
    * Indicates if the device supports touch
    */
   isTouchDevice: boolean = false;
-
   /**
    * Document click listener for outside click detection
    */
   private documentClickListener?: (event: Event) => void;
-
   /**
    * Document click listener for dropdown outside click detection
    */
   private dropdownClickListener?: (event: Event) => void;
-
   /**
    * Emitted when the overlay should be closed
    */
   @Output() onClose = new EventEmitter<void>();
-
   /**
    * Emitted when task changes should be saved
    */
   @Output() onSave = new EventEmitter<void>();
-
   constructor(
     public formService: BoardFormService,
     private subtaskService: BoardSubtaskService,
@@ -86,7 +74,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
       this.setupDropdownClickListener();
     }, 0);
   }
-
   /**
    * Sets up document click listener for dropdown
    */
@@ -96,20 +83,17 @@ export class TaskEditOverlayComponent implements OnDestroy {
       const target = event.target as HTMLElement;
       const dropdownContainer = target.closest('.contacts-dropdown');
       const dropdownTrigger = target.closest('.dropdown-trigger');
-      
       /**
        * Also check for AddTaskOverlay dropdown elements
        */
       const addTaskDropdownWrapper = target.closest('.custom-select-wrapper');
       const addTaskDropdownOption = target.closest('.dropdown-option');
-      
       /**
        * Don't close if clicking on AddTaskOverlay dropdown elements
        */
       if (addTaskDropdownWrapper || addTaskDropdownOption) {
         return;
       }
-      
       /**
        * Close dropdown if clicked outside and dropdown is open
        */
@@ -126,7 +110,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     /** Use capture phase */
     document.addEventListener('click', this.dropdownClickListener, true);
   }
-
   /**
    * Removes dropdown click listener
    */
@@ -137,14 +120,12 @@ export class TaskEditOverlayComponent implements OnDestroy {
       this.dropdownClickListener = undefined;
     }
   }
-
   /**
    * Detects if the device supports touch
    */
   private detectTouchDevice(): void {
     this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   }
-
   /**
    * Sets up document click listener when editing starts
    */
@@ -154,14 +135,12 @@ export class TaskEditOverlayComponent implements OnDestroy {
       const target = event.target as HTMLElement;
       const subtaskContainer = target.closest('.subtask-input-group');
       const isActionButton = target.closest('.subtask-input-actions');
-      
       if (!subtaskContainer && !isActionButton && this.editingSubtaskIndex !== null) {
         this.saveSubtaskEdit();
       }
     };
     document.addEventListener('click', this.documentClickListener);
   }
-
   /**
    * Removes document click listener
    */
@@ -171,21 +150,18 @@ export class TaskEditOverlayComponent implements OnDestroy {
       this.documentClickListener = undefined;
     }
   }
-
   /**
    * Gets the initials color for a contact
    */
   getInitialsColor(name: string): string {
     return this.contactHelperService.getInitialsColor(name);
   }
-
   /**
    * Gets the initials from a contact name
    */
   getInitials(name: string): string {
     return this.contactHelperService.getInitials(name);
   }
-
   /**
    * Closes the edit overlay
    */
@@ -194,7 +170,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.newSubtaskTitle = '';
     this.onClose.emit();
   }
-
   /**
    * Saves the task changes
    */
@@ -203,7 +178,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.newSubtaskTitle = '';
     this.onSave.emit();
   }
-
   /**
    * Starts editing a specific subtask
    */
@@ -212,7 +186,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.setupDocumentClickListener();
     this.subtaskService.focusSubtaskInput(index);
   }
-
   /**
    * Stops editing the current subtask
    */
@@ -220,7 +193,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.editingSubtaskIndex = null;
     this.removeDocumentClickListener();
   }
-
   /**
    * Handles subtask input focus
    */
@@ -229,7 +201,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
       this.editSubtask(index);
     }
   }
-
   /**
    * Handles subtask input blur - auto saves the subtask
    */
@@ -240,7 +211,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
       }
     }, 150); /** Small delay to allow clicking save/delete buttons */
   }
-
   /**
    * Saves the current subtask edit
    */
@@ -248,7 +218,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.editingSubtaskIndex = null;
     this.removeDocumentClickListener();
   }
-
   /**
    * Cancels the current subtask edit and reverts changes
    */
@@ -257,7 +226,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.editingSubtaskIndex = null;
     this.removeDocumentClickListener();
   }
-
   /**
    * Deletes a subtask
    */
@@ -266,7 +234,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.editingSubtaskIndex = null;
     this.removeDocumentClickListener();
   }
-
   /**
    * Adds a new subtask to the form
    */
@@ -280,7 +247,6 @@ export class TaskEditOverlayComponent implements OnDestroy {
       this.newSubtaskTitle = '';
     }
   }
-
   /**
    * Cleanup when component is destroyed
    */
@@ -289,4 +255,3 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.removeDropdownClickListener();
   }
 }
-

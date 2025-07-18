@@ -1,7 +1,6 @@
-import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
+﻿import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInAnonymously, updateProfile, User as FirebaseUser, onAuthStateChanged } from '@angular/fire/auth';
 import { User } from './auth-state.service';
-
 /**
  * Service for handling Firebase authentication operations.
  * Manages login, registration, and Firebase auth state.
@@ -15,7 +14,6 @@ import { User } from './auth-state.service';
 export class AuthFirebaseService {
   private auth = inject(Auth);
   private injector = inject(Injector);
-
   /**
    * Initializes Firebase auth state listener.
    * 
@@ -33,7 +31,6 @@ export class AuthFirebaseService {
       });
     });
   }
-
   /**
    * Waits for Firebase auth to be ready and returns the current auth state.
    * 
@@ -54,7 +51,6 @@ export class AuthFirebaseService {
       });
     });
   }
-
   /**
    * Authenticates user with email and password using Firebase.
    * 
@@ -73,7 +69,6 @@ export class AuthFirebaseService {
       throw this.handleAuthError(error);
     }
   }
-
   /**
    * Registers a new user with Firebase Authentication.
    * 
@@ -87,29 +82,24 @@ export class AuthFirebaseService {
       const userCredential = await runInInjectionContext(this.injector, () => 
         createUserWithEmailAndPassword(this.auth, email, password)
       );
-      
       // Update the user's display name
       await runInInjectionContext(this.injector, () => 
         updateProfile(userCredential.user, {
           displayName: name.trim()
         })
       );
-
       const user = this.mapFirebaseUserToUser(userCredential.user);
       // Update the user object with the correct name
       user.name = name.trim();
       // Set current login timestamp
       user.loginTimestamp = Date.now();
-      
       // Mark that this is a new user for onboarding
       localStorage.setItem('join_new_user', 'true');
-      
       return user;
     } catch (error: any) {
       throw this.handleAuthError(error);
     }
   }
-
   /**
    * Logs in user as guest using Firebase Anonymous Authentication.
    * 
@@ -126,7 +116,6 @@ export class AuthFirebaseService {
       throw this.handleAuthError(error);
     }
   }
-
   /**
    * Logs out the current user using Firebase.
    * 
@@ -140,7 +129,6 @@ export class AuthFirebaseService {
       throw error;
     }
   }
-
   /**
    * Updates user profile information.
    * 
@@ -152,7 +140,6 @@ export class AuthFirebaseService {
     if (!currentUser) {
       throw new Error('No user is currently logged in');
     }
-
     try {
       await runInInjectionContext(this.injector, () => 
         updateProfile(currentUser, updates)
@@ -162,7 +149,6 @@ export class AuthFirebaseService {
       throw error;
     }
   }
-
   /**
    * Maps Firebase user to our User interface.
    * 
@@ -179,7 +165,6 @@ export class AuthFirebaseService {
       loginTimestamp: Date.now() // Current timestamp
     };
   }
-
   /**
    * Handles Firebase authentication errors and converts them to user-friendly messages.
    * 
@@ -189,7 +174,6 @@ export class AuthFirebaseService {
    */
   private handleAuthError(error: any): Error {
     let message = 'An unexpected error occurred. Please try again.';
-    
     switch (error.code) {
       case 'auth/user-not-found':
       case 'auth/wrong-password':
@@ -220,10 +204,8 @@ export class AuthFirebaseService {
         console.error('Firebase Auth Error:', error);
         message = error.message || message;
     }
-    
     return new Error(message);
   }
-
   /**
    * Gets the current Firebase user.
    * 
@@ -232,7 +214,6 @@ export class AuthFirebaseService {
   getCurrentFirebaseUser(): FirebaseUser | null {
     return this.auth.currentUser;
   }
-
   /**
    * Checks if Firebase auth is ready.
    * 

@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
 /**
  * Footer component that displays links and additional information
  */
@@ -11,5 +10,4 @@ import { RouterModule } from '@angular/router';
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
-
 }

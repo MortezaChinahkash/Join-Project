@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BoardFormValidationService } from './board-form-validation.service';
 import { BoardFormOverlayService } from './board-form-overlay-v2.service';
@@ -6,7 +6,6 @@ import { BoardFormContactSelectionService } from './board-form-contact-selection
 import { BoardFormDataService } from './board-form-data.service';
 import { Task } from '../../../interfaces/task.interface';
 import { Contact } from '../../../contacts/services/contact-data.service';
-
 /**
  * Main orchestrator service for board form functionality.
  * Coordinates all specialized board form services and provides unified interface.
@@ -16,10 +15,8 @@ import { Contact } from '../../../contacts/services/contact-data.service';
  */
 @Injectable({ providedIn: 'root' })
 export class BoardFormService {
-  
   // Form state
   taskForm: FormGroup;
-  
   constructor(
     private fb: FormBuilder,
     private validationService: BoardFormValidationService,
@@ -29,7 +26,6 @@ export class BoardFormService {
   ) {
     this.taskForm = this.createTaskForm();
   }
-
   /**
    * Creates and initializes the task form.
    * 
@@ -45,7 +41,6 @@ export class BoardFormService {
       subtasks: this.fb.array([])
     });
   }
-
   /**
    * Initializes form for creating a new task.
    * 
@@ -56,7 +51,6 @@ export class BoardFormService {
     this.resetForm();
     this.overlayService.openAddTaskOverlay();
   }
-
   /**
    * Initializes form for editing an existing task.
    * 
@@ -68,7 +62,6 @@ export class BoardFormService {
     this.contactSelectionService.setSelectedContactsByIds(task.assignedTo, []);
     this.overlayService.openTaskEditOverlay(task);
   }
-
   /**
    * Populates form with task data.
    * 
@@ -83,7 +76,6 @@ export class BoardFormService {
       category: task.category
     });
   }
-
   /**
    * Saves the current task.
    * 
@@ -93,10 +85,8 @@ export class BoardFormService {
     if (!this.validateForm()) {
       return false;
     }
-
     try {
       const task = this.buildTaskFromForm();
-      
       if (this.dataService.getIsEditMode()) {
         // Update existing task
         await this.updateTask(task);
@@ -104,7 +94,6 @@ export class BoardFormService {
         // Create new task
         await this.createTask(task);
       }
-      
       this.dataService.saveChanges();
       this.closeForm();
       return true;
@@ -113,7 +102,6 @@ export class BoardFormService {
       return false;
     }
   }
-
   /**
    * Builds task object from form data.
    * 
@@ -122,11 +110,9 @@ export class BoardFormService {
   private buildTaskFromForm(): Task {
     const formValue = this.taskForm.value;
     const currentTask = this.dataService.getCurrentTask();
-    
     if (!currentTask) {
       throw new Error('No current task available');
     }
-
     return {
       ...currentTask,
       title: formValue.title,
@@ -137,7 +123,6 @@ export class BoardFormService {
       assignedTo: this.contactSelectionService.getSelectedContactIds()
     };
   }
-
   /**
    * Creates a new task.
    * 
@@ -147,7 +132,6 @@ export class BoardFormService {
     // Implementation would depend on your backend service
     console.log('Creating task:', task);
   }
-
   /**
    * Updates an existing task.
    * 
@@ -157,7 +141,6 @@ export class BoardFormService {
     // Implementation would depend on your backend service
     console.log('Updating task:', task);
   }
-
   /**
    * Validates the form using validation service.
    * 
@@ -166,16 +149,13 @@ export class BoardFormService {
   validateForm(): boolean {
     const formValue = this.taskForm.value;
     const validation = this.validationService.validateForm(formValue);
-    
     if (!validation.isValid) {
       // Handle validation errors - could display them in UI
       console.warn('Form validation errors:', validation.errors);
       return false;
     }
-    
     return true;
   }
-
   /**
    * Gets form validation errors.
    * 
@@ -186,7 +166,6 @@ export class BoardFormService {
     const validation = this.validationService.validateForm(formValue);
     return validation.errors;
   }
-
   /**
    * Resets the form to initial state.
    */
@@ -198,7 +177,6 @@ export class BoardFormService {
     });
     this.contactSelectionService.clearSelectedContacts();
   }
-
   /**
    * Closes the form and resets state.
    */
@@ -208,7 +186,6 @@ export class BoardFormService {
     this.overlayService.closeAllOverlays();
     this.contactSelectionService.cleanup();
   }
-
   /**
    * Cancels form editing and reverts changes.
    */
@@ -222,9 +199,7 @@ export class BoardFormService {
       this.closeForm();
     }
   }
-
   // Delegation methods for overlay management
-  
   /**
    * Opens the task form overlay.
    * 
@@ -240,14 +215,12 @@ export class BoardFormService {
       }
     }
   }
-
   /**
    * Closes the task form overlay.
    */
   closeOverlay(): void {
     this.overlayService.closeAllOverlays();
   }
-
   /**
    * Checks if overlay is open.
    * 
@@ -256,7 +229,6 @@ export class BoardFormService {
   isOverlayOpen(): boolean {
     return this.overlayService.isAnyOverlayOpen();
   }
-
   /**
    * Gets current overlay mode.
    * 
@@ -267,9 +239,7 @@ export class BoardFormService {
     if (this.overlayService.showTaskEditOverlay) return 'edit';
     return null;
   }
-
   // Delegation methods for contact selection
-  
   /**
    * Toggles contact selection.
    * 
@@ -278,7 +248,6 @@ export class BoardFormService {
   toggleContact(contact: Contact): void {
     this.contactSelectionService.toggleContact(contact);
   }
-
   /**
    * Gets selected contacts.
    * 
@@ -287,21 +256,18 @@ export class BoardFormService {
   getSelectedContacts(): Contact[] {
     return this.contactSelectionService.selectedContacts;
   }
-
   /**
    * Opens contact dropdown.
    */
   openContactDropdown(): void {
     this.contactSelectionService.openDropdown();
   }
-
   /**
    * Closes contact dropdown.
    */
   closeContactDropdown(): void {
     this.contactSelectionService.closeDropdown();
   }
-
   /**
    * Checks if contact dropdown is open.
    * 
@@ -310,9 +276,7 @@ export class BoardFormService {
   isContactDropdownOpen(): boolean {
     return this.contactSelectionService.isDropdownOpen;
   }
-
   // Delegation methods for data management
-  
   /**
    * Gets current task being edited.
    * 
@@ -321,7 +285,6 @@ export class BoardFormService {
   getCurrentTask(): Task | null {
     return this.dataService.getCurrentTask();
   }
-
   /**
    * Checks if form is in edit mode.
    * 
@@ -330,7 +293,6 @@ export class BoardFormService {
   isEditMode(): boolean {
     return this.dataService.getIsEditMode();
   }
-
   /**
    * Adds a subtask to current task.
    * 
@@ -339,7 +301,6 @@ export class BoardFormService {
   addSubtask(title: string): void {
     this.dataService.addSubtask(title);
   }
-
   /**
    * Removes a subtask from current task.
    * 
@@ -348,7 +309,6 @@ export class BoardFormService {
   removeSubtask(subtaskId: string): void {
     this.dataService.removeSubtask(subtaskId);
   }
-
   /**
    * Gets all subtasks for current task.
    * 
@@ -357,9 +317,7 @@ export class BoardFormService {
   getSubtasks() {
     return this.dataService.getSubtasks();
   }
-
   // Delegation methods for validation
-  
   /**
    * Gets basic form validation status.
    * 
@@ -368,7 +326,6 @@ export class BoardFormService {
   isFormValid(): boolean {
     return this.taskForm.valid;
   }
-
   /**
    * Gets Angular form validation errors.
    * 
@@ -377,7 +334,6 @@ export class BoardFormService {
   getFormErrors(): any {
     return this.taskForm.errors;
   }
-
   /**
    * Cleanup method for destroying the service.
    */

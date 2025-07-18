@@ -1,8 +1,7 @@
-import { Directive, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy, forwardRef } from '@angular/core';
+﻿import { Directive, ElementRef, Input, Output, EventEmitter, OnInit, OnDestroy, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import flatpickr from 'flatpickr';
 import { Instance } from 'flatpickr/dist/types/instance';
-
 /**
  * Flatpickr directive for Angular form integration
  */
@@ -23,9 +22,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
   private flatpickrInstance: Instance | null = null;
   private onChange = (value: any) => {};
   private onTouched = () => {};
-
   constructor(private elementRef: ElementRef) {}
-
   /**
    * Angular lifecycle hook - initializes the directive.
    */
@@ -41,7 +38,6 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
       this.flatpickrInstance.destroy();
     }
   }
-
   /**
    * Initializes the flatpickr instance with default and custom options.
    */
@@ -65,7 +61,6 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
     const mergedOptions = { ...defaultOptions, ...this.options };
     this.flatpickrInstance = flatpickr(this.elementRef.nativeElement, mergedOptions);
   }
-
   /**
    * Formats a date object to dd.mm.yyyy string format.
    * @param date - The date to format

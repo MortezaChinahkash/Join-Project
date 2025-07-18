@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-
 /**
  * Service for managing subtask operations in the board component.
  * Handles subtask editing, creation, and form interactions.
@@ -28,7 +27,6 @@ import { FormArray, FormGroup } from '@angular/forms';
   providedIn: 'root'
 })
 export class BoardSubtaskService {
-
   /**
    * Focuses on a specific subtask input field for editing.
    * 
@@ -42,7 +40,6 @@ export class BoardSubtaskService {
       }
     }, 0);
   }
-
   /**
    * Finds the input element for a specific subtask.
    * 
@@ -53,7 +50,6 @@ export class BoardSubtaskService {
     const selector = `.taskEditOverlay [formGroupName="${index}"] input[formControlName="title"]`;
     return document.querySelector(selector) as HTMLInputElement;
   }
-
   /**
    * Activates an input element by focusing and selecting text.
    * 
@@ -63,7 +59,6 @@ export class BoardSubtaskService {
     inputElement.focus();
     inputElement.select();
   }
-
   /**
    * Adds a new subtask to the form array.
    * 
@@ -82,7 +77,6 @@ export class BoardSubtaskService {
       subtasksFormArray.push(newSubtaskGroup);
     }
   }
-
   /**
    * Validates and trims subtask title.
    * 
@@ -93,7 +87,6 @@ export class BoardSubtaskService {
     const trimmed = title.trim();
     return trimmed.length > 0 ? trimmed : null;
   }
-
   /**
    * Removes a subtask from the form array.
    * 
@@ -105,7 +98,6 @@ export class BoardSubtaskService {
       subtasksFormArray.removeAt(index);
     }
   }
-
   /**
    * Validates if the subtask index is within bounds.
    * 
@@ -116,7 +108,6 @@ export class BoardSubtaskService {
   private isValidSubtaskIndex(index: number, subtasksFormArray: FormArray): boolean {
     return index >= 0 && index < subtasksFormArray.length;
   }
-
   /**
    * Updates a subtask's completion status.
    * 
@@ -134,7 +125,6 @@ export class BoardSubtaskService {
       subtaskGroup.patchValue({ completed });
     }
   }
-
   /**
    * Gets the current completion status of a subtask.
    * 
@@ -149,7 +139,6 @@ export class BoardSubtaskService {
     }
     return false;
   }
-
   /**
    * Counts completed subtasks in the form array.
    * 
@@ -163,7 +152,6 @@ export class BoardSubtaskService {
       return count + (isCompleted ? 1 : 0);
     }, 0);
   }
-
   /**
    * Calculates completion percentage of subtasks.
    * 
@@ -173,12 +161,7 @@ export class BoardSubtaskService {
   calculateSubtaskProgress(subtasksFormArray: FormArray): number {
     const totalSubtasks = subtasksFormArray.length;
     if (totalSubtasks === 0) return 0;
-    
     const completedSubtasks = this.countCompletedSubtasks(subtasksFormArray);
     return Math.round((completedSubtasks / totalSubtasks) * 100);
   }
 }
-
-
-
-

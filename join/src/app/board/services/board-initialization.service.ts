@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Contact } from '../../contacts/services/contact-data.service';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
@@ -7,7 +7,6 @@ import { BoardThumbnailService } from './board-thumbnail.service';
 import { TaskService } from '../../shared/services/task.service';
 import { BoardUtilsService } from './board-utils.service';
 import { BoardTaskManagementService } from './board-task-management.service';
-
 /**
  * Service responsible for component initialization and lifecycle management.
  * Handles data loading, fragment navigation, scroll setup, and array initialization.
@@ -32,7 +31,6 @@ import { BoardTaskManagementService } from './board-task-management.service';
   providedIn: 'root'
 })
 export class BoardInitializationService {
-
   constructor(
     private dataService: BoardDataService,
     private thumbnailService: BoardThumbnailService,
@@ -41,7 +39,6 @@ export class BoardInitializationService {
     private taskManagementService: BoardTaskManagementService,
     private route: ActivatedRoute
   ) {}
-
   /**
    * Initializes the component with all necessary data and setup.
    * @param onContactsLoaded - Callback when contacts are loaded
@@ -59,7 +56,6 @@ export class BoardInitializationService {
     this.handleFragmentNavigation();
     onQueryParamsHandled();
   }
-
   /**
    * Loads contacts from Firebase and sorts them alphabetically.
    * @param onContactsLoaded - Callback when contacts are loaded
@@ -75,7 +71,6 @@ export class BoardInitializationService {
       }
     });
   }
-
   /**
    * Loads tasks from Firebase and subscribes to real-time updates.
    * @param onTasksLoaded - Callback when tasks are loaded
@@ -90,7 +85,6 @@ export class BoardInitializationService {
       }
     });
   }
-
   /**
    * Sets up the scroll listener for thumbnail navigation.
    */
@@ -99,7 +93,6 @@ export class BoardInitializationService {
       this.thumbnailService.setupScrollListener();
     }, 500);
   }
-
   /**
    * Handles fragment navigation to scroll to specific columns.
    */
@@ -119,7 +112,6 @@ export class BoardInitializationService {
       }
     });
   }
-
   /**
    * Initializes and updates local task arrays with the latest data from the task service.
    * @returns Object with initialized task arrays for each column
@@ -145,7 +137,6 @@ export class BoardInitializationService {
       )
     };
   }
-
   /**
    * Distributes tasks into appropriate columns and sorts by priority.
    * @param tasks - Array of all tasks to distribute
@@ -159,7 +150,6 @@ export class BoardInitializationService {
   } {
     return this.taskManagementService.distributeAndSortTasks(tasks);
   }
-
   /**
    * Handles query parameters to open specific tasks or apply filters.
    * @param columnArrays - Object containing all column arrays
@@ -182,7 +172,6 @@ export class BoardInitializationService {
           ...columnArrays.awaitingFeedbackTasks,
           ...columnArrays.doneTasks
         ];
-        
         const targetTask = allTasks.find(task => task.id === params['taskId']);
         if (targetTask) {
           setTimeout(() => onTaskSelected(targetTask), 500);
@@ -191,7 +180,3 @@ export class BoardInitializationService {
     });
   }
 }
-
-
-
-

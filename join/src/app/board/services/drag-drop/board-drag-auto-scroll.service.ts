@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { TaskColumn } from '../../../interfaces/task.interface';
-
 /**
  * Service for handling auto-scroll functionality during drag operations.
  * Manages viewport scrolling when dragging near screen edges.
@@ -16,7 +15,6 @@ export class BoardDragAutoScrollService {
   private autoScrollSpeed = 8; // pixels per scroll step
   private autoScrollInterval: any = null;
   private isAutoScrolling = false;
-
   /**
    * Handles auto-scrolling when dragging tasks near the top or bottom of the viewport.
    * Starts auto-scroll if cursor is in the scroll zone, stops it otherwise.
@@ -26,18 +24,15 @@ export class BoardDragAutoScrollService {
   handleAutoScroll(clientY: number): void {
     const viewportHeight = window.innerHeight;
     const scrollZone = this.autoScrollZone;
-    
     // Check if we're in the auto-scroll zone
     const isInTopZone = clientY < scrollZone;
     const isInBottomZone = clientY > (viewportHeight - scrollZone);
-    
     if (isInTopZone || isInBottomZone) {
       this.startAutoScroll(clientY, viewportHeight, isInTopZone);
     } else {
       this.stopAutoScroll();
     }
   }
-
   /**
    * Starts auto-scroll in the specified direction.
    * 
@@ -48,21 +43,16 @@ export class BoardDragAutoScrollService {
    */
   private startAutoScroll(clientY: number, viewportHeight: number, isUpward: boolean): void {
     if (this.isAutoScrolling) return;
-    
     this.isAutoScrolling = true;
-    
     this.autoScrollInterval = setInterval(() => {
       const distance = isUpward ? 
         (this.autoScrollZone - clientY) : 
         (clientY - (viewportHeight - this.autoScrollZone));
-      
       const scrollSpeed = this.getAdaptiveScrollSpeed(distance);
       const scrollDirection = isUpward ? -scrollSpeed : scrollSpeed;
-      
       window.scrollBy(0, scrollDirection);
     }, 16); // ~60fps
   }
-
   /**
    * Stops auto-scrolling and cleans up the interval.
    */
@@ -73,7 +63,6 @@ export class BoardDragAutoScrollService {
     }
     this.isAutoScrolling = false;
   }
-
   /**
    * Calculates adaptive scroll speed based on distance from edge.
    * 
@@ -86,7 +75,6 @@ export class BoardDragAutoScrollService {
     const speedMultiplier = Math.max(1, Math.min(3, distance / 50));
     return this.autoScrollSpeed * speedMultiplier;
   }
-
   /**
    * Emergency auto-scroll implementation for touch devices.
    * Scrolls the main content container for better mobile support.
@@ -97,7 +85,6 @@ export class BoardDragAutoScrollService {
     const scrollSpeed = 15;
     const scrollZone = 100;
     const viewportHeight = window.innerHeight;
-    
     let clientY: number;
     if (event instanceof MouseEvent) {
       clientY = event.clientY;
@@ -105,11 +92,9 @@ export class BoardDragAutoScrollService {
       const touch = event.touches[0];
       clientY = touch ? touch.clientY : 0;
     }
-    
     // Find scrollable container
     const scrollContainer = this.findScrollableContainer();
     if (!scrollContainer) return;
-    
     // Auto-scroll logic
     if (clientY < scrollZone) {
       scrollContainer.scrollTop -= scrollSpeed;
@@ -117,7 +102,6 @@ export class BoardDragAutoScrollService {
       scrollContainer.scrollTop += scrollSpeed;
     }
   }
-
   /**
    * Finds the scrollable container element in the DOM.
    * 
@@ -130,17 +114,14 @@ export class BoardDragAutoScrollService {
     if (container && this.isScrollable(container)) {
       return container;
     }
-    
     // Try body as fallback
     container = document.querySelector('body') as HTMLElement;
     if (container && this.isScrollable(container)) {
       return container;
     }
-    
     // Try document element
     return document.documentElement;
   }
-
   /**
    * Checks if an element is scrollable.
    * 
@@ -153,7 +134,6 @@ export class BoardDragAutoScrollService {
     const overflowY = style.overflowY;
     return overflowY === 'scroll' || overflowY === 'auto' || element.scrollHeight > element.clientHeight;
   }
-
   /**
    * Cleans up all auto-scroll related resources.
    * Should be called when component is destroyed.

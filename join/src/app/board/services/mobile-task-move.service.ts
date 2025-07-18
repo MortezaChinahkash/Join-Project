@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { TaskService } from '../../shared/services/task.service';
 import { BoardMobileService } from './board-mobile.service';
-
 /**
  * Service for handling mobile task movement functionality.
  * Manages mobile move overlay state and task column transitions.
@@ -30,17 +29,14 @@ import { BoardMobileService } from './board-mobile.service';
   providedIn: 'root'
 })
 export class MobileTaskMoveService {
-  
   // Mobile move overlay state
   showMobileMoveOverlay: boolean = false;
   selectedTaskForMove: Task | null = null;
   overlayPosition = { top: 0, right: 0 };
-
   constructor(
     private taskService: TaskService,
     private mobileService: BoardMobileService
   ) {}
-
   /**
    * Shows mobile task move overlay.
    * @param event - Click or Touch event
@@ -49,13 +45,11 @@ export class MobileTaskMoveService {
   onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void {
     event.preventDefault();
     event.stopPropagation();
-    
     const button = event.currentTarget as HTMLElement;
     this.overlayPosition = this.mobileService.calculateOverlayPosition(button);
     this.selectedTaskForMove = task;
     this.showMobileMoveOverlay = true;
   }
-
   /**
    * Closes the mobile move overlay.
    */
@@ -64,7 +58,6 @@ export class MobileTaskMoveService {
     this.selectedTaskForMove = null;
     this.overlayPosition = { top: 0, right: 0 };
   }
-
   /**
    * Gets column display name.
    * @param column - Column identifier
@@ -73,7 +66,6 @@ export class MobileTaskMoveService {
   getColumnDisplayName(column: TaskColumn): string {
     return this.mobileService.getColumnDisplayName(column);
   }
-
   /**
    * Handles mobile move button mouse down event.
    * @param event - Mouse event
@@ -82,7 +74,6 @@ export class MobileTaskMoveService {
     event.preventDefault();
     event.stopPropagation();
   }
-
   /**
    * Handles mobile move button touch start event.
    * @param event - Touch event
@@ -91,14 +82,12 @@ export class MobileTaskMoveService {
   onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void {
     event.preventDefault();
     event.stopPropagation();
-    
     // On touch devices, directly trigger the move action
     const button = event.currentTarget as HTMLElement;
     this.overlayPosition = this.mobileService.calculateOverlayPosition(button);
     this.selectedTaskForMove = task;
     this.showMobileMoveOverlay = true;
   }
-
   /**
    * Gets current column of selected task.
    * @param task - Task to check
@@ -114,7 +103,6 @@ export class MobileTaskMoveService {
     if (!task) return null;
     return this.mobileService.getCurrentTaskColumn(task, taskArrays);
   }
-
   /**
    * Gets previous column in workflow.
    * @param currentColumn - Current column
@@ -124,7 +112,6 @@ export class MobileTaskMoveService {
     if (!currentColumn) return null;
     return this.mobileService.getPreviousColumn(currentColumn);
   }
-
   /**
    * Gets next column in workflow.
    * @param currentColumn - Current column
@@ -134,7 +121,6 @@ export class MobileTaskMoveService {
     if (!currentColumn) return null;
     return this.mobileService.getNextColumn(currentColumn);
   }
-
   /**
    * Moves selected task to previous column.
    * @param taskArrays - Object containing all task arrays
@@ -150,15 +136,12 @@ export class MobileTaskMoveService {
     updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => void
   ): void {
     if (!this.selectedTaskForMove) return;
-    
     const currentColumn = this.getCurrentTaskColumn(this.selectedTaskForMove, taskArrays);
     const previousColumn = this.getPreviousColumn(currentColumn);
-    
     if (previousColumn) {
       this.moveTaskToColumn(this.selectedTaskForMove, previousColumn, currentColumn, updateCallback);
     }
   }
-
   /**
    * Moves selected task to next column.
    * @param taskArrays - Object containing all task arrays
@@ -174,15 +157,12 @@ export class MobileTaskMoveService {
     updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => void
   ): void {
     if (!this.selectedTaskForMove) return;
-    
     const currentColumn = this.getCurrentTaskColumn(this.selectedTaskForMove, taskArrays);
     const nextColumn = this.getNextColumn(currentColumn);
-    
     if (nextColumn) {
       this.moveTaskToColumn(this.selectedTaskForMove, nextColumn, currentColumn, updateCallback);
     }
   }
-
   /**
    * Moves task to specified column.
    * @param task - Task to move
@@ -202,10 +182,8 @@ export class MobileTaskMoveService {
       fromColumn: fromColumn,
       toColumn: targetColumn
     });
-    
     // Update task column
     task.column = targetColumn;
-    
     // Update in Firebase if task has an ID - using same method as drag & drop
     if (task.id) {
       this.taskService.updateTaskInFirebase(task)
@@ -220,16 +198,10 @@ export class MobileTaskMoveService {
           }
         });
     }
-    
     // Notify parent component to update arrays
     updateCallback(task, fromColumn, targetColumn);
-    
     // Close overlay
     this.showMobileMoveOverlay = false;
     this.selectedTaskForMove = null;
   }
 }
-
-
-
-

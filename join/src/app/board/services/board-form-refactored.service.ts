@@ -1,11 +1,10 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact } from '../../contacts/services/contact-data.service';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { TaskService } from '../../shared/services/task.service';
 import { BoardFormStateService } from './form/board-form-state.service';
 import { BoardFormOverlayService } from './form/board-form-overlay.service';
 import { BoardFormContactService } from './form/board-form-contact.service';
-
 /**
  * Refactored main service for handling task form operations and overlay management.
  * Orchestrates form operations using specialized sub-services.
@@ -18,19 +17,16 @@ import { BoardFormContactService } from './form/board-form-contact.service';
 })
 export class BoardFormService {
   selectedTask: Task | null = null;
-
   constructor(
     private taskService: TaskService,
     private formState: BoardFormStateService,
     private overlayService: BoardFormOverlayService,
     private contactService: BoardFormContactService
   ) {}
-
   // Expose services for components that need direct access
   get form() { return this.formState; }
   get overlay() { return this.overlayService; }
   get contacts() { return this.contactService; }
-
   // Backward compatibility getters
   get taskForm() { return this.formState.taskForm; }
   get showAddTaskOverlay() { return this.overlayService.showAddTaskOverlay; }
@@ -43,7 +39,6 @@ export class BoardFormService {
   get showAssignedContactsDropdown() { return this.contactService.showAssignedContactsDropdown; }
   get isCategoryDropdownOpen() { return this.contactService.isCategoryDropdownOpen; }
   get subtasksFormArray() { return this.formState.subtasksFormArray; }
-
   /**
    * Opens the add task overlay for a specific column.
    * 
@@ -54,7 +49,6 @@ export class BoardFormService {
     this.formState.resetForm();
     this.contactService.resetContactSelection();
   }
-
   /**
    * Closes the add task overlay and resets all states.
    */
@@ -63,7 +57,6 @@ export class BoardFormService {
     this.contactService.resetContactSelection();
     this.formState.resetForm();
   }
-
   /**
    * Sets the selected priority and updates the form.
    * 
@@ -72,7 +65,6 @@ export class BoardFormService {
   selectPriority(priority: 'urgent' | 'medium' | 'low'): void {
     this.formState.selectPriority(priority);
   }
-
   /**
    * Handles category change events and triggers validation.
    * 
@@ -81,7 +73,6 @@ export class BoardFormService {
   onCategoryChange(event?: Event): void {
     this.formState.onCategoryChange(event);
   }
-
   /**
    * Resets the task form to its initial state.
    */
@@ -89,7 +80,6 @@ export class BoardFormService {
     this.formState.resetForm();
     this.contactService.resetContactSelection();
   }
-
   /**
    * Gets today's date as a formatted string for date inputs.
    * 
@@ -98,7 +88,6 @@ export class BoardFormService {
   getTodayDateString(): string {
     return this.formState.getTodayDateString();
   }
-
   /**
    * Checks if a date is in the past.
    * 
@@ -108,21 +97,18 @@ export class BoardFormService {
   isDateInPast(dateString: string): boolean {
     return this.formState.isDateInPast(dateString);
   }
-
   /**
    * Toggles the contact dropdown visibility.
    */
   toggleDropdown(): void {
     this.contactService.toggleDropdown();
   }
-
   /**
    * Toggles the category dropdown visibility.
    */
   toggleCategoryDropdown(): void {
     this.contactService.toggleCategoryDropdown();
   }
-
   /**
    * Toggles contact selection in the form.
    * 
@@ -132,7 +118,6 @@ export class BoardFormService {
   toggleContactSelection(contact: Contact, event: Event): void {
     this.contactService.toggleContactSelection(contact, event);
   }
-
   /**
    * Selects a contact from the dropdown.
    * 
@@ -141,14 +126,12 @@ export class BoardFormService {
   selectContact(contact: Contact): void {
     this.contactService.selectContact(contact);
   }
-
   /**
    * Adds a new subtask to the form.
    */
   addSubtask(): void {
     this.formState.addSubtask();
   }
-
   /**
    * Removes a subtask from the form.
    * 
@@ -157,7 +140,6 @@ export class BoardFormService {
   removeSubtask(index: number): void {
     this.formState.removeSubtask(index);
   }
-
   /**
    * Opens the task details overlay for viewing/editing a task.
    * 
@@ -167,7 +149,6 @@ export class BoardFormService {
     this.selectedTask = task;
     this.overlayService.openTaskDetailsOverlay();
   }
-
   /**
    * Closes the task details overlay and resets editing state.
    */
@@ -176,7 +157,6 @@ export class BoardFormService {
     this.selectedTask = null;
     this.contactService.resetContactSelection();
   }
-
   /**
    * Starts editing mode for the current task.
    * 
@@ -184,9 +164,7 @@ export class BoardFormService {
    */
   editTask(contacts: Contact[]): void {
     if (!this.selectedTask) return;
-    
     this.overlayService.startEditingTask();
-    
     // Populate form with task data
     this.formState.patchFormWithTaskData({
       title: this.selectedTask.title,
@@ -196,7 +174,6 @@ export class BoardFormService {
       category: this.selectedTask.category,
       subtasks: this.selectedTask.subtasks || []
     });
-    
     // Set selected contacts
     if (this.selectedTask.assignedTo && this.selectedTask.assignedTo.length > 0) {
       const taskContacts = contacts.filter(contact => 
@@ -205,7 +182,6 @@ export class BoardFormService {
       this.contactService.setSelectedContacts(taskContacts);
     }
   }
-
   /**
    * Cancels editing mode and resets form.
    */
@@ -214,7 +190,6 @@ export class BoardFormService {
     this.formState.resetForm();
     this.contactService.resetContactSelection();
   }
-
   /**
    * Saves the current task (create new or update existing).
    * 
@@ -225,10 +200,8 @@ export class BoardFormService {
     if (!validation.isValid) {
       throw new Error(`Form validation failed: ${validation.errors.join(', ')}`);
     }
-
     const formData = this.formState.getFormData();
     const contactNames = this.contactService.getSelectedContacts().map(c => c.name);
-
     const taskData: Partial<Task> = {
       title: formData.title,
       description: formData.description,
@@ -239,7 +212,6 @@ export class BoardFormService {
       subtasks: formData.subtasks || [],
       column: this.overlayService.isEditingTask ? this.selectedTask?.column : this.overlayService.currentColumn
     };
-
     if (this.overlayService.isEditingTask && this.selectedTask) {
       // Update existing task
       await this.taskService.updateTask(this.selectedTask.id!, { ...this.selectedTask, ...taskData });
@@ -249,20 +221,17 @@ export class BoardFormService {
         id: Date.now().toString(), // Temporary ID generation
         ...taskData
       } as Task;
-      
       const taskDataForFirebase = { ...taskData } as Omit<Task, 'id'>;
       delete (taskDataForFirebase as any).id;
       await this.taskService.addTaskToFirebase(taskDataForFirebase, this.overlayService.currentColumn);
     }
   }
-
   /**
    * Toggles the assigned contacts dropdown.
    */
   toggleAssignedContactsDropdown(): void {
     this.contactService.toggleAssignedContactsDropdown();
   }
-
   /**
    * Gets display text for selected contacts.
    * 
@@ -271,7 +240,6 @@ export class BoardFormService {
   getSelectedContactsDisplayText(): string {
     return this.contactService.getSelectedContactsDisplayText();
   }
-
   /**
    * Checks if a contact is currently selected.
    * 
@@ -281,7 +249,6 @@ export class BoardFormService {
   isContactSelected(contact: Contact): boolean {
     return this.contactService.isContactSelected(contact);
   }
-
   /**
    * Cleanup method for when service is destroyed.
    */

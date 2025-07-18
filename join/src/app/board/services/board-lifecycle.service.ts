@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
+﻿import { Injectable } from '@angular/core';
 import { Contact } from '../../contacts/services/contact-data.service';
 import { Task } from '../../interfaces/task.interface';
 import { BoardDataService } from './board-data.service';
 import { BoardNavigationService } from './board-navigation.service';
 import { BoardInteractionService } from './board-interaction.service';
-
 /**
  * Service responsible for managing component lifecycle operations.
  * Handles initialization, data loading, and navigation setup.
@@ -28,13 +27,11 @@ import { BoardInteractionService } from './board-interaction.service';
   providedIn: 'root'
 })
 export class BoardLifecycleService {
-
   constructor(
     private dataService: BoardDataService,
     private navigationService: BoardNavigationService,
     private interactionService: BoardInteractionService
   ) {}
-
   /**
    * Loads contacts from Firebase and sorts them alphabetically.
    * @param onContactsLoaded - Callback when contacts are loaded
@@ -52,7 +49,6 @@ export class BoardLifecycleService {
       error: onError
     });
   }
-
   /**
    * Loads tasks from Firebase and subscribes to real-time updates.
    * @param onTasksLoaded - Callback when tasks are loaded
@@ -67,21 +63,18 @@ export class BoardLifecycleService {
       error: onError
     });
   }
-
   /**
    * Sets up the scroll listener for thumbnail navigation.
    */
   setupScrollListener(): void {
     this.interactionService.setupScrollListener();
   }
-
   /**
    * Handles fragment navigation to scroll to specific columns.
    */
   handleFragmentNavigation(): void {
     this.navigationService.handleFragmentNavigation();
   }
-
   /**
    * Handles query parameters to open specific tasks or apply filters.
    * @param columnArrays - Object containing all column arrays
@@ -99,7 +92,3 @@ export class BoardLifecycleService {
     this.navigationService.handleQueryParams(columnArrays, onTaskSelected);
   }
 }
-
-
-
-

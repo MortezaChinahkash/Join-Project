@@ -1,7 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../interfaces/task.interface';
-
 /**
  * Delete Confirmation Component
  * Reusable component for confirming task deletion with a modal overlay.
@@ -20,29 +19,24 @@ export class DeleteConfirmationComponent {
    * Controls the visibility of the delete confirmation overlay
    */
   @Input() isVisible: boolean = false;
-
   /**
    * The task that is marked for deletion
    */
   @Input() taskToDelete: Task | null = null;
-
   /**
    * Emitted when the user cancels the deletion
    */
   @Output() onCancel = new EventEmitter<void>();
-
   /**
    * Emitted when the user confirms the deletion
    */
   @Output() onConfirm = new EventEmitter<void>();
-
   /**
    * Handles the cancel action
    */
   cancel(): void {
     this.onCancel.emit();
   }
-
   /**
    * Handles the confirm action
    */
@@ -50,4 +44,3 @@ export class DeleteConfirmationComponent {
     this.onConfirm.emit();
   }
 }
-

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,7 +28,6 @@ import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.com
 import { BoardThumbnailComponent } from './board-thumbnail/board-thumbnail.component';
 import { TaskDetailsOverlayComponent } from './task-details-overlay/task-details-overlay.component';
 import { trigger, transition, style, animate } from '@angular/animations';
-
 /**
  * Main board component for task management with kanban-style columns.
  * Handles task creation, editing, deletion, card animation, and drag & drop functionality.
@@ -57,14 +56,12 @@ export class BoardComponent implements OnInit {
   contacts: Contact[] = [];
   searchTerm: string = '';
   maxTitleLength: number = 40;
-
   // Task arrays for different columns
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   awaitingFeedbackTasks: Task[] = [];
   doneTasks: Task[] = [];
   tasks: Task[] = [];
-
   // Board columns configuration
   boardColumns = [
     {
@@ -96,9 +93,7 @@ export class BoardComponent implements OnInit {
       emptyMessage: 'No tasks done',
     },
   ];
-
   Math = Math;
-
   /**
    * Initializes the board component with all required services.
    *
@@ -134,7 +129,6 @@ export class BoardComponent implements OnInit {
   ) {
     this.initializeLocalArrays();
   }
-
   /** Angular lifecycle hook that runs after component initialization. */
   ngOnInit(): void {
     this.initializationService.initializeComponent(
@@ -146,7 +140,6 @@ export class BoardComponent implements OnInit {
       () => {} // Empty callback since we handle query params in distributeTasksToColumns
     );
   }
-
   /** Distributes tasks into appropriate columns and sorts by priority. */
   private distributeTasksToColumns(): void {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
@@ -155,7 +148,6 @@ export class BoardComponent implements OnInit {
     // Handle query parameters after tasks are distributed to arrays
     setTimeout(() => this.handleQueryParams(), 50);
   }
-
   /** Assigns distributed tasks to component arrays. */
   private assignTasksToColumns(distributed: {
     todoTasks: Task[];
@@ -168,13 +160,11 @@ export class BoardComponent implements OnInit {
     this.awaitingFeedbackTasks = distributed.awaitingFeedbackTasks;
     this.doneTasks = distributed.doneTasks;
   }
-
   /** Initializes local task arrays from the task service. */
   private initializeLocalArrays(): void {
     const initialized = this.initializationService.initializeTaskArrays();
     this.assignTasksToColumns(initialized);
   }
-
   /** Updates task arrays after task changes. */
   private updateTaskArrays(): void {
     this.arrayManagementService.updateTaskArrays(
@@ -184,7 +174,6 @@ export class BoardComponent implements OnInit {
       () => this.distributeTasksToColumns()
     );
   }
-
   // Task Management Service delegates
   /**
    * Opens the add task overlay for the specified column.
@@ -193,14 +182,12 @@ export class BoardComponent implements OnInit {
   openAddTaskOverlay(column: TaskColumn = 'todo'): void {
     this.taskManagementService.openAddTaskOverlay(column);
   }
-
   /**
    * Closes the add task overlay.
    */
   closeAddTaskOverlay(): void {
     this.taskManagementService.closeAddTaskOverlay();
   }
-
   /**
    * Submits the task form and updates local arrays.
    */
@@ -209,7 +196,6 @@ export class BoardComponent implements OnInit {
       this.initializeLocalArrays();
     });
   }
-
   /**
    * Opens task details overlay for the specified task.
    * @param task - Task to display details for
@@ -217,42 +203,36 @@ export class BoardComponent implements OnInit {
   openTaskDetails(task: Task): void {
     this.taskManagementService.openTaskDetails(task);
   }
-
   /**
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
     this.taskManagementService.closeTaskDetailsOverlay();
   }
-
   /**
    * Enters edit mode for the selected task.
    */
   editTask(): void {
     this.taskManagementService.editTask(this.contacts);
   }
-
   /**
    * Cancels task editing and reverts changes.
    */
   cancelEditTask(): void {
     this.taskManagementService.cancelEditTask();
   }
-
   /**
    * Saves task changes and updates arrays.
    */
   async saveTaskChanges(): Promise<void> {
     await this.taskManagementService.saveTaskChanges(() => this.updateTaskArrays());
   }
-
   /**
    * Deletes the selected task and updates arrays.
    */
   async deleteTask(): Promise<void> {
     await this.taskManagementService.deleteTask();
   }
-
   /**
    * Confirms task deletion and updates arrays.
    */
@@ -263,14 +243,12 @@ export class BoardComponent implements OnInit {
       this.taskManagementService.closeTaskDetailsOverlay();
     });
   }
-
   /**
    * Closes the delete confirmation dialog.
    */
   closeDeleteConfirmation(): void {
     this.taskManagementService.closeDeleteConfirmation();
   }
-
   /**
    * Toggles subtask completion status.
    * @param subtaskIndex - Index of the subtask to toggle
@@ -280,18 +258,15 @@ export class BoardComponent implements OnInit {
       this.updateTaskArrays()
     );
   }
-
   /** Safely truncates text to a maximum length. */
   truncate(text: string | null | undefined, limit: number = 200): string {
     return this.displayService.truncateText(text, limit);
   }
-
   /** Handles search input changes for task filtering. */
   onSearchChange(): void {
     // Search filtering is handled by the template via getFilteredTasks
     // This method is called when the search input value changes
   }
-
   // Interaction Service delegates
   async onTaskMouseDown(event: MouseEvent, task: Task): Promise<void> {
     const wasDragged = await this.interactionService.handleTaskMouseDown(event, task, () => this.updateTaskArrays());
@@ -309,7 +284,6 @@ export class BoardComponent implements OnInit {
   onViewportMouseDown(event: MouseEvent): void { this.interactionService.handleViewportMouseDown(event); }
   onViewportTouchStart(event: TouchEvent): void { this.interactionService.handleViewportTouchStart(event); }
   onViewportClick(event: MouseEvent): void { this.interactionService.handleViewportClick(event); }
-
   // Display Service delegates
   getTaskProgress(task: Task): number { return this.displayService.getTaskProgress(task); }
   getCompletedSubtasks(task: Task): number { return this.displayService.getCompletedSubtasks(task); }
@@ -318,7 +292,6 @@ export class BoardComponent implements OnInit {
   get noSearchResults(): boolean {
     return this.displayService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
   }
-
   // Mobile Task Move Service delegates
   onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveTask(event, task); }
   closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobileMoveOverlay(); }
@@ -336,7 +309,6 @@ export class BoardComponent implements OnInit {
   getColumnDisplayName(column: TaskColumn): string { return this.mobileTaskMoveService.getColumnDisplayName(column); }
   onMobileMoveButtonMouseDown(event: MouseEvent): void { this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event); }
   onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task); }
-
   /**
    * Moves selected task to previous column.
    */
@@ -353,7 +325,6 @@ export class BoardComponent implements OnInit {
       }
     );
   }
-
   /**
    * Moves selected task to next column.
    */
@@ -370,7 +341,6 @@ export class BoardComponent implements OnInit {
       }
     );
   }
-
   /**
    * Handles task movement between columns.
    * @param task - Task being moved
@@ -389,17 +359,14 @@ export class BoardComponent implements OnInit {
         doneTasks: this.doneTasks
       }
     );
-    
     this.assignTasksToColumns(updatedColumns);
   }
-
   // Contact Helper Service delegates
   getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts); }
   hasRemainingContacts(assignedContacts: string[]): boolean { return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts); }
   getRemainingContactsCount(assignedContacts: string[]): number { return this.contactHelperService.getRemainingContactsCount(assignedContacts, this.contacts); }
   getInitials(name: string): string { return this.contactHelperService.getInitials(name); }
   getInitialsColor(name: string): string { return this.contactHelperService.getInitialsColor(name); }
-
   /**
    * Handles query parameters to open specific tasks or apply filters.
    */
@@ -415,4 +382,3 @@ export class BoardComponent implements OnInit {
     );
   }
 }
-

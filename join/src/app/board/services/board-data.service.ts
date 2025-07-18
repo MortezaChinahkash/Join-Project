@@ -1,9 +1,8 @@
-import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
+﻿import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { Contact } from '../../contacts/services/contact-data.service';
-
 /**
  * Service for managing board data operations.
  * Handles Firebase data loading and task organization.
@@ -31,7 +30,6 @@ import { Contact } from '../../contacts/services/contact-data.service';
 export class BoardDataService {
   private firestore = inject(Firestore);
   private injector = inject(Injector);
-
   /**
    * Loads all tasks from Firebase and returns an observable.
    * 
@@ -43,7 +41,6 @@ export class BoardDataService {
       return collectionData(taskRef, { idField: 'id' }) as Observable<Task[]>;
     });
   }
-
   /**
    * Loads all contacts from Firebase and returns an observable.
    * 
@@ -55,7 +52,6 @@ export class BoardDataService {
       return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
     });
   }
-
   /**
    * Sorts contacts alphabetically by name.
    * 
@@ -67,7 +63,6 @@ export class BoardDataService {
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
   }
-
   /**
    * Distributes tasks into appropriate column arrays.
    * 
@@ -86,11 +81,9 @@ export class BoardDataService {
       awaitingFeedbackTasks: [] as Task[],
       doneTasks: [] as Task[]
     };
-
     this.categorizeTasksByColumn(tasks, result);
     return result;
   }
-
   /**
    * Categorizes tasks into their respective columns.
    * 
@@ -110,7 +103,6 @@ export class BoardDataService {
       this.assignTaskToColumn(task, result);
     });
   }
-
   /**
    * Assigns a single task to its appropriate column.
    * 
@@ -143,7 +135,6 @@ export class BoardDataService {
         this.handleUnknownColumn(task, result);
     }
   }
-
   /**
    * Handles tasks with unknown or undefined columns.
    * 
@@ -155,12 +146,8 @@ export class BoardDataService {
     result: { todoTasks: Task[] }
   ): void {
     console.warn(
-      `Task "${task.title}" hat keine gültige Spalte, wird in "todo" eingeordnet`
+      `Task "${task.title}" hat keine gÃ¼ltige Spalte, wird in "todo" eingeordnet`
     );
     result.todoTasks.push(task);
   }
 }
-
-
-
-

@@ -1,10 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../shared/services/auth.service';
 import { WelcomeOverlayService } from '../shared/services/welcome-overlay.service';
-
 /**
  * Authentication component for login and registration.
  * Handles user authentication with login, registration, and guest access.
@@ -21,25 +20,21 @@ import { WelcomeOverlayService } from '../shared/services/welcome-overlay.servic
 })
 export class AuthComponent implements OnInit {
   @ViewChild('containerElement', { static: false }) containerElement!: ElementRef;
-  
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   isLoginMode = true;
   isLoading = false;
   errorMessage = '';
-  
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private welcomeOverlayService: WelcomeOverlayService
   ) {}
-
   ngOnInit(): void {
     this.initializeForms();
     this.removeAnimClass();
   }
-
   /**
    * Removes the 'anim' class from the container element.
    */
@@ -52,7 +47,6 @@ export class AuthComponent implements OnInit {
       }
     }, 500);
   }
-
   /**
    * Initializes the login and registration forms with validation.
    */
@@ -61,7 +55,6 @@ export class AuthComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
-
     this.registerForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
@@ -70,20 +63,17 @@ export class AuthComponent implements OnInit {
       acceptPrivacy: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
   }
-
   /**
    * Custom validator to check if passwords match.
    */
   private passwordMatchValidator(form: FormGroup) {
     const password = form.get('password');
     const confirmPassword = form.get('confirmPassword');
-    
     if (password && confirmPassword && password.value !== confirmPassword.value) {
       return { passwordMismatch: true };
     }
     return null;
   }
-
   /**
    * Switches between login and registration modes.
    */
@@ -92,7 +82,6 @@ export class AuthComponent implements OnInit {
     this.errorMessage = '';
     this.resetForms();
   }
-
   /**
    * Resets both forms to their initial state.
    */
@@ -100,7 +89,6 @@ export class AuthComponent implements OnInit {
     this.loginForm.reset();
     this.registerForm.reset();
   }
-
   /**
    * Handles user login.
    */
@@ -108,7 +96,6 @@ export class AuthComponent implements OnInit {
     if (this.loginForm.valid && !this.isLoading) {
       this.isLoading = true;
       this.errorMessage = '';
-
       try {
         const { email, password } = this.loginForm.value;
         await this.authService.login(email, password);
@@ -123,7 +110,6 @@ export class AuthComponent implements OnInit {
       this.markFormGroupTouched(this.loginForm);
     }
   }
-
   /**
    * Handles user registration.
    */
@@ -131,7 +117,6 @@ export class AuthComponent implements OnInit {
     if (this.registerForm.valid && !this.isLoading) {
       this.isLoading = true;
       this.errorMessage = '';
-
       try {
         const { name, email, password } = this.registerForm.value;
         await this.authService.register(name, email, password);
@@ -146,7 +131,6 @@ export class AuthComponent implements OnInit {
       this.markFormGroupTouched(this.registerForm);
     }
   }
-
   /**
    * Handles guest login.
    */
@@ -154,7 +138,6 @@ export class AuthComponent implements OnInit {
     if (!this.isLoading) {
       this.isLoading = true;
       this.errorMessage = '';
-
       try {
         await this.authService.loginAsGuest();
         this.welcomeOverlayService.markShouldShow();
@@ -166,7 +149,6 @@ export class AuthComponent implements OnInit {
       }
     }
   }
-
   /**
    * Marks all form controls as touched to trigger validation display.
    */
@@ -176,7 +158,6 @@ export class AuthComponent implements OnInit {
       control?.markAsTouched();
     });
   }
-
   /**
    * Gets user-friendly error messages from error objects.
    */
@@ -199,7 +180,6 @@ export class AuthComponent implements OnInit {
     }
     return error?.message || 'An unexpected error occurred.';
   }
-
   /**
    * Checks if a form field has errors and has been touched.
    */
@@ -207,13 +187,11 @@ export class AuthComponent implements OnInit {
     const field = form.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
-
   /**
    * Gets the error message for a specific field.
    */
   getFieldErrorMessage(form: FormGroup, fieldName: string): string {
     const field = form.get(fieldName);
-    
     if (field && field.errors && field.touched) {
       if (field.errors['required']) {
         return `${this.getFieldDisplayName(fieldName)} is required`;
@@ -226,15 +204,12 @@ export class AuthComponent implements OnInit {
         return `${this.getFieldDisplayName(fieldName)} must be at least ${requiredLength} characters`;
       }
     }
-    
     // Check for password mismatch
     if (fieldName === 'confirmPassword' && form.errors?.['passwordMismatch']) {
       return 'Passwords do not match';
     }
-    
     return '';
   }
-
   /**
    * Gets the placeholder text for input fields - shows error or default placeholder.
    */
@@ -242,7 +217,6 @@ export class AuthComponent implements OnInit {
     const errorMessage = this.getFieldErrorMessage(form, fieldName);
     return errorMessage || defaultPlaceholder;
   }
-
   /**
    * Gets display name for form fields.
    */
@@ -255,14 +229,12 @@ export class AuthComponent implements OnInit {
     };
     return displayNames[fieldName] || fieldName;
   }
-
   /**
    * Checks if login form can be submitted.
    */
   canSubmitLogin(): boolean {
     return this.loginForm.valid && !this.isLoading;
   }
-
   /**
    * Checks if register form can be submitted.
    */
@@ -270,4 +242,3 @@ export class AuthComponent implements OnInit {
     return this.registerForm.valid && !this.isLoading;
   }
 }
-

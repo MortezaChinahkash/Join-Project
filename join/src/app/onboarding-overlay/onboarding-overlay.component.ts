@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnboardingService, OnboardingStep } from '../shared/services/onboarding.service';
 import { AuthService } from '../shared/services/auth.service';
 import { Subscription } from 'rxjs';
-
 /**
  * Onboarding overlay component that guides new users through the application.
  * Shows step-by-step instructions for each main navigation item.
@@ -26,12 +25,10 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
   totalSteps = 4;
   highlightPosition = { top: '0px', left: '0px', width: '0px', height: '0px' };
   private subscriptions: Subscription[] = [];
-
   constructor(
     private onboardingService: OnboardingService,
     private authService: AuthService
   ) {}
-
   /**
    * Angular lifecycle hook - initializes the component.
    */
@@ -50,7 +47,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
-
   /**
    * Handles window resize events to update highlight position.
    */
@@ -60,7 +56,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
       setTimeout(() => this.updateHighlightPosition(), 100);
     }
   }
-
   /**
    * Subscribes to onboarding service observables.
    */
@@ -81,7 +76,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
     });
     this.subscriptions.push(showSub, stepSub);
   }
-
   /**
    * Updates the position of the highlight around the target element.
    */
@@ -103,7 +97,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
       };
     }
   }
-
   /**
    * Gets the position styles for the tooltip.
    */
@@ -202,7 +195,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
     }
     return position;
   }
-
   /**
    * Gets the arrow direction class for the tooltip.
    */
@@ -216,7 +208,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
       default: return '';
     }
   }
-
   /**
    * Handles clicking the next button.
    */
@@ -259,7 +250,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
   getNextButtonText(): string {
     return this.isLastStep() ? 'Finish' : 'Next';
   }
-
   /**
    * Handles clicking outside the tooltip (on the overlay).
    */
@@ -275,4 +265,3 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
     return this.authService.isAuthenticated;
   }
 }
-
