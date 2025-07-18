@@ -4,6 +4,7 @@ import { Task } from '../../interfaces/task.interface';
 import { Contact } from '../../services/contact-data.service';
 import { BoardFormService } from '../../services/board-form.service';
 import { BoardUtilsService } from '../../services/board-utils.service';
+import { DeleteConfirmationService } from '../../services/delete-confirmation.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
@@ -42,7 +43,8 @@ export class TaskDetailsOverlayComponent {
 
   constructor(
     public formService: BoardFormService,
-    public utilsService: BoardUtilsService
+    public utilsService: BoardUtilsService,
+    private deleteConfirmationService: DeleteConfirmationService
   ) {}
 
   /**
@@ -72,9 +74,14 @@ export class TaskDetailsOverlayComponent {
    * Löscht den Task.
    */
   async deleteTask(): Promise<void> {
-    await this.formService.deleteTask(() => {
-      this.delete.emit();
-    });
+    try {
+      if (this.task) {
+        this.deleteConfirmationService.deleteTask(this.task);
+        this.delete.emit();
+      }
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   }
 
   /**
