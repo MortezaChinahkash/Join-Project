@@ -43,19 +43,8 @@ export class BoardDragDropService {
    */
   onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
     return new Promise((resolve) => {
-      console.log('onTaskMouseDown called:', {
-        taskId: task.id,
-        taskTitle: task.title,
-        button: event.button,
-        position: { x: event.clientX, y: event.clientY }
-      });
-      
       // Only handle left mouse button
-      if (event.button !== 0) { 
-        console.log('Not left mouse button, ignoring');
-        resolve(false); 
-        return; 
-      }
+      if (event.button !== 0) { resolve(false); return; }
       
       this.dragState.setMousePressed(event.clientX, event.clientY);
       
@@ -91,11 +80,6 @@ export class BoardDragDropService {
       };
       
       const handleMouseUp = () => {
-        console.log('Mouse up - finishing drag:', {
-          isDraggingTask: this.dragState.isDraggingTask,
-          dragStarted: dragStarted
-        });
-        
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
         
@@ -136,12 +120,6 @@ export class BoardDragDropService {
    * @param targetElement - Target element
    */
   private startTaskDrag(clientX: number, clientY: number, task: Task, targetElement: HTMLElement): void {
-    console.log('Starting task drag:', {
-      taskId: task.id,
-      taskTitle: task.title,
-      position: { x: clientX, y: clientY }
-    });
-    
     this.dragState.startDrag(task, clientX, clientY);
     
     // Create visual drag element
@@ -152,46 +130,6 @@ export class BoardDragDropService {
     if (taskElement) {
       taskElement.style.opacity = '0.5';
     }
-    
-    // Initialize placeholder state
-    this.dragState.setPlaceholder(false, 0);
-  }
-
-  /**
-   * Updates task drag position with placeholder logic.
-   * 
-   * @param clientX - Current X position
-   * @param clientY - Current Y position
-   */
-  private updateTaskDragWithPlaceholder(clientX: number, clientY: number): void {
-    this.dragState.updateDragPosition(clientX, clientY);
-    this.autoScroll.handleAutoScroll(clientY);
-    
-    // Update drag over column
-    const column = this.getColumnAtPosition(clientX, clientY);
-    const previousColumn = this.dragState.dragOverColumn;
-    
-    if (column !== previousColumn) {
-      console.log('Drag over column changed:', {
-        from: previousColumn,
-        to: column,
-        position: { x: clientX, y: clientY }
-      });
-      
-      // Update placeholder visibility and height
-      // Only show placeholder if we're over a different column than the original one
-      if (column && this.dragState.draggedTask && column !== this.dragState.draggedTask.column) {
-        // Get height from dragged task element
-        const taskElement = document.querySelector('.task-card[style*="opacity: 0.5"]') as HTMLElement;
-        const placeholderHeight = taskElement ? taskElement.offsetHeight : 80; // Same height as task card
-        
-        this.dragState.setPlaceholder(true, placeholderHeight);
-      } else {
-        this.dragState.setPlaceholder(false, 0);
-      }
-    }
-    
-    this.dragState.setDragOverColumn(column);
   }
 
   /**
@@ -201,7 +139,12 @@ export class BoardDragDropService {
    * @param clientY - Current Y position
    */
   private updateTaskDrag(clientX: number, clientY: number): void {
-    this.updateTaskDragWithPlaceholder(clientX, clientY);
+    this.dragState.updateDragPosition(clientX, clientY);
+    this.autoScroll.handleAutoScroll(clientY);
+    
+    // Update drag over column
+    const column = this.getColumnAtPosition(clientX, clientY);
+    this.dragState.setDragOverColumn(column);
   }
 
   /**
@@ -226,9 +169,6 @@ export class BoardDragDropService {
       this.handleTaskDrop(onTaskUpdate);
     }
 
-    // Hide placeholder
-    this.dragState.setPlaceholder(false, 0);
-
     // Cleanup
     this.dragState.resetDragState();
     this.autoScroll.stopAutoScroll();
@@ -246,9 +186,6 @@ export class BoardDragDropService {
     const taskElement = originalElement.closest('.task-card') as HTMLElement;
     if (!taskElement) return;
 
-    // Get original element position for offset calculation
-    const originalRect = taskElement.getBoundingClientRect();
-
     const dragElement = taskElement.cloneNode(true) as HTMLElement;
     dragElement.style.position = 'fixed';
     dragElement.style.pointerEvents = 'none';
@@ -257,16 +194,9 @@ export class BoardDragDropService {
     dragElement.style.boxShadow = '0 8px 25px rgba(0,0,0,0.25)';
     dragElement.style.opacity = '0.95';
     dragElement.style.width = `${taskElement.offsetWidth}px`;
-    dragElement.style.height = `${taskElement.offsetHeight}px`;
 
     document.body.appendChild(dragElement);
-    
-    // Calculate offset relative to mouse position within the original element
-    const offsetX = clientX - originalRect.left;
-    const offsetY = clientY - originalRect.top;
-    
-    // Set the drag element with calculated offset
-    this.dragState.setDragElementWithOffset(dragElement, offsetX, offsetY);
+    this.dragState.setDragElement(dragElement, clientX, clientY);
     this.dragState.updateDragPosition(clientX, clientY);
   }
 
@@ -281,11 +211,8 @@ export class BoardDragDropService {
     const elements = document.elementsFromPoint(clientX, clientY);
     
     for (const element of elements) {
-      // Check for board-column class and data-column attribute
-      if (element.classList.contains('board-column') || element.classList.contains('task-list')) {
-        const columnId = element.getAttribute('data-column') || 
-                        element.closest('[data-column]')?.getAttribute('data-column');
-        
+      if (element.classList.contains('column')) {
+        const columnId = element.getAttribute('data-column');
         switch (columnId) {
           case 'todo': return 'todo';
           case 'inprogress': return 'inprogress';
@@ -304,47 +231,29 @@ export class BoardDragDropService {
    * @param onTaskUpdate - Callback for task updates
    */
   private handleTaskDrop(onTaskUpdate: () => void): void {
-    if (!this.dragState.draggedTask || !this.dragState.dragOverColumn) {
-      console.log('Drop cancelled: Missing draggedTask or dragOverColumn', {
-        draggedTask: this.dragState.draggedTask,
-        dragOverColumn: this.dragState.dragOverColumn
-      });
-      return;
-    }
+    if (!this.dragState.draggedTask || !this.dragState.dragOverColumn) return;
 
     const oldColumn = this.dragState.draggedTask.column;
     const newColumn = this.dragState.dragOverColumn;
 
-    console.log('Attempting task drop:', {
-      taskId: this.dragState.draggedTask.id,
-      taskTitle: this.dragState.draggedTask.title,
-      fromColumn: oldColumn,
-      toColumn: newColumn
-    });
-
     if (oldColumn !== newColumn) {
-      // Update task's column property directly
+      // Update task column
       this.dragState.draggedTask.column = newColumn;
       
-      // Update in Firebase if task has an ID
-      if (this.dragState.draggedTask.id) {
-        this.taskService.updateTaskInFirebase(this.dragState.draggedTask)
-          .then(() => {
-            console.log('Task updated in Firebase successfully');
-          })
-          .catch((error) => {
-            console.error('Error updating task in Firebase:', error);
-            // Revert the column change on Firebase error
-            this.dragState.draggedTask!.column = oldColumn;
-          });
-      }
+      // Save to backend (simplified - adjust based on actual TaskService implementation)
+      const success = this.taskService.updateTask(this.dragState.draggedTask.id || '', {
+        column: newColumn
+      });
       
-      console.log('Task moved successfully from', oldColumn, 'to', newColumn);
-      // Trigger the callback to update the component's task arrays
-      onTaskUpdate();
-    } else {
-      console.log('Task dropped in same column - no update needed');
-      onTaskUpdate();
+      if (success) {
+        console.log('Task moved successfully');
+        onTaskUpdate();
+      } else {
+        console.error('Error moving task');
+        // Revert on error
+        this.dragState.draggedTask.column = oldColumn;
+        onTaskUpdate();
+      }
     }
   }
 
@@ -390,16 +299,6 @@ export class BoardDragDropService {
       this.dragState.setDragOverColumn(column);
       // Drop logic is handled in finishTaskDrag
     }
-  }
-
-  /**
-   * Public method for updating drag position (used by touch handler).
-   * 
-   * @param clientX - Current X position
-   * @param clientY - Current Y position
-   */
-  updateDragPosition(clientX: number, clientY: number): void {
-    this.updateTaskDragWithPlaceholder(clientX, clientY);
   }
 
   /**
