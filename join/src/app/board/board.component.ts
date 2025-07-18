@@ -918,4 +918,35 @@ export class BoardComponent implements OnInit {
       this.openTaskDetails(targetTask);
     }
   }
+
+  /**
+   * Gets the selected task's due date for display.
+   * @returns Due date string or null
+   */
+  get selectedTaskDueDate(): string | null {
+    if (!this.formService.selectedTask || !this.formService.selectedTask.dueDate) {
+      return null;
+    }
+    const dueDate = this.formService.selectedTask.dueDate.trim();
+    return dueDate !== '' ? dueDate : null;
+  }
+
+  /**
+   * Checks if the selected task has a due date.
+   * @returns True if task has a due date, false otherwise
+   */
+  hasDueDate(): boolean {
+    return !!(this.formService.selectedTask && this.formService.selectedTask.dueDate && this.formService.selectedTask.dueDate.trim() !== '');
+  }
+
+  /**
+   * Gets the formatted due date for display.
+   * @returns Formatted due date string or null
+   */
+  getFormattedDueDate(): string | null {
+    if (!this.formService.selectedTask || !this.formService.selectedTask.dueDate) {
+      return null;
+    }
+    return this.formService.selectedTask.dueDate;
+  }
 }
