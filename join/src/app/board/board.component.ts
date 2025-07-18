@@ -143,7 +143,7 @@ export class BoardComponent implements OnInit {
         this.tasks = tasks;
         this.distributeTasksToColumns();
       },
-      () => this.handleQueryParams()
+      () => {} // Empty callback since we handle query params in distributeTasksToColumns
     );
   }
 
@@ -152,6 +152,8 @@ export class BoardComponent implements OnInit {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
     const assigned = this.arrayManagementService.assignTasksToColumns(distributed);
     this.assignTasksToColumns(assigned);
+    // Handle query parameters after tasks are distributed to arrays
+    setTimeout(() => this.handleQueryParams(), 50);
   }
 
   /** Assigns distributed tasks to component arrays. */

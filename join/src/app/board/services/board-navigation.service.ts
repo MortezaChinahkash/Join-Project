@@ -51,7 +51,7 @@ export class BoardNavigationService {
         // Wait for tasks to load before trying to open the selected task
         setTimeout(() => {
           this.openTaskById(params['selectedTask'], taskArrays, openTaskCallback);
-        }, 1000); // Wait for data to load
+        }, 100); // Wait for data to load
       }
     });
   }
