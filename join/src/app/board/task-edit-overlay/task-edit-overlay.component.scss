@@ -368,6 +368,9 @@
         &.completed-subtask {
           opacity: 0.6;
         }
+        &.editing {
+          gap: 0;
+        }
         .form-input {
           flex: 1;
           &.completed {
@@ -377,6 +380,9 @@
           &.grayed {
             background-color: #f9f9f9;
             color: #666;
+          }
+          &.editing {
+            padding-right: 70px !important;
           }
         }
         .subtask-input-actions,
@@ -394,19 +400,19 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 6px;
+            padding: 4px;
             border-radius: 4px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 28px;
-            height: 28px;
-            min-width: 28px;
-            min-height: 28px;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
             transition: background-color 0.2s ease;
             img {
-              width: 16px;
-              height: 16px;
+              width: 14px;
+              height: 14px;
               filter: brightness(0) saturate(100%) invert(40%) sepia(10%) saturate(500%) hue-rotate(180deg) brightness(95%) contrast(85%);
               transition: all 0.2s ease;
             }
@@ -420,10 +426,20 @@
           }
           .subtask-divider {
             width: 1px;
-            height: 18px;
+            height: 16px;
             background-color: #d0d0d0;
-            margin: 0 2px;
+            margin: 0 1px;
           }
+        }
+        
+        .subtask-input-actions {
+          position: absolute;
+          right: 8px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: transparent;
+          padding: 2px;
+          gap: 1px;
         }
         .subtask-hover-actions {
           opacity: 0;
