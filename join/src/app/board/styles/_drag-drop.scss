@@ -1,12 +1,8 @@
-// Drag & Drop Styles
 .task-card {
-  // User select prevention during drag
   user-select: none;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-
-  // Drag and drop states
   &.task-dragging-original {
     opacity: 0.5;
     transform: scale(0.95);
@@ -20,12 +16,8 @@
   cursor: grabbing;
   transform: rotate(5deg) !important;
   z-index: 9999;
-  
-  // Prevent interactions with the dragged element
   pointer-events: none;
   user-select: none;
-  
-  // Enhanced visual effect
   background: white;
   border: 2px solid #4A90E2;
 }
@@ -42,7 +34,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  
   &::before {
     content: "Drop task here";
     position: absolute;
@@ -56,8 +47,6 @@
     white-space: nowrap;
     text-align: center;
   }
-  
-  // Animation for placeholder appearance
   animation: placeholderPulse 1.5s ease-in-out infinite;
 }
 
@@ -72,17 +61,14 @@
   }
 }
 
-// Column drag over state
 .board-column {
   transition: background-color 0.2s ease;
-  
   &:has(.drag-placeholder) {
     background-color: rgba(74, 144, 226, 0.05);
     border-radius: 15px;
   }
 }
 
-// Prevent text selection during drag operations
 .board-container {
   &.dragging-active {
     user-select: none;
@@ -92,18 +78,15 @@
   }
 }
 
-// Mobile specific adjustments for drag & drop
 @media (max-width: 1000px) {
   .task-dragging {
-    transform: rotate(3deg) !important; // Smaller rotation on mobile
+    transform: rotate(3deg) !important;
   }
-  
   .drag-placeholder {
     min-height: 140px !important;
     height: 140px;
     border: 3px dashed #4A90E2 !important;
     background-color: rgba(74, 144, 226, 0.15) !important;
-    
     &::before {
       font-size: 1rem !important;
       font-weight: 600 !important;
@@ -114,16 +97,14 @@
 
 @media (max-width: 768px) {
   .task-dragging {
-    transform: rotate(3deg) !important; // Smaller rotation on mobile
+    transform: rotate(3deg) !important;
   }
-  
   .drag-placeholder {
     min-height: 120px !important;
     height: 120px;
     border: 2px dashed #4A90E2 !important;
     background-color: rgba(74, 144, 226, 0.2) !important;
     border-radius: 12px;
-    
     &::before {
       font-size: 0.9rem !important;
       font-weight: 600 !important;
