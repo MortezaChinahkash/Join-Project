@@ -1,7 +1,3 @@
-// ===================
-// Single Contact View
-// ===================
-
 .single-contact-container {
   display: flex;
   flex-direction: column;
@@ -50,7 +46,6 @@
   text-align: left;
 }
 
-// Responsive styles für lange Namen im single-contact-header
 @media (max-width: 1000px) {
   .single-contact-name {
     word-break: break-word;
