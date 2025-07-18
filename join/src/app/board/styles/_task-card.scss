@@ -1,4 +1,3 @@
-// Task Card Styles
 .task-card {
   background-color: white;
   border-radius: 10px;
@@ -163,7 +162,6 @@
     }
   }
 
-  // Priority icon colors for different priority levels in board tasks
   &[data-priority="urgent"] .priority-icon {
     filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
   }
@@ -177,7 +175,6 @@
   }
 }
 
-// Drag and drop styling for task cards
 .task-dragging {
   z-index: 1000;
   transform: rotate(5deg);
@@ -216,7 +213,6 @@
   border-color: #29abe2;
 }
 
-// Responsive adjustments for task cards
 @media (max-width: 1000px) {
   .task-card {
     height: 260px;
@@ -233,7 +229,6 @@
     }
   }
 
-  // Mobile drag placeholder improvements
   .drag-placeholder {
     min-height: 140px !important;
     height: 140px;
@@ -270,7 +265,6 @@
     }
   }
 
-  // Enhanced mobile drag placeholder
   .drag-placeholder {
     min-height: 120px !important;
     height: 120px;

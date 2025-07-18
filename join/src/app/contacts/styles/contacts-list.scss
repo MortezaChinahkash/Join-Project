@@ -1,197 +1,105 @@
-// ===================
-// Sidebar & List
-// ===================
-
 .contacts-list {
-  width: 400px;
-  height: calc(100vh - 64px);
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: #fff;
-  border-right: 1px solid #e0e0e0;
-  padding: 24px 0 24px 0;
-  box-sizing: border-box;
-  scrollbar-width: thin;
-  scrollbar-color: #bdbdbd #f5f5f5;
+  width: 400px; height: calc(100vh - 64px); overflow-y: auto; overflow-x: hidden;
+  background: #fff; border-right: 1px solid #e0e0e0; padding: 24px 0 24px 0;
+  box-sizing: border-box; scrollbar-width: thin; scrollbar-color: #bdbdbd #f5f5f5;
   box-shadow: 0 4px 12px 0 #0001, 4px 0 12px 0 #0001;
-
-  // Custom scrollbar for Webkit browsers
-  &::-webkit-scrollbar {
-    width: 8px;
-    background: #f5f5f5;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #bdbdbd;
-    border-radius: 4px;
-  }
+  &::-webkit-scrollbar { width: 8px; background: #f5f5f5; }
+  &::-webkit-scrollbar-thumb { background: #bdbdbd; border-radius: 4px; }
 }
-
-// ===================
-// Current User Section
-// ===================
 
 .current-user-section {
   .contactContainer.current-user {
-    margin: 0 0px 24px 10%;
-    // Removed: background, border, border-radius to look like normal contacts
-    
-    &:hover {
-      background: #f5f5f5;
-      transform: none;
-      box-shadow: none;
-    }
-    
+    margin: 0 0px 24px 0px; padding-left: 8px;
+    &:hover { background: #f5f5f5; transform: none; box-shadow: none; }
     &.active {
-      background: #2d3a4a; // Dunkelblaue Farbe wie bei normalen Kontakten
-      color: white;
-      
-      .contactName, .contactMail {
-        color: white;
-      }
+      background: #2d3a4a; color: white;
+      .contactName, .contactMail { color: white; }
     }
   }
 }
-
-// ===================
-// Contact List Letters
-// ===================
 
 .firstLetter {
-  font-size: 20px;
-  font-weight: 400;
-  margin: 24px 0 12px 24px;
-  color: #222;
-
-  // Divider line under each letter
+  font-size: 20px; font-weight: 400; margin: 24px 0 12px 24px; color: #222;
   &::after {
-    content: "";
-    display: block;
-    margin-top: 16px;
-    margin-left: -24px;
-    width: calc(100% + 10px);
-    height: 1px;
-    background: #e0e0e0;
+    content: ""; display: block; margin-top: 16px; margin-left: -24px;
+    width: calc(100% + 10px); height: 1px; background: #e0e0e0;
   }
 }
 
-// ===================
-// Add New Contact Button
-// ===================
-
 .addNewContactBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 32px;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background: #fff;
-  min-height: 75px;
-  // Gradient overlay for sticky effect
+  display: flex; justify-content: center; align-items: center; margin-bottom: 32px;
+  position: sticky; top: 0; z-index: 2; background: #fff; min-height: 75px;
   &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: -24px;
-    width: 100%;
-    height: 24px;
+    content: ""; position: absolute; left: 0; top: -24px; width: 100%; height: 24px;
     background: linear-gradient(to bottom, #fff 100%, transparent 100%);
-    pointer-events: none;
-    z-index: 3;
+    pointer-events: none; z-index: 3;
   }
 }
 
 .addNewContactBtn button {
-  background: #2d3a4a;
-  color: #fff;
-  font-weight: 600;
-  font-size: 18px;
-  border: none;
-  border-radius: 12px;
-  padding: 14px 32px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  box-shadow: none;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #29abe2;
-    box-shadow: 0 4px 12px 0 rgba(41, 171, 226, 0.25);
-  }
+  background: #2d3a4a; color: #fff; font-weight: 600; font-size: 18px;
+  border: none; border-radius: 12px; padding: 14px 32px; cursor: pointer;
+  display: flex; align-items: center; gap: 12px; box-shadow: none; transition: background 0.2s;
+  &:hover { background: #29abe2; box-shadow: 0 4px 12px 0 rgba(41, 171, 226, 0.25); }
 }
 
 .addNewContactBtn button .icon {
-  width: 22px;
-  height: 22px;
-  margin-left: 6px;
-  filter: brightness(0) invert(1);
+  width: 22px; height: 22px; margin-left: 6px; filter: brightness(0) invert(1);
 }
-
-// ===================
-// Contact List Item
-// ===================
 
 .contactContainer {
-  display: flex;
-  flex-direction: row;
-  gap: 12px;
-  padding-left: 8px;
-  align-items: center;
-  margin-bottom: 32px;
-  cursor: pointer;
-  min-width: 0;
-  overflow: hidden;
+  display: flex; flex-direction: row; gap: 12px; padding-left: 8px; align-items: center;
+  margin-bottom: 32px; cursor: pointer; min-width: 0; overflow: hidden;
 }
 
-.contactContainer:hover {
-  background-color: var(--bg-grey);
-  border-radius: 12px;
-}
+.contactContainer:hover { background-color: var(--bg-grey); border-radius: 12px; }
 
 .contactMail {
-  color: #007cee;
-  white-space: nowrap;
-  overflow: hidden;
-  max-width: 100%;
+  color: #007cee; white-space: nowrap; overflow: hidden; max-width: 100%;
 }
 
 .initials {
-  width: 42px;
-  min-width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #ff8700;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  font-size: 20px;
-  letter-spacing: 1px;
-  margin: 8px 0;
-  box-shadow: 0 2px 8px -4px #0001;
-  border: 2px solid #fff;
-  box-sizing: border-box;
+  width: 42px; min-width: 42px; height: 42px; border-radius: 50%; background: #ff8700;
+  color: #fff; display: flex; align-items: center; justify-content: center;
+  font-weight: 500; font-size: 20px; letter-spacing: 1px; margin: 8px 0;
+  box-shadow: 0 2px 8px -4px #0001; border: 2px solid #fff; box-sizing: border-box;
 }
 
-.listContent {
-  margin-left: 10%;
-}
+.listContent { margin-left: 0%; }
 
 .contactContainer.active {
-  background: #2d3a4a;
-  color: #fff;
-  border-radius: 12px;
+  background: #2d3a4a; color: #fff; border-radius: 12px;
   box-shadow: 0 4px 12px 0 rgba(41, 171, 226, 0.1);
 }
 
-.contactContainer.active .initials {
-  border-color: white;
+.contactContainer.active .initials { border-color: white; }
+
+.contactContainer.active .contactMail { color: #fff; }
+
+@media (max-width: 1000px) {
+  .contactContainer { padding-left: 8px; margin-bottom: 24px; }
 }
 
-.contactContainer.active .contactMail {
-  color: #fff;
+@media (max-width: 768px) {
+  .current-user-section {
+    .contactContainer.current-user { margin: 0 0px 20px 0px; padding-left: 6px; }
+  }
+  .contactContainer { padding-left: 6px; margin-bottom: 20px; gap: 8px; }
+  .initials { width: 36px; min-width: 36px; height: 36px; font-size: 16px; }
+}
+
+@media (max-width: 480px) {
+  .current-user-section {
+    .contactContainer.current-user { margin: 0 0px 16px 0px; padding-left: 4px; }
+  }
+  .contactContainer { padding-left: 4px; margin-bottom: 16px; gap: 6px; }
+  .initials { width: 32px; min-width: 32px; height: 32px; font-size: 14px; }
+}
+
+@media (max-width: 320px) {
+  .current-user-section {
+    .contactContainer.current-user { margin: 0 0px 12px 0px; padding-left: 2px; }
+  }
+  .contactContainer { padding-left: 2px; margin-bottom: 12px; gap: 4px; }
+  .initials { width: 28px; min-width: 28px; height: 28px; font-size: 12px; }
 }

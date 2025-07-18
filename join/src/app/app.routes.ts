@@ -13,29 +13,24 @@ import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  // Auth route - accessible without authentication
   { path: 'auth', component: AuthComponent },
 
-  // All routes with MainContentComponent (navbar + content)
   {
     path: '',
     component: MainContentComponent,
     children: [
-      // Protected routes - require authentication
       { path: '', component: SummaryComponent, canActivate: [AuthGuard] },
       { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard] },
       { path: 'summary', component: SummaryComponent, canActivate: [AuthGuard] },
       { path: 'add-task', component: AddTaskComponent, canActivate: [AuthGuard] },
       { path: 'board', component: BoardComponent, canActivate: [AuthGuard] },
       
-      // Public routes - accessible without authentication, but with navbar + header
       { path: 'privacy', component: PrivacyPolicyComponent },
       { path: 'imprint', component: LegalNoticeComponent },
-      { path: 'legal', component: LegalNoticeComponent }, // Fallback for old links
+      { path: 'legal', component: LegalNoticeComponent },
       { path: 'help', component: HelpComponent },
     ]
   },
 
-  // Redirect to auth if no route matches
   { path: '**', redirectTo: '/auth' }
 ];

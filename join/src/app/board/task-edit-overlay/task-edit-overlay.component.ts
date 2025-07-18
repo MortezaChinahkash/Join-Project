@@ -79,7 +79,9 @@ export class TaskEditOverlayComponent implements OnDestroy {
     public contactHelperService: ContactHelperService
   ) {
     this.detectTouchDevice();
-    // Setup dropdown listener after a short delay to ensure DOM is ready
+    /**
+     * Setup dropdown listener after a short delay to ensure DOM is ready
+     */
     setTimeout(() => {
       this.setupDropdownClickListener();
     }, 0);
