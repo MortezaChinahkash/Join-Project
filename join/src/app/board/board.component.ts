@@ -20,6 +20,8 @@ import { BoardTaskManagementService } from '../services/board-task-management.se
 import { BoardDisplayService } from '../services/board-display.service';
 import { BoardInteractionService } from '../services/board-interaction.service';
 import { BoardLifecycleService } from '../services/board-lifecycle.service';
+import { BoardInitializationService } from '../services/board-initialization.service';
+import { BoardArrayManagementService } from '../services/board-array-management.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
 import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.component';
@@ -126,6 +128,8 @@ export class BoardComponent implements OnInit {
     public displayService: BoardDisplayService,
     public interactionService: BoardInteractionService,
     public lifecycleService: BoardLifecycleService,
+    public initializationService: BoardInitializationService,
+    public arrayManagementService: BoardArrayManagementService,
     private route: ActivatedRoute
   ) {
     this.initializeLocalArrays();
@@ -133,75 +137,21 @@ export class BoardComponent implements OnInit {
 
   /** Angular lifecycle hook that runs after component initialization. */
   ngOnInit(): void {
-    this.loadContactsData();
-    this.loadTasksData();
-    this.setupScrollListener();
-    this.handleFragmentNavigation();
-    this.handleQueryParams();
-  }
-
-  /**
-   * Handles fragment navigation to scroll to specific columns.
-   */
-  private handleFragmentNavigation(): void {
-    this.route.fragment.subscribe(fragment => {
-      if (fragment) {
-        setTimeout(() => {
-          const targetElement = document.getElementById(fragment);
-          if (targetElement) {
-            targetElement.scrollIntoView({ 
-              behavior: 'smooth', 
-              block: 'start',
-              inline: 'nearest'
-            });
-          }
-        }, 500); // Wait for data to load
-      }
-    });
-  }
-
-  /**
-   * Sets up the scroll listener for thumbnail navigation.
-   */
-  private setupScrollListener(): void {
-    setTimeout(() => {
-      this.thumbnailService.setupScrollListener();
-    }, 500);
-  }
-
-  /**
-   * Loads contacts from Firebase and sorts them alphabetically.
-   */
-  private loadContactsData(): void {
-    this.dataService.loadContactsFromFirebase().subscribe({
-      next: (contacts: Contact[]) => {
-        this.contacts = this.dataService.sortContactsAlphabetically(contacts);
-      },
-      error: (error: any) => {
-        console.error('Error loading contacts:', error);
-      }
-    });
-  }
-
-  /**
-   * Loads tasks from Firebase and subscribes to real-time updates.
-   */
-  private loadTasksData(): void {
-    this.dataService.loadTasksFromFirebase().subscribe({
-      next: (tasks: Task[]) => {
+    this.initializationService.initializeComponent(
+      (contacts) => { this.contacts = contacts; },
+      (tasks) => {
         this.tasks = tasks;
         this.distributeTasksToColumns();
       },
-      error: (error: any) => {
-        console.error('Error loading tasks:', error);
-      }
-    });
+      () => this.handleQueryParams()
+    );
   }
 
   /** Distributes tasks into appropriate columns and sorts by priority. */
   private distributeTasksToColumns(): void {
-    const distributed = this.taskManagementService.distributeAndSortTasks(this.tasks);
-    this.assignTasksToColumns(distributed);
+    const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
+    const assigned = this.arrayManagementService.assignTasksToColumns(distributed);
+    this.assignTasksToColumns(assigned);
   }
 
   /** Assigns distributed tasks to component arrays. */
@@ -219,43 +169,18 @@ export class BoardComponent implements OnInit {
 
   /** Initializes local task arrays from the task service. */
   private initializeLocalArrays(): void {
-    this.updateLocalArrays();
-  }
-
-  /** Updates local task arrays with the latest data from the task service. */
-  private updateLocalArrays(): void {
-    this.todoTasks = this.utilsService.sortTasksByPriority(
-      this.taskService.getTasksByColumn('todo')
-    );
-    this.inProgressTasks = this.utilsService.sortTasksByPriority(
-      this.taskService.getTasksByColumn('inprogress')
-    );
-    this.awaitingFeedbackTasks = this.utilsService.sortTasksByPriority(
-      this.taskService.getTasksByColumn('awaiting')
-    );
-    this.doneTasks = this.utilsService.sortTasksByPriority(
-      this.taskService.getTasksByColumn('done')
-    );
-  }
-
-  /** Safely truncates text to a maximum length. */
-  truncate(text: string | null | undefined, limit: number = 200): string {
-    return this.displayService.truncateText(text, limit);
-  }
-
-  /** Handles search input changes for task filtering. */
-  onSearchChange(): void {
-    // Search filtering is handled by the template via getFilteredTasks
-    // This method is called when the search input value changes
+    const initialized = this.initializationService.initializeTaskArrays();
+    this.assignTasksToColumns(initialized);
   }
 
   /** Updates task arrays after task changes. */
   private updateTaskArrays(): void {
-    const taskIndex = this.taskManagementService.findTaskIndex(this.tasks);
-    if (taskIndex !== -1 && this.formService.selectedTask) {
-      this.tasks = this.taskManagementService.updateTaskInArray(this.tasks, taskIndex);
-    }
-    this.distributeTasksToColumns();
+    this.arrayManagementService.updateTaskArrays(
+      this.tasks,
+      this.formService.selectedTask,
+      (updatedTasks) => { this.tasks = updatedTasks; },
+      () => this.distributeTasksToColumns()
+    );
   }
 
   // Task Management Service delegates
@@ -279,8 +204,7 @@ export class BoardComponent implements OnInit {
    */
   async onSubmit(): Promise<void> {
     await this.taskManagementService.submitTaskForm(() => {
-      this.updateLocalArrays();
-      this.distributeTasksToColumns();
+      this.initializeLocalArrays();
     });
   }
 
@@ -355,192 +279,61 @@ export class BoardComponent implements OnInit {
     );
   }
 
+  /** Safely truncates text to a maximum length. */
+  truncate(text: string | null | undefined, limit: number = 200): string {
+    return this.displayService.truncateText(text, limit);
+  }
+
+  /** Handles search input changes for task filtering. */
+  onSearchChange(): void {
+    // Search filtering is handled by the template via getFilteredTasks
+    // This method is called when the search input value changes
+  }
+
   // Interaction Service delegates
-  /** Handles mouse down on task for drag operation or details opening. */
   async onTaskMouseDown(event: MouseEvent, task: Task): Promise<void> {
-    const wasDragged = await this.interactionService.handleTaskMouseDown(
-      event,
-      task,
-      () => this.updateTaskArrays()
-    );
-
-    if (!wasDragged) {
-      setTimeout(() => this.openTaskDetails(task), 0);
-    }
+    const wasDragged = await this.interactionService.handleTaskMouseDown(event, task, () => this.updateTaskArrays());
+    if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
   }
-
-  /** Handles touch start on task for drag operation or details opening. */
   async onTaskTouchStart(event: TouchEvent, task: Task): Promise<void> {
-    const wasDragged = await this.interactionService.handleTaskTouchStart(
-      event,
-      task,
-      () => this.updateTaskArrays()
-    );
-
-    if (!wasDragged) {
-      setTimeout(() => this.openTaskDetails(task), 0);
-    }
+    const wasDragged = await this.interactionService.handleTaskTouchStart(event, task, () => this.updateTaskArrays());
+    if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
   }
-
-  /** Handles drag over event on columns. */
-  onColumnDragOver(event: DragEvent, column: TaskColumn): void {
-    this.interactionService.handleColumnDragOver(event, column);
-  }
-
-  /** Handles drag leave event on columns. */
-  onColumnDragLeave(event: DragEvent): void {
-    this.interactionService.handleColumnDragLeave(event);
-  }
-
-  /** Handles drop event on columns. */
-  onColumnDrop(event: DragEvent, column: TaskColumn): void {
-    this.interactionService.handleColumnDrop(event, column);
-  }
-
-  // Thumbnail Service delegates
-  /**
-   * Handles thumbnail click events.
-   * @param event - Mouse event
-   */
-  onThumbnailClick(event: MouseEvent): void {
-    this.interactionService.handleThumbnailClick(event);
-  }
-
-  /**
-   * Handles thumbnail touch start events for touch devices.
-   * @param event - Touch event
-   */
-  onThumbnailTouchStart(event: TouchEvent): void {
-    this.interactionService.handleThumbnailTouchStart(event);
-  }
-
-  /**
-   * Handles viewport mouse down events.
-   * @param event - Mouse event
-   */
-  onViewportMouseDown(event: MouseEvent): void {
-    this.interactionService.handleViewportMouseDown(event);
-  }
-
-  /**
-   * Handles viewport touch start events for touch devices.
-   * @param event - Touch event
-   */
-  onViewportTouchStart(event: TouchEvent): void {
-    this.interactionService.handleViewportTouchStart(event);
-  }
-
-  /**
-   * Handles viewport click events.
-   * @param event - Mouse event
-   */
-  onViewportClick(event: MouseEvent): void {
-    this.interactionService.handleViewportClick(event);
-  }
+  onColumnDragOver(event: DragEvent, column: TaskColumn): void { this.interactionService.handleColumnDragOver(event, column); }
+  onColumnDragLeave(event: DragEvent): void { this.interactionService.handleColumnDragLeave(event); }
+  onColumnDrop(event: DragEvent, column: TaskColumn): void { this.interactionService.handleColumnDrop(event, column); }
+  onThumbnailClick(event: MouseEvent): void { this.interactionService.handleThumbnailClick(event); }
+  onThumbnailTouchStart(event: TouchEvent): void { this.interactionService.handleThumbnailTouchStart(event); }
+  onViewportMouseDown(event: MouseEvent): void { this.interactionService.handleViewportMouseDown(event); }
+  onViewportTouchStart(event: TouchEvent): void { this.interactionService.handleViewportTouchStart(event); }
+  onViewportClick(event: MouseEvent): void { this.interactionService.handleViewportClick(event); }
 
   // Display Service delegates
-  /** Gets task completion progress as percentage. */
-  getTaskProgress(task: Task): number {
-    return this.displayService.getTaskProgress(task);
-  }
-
-  /** Gets number of completed subtasks. */
-  getCompletedSubtasks(task: Task): number {
-    return this.displayService.getCompletedSubtasks(task);
-  }
-
-  /** Gets priority icon path for a task. */
-  getPriorityIcon(priority: Task['priority']): string {
-    return this.displayService.getPriorityIcon(priority);
-  }
-
-  /** Gets filtered tasks based on search term. */
-  getFilteredTasks(tasks: Task[]): Task[] {
-    return this.displayService.getFilteredTasks(tasks, this.searchTerm);
-  }
-
-  /** Checks if there are no search results. */
+  getTaskProgress(task: Task): number { return this.displayService.getTaskProgress(task); }
+  getCompletedSubtasks(task: Task): number { return this.displayService.getCompletedSubtasks(task); }
+  getPriorityIcon(priority: Task['priority']): string { return this.displayService.getPriorityIcon(priority); }
+  getFilteredTasks(tasks: Task[]): Task[] { return this.displayService.getFilteredTasks(tasks, this.searchTerm); }
   get noSearchResults(): boolean {
-    return this.displayService.hasNoSearchResults(
-      this.searchTerm,
-      this.todoTasks,
-      this.inProgressTasks,
-      this.awaitingFeedbackTasks,
-      this.doneTasks
-    );
+    return this.displayService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
   }
 
   // Mobile Task Move Service delegates
-  /** Shows mobile task move overlay. */
-  onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void {
-    this.mobileTaskMoveService.onMobileMoveTask(event, task);
-  }
-
-  /** Closes the mobile move overlay. */
-  closeMobileMoveOverlay(): void {
-    this.mobileTaskMoveService.closeMobileMoveOverlay();
-  }
-
-  /** Gets the mobile move overlay visibility state. */
-  get showMobileMoveOverlay(): boolean {
-    return this.mobileTaskMoveService.showMobileMoveOverlay;
-  }
-
-  /** Gets the overlay position for mobile move dialog. */
-  get overlayPosition(): { top: number; right: number } {
-    return this.mobileTaskMoveService.overlayPosition;
-  }
-
-  /** Gets the currently selected task for moving. */
-  get selectedTaskForMove(): Task | null {
-    return this.mobileTaskMoveService.selectedTaskForMove;
-  }
-
-  /** Gets the current column of a task. */
+  onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveTask(event, task); }
+  closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobileMoveOverlay(); }
+  get showMobileMoveOverlay(): boolean { return this.mobileTaskMoveService.showMobileMoveOverlay; }
+  get overlayPosition(): { top: number; right: number } { return this.mobileTaskMoveService.overlayPosition; }
+  get selectedTaskForMove(): Task | null { return this.mobileTaskMoveService.selectedTaskForMove; }
   getCurrentTaskColumn(task: Task): TaskColumn | null {
     return this.mobileTaskMoveService.getCurrentTaskColumn(task, {
-      todoTasks: this.todoTasks,
-      inProgressTasks: this.inProgressTasks,
-      awaitingFeedbackTasks: this.awaitingFeedbackTasks,
-      doneTasks: this.doneTasks
+      todoTasks: this.todoTasks, inProgressTasks: this.inProgressTasks,
+      awaitingFeedbackTasks: this.awaitingFeedbackTasks, doneTasks: this.doneTasks
     });
   }
-
-  /** Gets the previous column for task movement. */
-  getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null {
-    return this.mobileTaskMoveService.getPreviousColumn(currentColumn);
-  }
-
-  /** Gets the next column for task movement. */
-  getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null {
-    return this.mobileTaskMoveService.getNextColumn(currentColumn);
-  }
-
-  /**
-   * Gets column display name.
-   * @param column - Column identifier
-   * @returns Human-readable column name
-   */
-  getColumnDisplayName(column: TaskColumn): string {
-    return this.mobileTaskMoveService.getColumnDisplayName(column);
-  }
-
-  /**
-   * Handles mobile move button mouse down event.
-   * @param event - Mouse event
-   */
-  onMobileMoveButtonMouseDown(event: MouseEvent): void {
-    this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event);
-  }
-
-  /**
-   * Handles mobile move button touch start event.
-   * @param event - Touch event
-   * @param task - Task to move
-   */
-  onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void {
-    this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task);
-  }
+  getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getPreviousColumn(currentColumn); }
+  getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getNextColumn(currentColumn); }
+  getColumnDisplayName(column: TaskColumn): string { return this.mobileTaskMoveService.getColumnDisplayName(column); }
+  onMobileMoveButtonMouseDown(event: MouseEvent): void { this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event); }
+  onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task); }
 
   /**
    * Moves selected task to previous column.
@@ -583,73 +376,27 @@ export class BoardComponent implements OnInit {
    * @param toColumn - Target column
    */
   private handleTaskMove(task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn): void {
-    const currentColumns = {
-      todoTasks: this.todoTasks,
-      inProgressTasks: this.inProgressTasks,
-      awaitingFeedbackTasks: this.awaitingFeedbackTasks,
-      doneTasks: this.doneTasks
-    };
-
-    // Remove from current column if exists
-    let updatedColumns = currentColumns;
-    if (fromColumn) {
-      updatedColumns = this.taskManagementService.removeTaskFromColumn(task, fromColumn, updatedColumns);
-    }
+    const updatedColumns = this.arrayManagementService.handleTaskMovement(
+      task,
+      fromColumn,
+      toColumn,
+      {
+        todoTasks: this.todoTasks,
+        inProgressTasks: this.inProgressTasks,
+        awaitingFeedbackTasks: this.awaitingFeedbackTasks,
+        doneTasks: this.doneTasks
+      }
+    );
     
-    // Add to target column
-    updatedColumns = this.taskManagementService.addTaskToColumn(task, toColumn, updatedColumns);
-    
-    // Update component arrays
-    this.todoTasks = updatedColumns.todoTasks;
-    this.inProgressTasks = updatedColumns.inProgressTasks;
-    this.awaitingFeedbackTasks = updatedColumns.awaitingFeedbackTasks;
-    this.doneTasks = updatedColumns.doneTasks;
+    this.assignTasksToColumns(updatedColumns);
   }
 
-  /**
-   * Gets displayed contacts for task assignment.
-   * @param assignedContacts - Array of assigned contact names
-   * @returns Array of contacts to display
-   */
-  getDisplayedContacts(assignedContacts: string[]): Contact[] {
-    return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts);
-  }
-
-  /**
-   * Checks if there are remaining contacts not displayed.
-   * @param assignedContacts - Array of assigned contact names
-   * @returns True if there are remaining contacts
-   */
-  hasRemainingContacts(assignedContacts: string[]): boolean {
-    return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts);
-  }
-
-  /**
-   * Gets count of remaining contacts not displayed.
-   * @param assignedContacts - Array of assigned contact names
-   * @returns Number of remaining contacts
-   */
-  getRemainingContactsCount(assignedContacts: string[]): number {
-    return this.contactHelperService.getRemainingContactsCount(assignedContacts, this.contacts);
-  }
-
-  /**
-   * Gets initials from contact name for avatar display.
-   * @param name - Full name of the contact
-   * @returns Initials (first letter of first and last name)
-   */
-  getInitials(name: string): string {
-    return this.contactHelperService.getInitials(name);
-  }
-
-  /**
-   * Gets background color for contact avatar based on name.
-   * @param name - Full name of the contact
-   * @returns Hex color string
-   */
-  getInitialsColor(name: string): string {
-    return this.contactHelperService.getInitialsColor(name);
-  }
+  // Contact Helper Service delegates
+  getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts); }
+  hasRemainingContacts(assignedContacts: string[]): boolean { return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts); }
+  getRemainingContactsCount(assignedContacts: string[]): number { return this.contactHelperService.getRemainingContactsCount(assignedContacts, this.contacts); }
+  getInitials(name: string): string { return this.contactHelperService.getInitials(name); }
+  getInitialsColor(name: string): string { return this.contactHelperService.getInitialsColor(name); }
 
   /**
    * Handles query parameters to open specific tasks or apply filters.
