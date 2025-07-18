@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Contact } from './contact-data.service';
-import { Task } from '../interfaces/task.interface';
+import { Contact } from '../../contacts/services/contact-data.service';
+import { Task } from '../../interfaces/task.interface';
 import { BoardDataService } from './board-data.service';
 import { BoardNavigationService } from './board-navigation.service';
 import { BoardInteractionService } from './board-interaction.service';
@@ -84,3 +84,7 @@ export class BoardLifecycleService {
     this.navigationService.handleQueryParams(columnArrays, onTaskSelected);
   }
 }
+
+
+
+

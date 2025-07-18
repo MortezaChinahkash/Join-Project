@@ -50,3 +50,4 @@ export class DeleteConfirmationComponent {
     this.onConfirm.emit();
   }
 }
+

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { Contact } from './contact-data.service';
-import { Task, TaskColumn } from '../interfaces/task.interface';
-import { TaskService } from './task.service';
+import { Contact } from '../../contacts/services/contact-data.service';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
+import { TaskService } from '../../shared/services/task.service';
 
 /**
  * Service for handling task form operations and overlay management.
@@ -714,5 +714,9 @@ public createSubtaskGroup(title: string = '', completed: boolean = false) {
 }
 
 }
+
+
+
+
 
 

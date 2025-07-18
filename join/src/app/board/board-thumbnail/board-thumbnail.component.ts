@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task, TaskColumn } from '../../interfaces/task.interface';
-import { BoardThumbnailService } from '../../services/board-thumbnail.service';
+import { BoardThumbnailService } from '../services/board-thumbnail.service';
 
 /**
  * Board thumbnail component that displays a scrollable overview of the kanban board.
@@ -98,3 +98,4 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
     this.thumbnailService.onViewportClick(event);
   }
 }
+

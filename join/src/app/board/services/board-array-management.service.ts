@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task, TaskColumn } from '../interfaces/task.interface';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { BoardTaskManagementService } from './board-task-management.service';
 
 /**
@@ -165,3 +165,7 @@ export class BoardArrayManagementService {
     updateCallback(updatedColumns);
   }
 }
+
+
+
+

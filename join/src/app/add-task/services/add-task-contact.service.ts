@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Contact } from './contact-data.service';
+import { Contact } from '../../contacts/services/contact-data.service';
 
 /**
  * Service for managing contact selection in add task component.
@@ -181,3 +181,5 @@ export class AddTaskContactService {
     }, {} as { [key: string]: Contact[] });
   }
 }
+
+

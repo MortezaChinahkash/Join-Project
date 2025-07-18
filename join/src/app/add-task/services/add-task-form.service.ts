@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Contact } from './contact-data.service';
+import { Contact } from '../../contacts/services/contact-data.service';
 
 /**
  * Service for managing add task form operations.
@@ -244,3 +244,5 @@ export class AddTaskFormService {
     return !isSubmitting;
   }
 }
+
+

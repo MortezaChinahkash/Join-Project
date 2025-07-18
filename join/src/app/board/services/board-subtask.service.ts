@@ -162,3 +162,7 @@ export class BoardSubtaskService {
     return Math.round((completedSubtasks / totalSubtasks) * 100);
   }
 }
+
+
+
+

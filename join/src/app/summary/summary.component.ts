@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { AuthService, User } from '../services/auth.service';
-import { TaskService } from '../services/task.service';
-import { BoardDataService } from '../services/board-data.service';
-import { WelcomeOverlayService } from '../services/welcome-overlay.service';
+import { AuthService, User } from '../shared/services/auth.service';
+import { TaskService } from '../shared/services/task.service';
+import { BoardDataService } from '../board/services/board-data.service';
+import { WelcomeOverlayService } from '../shared/services/welcome-overlay.service';
 import { Task } from '../interfaces/task.interface';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';

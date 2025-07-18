@@ -1,8 +1,8 @@
 import { Injectable, inject, runInInjectionContext, Injector } from '@angular/core';
 import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Task, TaskColumn } from '../interfaces/task.interface';
-import { Contact } from './contact-data.service';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
+import { Contact } from '../../contacts/services/contact-data.service';
 
 /**
  * Service for managing board data operations.
@@ -146,3 +146,7 @@ export class BoardDataService {
     result.todoTasks.push(task);
   }
 }
+
+
+
+
