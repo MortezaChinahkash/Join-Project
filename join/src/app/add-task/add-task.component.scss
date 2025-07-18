@@ -2,7 +2,6 @@
 @import './styles/add-task-select.component.scss';
 @import './styles/add-task-responsive.component.scss';
 
-// Custom Flatpickr styling
 :host ::ng-deep .flatpickr-calendar {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -15,13 +14,11 @@
     background-color: var(--color-accent);
     color: white;
   }
-  
   &.selected {
     background-color: var(--color-accent);
     border-color: var(--color-accent);
     color: white;
   }
-  
   &.today {
     border-color: var(--color-accent);
   }

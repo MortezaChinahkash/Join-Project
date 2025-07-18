@@ -63,8 +63,6 @@
 
           &.error {
             border-color: #ff8190;
-
-            // Placeholder bleibt immer grau, auch bei Fehlern
             &::placeholder {
               color: #d1d7db;
             }
@@ -85,7 +83,6 @@
               padding-right: 3rem;
               box-sizing: border-box;
 
-              // Hide default calendar icon
               &::-webkit-calendar-picker-indicator {
                 opacity: 0;
                 position: absolute;
@@ -147,7 +144,7 @@
 
       .priority-buttons {
         display: flex;
-        gap: 1rem; // sorgt für Abstand zwischen den Buttons
+        gap: 1rem;
 
         .priority-btn {
           padding: 0.75rem 1.5rem;
@@ -162,19 +159,14 @@
           align-items: center;
           gap: 0.5rem;
           transition: all 0.2s ease;
-          position: relative; // wichtig für z-index
-          z-index: 1;         // hebt den Button über die Nachbarn
-
+          position: relative;
+          z-index: 1;
           &:hover:not(.active) {
             box-shadow: 0 4px 3px rgba(0, 0, 0, 0.2);
-            // kein border mehr ändern!
           }
-
           &.selected:hover {
             box-shadow: none;
           }
-
-          // Non-selected state - icons in priority colors
           &:nth-child(1) .priority-icon-overlay {
             filter: brightness(0) saturate(100%) invert(35%) sepia(96%)
               saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
@@ -193,22 +185,16 @@
           &.active {
             color: var(--bg-white);
             border-color: transparent;
-
-            // Active state - white icons
             .priority-icon-overlay {
               filter: brightness(0) saturate(100%) invert(100%) sepia(0%)
                 saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
             }
-
-            // Specific background colors for each priority level
             &:nth-child(1) {
               background-color: var(--color-prio-urgent);
             }
-
             &:nth-child(2) {
               background-color: var(--color-prio-medium);
             }
-
             &:nth-child(3) {
               background-color: var(--color-prio-low);
             }
@@ -304,7 +290,6 @@
                 border-color: #e0e0e0;
               }
 
-              // Greyed out styling for readonly subtasks in add task component
               &.grayed {
                 background: #f4f4f4 !important;
                 color: #b0b0b0 !important;
@@ -312,8 +297,6 @@
                 cursor: not-allowed !important;
               }
             }
-
-            // Input action buttons (delete/save) that appear when editing
             .subtask-input-actions {
               display: flex;
               gap: 8px;
@@ -346,8 +329,6 @@
                 background-color: #d1d7db;
               }
             }
-
-            // Hover actions for subtasks (edit and delete buttons)
             .subtask-hover-actions {
               display: flex;
               gap: 16px;
@@ -403,8 +384,6 @@
                 pointer-events: none;
               }
             }
-
-            // Additional styling for completed subtask row
             &.completed-subtask {
               opacity: 0.7;
 
