@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Task, TaskColumn } from '../interfaces/task.interface';
-import { TaskService } from './task.service';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
+import { TaskService } from '../../shared/services/task.service';
 import { BoardMobileService } from './board-mobile.service';
 
 /**
@@ -196,3 +196,7 @@ export class MobileTaskMoveService {
     this.selectedTaskForMove = null;
   }
 }
+
+
+
+

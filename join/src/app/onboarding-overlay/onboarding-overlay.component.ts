@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OnboardingService, OnboardingStep } from '../services/onboarding.service';
-import { AuthService } from '../services/auth.service';
+import { OnboardingService, OnboardingStep } from '../shared/services/onboarding.service';
+import { AuthService } from '../shared/services/auth.service';
 import { Subscription } from 'rxjs';
 
 /**
@@ -325,3 +325,4 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
     return this.authService.isAuthenticated;
   }
 }
+

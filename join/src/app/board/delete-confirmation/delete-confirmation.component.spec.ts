@@ -21,3 +21,4 @@ describe('DeleteConfirmationComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Task, TaskColumn } from '../interfaces/task.interface';
-import { TaskService } from './task.service';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
+import { TaskService } from '../../shared/services/task.service';
 import { BoardFormService } from './board-form.service';
 import { BoardUtilsService } from './board-utils.service';
 import { BoardDataService } from './board-data.service';
-import { DeleteConfirmationService } from './delete-confirmation.service';
+import { DeleteConfirmationService } from '../../shared/services/delete-confirmation.service';
 import { TaskEditOverlayService } from './task-edit-overlay.service';
-import { Contact } from './contact-data.service';
+import { Contact } from '../../contacts/services/contact-data.service';
 
 /**
  * Service responsible for managing all task-related operations in the board component.
@@ -272,3 +272,7 @@ export class BoardTaskManagementService {
     return updated;
   }
 }
+
+
+
+

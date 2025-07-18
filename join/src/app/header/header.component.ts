@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -82,3 +82,4 @@ export class HeaderComponent {
     }
   }
 }
+

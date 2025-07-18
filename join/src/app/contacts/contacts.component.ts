@@ -5,10 +5,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
 
 import { InlineSvgDirective } from '../inline-svg.directive';
-import { Contact, ContactDataService } from '../services/contact-data.service';
-import { ContactOrganizationService } from '../services/contact-organization.service';
-import { ContactUiService } from '../services/contact-ui.service';
-import { AuthService, User } from '../services/auth.service';
+import { Contact, ContactDataService } from './services/contact-data.service';
+import { ContactOrganizationService } from './services/contact-organization.service';
+import { ContactUiService } from './services/contact-ui.service';
+import { AuthService, User } from '../shared/services/auth.service';
 
 /**
  * Component for managing contacts with full CRUD operations.
@@ -634,3 +634,4 @@ export class ContactsComponent implements OnInit, OnDestroy {
     return service.getContactColor(name);
   }
 }
+

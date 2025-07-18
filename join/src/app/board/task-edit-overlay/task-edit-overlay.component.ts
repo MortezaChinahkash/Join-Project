@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Task } from '../../interfaces/task.interface';
-import { Contact } from '../../services/contact-data.service';
-import { BoardFormService } from '../../services/board-form.service';
-import { BoardSubtaskService } from '../../services/board-subtask.service';
-import { ContactHelperService } from '../../services/contact-helper.service';
+import { Contact } from '../../contacts/services/contact-data.service';
+import { BoardFormService } from '../services/board-form.service';
+import { BoardSubtaskService } from '../services/board-subtask.service';
+import { ContactHelperService } from '../../contacts/services/contact-helper.service';
 import { FlatpickrDirective } from '../../directives/flatpickr.directive';
 
 /**
@@ -277,3 +277,4 @@ export class TaskEditOverlayComponent implements OnDestroy {
     this.removeDropdownClickListener();
   }
 }
+

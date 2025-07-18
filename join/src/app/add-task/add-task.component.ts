@@ -3,15 +3,15 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ContactsComponent } from '../contacts/contacts.component';
-import { Contact } from '../services/contact-data.service';
+import { Contact } from '../contacts/services/contact-data.service';
 import { Firestore, collectionData, collection, DocumentData } from '@angular/fire/firestore';
 import { Task } from '../interfaces/task.interface';
-import { TaskService } from '../services/task.service';
+import { TaskService } from '../shared/services/task.service';
 import { InlineSvgDirective } from '../inline-svg.directive';
 import { FlatpickrDirective } from '../directives/flatpickr.directive';
-import { BoardFormService } from '../services/board-form.service';
-import { AddTaskFormService } from '../services/add-task-form.service';
-import { AddTaskContactService } from '../services/add-task-contact.service';
+import { BoardFormService } from '../board/services/board-form.service';
+import { AddTaskFormService } from './services/add-task-form.service';
+import { AddTaskContactService } from './services/add-task-contact.service';
 
 /**
  * Component for adding new tasks to the system.

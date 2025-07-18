@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 
 /**
  * Guard to protect routes that require authentication.
@@ -35,3 +35,4 @@ export class AuthGuard implements CanActivate {
     return false;
   }
 }
+

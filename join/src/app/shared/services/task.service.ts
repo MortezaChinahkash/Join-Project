@@ -1,6 +1,6 @@
 import { Injectable, inject, Injector, runInInjectionContext } from '@angular/core';
 import { Firestore, addDoc, collection, updateDoc, deleteDoc, doc } from '@angular/fire/firestore';
-import { Task, TaskColumn, Subtask } from '../interfaces/task.interface';
+import { Task, TaskColumn, Subtask } from '../../interfaces/task.interface';
 
 /**
  * Service for managing tasks and their operations.
@@ -340,3 +340,4 @@ export class TaskService {
     }
   }
 }
+

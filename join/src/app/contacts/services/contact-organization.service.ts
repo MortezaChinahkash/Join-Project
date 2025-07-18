@@ -199,3 +199,4 @@ export class ContactOrganizationService {
     return letter.charCodeAt(0) - 65; // A=0, B=1, etc.
   }
 }
+

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FooterComponent } from "../footer/footer.component";
 import { RouterModule } from '@angular/router';
 import { InlineSvgDirective } from '../inline-svg.directive';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 
 /**
@@ -113,3 +113,4 @@ export class NavComponent implements OnInit {
     this.router.navigate(['/auth']);
   }
 }
+
