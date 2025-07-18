@@ -32,14 +32,12 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   contacts: Contact[] = [];
   selectedContacts: Contact[] = [];
-  
   isDropdownOpen = false;
   isSubmitting = false;
   maxTitleLength: number = 40;
   taskAddedNotif = false;
   editingSubtaskIndex: number | null = null;
   newSubtaskTitle = '';
-  
   private firestore = inject(Firestore);
   private injector = inject(Injector);
 
@@ -65,9 +63,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   /**
    * Component cleanup.
    */
-  ngOnDestroy(): void {
-    // Cleanup handled automatically
-  }
+  ngOnDestroy(): void {}
 
   /**
    * Initializes component data and state.
@@ -123,12 +119,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   toggleContactSelection(contact: Contact, event: Event): void {
     event.stopPropagation();
-    
     this.selectedContacts = this.contactService.toggleContactSelection(
       contact, 
       this.selectedContacts
     );
-    
     this.formService.updateFormAssignedContacts(this.taskForm, this.selectedContacts);
   }
 
@@ -219,9 +213,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     if (!this.formService.canSubmitForm(this.taskForm, this.isSubmitting)) {
       return;
     }
-
     this.isSubmitting = true;
-    
     try {
       const taskData = this.prepareTaskData();
       await this.taskService.addTaskToFirebase(taskData, 'todo');
@@ -239,7 +231,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   private prepareTaskData(): Omit<Task, 'id'> {
     const formValue = this.taskForm.value;
     const validSubtasks = this.formService.filterValidSubtasks(formValue.subtasks || []);
-    
     return {
       title: formValue.title,
       description: formValue.description,
@@ -274,7 +265,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
         event, 
         this.isDropdownOpen
       );
-      
       if (shouldCloseDropdown) {
         this.isDropdownOpen = false;
       }
