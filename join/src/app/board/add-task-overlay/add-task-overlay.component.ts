@@ -5,6 +5,7 @@ import { Contact } from '../../services/contact-data.service';
 import { TaskColumn } from '../../interfaces/task.interface';
 import { BoardFormService } from '../../services/board-form.service';
 import { BoardSubtaskService } from '../../services/board-subtask.service';
+import { ContactHelperService } from '../../services/contact-helper.service';
 import { FlatpickrDirective } from '../../directives/flatpickr.directive';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -63,7 +64,8 @@ export class AddTaskOverlayComponent implements OnDestroy {
 
   constructor(
     public formService: BoardFormService,
-    public subtaskService: BoardSubtaskService
+    public subtaskService: BoardSubtaskService,
+    public contactHelperService: ContactHelperService
   ) {
     // No need for local dropdown listener - using the service listener instead
   }
@@ -86,24 +88,14 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Gets the initials color for a contact
    */
   getInitialsColor(name: string): string {
-    const colors = ['#ff7a00', '#ff5eb3', '#6e52ff', '#9327ff', '#00bee8', '#1fd7c1', '#ff745e', '#ffa35e', '#fc71ff', '#ffc701', '#0038ff', '#c3ff2b', '#ffe62b', '#ff4646', '#ffbb2b'];
-    let hash = 0;
-    for (let i = 0; i < name.length; i++) {
-      hash = name.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const index = Math.abs(hash) % colors.length;
-    return colors[index];
+    return this.contactHelperService.getInitialsColor(name);
   }
 
   /**
    * Gets the initials from a contact name
    */
   getInitials(name: string): string {
-    return name
-      .split(' ')
-      .map(part => part.charAt(0).toUpperCase())
-      .slice(0, 2)
-      .join('');
+    return this.contactHelperService.getInitials(name);
   }
 
   /**

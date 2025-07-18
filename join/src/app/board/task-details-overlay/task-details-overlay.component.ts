@@ -7,6 +7,7 @@ import { BoardFormService } from '../../services/board-form.service';
 import { BoardUtilsService } from '../../services/board-utils.service';
 import { DeleteConfirmationService } from '../../services/delete-confirmation.service';
 import { TaskEditOverlayService } from '../../services/task-edit-overlay.service';
+import { ContactHelperService } from '../../services/contact-helper.service';
 
 /**
  * Task details overlay component for displaying detailed task information.
@@ -47,7 +48,8 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
     public formService: BoardFormService,
     public utilsService: BoardUtilsService,
     public deleteConfirmationService: DeleteConfirmationService,
-    public taskEditOverlayService: TaskEditOverlayService
+    public taskEditOverlayService: TaskEditOverlayService,
+    public contactHelperService: ContactHelperService
   ) {}
 
   ngOnInit(): void {
@@ -124,37 +126,15 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
    * @returns Initials (first letter of first and last name)
    */
   getInitials(name: string): string {
-    if (!name) return '';
-    const words = name.trim().split(' ');
-    if (words.length === 1) {
-      return words[0].charAt(0).toUpperCase();
-    }
-    return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+    return this.contactHelperService.getInitials(name);
   }
 
   /**
    * Gets background color for contact avatar based on name.
-   * Uses the same color logic as the contacts component.
    * @param name - Full name of the contact
    * @returns Hex color string
    */
   getInitialsColor(name: string): string {
-    if (!name?.trim()) return '#888';
-    
-    // Same color palette as ContactOrganizationService
-    const colors = [
-      '#FFB900', '#D83B01', '#B50E0E', '#E81123',
-      '#B4009E', '#5C2D91', '#0078D7', '#00B4FF',
-      '#008272', '#107C10', '#7FBA00', '#F7630C',
-      '#CA5010', '#EF6950', '#E74856', '#0099BC',
-      '#7A7574', '#767676', '#FF8C00', '#E3008C',
-      '#68217A', '#00188F', '#00BCF2', '#00B294',
-      '#BAD80A', '#FFF100',
-    ];
-    
-    // Same calculation logic as ContactOrganizationService
-    const letter = name.trim()[0].toUpperCase();
-    const colorIndex = letter.charCodeAt(0) - 65; // A=0, B=1, etc.
-    return colors[colorIndex % colors.length];
+    return this.contactHelperService.getInitialsColor(name);
   }
 }

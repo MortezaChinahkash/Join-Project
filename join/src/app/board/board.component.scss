@@ -1,9 +1,8 @@
 // Board Component Main Styles
-// Import all partials using @use instead of @import
+// Import only styles needed by the board component itself
 @use './styles/header';
 @use './styles/board-layout';
 @use './styles/task-card';
-@use './styles/add-task-overlay';
 @use './styles/mobile-move-overlay';
 @use './styles/drag-and-drop';
 @use './styles/responsive';
@@ -54,100 +53,7 @@
   }
 }
 
-// Spezifisch für taskEditOverlay
-.taskEditOverlay {
-  .subtask-item {
-    .subtask-input-group {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.75rem;
-      border-radius: 8px;
-      transition: background-color 0.2s ease;
-      position: relative;
-      
-      // Sehr leichter Hover-Effekt für die ganze Zeile
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.02); // Minimal grauer Hintergrund
-        
-        .subtask-hover-actions {
-          opacity: 1;
-          visibility: visible;
-        }
-      }
-      
-      // Input nimmt verfügbaren Platz
-      .form-input {
-        flex: 1;
-        margin-right: auto;
-        width: 100%;
-        padding-right: 60px; // Weniger Padding - Icons sind jetzt kleiner
-        box-sizing: border-box;
-      }
-    }
-    
-    // Hover Actions Container - versteckt bis hover
-    .subtask-hover-actions {
-      display: flex;
-      gap: 16px; // Fester Abstand zwischen den Buttons
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: all 0.2s ease;
-      position: relative; // Für den Divider
-      
-      .edit-subtask-btn,
-      .remove-subtask-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        border: none;
-        background: transparent;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: transform 0.2s ease; // Nur Transform-Animation
-        
-        img {
-          width: 18px;
-          height: 18px;
-          opacity: 0.6;
-          transition: opacity 0.15s ease;
-        }
-        
-        // Hover-Effekt: Leichte Vergrößerung + Opacity
-        &:hover {
-          transform: scale(1.1); // 10% Vergrößerung
-          
-          img {
-            opacity: 1; // Vollständige Sichtbarkeit
-          }
-        }
-        
-        // Active-State für besseres Feedback
-        &:active {
-          transform: scale(1.05); // Leicht kleiner beim Klick
-        }
-      }
-      
-      // Divider genau mittig zwischen den Buttons - UNABHÄNGIG von Hover
-      &::after {
-        content: '';
-        position: absolute;
-        left: 50%; // Genau in der Mitte
-        top: 50%;
-        transform: translate(-50%, -50%); // Perfekte Zentrierung
-        width: 1px;
-        height: 20px;
-        background-color: rgba(0, 0, 0, 0.2);
-        z-index: 1;
-        pointer-events: none; // Kein Hover-Effekt auf den Divider
-      }
-    }
-  }
-}
+// Removed duplicate taskEditOverlay styles - now in task-details-overlay component
 
 // Custom Flatpickr styling for Board overlays
 :host ::ng-deep .flatpickr-calendar {
@@ -373,21 +279,7 @@
   border-color: #5ba4cf;
 }
 
-// Spezifisches Styling für ausgegraute Subtasks im Edit-Overlay
-.taskEditOverlay .subtask-item .form-input.grayed {
-  background: #f4f4f4 !important;
-  color: #b0b0b0 !important;
-  border: 1px solid #e0e0e0 !important;
-  cursor: not-allowed !important;
-}
-
-// Noch spezifischer für readonly Felder
-.taskEditOverlay input[readonly].form-input.grayed {
-  background: #f4f4f4 !important;
-  color: #b0b0b0 !important;
-  border: 1px solid #e0e0e0 !important;
-  cursor: not-allowed !important;
-}
+// Removed duplicate taskEditOverlay styles
 
 .form-input.grayed {
   background: #f4f4f4;
