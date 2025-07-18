@@ -194,9 +194,10 @@
       transform: translateY(-50%) !important;
       width: 16px !important;
       height: 16px !important;
-      pointer-events: none !important;
+      pointer-events: auto !important;
       z-index: 10 !important;
       opacity: 0.6 !important;
+      cursor: pointer !important;
     }
   }
 
