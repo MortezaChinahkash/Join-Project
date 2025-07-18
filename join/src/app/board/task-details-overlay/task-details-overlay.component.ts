@@ -1,0 +1,160 @@
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { trigger, transition, style, animate } from '@angular/animations';
+import { Contact } from '../../services/contact-data.service';
+import { Task } from '../../interfaces/task.interface';
+import { BoardFormService } from '../../services/board-form.service';
+import { BoardUtilsService } from '../../services/board-utils.service';
+import { DeleteConfirmationService } from '../../services/delete-confirmation.service';
+import { TaskEditOverlayService } from '../../services/task-edit-overlay.service';
+
+/**
+ * Task details overlay component for displaying detailed task information.
+ * Handles task details display, subtask toggling, editing, and deletion.
+ *
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ */
+@Component({
+  selector: 'app-task-details-overlay',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './task-details-overlay.component.html',
+  styleUrl: './task-details-overlay.component.scss',
+  animations: [
+    trigger('slideInRight', [
+      transition(':enter', [
+        style({ transform: 'translateX(100%)', opacity: 0 }),
+        animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+      ])
+    ])
+  ]
+})
+export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
+  @Input() isVisible: boolean = false;
+  @Input() selectedTask: Task | null = null;
+  @Input() contacts: Contact[] = [];
+
+  @Output() onClose = new EventEmitter<void>();
+  @Output() onEdit = new EventEmitter<void>();
+  @Output() onDelete = new EventEmitter<void>();
+  @Output() onSubtaskToggle = new EventEmitter<number>();
+
+  constructor(
+    public formService: BoardFormService,
+    public utilsService: BoardUtilsService,
+    public deleteConfirmationService: DeleteConfirmationService,
+    public taskEditOverlayService: TaskEditOverlayService
+  ) {}
+
+  ngOnInit(): void {
+    // Component initialization if needed
+  }
+
+  ngOnDestroy(): void {
+    // Cleanup if needed
+  }
+
+  /**
+   * Closes the task details overlay.
+   */
+  closeTaskDetailsOverlay(): void {
+    this.onClose.emit();
+  }
+
+  /**
+   * Enters edit mode for the selected task.
+   */
+  editTask(): void {
+    this.onEdit.emit();
+  }
+
+  /**
+   * Deletes the selected task.
+   */
+  deleteTask(): void {
+    this.onDelete.emit();
+  }
+
+  /**
+   * Toggles subtask completion status.
+   * @param subtaskIndex - Index of the subtask to toggle
+   */
+  toggleSubtask(subtaskIndex: number): void {
+    this.onSubtaskToggle.emit(subtaskIndex);
+  }
+
+  /**
+   * Gets the selected task's due date for display.
+   * @returns Due date string or null
+   */
+  get selectedTaskDueDate(): string | null {
+    if (!this.selectedTask || !this.selectedTask.dueDate) {
+      return null;
+    }
+    const dueDate = this.selectedTask.dueDate.trim();
+    return dueDate !== '' ? dueDate : null;
+  }
+
+  /**
+   * Checks if the selected task has a due date.
+   * @returns True if task has a due date, false otherwise
+   */
+  hasDueDate(): boolean {
+    return !!(this.selectedTask && this.selectedTask.dueDate && this.selectedTask.dueDate.trim() !== '');
+  }
+
+  /**
+   * Gets the formatted due date for display.
+   * @returns Formatted due date string or null
+   */
+  getFormattedDueDate(): string | null {
+    if (!this.selectedTask || !this.selectedTask.dueDate) {
+      return null;
+    }
+    return this.selectedTask.dueDate;
+  }
+
+  /**
+   * Gets initials from contact name for avatar display.
+   * @param name - Full name of the contact
+   * @returns Initials (first letter of first and last name)
+   */
+  getInitials(name: string): string {
+    if (!name) return '';
+    const words = name.trim().split(' ');
+    if (words.length === 1) {
+      return words[0].charAt(0).toUpperCase();
+    }
+    return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
+  }
+
+  /**
+   * Gets background color for contact avatar based on name.
+   * Uses the same color logic as the contacts component.
+   * @param name - Full name of the contact
+   * @returns Hex color string
+   */
+  getInitialsColor(name: string): string {
+    if (!name?.trim()) return '#888';
+    
+    // Same color palette as ContactOrganizationService
+    const colors = [
+      '#FFB900', '#D83B01', '#B50E0E', '#E81123',
+      '#B4009E', '#5C2D91', '#0078D7', '#00B4FF',
+      '#008272', '#107C10', '#7FBA00', '#F7630C',
+      '#CA5010', '#EF6950', '#E74856', '#0099BC',
+      '#7A7574', '#767676', '#FF8C00', '#E3008C',
+      '#68217A', '#00188F', '#00BCF2', '#00B294',
+      '#BAD80A', '#FFF100',
+    ];
+    
+    // Same calculation logic as ContactOrganizationService
+    const letter = name.trim()[0].toUpperCase();
+    const colorIndex = letter.charCodeAt(0) - 65; // A=0, B=1, etc.
+    return colors[colorIndex % colors.length];
+  }
+}
