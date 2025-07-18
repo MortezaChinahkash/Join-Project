@@ -1,34 +1,21 @@
-// Responsive Media Queries
 @media (min-width: 1001px) and (max-width: 1600px) {
   .board-scroll-wrapper {
-    /* overflow-x: visible; - Removed to allow board overview scrolling */
-    /* Enable overflow-x: visible only during drag operations */
     &.dragging {
       overflow-x: visible;
     }
   }
-  
   .board-container {
     width: fit-content;
     min-width: 100%;
   }
-  
-  // .board-column {
-  //   flex: 0 0 320px;
-  //   min-width: 320px;
-  //   max-width: 320px;
-  // }
 }
 
 @media (min-width: 1751px) {
   .board-scroll-wrapper {
-    /* overflow-x: visible; - Removed to allow board overview scrolling */
-    /* Enable overflow-x: visible only during drag operations */
     &.dragging {
       overflow-x: visible;
     }
   }
-  
   .board-container {
     width: 100%;
     justify-content: flex-start;
@@ -39,7 +26,6 @@
   .mobile-only {
     display: none;
   }
-  
   .desktop-only {
     display: flex;
   }
@@ -53,22 +39,18 @@
   .mobile-only {
     display: flex;
   }
-  
   .desktop-only {
     display: none;
   }
-
   .board-scroll-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
-
   .board-container {
     display: flex;
     flex-direction: column;
     width: 100%;
     min-width: 100%;
-    
   }
   .task-list{
     display: flex;
@@ -81,22 +63,18 @@
     padding: 0;
     display: flex;
   }
-
   .default-content-container {
     display: flex;
   }
-
   .component-header {
     width: 100%;
   }
-
   .component-title-bar {
     display: flex;
     order: 1;
     align-items: center;
     justify-content: space-between;
   }
-
   .mobile-search-box {
     display: flex;
     order: 2;
@@ -104,33 +82,25 @@
 }
 
 @media (max-width: 768px) {
-  // Component title bar adjustments
   .component-title-bar {
     flex-direction: column;
     gap: 1rem;
     align-items: stretch;
-
     .search-add-box {
       margin-left: 0;
       justify-content: center;
-
       .search-input-wrapper {
         min-width: 250px;
         flex: 1;
       }
-
       .desktop-header-add-button {
         display: none;
       }
     }
   }
-
-  // Mobile search box
   .mobile-search-box {
     display: block;
   }
-
-  // Task overlay adjustments
   .taskDetailsOverlay-content,
   .taskEditOverlay-content,
   .addTaskOverlay-content {
@@ -138,7 +108,6 @@
     width: 95vw;
     height: 70vh;
     margin: 10px;
-    
     border-radius: 20px;
   }
   .task-details-scrollable-content{
@@ -149,7 +118,6 @@
   }
   .task-details-header-fixed{
     padding: 16px 16px 16px 16px;
-
   }
   .task-edit-header h2 {
     font-size: 24px;
@@ -160,16 +128,13 @@
   .task-details-content h3 {
     font-size: 18px;
   }
-  
   .task-details-content p,
   .task-details-content span {
     font-size: 16px;
   }
-  
   .contact-item .contact-name {
     font-size: 16px;
   }
-  
   .task-edit-form .form-group label {
     font-size: 18px;
   }
@@ -192,122 +157,93 @@
     justify-content: center;
     padding: 12px 16px;
   }
-
-  // Add Task Overlay mobile adjustments  
   .addTaskOverlay .taskProperties {
     flex-direction: column;
-
     .devider {
       width: 100%;
       height: 1px;
       margin: 1rem 0;
     }
-
     .leftSide,
     .rightSide {
       padding: 1rem;
     }
   }
-
-  // No search results mobile
   .no-search-results h2 {
     font-size: 1.5rem;
   }
 }
 
-// Ultra-small screen support (320px)
 @media (max-width: 320px) {
   .board-container {
     flex-direction: column;
     width: 100%;
     min-width: auto;
   }
-  
   .board-column {
     flex: 0 0 auto;
     min-width: 100%;
     max-width: 100%;
     margin-bottom: 1rem;
   }
-  
   .board-scroll-wrapper {
     overflow-x: hidden;
   }
-  
   .component-header {
     width: 100%;
     }
-  
   .component-title-bar {
     flex-direction: column;
     gap: 0.5rem;
     padding: 0.5rem;
-    
     .search-add-box {
       flex-direction: column;
       gap: 0.5rem;
-      
       .search-input-wrapper {
         min-width: 100%;
         width: 100%;
       }
     }
   }
-  
-  // Task cards ultra-small screen
   .task-card {
     margin-bottom: 0.5rem;
     padding: 0.75rem;
   }
-  
   .task-title {
     font-size: 0.9rem;
     line-height: 1.3;
   }
-  
   .task-description {
     font-size: 0.8rem;
     line-height: 1.4;
   }
-  
-  // Task overlays ultra-small screen
   .addTaskOverlay {
     padding: 0;
   }
-  
   .leftSide,
   .rightSide {
     padding: 0.5rem;
   }
-    
     .devider {
       margin: 0.5rem 0;
     }
-  
-  // Search results ultra-small screen
   .no-search-results h2 {
     font-size: 1.2rem;
     line-height: 1.3;
   }
-  
   .no-search-results p {
     font-size: 0.85rem;
   }
 }
 
-// Desktop Search - verstecken ab 1000px und darunter
 .search-add-box.desktop-only {
   display: flex;
-  
   @media (max-width: 1000px) {
     display: none !important;
   }
 }
-
-// Mobile Search - nur zeigen ab 1000px und darunter
 .mobile-search-box.mobile-only {
   display: none;
-  
   @media (max-width: 1000px) {
     display: block !important;
     width: 100%;
@@ -315,14 +251,13 @@
   }
 }
 
-// Mobile move button for task cards - hidden by default, only visible on touch devices
 .mobile-move-btn {
   position: absolute;
   top: 8px;
   right: 8px;
   width: 32px;
   height: 32px;
-  display: none; // Hidden by default
+  display: none;
   align-items: center;
   justify-content: center;
   background: white;
@@ -331,36 +266,30 @@
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
   z-index: 10;
-  // Prevent layout shifts
   contain: layout style;
   will-change: transform;
-  transform: translateZ(0); // Force GPU layer
-  
+  transform: translateZ(0);
   .move-icon {
     width: 16px;
     height: 16px;
     transition: opacity 0.2s ease;
-    display: block; // Ensure proper display
+    display: block;
   }
-  
   &:hover {
     background-color: #f5f5f5;
     transform: scale(1.05) translateZ(0);
   }
-  
   &:active {
     background-color: #e0e0e0;
     transform: scale(0.95) translateZ(0);
   }
 }
 
-// Show mobile move buttons only on touch devices
 @media (hover: none) and (pointer: coarse) {
   .mobile-move-btn {
-    display: flex; // Only show on touch devices
+    display: flex;
   }
 }
-
 @media (max-width: 1000px) {
   .taskEditOverlay .subtask-item .subtask-hover-actions {
     opacity: 1 !important;
@@ -368,37 +297,29 @@
     position: static;
   }
 }
-
-
-
-// Update task footer to accommodate new button
 .task-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
   .task-footer-right {
     display: flex;
     align-items: center;
     gap: 8px;
   }
 }
-
 @media (max-width: 500px) {
   .priority-buttons {
-    gap: 2px !important; /* Weniger Abstand zwischen Buttons */
+    gap: 2px !important;
     flex-wrap: nowrap !important;
   }
-
   .priority-btn {
     flex: 1;
-    font-size: 14px !important; /* Kleinere Schriftgröße */
-    padding: 10px !important; /* Kleinere Innenabstände */
-    margin: 1px !important; /* Weniger Abstand zwischen Buttons */
+    font-size: 14px !important;
+    padding: 10px !important;
+    margin: 1px !important;
   }
-
   .priority-btn img {
-    width: 14px !important; /* Kleinere Icons */
+    width: 14px !important;
     height: 14px !important;
   }
 }
