@@ -249,7 +249,6 @@ export class BoardDragDropService {
    */
   private handleTaskDrop(onTaskUpdate: () => void): void {
     if (!this.validateDropPreconditions()) {
-      this.logDropCancellation();
       return;
     }
     const oldColumn = this.dragState.draggedTask!.column;
@@ -258,12 +257,6 @@ export class BoardDragDropService {
   }
   private validateDropPreconditions(): boolean {
     return !!(this.dragState.draggedTask && this.dragState.dragOverColumn);
-  }
-  private logDropCancellation(): void {
-    console.log('Drop cancelled: Missing draggedTask or dragOverColumn', {
-      draggedTask: this.dragState.draggedTask,
-      dragOverColumn: this.dragState.dragOverColumn
-    });
   }
   private processTaskColumnChange(oldColumn: TaskColumn, newColumn: TaskColumn, onTaskUpdate: () => void): void {
     if (oldColumn !== newColumn) {
