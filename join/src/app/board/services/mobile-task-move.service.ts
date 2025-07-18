@@ -10,6 +10,22 @@ import { BoardMobileService } from './board-mobile.service';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
+/**
+ * Service for handling task movement operations on mobile devices.
+ * Manages touch-based drag and drop functionality with mobile-specific optimizations.
+ * 
+ * This service provides methods for:
+ * - Mobile touch event handling for task movement
+ * - Task positioning and column transitions on mobile
+ * - Touch feedback and visual indicators
+ * - Mobile-specific drag and drop animations
+ * - Gesture recognition and swipe operations
+ * - Responsive task movement across different screen sizes
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

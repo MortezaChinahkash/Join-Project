@@ -7,6 +7,21 @@ import { BoardThumbnailService } from './board-thumbnail.service';
  * Service responsible for handling user interactions in the board component.
  * Manages event handlers for drag & drop, touch events, and thumbnail navigation.
  */
+/**
+ * Service for handling user interaction events on the board.
+ * Manages mouse and touch events, drag operations, and viewport interactions.
+ * 
+ * This service provides methods for:
+ * - Task mouse down and touch start event handling
+ * - Column drag and drop event management
+ * - Thumbnail click and touch navigation
+ * - Viewport interaction events for overlay management
+ * - Event delegation and coordination between different interaction types
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

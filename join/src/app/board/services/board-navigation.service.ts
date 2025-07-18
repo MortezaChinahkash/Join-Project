@@ -9,6 +9,22 @@ import { Task } from '../../interfaces/task.interface';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
+/**
+ * Service for managing board navigation and routing operations.
+ * Handles navigation between board views, task detail navigation, and route management.
+ * 
+ * This service provides methods for:
+ * - Board view navigation and routing
+ * - Task detail view navigation
+ * - Navigation history management
+ * - Route parameter handling and validation
+ * - Navigation guards and access control
+ * - Deep linking and URL state synchronization
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

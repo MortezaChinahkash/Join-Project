@@ -8,6 +8,22 @@ import { FormArray, FormGroup } from '@angular/forms';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
+/**
+ * Service for managing subtask operations within board tasks.
+ * Handles subtask CRUD operations, progress tracking, and hierarchical task management.
+ * 
+ * This service provides methods for:
+ * - Subtask creation, modification, and deletion
+ * - Subtask progress tracking and completion status
+ * - Hierarchical task-subtask relationship management
+ * - Subtask validation and data integrity
+ * - Subtask ordering and priority management
+ * - Progress calculation and visual indicators
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })
