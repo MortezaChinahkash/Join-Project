@@ -12,6 +12,22 @@ import { Contact } from '../../contacts/services/contact-data.service';
  * Service responsible for managing all task-related operations in the board component.
  * Handles task creation, editing, deletion, and array management.
  */
+/**
+ * Service for comprehensive task management operations on the board.
+ * Handles task CRUD operations, status updates, and task lifecycle management.
+ * 
+ * This service provides methods for:
+ * - Task creation, modification, and deletion
+ * - Task status and priority management
+ * - Task assignment and team member coordination
+ * - Task validation and data integrity
+ * - Task search and filtering operations
+ * - Task archiving and restoration
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

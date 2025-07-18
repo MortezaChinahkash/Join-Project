@@ -7,6 +7,22 @@ import { Injectable } from '@angular/core';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
+/**
+ * Service for managing board thumbnail displays and navigation.
+ * Handles thumbnail generation, view switching, and miniature board representations.
+ * 
+ * This service provides methods for:
+ * - Board thumbnail generation and caching
+ * - Thumbnail navigation and view switching
+ * - Miniature board layout calculations
+ * - Thumbnail update synchronization with main board
+ * - Performance-optimized thumbnail rendering
+ * - Thumbnail interaction event handling
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

@@ -12,6 +12,22 @@ import { BoardTaskManagementService } from './board-task-management.service';
  * Service responsible for component initialization and lifecycle management.
  * Handles data loading, fragment navigation, scroll setup, and array initialization.
  */
+/**
+ * Service responsible for board component initialization and setup.
+ * Handles component lifecycle, data loading, navigation setup, and initial state configuration.
+ * 
+ * This service provides methods for:
+ * - Component initialization with data loading callbacks
+ * - Contact and task data loading from Firebase
+ * - Fragment navigation setup for deep linking
+ * - Scroll listener configuration for board thumbnail navigation
+ * - Task array initialization and distribution
+ * - Query parameter handling for task navigation
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

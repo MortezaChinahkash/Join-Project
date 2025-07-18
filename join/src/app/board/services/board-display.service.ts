@@ -6,6 +6,21 @@ import { BoardUtilsService } from './board-utils.service';
  * Service responsible for display-related functionality in the board component.
  * Handles text formatting, search operations, and UI utility functions.
  */
+/**
+ * Service for handling display-related functionality and text formatting.
+ * Manages task filtering, text truncation, progress calculation, and visual display utilities.
+ * 
+ * This service provides methods for:
+ * - Text truncation with safety checks for null/undefined values
+ * - Task filtering based on search criteria
+ * - Progress calculation for task completion status
+ * - Priority icon path resolution
+ * - Search result validation and empty state detection
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

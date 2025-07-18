@@ -11,6 +11,20 @@ import { Contact } from '../../contacts/services/contact-data.service';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
+/**
+ * Service for handling board data operations and Firebase integration.
+ * Manages data loading, contact organization, and task retrieval from Firebase.
+ * 
+ * This service provides methods for:
+ * - Loading contacts from Firebase with real-time updates
+ * - Loading tasks from Firebase with automatic column distribution
+ * - Sorting contacts alphabetically for display
+ * - Organizing task data for board presentation
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })

@@ -5,6 +5,16 @@ import { BoardTaskManagementService } from './board-task-management.service';
 /**
  * Service responsible for managing task arrays and column operations.
  * Handles array updates, task distribution, and column state management.
+ * 
+ * This service provides methods for:
+ * - Updating task arrays after task changes
+ * - Distributing tasks across different columns
+ * - Handling task movement between columns
+ * - Managing column state and task assignments
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
  */
 @Injectable({
   providedIn: 'root'

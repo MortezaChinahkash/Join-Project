@@ -9,6 +9,21 @@ import { BoardInteractionService } from './board-interaction.service';
  * Service responsible for managing component lifecycle operations.
  * Handles initialization, data loading, and navigation setup.
  */
+/**
+ * Service for managing board lifecycle events and component state.
+ * Handles initialization, cleanup, and component lifecycle coordination.
+ * 
+ * This service provides methods for:
+ * - Component initialization sequence management
+ * - Lifecycle state tracking and coordination
+ * - Resource cleanup and memory management
+ * - Component state synchronization
+ * - Event listener registration and cleanup
+ * 
+ * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
+ * @version 1.0.0
+ * @since 2024
+ */
 @Injectable({
   providedIn: 'root'
 })
