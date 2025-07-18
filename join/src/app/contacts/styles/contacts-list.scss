@@ -9,10 +9,11 @@
 
 .current-user-section {
   .contactContainer.current-user {
-    margin: 0 0px 24px 0px; padding-left: 8px;
+    margin: 4px 24px 28px 24px; padding: 4px 8px;
     &:hover { background: #f5f5f5; transform: none; box-shadow: none; }
     &.active {
       background: #2d3a4a; color: white;
+      border-radius: 8px;
       .contactName, .contactMail { color: white; }
     }
   }
@@ -48,8 +49,8 @@
 }
 
 .contactContainer {
-  display: flex; flex-direction: row; gap: 12px; padding-left: 8px; align-items: center;
-  margin-bottom: 32px; cursor: pointer; min-width: 0; overflow: hidden;
+  display: flex; flex-direction: row; gap: 12px; padding: 4px 8px; align-items: center;
+  margin: 4px 24px 28px 24px; cursor: pointer; min-width: 0; overflow: hidden;
 }
 
 .contactContainer:hover { background-color: var(--bg-grey); border-radius: 12px; }
@@ -77,29 +78,29 @@
 .contactContainer.active .contactMail { color: #fff; }
 
 @media (max-width: 1000px) {
-  .contactContainer { padding-left: 8px; margin-bottom: 24px; }
+  .contactContainer { padding: 4px 8px; margin: 4px 24px 20px 24px; }
 }
 
 @media (max-width: 768px) {
   .current-user-section {
-    .contactContainer.current-user { margin: 0 0px 20px 0px; padding-left: 6px; }
+    .contactContainer.current-user { margin: 4px 24px 16px 24px; padding: 4px 6px; }
   }
-  .contactContainer { padding-left: 6px; margin-bottom: 20px; gap: 8px; }
+  .contactContainer { padding: 4px 6px; margin: 4px 24px 16px 24px; gap: 8px; }
   .initials { width: 36px; min-width: 36px; height: 36px; font-size: 16px; }
 }
 
 @media (max-width: 480px) {
   .current-user-section {
-    .contactContainer.current-user { margin: 0 0px 16px 0px; padding-left: 4px; }
+    .contactContainer.current-user { margin: 4px 24px 12px 24px; padding: 4px 4px; }
   }
-  .contactContainer { padding-left: 4px; margin-bottom: 16px; gap: 6px; }
+  .contactContainer { padding: 4px 4px; margin: 4px 24px 12px 24px; gap: 6px; }
   .initials { width: 32px; min-width: 32px; height: 32px; font-size: 14px; }
 }
 
 @media (max-width: 320px) {
   .current-user-section {
-    .contactContainer.current-user { margin: 0 0px 12px 0px; padding-left: 2px; }
+    .contactContainer.current-user { margin: 4px 24px 8px 24px; padding: 4px 2px; }
   }
-  .contactContainer { padding-left: 2px; margin-bottom: 12px; gap: 4px; }
+  .contactContainer { padding: 4px 2px; margin: 4px 24px 8px 24px; gap: 4px; }
   .initials { width: 28px; min-width: 28px; height: 28px; font-size: 12px; }
 }
