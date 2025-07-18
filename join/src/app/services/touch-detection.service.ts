@@ -58,14 +58,15 @@ export class TouchDetectionService {
 
   /**
    * Checks if mobile move buttons should be shown.
-   * Only shows on devices that are actually mobile/touch-first devices.
-   * Desktop devices with touchscreens should still use mouse interactions.
+   * Since CSS media queries handle the main visibility logic,
+   * this is mainly used for Angular template control.
    * 
    * @returns True if mobile move buttons should be displayed
    */
   shouldShowMobileControls(): boolean {
-    // Use the primary touch device detection for more accurate results
-    return this.isPrimaryTouchDevice();
+    // CSS handles visibility with @media (hover: none) and (pointer: coarse)
+    // This method can be simplified since CSS does the heavy lifting
+    return this.isTouchDevice();
   }
 
   /**
