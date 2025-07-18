@@ -1,7 +1,3 @@
-// ===================
-// Forms
-// ===================
-
 form {
   width: 340px;
   display: flex;
@@ -9,10 +5,6 @@ form {
   gap: 20px;
   align-items: flex-start;
 }
-
-// ===================
-// Input Groups
-// ===================
 
 .input-group {
   position: relative;
@@ -68,15 +60,11 @@ form {
 .info-message {
   color: #999;
   font-size: 0.8rem;
-  margin-top: 2px; // Reduzierter Abstand
+  margin-top: 2px;
   margin-bottom: 8px;
   margin-left: 4px;
   font-style: italic;
 }
-
-// ===================
-// Readonly Input Styles
-// ===================
 
 .input-readonly {
   background: #f5f5f5 !important;
@@ -101,10 +89,6 @@ form {
   font-style: italic;
 }
 
-// ===================
-// Input Icons
-// ===================
-
 .input-icon {
   position: absolute;
   height: 1em;
@@ -115,10 +99,6 @@ form {
 .input-icon svg path {
   fill: var(--color-greyed-out);
 }
-
-// ===================
-// Form Buttons
-// ===================
 
 .form-buttons {
   display: flex;
