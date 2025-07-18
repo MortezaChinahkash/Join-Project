@@ -23,14 +23,12 @@ export class AuthGuard implements CanActivate {
    * @returns true if user is authenticated, false otherwise
    */
   async canActivate(): Promise<boolean> {
-    // Wait for Firebase to be ready
     await this.authService.waitForAuthReady();
     
     if (this.authService.isAuthenticated) {
       return true;
     }
     
-    // Redirect to auth page if not authenticated
     this.router.navigate(['/auth']);
     return false;
   }
