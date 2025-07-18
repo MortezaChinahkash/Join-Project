@@ -97,25 +97,34 @@ export class TaskEditOverlayComponent implements OnDestroy {
       const dropdownContainer = target.closest('.contacts-dropdown');
       const dropdownTrigger = target.closest('.dropdown-trigger');
       
-      // Also check for AddTaskOverlay dropdown elements
+      /**
+       * Also check for AddTaskOverlay dropdown elements
+       */
       const addTaskDropdownWrapper = target.closest('.custom-select-wrapper');
       const addTaskDropdownOption = target.closest('.dropdown-option');
       
-      // Don't close if clicking on AddTaskOverlay dropdown elements
+      /**
+       * Don't close if clicking on AddTaskOverlay dropdown elements
+       */
       if (addTaskDropdownWrapper || addTaskDropdownOption) {
         return;
       }
       
-      // Close dropdown if clicked outside and dropdown is open
+      /**
+       * Close dropdown if clicked outside and dropdown is open
+       */
       if (!dropdownContainer && this.formService.isDropdownOpen) {
         this.formService.isDropdownOpen = false;
       }
-      // Don't close if clicking on the trigger (let the toggle handle it)
+      /**
+       * Don't close if clicking on the trigger (let the toggle handle it)
+       */
       else if (dropdownTrigger) {
         return;
       }
     };
-    document.addEventListener('click', this.dropdownClickListener, true); // Use capture phase
+    /** Use capture phase */
+    document.addEventListener('click', this.dropdownClickListener, true);
   }
 
   /**
@@ -123,7 +132,8 @@ export class TaskEditOverlayComponent implements OnDestroy {
    */
   private removeDropdownClickListener(): void {
     if (this.dropdownClickListener) {
-      document.removeEventListener('click', this.dropdownClickListener, true); // Use capture phase
+      /** Use capture phase */
+      document.removeEventListener('click', this.dropdownClickListener, true);
       this.dropdownClickListener = undefined;
     }
   }
@@ -228,7 +238,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
       if (this.editingSubtaskIndex === index) {
         this.saveSubtaskEdit();
       }
-    }, 150); // Small delay to allow clicking save/delete buttons
+    }, 150); /** Small delay to allow clicking save/delete buttons */
   }
 
   /**
@@ -243,7 +253,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
    * Cancels the current subtask edit and reverts changes
    */
   cancelSubtaskEdit(index: number): void {
-    // Revert to original value if needed
+    /** Revert to original value if needed */
     this.editingSubtaskIndex = null;
     this.removeDocumentClickListener();
   }
