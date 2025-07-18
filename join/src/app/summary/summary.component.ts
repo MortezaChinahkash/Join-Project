@@ -283,7 +283,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
    */
   getUrgentTasksDueToday(): number {
     const today = new Date();
-    const todayString = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    today.setHours(0, 0, 0, 0);
     
     return this.tasks.filter(task => {
       // Check if task is urgent
@@ -296,11 +296,11 @@ export class SummaryComponent implements OnInit, OnDestroy {
         return false;
       }
       
-      // Convert task due date to comparable format
-      const taskDueDate = new Date(task.dueDate);
-      const taskDueDateString = taskDueDate.toISOString().split('T')[0];
+      // Parse task due date and compare with today
+      const taskDueDate = this.parseDueDate(task.dueDate);
+      taskDueDate.setHours(0, 0, 0, 0);
       
-      return taskDueDateString === todayString;
+      return taskDueDate.getTime() === today.getTime();
     }).length;
   }
 
@@ -323,7 +323,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const urgentTasksWithDueDate = this.tasks.filter(task => 
       task.priority === 'urgent' && 
       task.dueDate && 
-      new Date(task.dueDate) >= today // Only future or today's deadlines
+      this.parseDueDate(task.dueDate) >= today // Only future or today's deadlines
     );
 
     if (urgentTasksWithDueDate.length === 0) {
@@ -332,12 +332,46 @@ export class SummaryComponent implements OnInit, OnDestroy {
 
     // Find the task with the earliest due date
     const nearestTask = urgentTasksWithDueDate.reduce((nearest, current) => {
-      const currentDate = new Date(current.dueDate!);
-      const nearestDate = new Date(nearest.dueDate!);
+      const currentDate = this.parseDueDate(current.dueDate!);
+      const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
 
-    return new Date(nearestTask.dueDate!);
+    return this.parseDueDate(nearestTask.dueDate!);
+  }
+
+  /**
+   * Parses a due date string in German format (DD.MM.YYYY) to a Date object.
+   * @param dateString - Date string in format DD.MM.YYYY
+   * @returns Date object or null if parsing fails
+   */
+  private parseDueDate(dateString: string): Date {
+    if (!dateString) {
+      return new Date(); // Fallback to current date
+    }
+
+    // Handle German date format (DD.MM.YYYY)
+    if (dateString.includes('.')) {
+      const parts = dateString.split('.');
+      if (parts.length === 3) {
+        const day = parseInt(parts[0], 10);
+        const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+        const year = parseInt(parts[2], 10);
+        
+        // Validate date parts
+        if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+          const date = new Date(year, month, day);
+          // Verify the date is valid
+          if (date.getFullYear() === year && date.getMonth() === month && date.getDate() === day) {
+            return date;
+          }
+        }
+      }
+    }
+
+    // Fallback: try native Date parsing
+    const parsed = new Date(dateString);
+    return isNaN(parsed.getTime()) ? new Date() : parsed;
   }
 
   /**
@@ -400,7 +434,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const urgentTasksWithDueDate = this.tasks.filter(task => 
       task.priority === 'urgent' && 
       task.dueDate && 
-      new Date(task.dueDate) >= today
+      this.parseDueDate(task.dueDate) >= today
     );
 
     if (urgentTasksWithDueDate.length === 0) {
@@ -411,8 +445,8 @@ export class SummaryComponent implements OnInit, OnDestroy {
 
     // Find the task with the earliest due date
     const nearestUrgentTask = urgentTasksWithDueDate.reduce((nearest, current) => {
-      const currentDate = new Date(current.dueDate!);
-      const nearestDate = new Date(nearest.dueDate!);
+      const currentDate = this.parseDueDate(current.dueDate!);
+      const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
 
