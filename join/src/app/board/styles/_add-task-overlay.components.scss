@@ -352,3 +352,38 @@
   margin-top: 4px;
 }
 
+// Category dropdown specific styles
+.category-select-wrapper {
+  .custom-select {
+    .selected-text {
+      color: #2a3647;
+      font-weight: 400;
+    }
+    
+    .placeholder {
+      color: #d1d1d1;
+    }
+  }
+  
+  .category-dropdown-options {
+    .dropdown-option {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      
+      .category-name {
+        color: #2a3647;
+        font-weight: 400;
+      }
+      
+      &:hover {
+        background-color: #f0f4ff;
+        
+        .category-name {
+          color: #29abe2;
+        }
+      }
+    }
+  }
+}
+

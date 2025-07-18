@@ -52,11 +52,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
   newSubtaskTitle: string = '';
 
   /**
-   * Document click listener for dropdown outside click detection
-   */
-  private dropdownClickListener?: (event: Event) => void;
-
-  /**
    * Emitted when the overlay should be closed
    */
   @Output() onClose = new EventEmitter<void>();
@@ -70,10 +65,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
     public formService: BoardFormService,
     public subtaskService: BoardSubtaskService
   ) {
-    // Setup dropdown listener after a short delay to ensure DOM is ready
-    setTimeout(() => {
-      this.setupDropdownClickListener();
-    }, 0);
+    // No need for local dropdown listener - using the service listener instead
   }
 
   /**
@@ -88,38 +80,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
    */
   getSelectedContacts(contacts: Contact[]): Contact[] {
     return contacts.filter(contact => this.formService.isContactSelected(contact));
-  }
-
-  /**
-   * Sets up document click listener for dropdown
-   */
-  private setupDropdownClickListener(): void {
-    this.removeDropdownClickListener();
-    this.dropdownClickListener = (event: Event) => {
-      const target = event.target as HTMLElement;
-      const dropdownContainer = target.closest('.custom-select-wrapper');
-      const dropdownTrigger = target.closest('.custom-select');
-      
-      // Close dropdown if clicked outside and dropdown is open
-      if (!dropdownContainer && this.formService.isDropdownOpen) {
-        this.formService.isDropdownOpen = false;
-      }
-      // Don't close if clicking on the trigger (let the toggle handle it)
-      else if (dropdownTrigger) {
-        return;
-      }
-    };
-    document.addEventListener('click', this.dropdownClickListener, true); // Use capture phase
-  }
-
-  /**
-   * Removes dropdown click listener
-   */
-  private removeDropdownClickListener(): void {
-    if (this.dropdownClickListener) {
-      document.removeEventListener('click', this.dropdownClickListener, true); // Use capture phase
-      this.dropdownClickListener = undefined;
-    }
   }
 
   /**
@@ -179,6 +139,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Cleanup when component is destroyed
    */
   ngOnDestroy(): void {
-    this.removeDropdownClickListener();
+    // Service handles its own cleanup
   }
 }

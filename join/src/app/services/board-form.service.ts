@@ -27,6 +27,10 @@ export class BoardFormService {
   isDropdownOpen = false;
   selectedContacts: Contact[] = [];
   showAssignedContactsDropdown = false;
+  private preventDropdownClose = false; // Flag to prevent dropdown from closing
+  
+  // Category selection
+  isCategoryDropdownOpen = false;
   
   // Click outside listener cleanup
   private documentClickListener?: (event: Event) => void;
@@ -74,6 +78,7 @@ export class BoardFormService {
   closeAddTaskOverlay() {
     this.showAddTaskOverlay = false;
     this.isDropdownOpen = false;
+    this.isCategoryDropdownOpen = false;
     this.removeDocumentClickListener();
     this.resetForm();
   }
@@ -111,6 +116,7 @@ export class BoardFormService {
     this.selectedPriority = '';
     this.selectedContacts = []; // Reset selected contacts
     this.isDropdownOpen = false;
+    this.isCategoryDropdownOpen = false;
     this.showAssignedContactsDropdown = false;
     this.removeDocumentClickListener();
     this.removeAssignedContactsClickListener();
@@ -268,6 +274,21 @@ export class BoardFormService {
     }
   }
 
+  // Category dropdown methods
+  toggleCategoryDropdown() {
+    this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+    
+    if (this.isCategoryDropdownOpen) {
+      this.addDocumentClickListener();
+      // Mark field as touched when dropdown is opened
+      this.taskForm.get('category')?.markAsTouched();
+    } else {
+      this.removeDocumentClickListener();
+      // Trigger validation when dropdown closes
+      this.onCategoryChange();
+    }
+  }
+
   /**
    * Adds document click listener for closing dropdown when clicking outside
    */
@@ -276,13 +297,35 @@ export class BoardFormService {
     this.removeDocumentClickListener();
     
     this.documentClickListener = (event: Event) => {
+      // Check if we should prevent closing
+      if (this.preventDropdownClose) {
+        this.preventDropdownClose = false; // Reset the flag
+        return;
+      }
+      
       const target = event.target as HTMLElement;
       const dropdownWrapper = target.closest('.custom-select-wrapper');
       const contactsDropdown = target.closest('.contacts-dropdown');
+      const dropdownOption = target.closest('.dropdown-option');
+      const contactOption = target.closest('.contact-option');
+      const categoryWrapper = target.closest('.category-select-wrapper');
       
-      // Close dropdown if click is outside both dropdown structures
+      // Don't close if clicking on dropdown options or contact options
+      if (dropdownOption || contactOption) {
+        return;
+      }
+      
+      // Close contact dropdown if click is outside contact dropdown structures
       if (!dropdownWrapper && !contactsDropdown && this.isDropdownOpen) {
         this.isDropdownOpen = false;
+        this.removeDocumentClickListener();
+      }
+      
+      // Close category dropdown if click is outside category dropdown
+      if (!categoryWrapper && this.isCategoryDropdownOpen) {
+        this.isCategoryDropdownOpen = false;
+        this.taskForm.get('category')?.markAsTouched();
+        this.onCategoryChange();
         this.removeDocumentClickListener();
       }
     };
@@ -307,6 +350,9 @@ export class BoardFormService {
    * @param event - The click event (to stop propagation)
    */
   toggleContactSelection(contact: Contact, event: Event) {
+    // Set flag to prevent dropdown from closing
+    this.preventDropdownClose = true;
+    
     event.stopPropagation();
     
     const index = this.selectedContacts.findIndex(c => c.id === contact.id);
@@ -328,6 +374,35 @@ export class BoardFormService {
    */
   isContactSelected(contact: Contact): boolean {
     return this.selectedContacts.some(c => c.id === contact.id);
+  }
+
+  /**
+   * Selects a category and closes the dropdown
+   * 
+   * @param category - The category to select
+   */
+  selectCategory(category: string): void {
+    this.taskForm.patchValue({ category });
+    this.onCategoryChange();
+    this.isCategoryDropdownOpen = false;
+    this.removeDocumentClickListener();
+  }
+
+  /**
+   * Gets display text for category value
+   * 
+   * @param category - The category value
+   * @returns Formatted display text
+   */
+  getCategoryDisplayText(category: string): string {
+    switch (category) {
+      case 'technical':
+        return 'Technical Task';
+      case 'user-story':
+        return 'User Story';
+      default:
+        return '';
+    }
   }
 
   /**

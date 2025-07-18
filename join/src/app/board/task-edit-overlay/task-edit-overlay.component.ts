@@ -93,6 +93,15 @@ export class TaskEditOverlayComponent implements OnDestroy {
       const dropdownContainer = target.closest('.contacts-dropdown');
       const dropdownTrigger = target.closest('.dropdown-trigger');
       
+      // Also check for AddTaskOverlay dropdown elements
+      const addTaskDropdownWrapper = target.closest('.custom-select-wrapper');
+      const addTaskDropdownOption = target.closest('.dropdown-option');
+      
+      // Don't close if clicking on AddTaskOverlay dropdown elements
+      if (addTaskDropdownWrapper || addTaskDropdownOption) {
+        return;
+      }
+      
       // Close dropdown if clicked outside and dropdown is open
       if (!dropdownContainer && this.formService.isDropdownOpen) {
         this.formService.isDropdownOpen = false;
