@@ -228,13 +228,14 @@
 
     .date-icon {
       position: absolute !important;
-      right: 12px !important;
+      right: 8px !important;
       top: 50% !important;
       transform: translateY(-50%) !important;
       width: 16px !important;
       height: 16px !important;
       pointer-events: none !important;
       z-index: 10 !important;
+      opacity: 0.6 !important;
     }
   }
 
@@ -314,6 +315,11 @@
         width: 16px;
         height: 16px;
         transition: transform 0.2s ease;
+        color: #666;
+        
+        &.open {
+          transform: rotate(180deg);
+        }
       }
 
       &:hover {
@@ -425,6 +431,11 @@
           display: flex;
           align-items: center;
           gap: 4px;
+          background: white;
+          border-radius: 4px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          padding: 2px;
+          z-index: 10;
 
           button {
             background: none;
@@ -435,10 +446,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 24px; // Fixed width for consistent button sizes
+            height: 24px; // Fixed height for consistent button sizes
+            min-width: 24px;
+            min-height: 24px;
 
             img {
               width: 16px;
               height: 16px;
+              filter: brightness(0); // Makes the icon black
             }
 
             &:hover {
@@ -452,18 +468,71 @@
             background-color: #d1d1d1;
             margin: 0 4px;
           }
+
+          .edit-subtask-btn:hover {
+            background-color: #e3f2fd;
+          }
+
+          .save-subtask-btn:hover {
+            background-color: #e8f5e8;
+          }
+
+          .remove-subtask-btn:hover {
+            background-color: #ffebee;
+          }
         }
 
         .subtask-hover-actions {
           display: none;
+          opacity: 0.7;
+          transition: opacity 0.2s;
+
+          &:hover {
+            opacity: 1;
+          }
         }
 
         &:hover .subtask-hover-actions {
           display: flex;
         }
 
-        &:hover .subtask-input-actions {
-          display: none;
+        // Show hover actions always on touch devices
+        &.touch-device .subtask-hover-actions {
+          display: flex !important;
+          opacity: 0.8;
+          
+          &:hover {
+            opacity: 1;
+          }
+        }
+
+        // Also show on touch when not editing
+        &.touch-device:not(.editing) .subtask-hover-actions {
+          display: flex !important;
+        }
+
+        // Input actions are always visible when editing
+
+        // Touch device specific styles
+        &.touch-device {
+          .subtask-hover-actions {
+            display: flex !important;
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.95);
+            
+            &:active {
+              opacity: 1;
+            }
+          }
+        }
+
+        // Media query fallback for touch devices
+        @media (hover: none) and (pointer: coarse) {
+          .subtask-hover-actions {
+            display: flex !important;
+            opacity: 0.8;
+            background: rgba(255, 255, 255, 0.95);
+          }
         }
       }
     }

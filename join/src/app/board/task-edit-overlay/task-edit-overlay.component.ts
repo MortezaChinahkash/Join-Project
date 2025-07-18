@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Task } from '../../interfaces/task.interface';
@@ -20,7 +20,7 @@ import { FlatpickrDirective } from '../../directives/flatpickr.directive';
   templateUrl: './task-edit-overlay.component.html',
   styleUrl: './task-edit-overlay.component.scss'
 })
-export class TaskEditOverlayComponent {
+export class TaskEditOverlayComponent implements OnDestroy {
   
   /**
    * Controls the visibility of the edit overlay
@@ -48,6 +48,21 @@ export class TaskEditOverlayComponent {
   editingSubtaskIndex: number | null = null;
 
   /**
+   * Indicates if the device supports touch
+   */
+  isTouchDevice: boolean = false;
+
+  /**
+   * Document click listener for outside click detection
+   */
+  private documentClickListener?: (event: Event) => void;
+
+  /**
+   * Document click listener for dropdown outside click detection
+   */
+  private dropdownClickListener?: (event: Event) => void;
+
+  /**
    * Emitted when the overlay should be closed
    */
   @Output() onClose = new EventEmitter<void>();
@@ -60,7 +75,79 @@ export class TaskEditOverlayComponent {
   constructor(
     public formService: BoardFormService,
     private subtaskService: BoardSubtaskService
-  ) {}
+  ) {
+    this.detectTouchDevice();
+    // Setup dropdown listener after a short delay to ensure DOM is ready
+    setTimeout(() => {
+      this.setupDropdownClickListener();
+    }, 0);
+  }
+
+  /**
+   * Sets up document click listener for dropdown
+   */
+  private setupDropdownClickListener(): void {
+    this.removeDropdownClickListener();
+    this.dropdownClickListener = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const dropdownContainer = target.closest('.contacts-dropdown');
+      const dropdownTrigger = target.closest('.dropdown-trigger');
+      
+      // Close dropdown if clicked outside and dropdown is open
+      if (!dropdownContainer && this.formService.isDropdownOpen) {
+        this.formService.isDropdownOpen = false;
+      }
+      // Don't close if clicking on the trigger (let the toggle handle it)
+      else if (dropdownTrigger) {
+        return;
+      }
+    };
+    document.addEventListener('click', this.dropdownClickListener, true); // Use capture phase
+  }
+
+  /**
+   * Removes dropdown click listener
+   */
+  private removeDropdownClickListener(): void {
+    if (this.dropdownClickListener) {
+      document.removeEventListener('click', this.dropdownClickListener, true); // Use capture phase
+      this.dropdownClickListener = undefined;
+    }
+  }
+
+  /**
+   * Detects if the device supports touch
+   */
+  private detectTouchDevice(): void {
+    this.isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  }
+
+  /**
+   * Sets up document click listener when editing starts
+   */
+  private setupDocumentClickListener(): void {
+    this.removeDocumentClickListener();
+    this.documentClickListener = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const subtaskContainer = target.closest('.subtask-input-group');
+      const isActionButton = target.closest('.subtask-input-actions');
+      
+      if (!subtaskContainer && !isActionButton && this.editingSubtaskIndex !== null) {
+        this.saveSubtaskEdit();
+      }
+    };
+    document.addEventListener('click', this.documentClickListener);
+  }
+
+  /**
+   * Removes document click listener
+   */
+  private removeDocumentClickListener(): void {
+    if (this.documentClickListener) {
+      document.removeEventListener('click', this.documentClickListener);
+      this.documentClickListener = undefined;
+    }
+  }
 
   /**
    * Gets the initials color for a contact
@@ -109,6 +196,7 @@ export class TaskEditOverlayComponent {
    */
   editSubtask(index: number): void {
     this.editingSubtaskIndex = index;
+    this.setupDocumentClickListener();
     this.subtaskService.focusSubtaskInput(index);
   }
 
@@ -117,15 +205,53 @@ export class TaskEditOverlayComponent {
    */
   stopEditingSubtask(): void {
     this.editingSubtaskIndex = null;
+    this.removeDocumentClickListener();
   }
 
   /**
    * Handles subtask input focus
    */
   onSubtaskInputFocus(index: number): void {
-    if (this.editingSubtaskIndex === index) {
+    if (this.editingSubtaskIndex !== index) {
       this.editSubtask(index);
     }
+  }
+
+  /**
+   * Handles subtask input blur - auto saves the subtask
+   */
+  onSubtaskInputBlur(index: number): void {
+    setTimeout(() => {
+      if (this.editingSubtaskIndex === index) {
+        this.saveSubtaskEdit();
+      }
+    }, 150); // Small delay to allow clicking save/delete buttons
+  }
+
+  /**
+   * Saves the current subtask edit
+   */
+  saveSubtaskEdit(): void {
+    this.editingSubtaskIndex = null;
+    this.removeDocumentClickListener();
+  }
+
+  /**
+   * Cancels the current subtask edit and reverts changes
+   */
+  cancelSubtaskEdit(index: number): void {
+    // Revert to original value if needed
+    this.editingSubtaskIndex = null;
+    this.removeDocumentClickListener();
+  }
+
+  /**
+   * Deletes a subtask
+   */
+  deleteSubtask(index: number): void {
+    this.formService.removeSubtask(index);
+    this.editingSubtaskIndex = null;
+    this.removeDocumentClickListener();
   }
 
   /**
@@ -140,5 +266,13 @@ export class TaskEditOverlayComponent {
       );
       this.newSubtaskTitle = '';
     }
+  }
+
+  /**
+   * Cleanup when component is destroyed
+   */
+  ngOnDestroy(): void {
+    this.removeDocumentClickListener();
+    this.removeDropdownClickListener();
   }
 }

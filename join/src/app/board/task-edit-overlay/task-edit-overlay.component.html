@@ -85,7 +85,9 @@
             <span *ngIf="formService.selectedContacts.length > 0">
               {{ formService.selectedContacts.length }} contact(s) selected
             </span>
-            <img src="./assets/img/icon_cancel.svg" alt="Dropdown" class="dropdown-arrow" />
+            <svg class="dropdown-arrow" [class.open]="formService.isDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </div>
           <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
             <div 
@@ -124,7 +126,8 @@
             [formGroupName]="i">
             <div 
               class="subtask-input-group" 
-              [class.completed-subtask]="subtask.get('completed')?.value">
+              [class.completed-subtask]="subtask.get('completed')?.value"
+              [class.touch-device]="isTouchDevice">
               <input
                 type="text"
                 [id]="'edit-subtask-' + i"
@@ -136,12 +139,15 @@
                 [class.grayed]="editingSubtaskIndex !== i"
                 placeholder="Enter subtask title"
                 (focus)="onSubtaskInputFocus(i)"
+                (blur)="onSubtaskInputBlur(i)"
+                (keydown.enter)="stopEditingSubtask()"
+                (keydown.escape)="cancelSubtaskEdit(i)"
               />
               <div class="subtask-input-actions" *ngIf="editingSubtaskIndex === i">
                 <button 
                   type="button" 
                   class="remove-subtask-btn" 
-                  (click)="formService.removeSubtask(i)" 
+                  (click)="deleteSubtask(i)" 
                   title="Delete subtask">
                   <img src="./assets/img/icon_delete.svg" alt="Delete" />
                 </button>
@@ -149,9 +155,9 @@
                 <button 
                   type="button" 
                   class="save-subtask-btn" 
-                  (click)="stopEditingSubtask()" 
+                  (click)="saveSubtaskEdit()" 
                   title="Save subtask">
-                  <img src="./assets/img/icon_check.svg" alt="Save" />
+                  <img src="./assets/icons/check.svg" alt="Save" />
                 </button>
               </div>
               <div class="subtask-hover-actions" *ngIf="editingSubtaskIndex !== i">
@@ -160,8 +166,9 @@
                   class="edit-subtask-btn" 
                   (click)="editSubtask(i)" 
                   title="Edit subtask">
-                  <img src="./assets/img/icon_todo.svg" alt="Edit" />
+                  <img src="./assets/icons/todo.svg" alt="Edit" />
                 </button>
+                <span class="subtask-divider"></span>
                 <button 
                   type="button" 
                   class="remove-subtask-btn" 
