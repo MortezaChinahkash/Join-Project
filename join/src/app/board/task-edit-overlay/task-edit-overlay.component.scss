@@ -414,7 +414,7 @@
               background: none !important;
               img {
                 transform: scale(1.2);
-                filter: brightness(0) saturate(100%) invert(20%) sepia(10%) saturate(500%) hue-rotate(180deg) brightness(70%) contrast(95%);
+                filter: brightness(0) saturate(0%) invert(30%) !important;
               }
             }
           }
@@ -423,27 +423,6 @@
             height: 18px;
             background-color: #d0d0d0;
             margin: 0 2px;
-          }
-          .edit-subtask-btn:hover {
-            background: none !important;
-            img {
-              filter: brightness(0) saturate(100%) invert(40%) sepia(98%) saturate(1034%) hue-rotate(172deg) brightness(85%) contrast(89%);
-              transform: scale(1.2);
-            }
-          }
-          .save-subtask-btn:hover {
-            background: none !important;
-            img {
-              filter: brightness(0) saturate(100%) invert(30%) sepia(50%) saturate(2466%) hue-rotate(101deg) brightness(80%) contrast(87%);
-              transform: scale(1.2);
-            }
-          }
-          .remove-subtask-btn:hover {
-            background: none !important;
-            img {
-              filter: brightness(0) saturate(100%) invert(20%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(85%) contrast(105%);
-              transform: scale(1.2);
-            }
           }
         }
         .subtask-hover-actions {
