@@ -256,10 +256,8 @@
             </div>
             <div class="task-due-date">
               <h3>Due date:</h3>
-              <span *ngIf="formService.selectedTask.dueDate; else noDueDate">{{ formService.selectedTask.dueDate | date:'dd/MM/yyyy' }}</span>
-              <ng-template #noDueDate>
-                <span class="no-content-placeholder">No Due Date</span>
-              </ng-template>
+              <span *ngIf="selectedTaskDueDate">{{ selectedTaskDueDate }}</span>
+              <span *ngIf="!selectedTaskDueDate" class="no-content-placeholder">No Due Date</span>
             </div>
             <div class="task-priority" [attr.data-priority]="formService.selectedTask.priority">
               <h3>Priority:</h3>
