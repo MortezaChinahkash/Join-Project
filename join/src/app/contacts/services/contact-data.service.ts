@@ -28,7 +28,6 @@ export interface Contact {
 export class ContactDataService {
   private firestore = inject(Firestore);
   private injector = inject(Injector);
-
   /**
    * Loads all contacts from Firestore.
    * @returns Observable stream of contacts
@@ -39,7 +38,6 @@ export class ContactDataService {
       return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
     });
   }
-
   /**
    * Adds a new contact to Firestore.
    * @param contactData - Contact data to add
@@ -63,7 +61,6 @@ export class ContactDataService {
       phone: contactData.phone,
     };
   }
-
   /**
    * Updates an existing contact in Firestore.
    * @param contactId - ID of the contact to update
@@ -80,7 +77,6 @@ export class ContactDataService {
       phone: contactData.phone,
     });
   }
-
   /**
    * Deletes a contact from Firestore.
    * @param contactId - ID of the contact to delete
@@ -89,7 +85,6 @@ export class ContactDataService {
   async deleteContactFromFirestore(contactId: string): Promise<void> {
     return deleteDoc(doc(this.firestore, 'contacts', contactId));
   }
-
   /**
    * Validates contact data before saving.
    * @param contactData - Contact data to validate
@@ -98,7 +93,6 @@ export class ContactDataService {
   validateContactData(contactData: Partial<Contact>): boolean {
     return !!(contactData.name?.trim() && contactData.email?.trim());
   }
-
   /**
    * Ensures phone field has a value, defaults to "N/A" if empty.
    * @param phone - Phone value to check

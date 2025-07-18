@@ -12,7 +12,6 @@ import { Contact } from './contact-data.service';
   providedIn: 'root'
 })
 export class ContactHelperService {
-
   /**
    * Gets displayed contacts for task assignment (max 3).
    * @param assignedContacts - Array of assigned contact names
@@ -26,7 +25,6 @@ export class ContactHelperService {
       .filter(contact => contact !== undefined) as Contact[];
     return contacts.slice(0, maxDisplay);
   }
-
   /**
    * Checks if there are remaining contacts not displayed.
    * @param assignedContacts - Array of assigned contact names
@@ -40,7 +38,6 @@ export class ContactHelperService {
       .filter(contact => contact !== undefined).length;
     return contactCount > maxDisplay;
   }
-
   /**
    * Gets count of remaining contacts not displayed.
    * @param assignedContacts - Array of assigned contact names
@@ -54,7 +51,6 @@ export class ContactHelperService {
       .filter(contact => contact !== undefined).length;
     return Math.max(0, contactCount - maxDisplay);
   }
-
   /**
    * Gets initials from contact name for avatar display.
    * @param name - Full name of the contact
@@ -68,7 +64,6 @@ export class ContactHelperService {
     }
     return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
   }
-
   /**
    * Gets background color for contact avatar based on name.
    * Uses the same color logic as the contacts component.
@@ -77,8 +72,6 @@ export class ContactHelperService {
    */
   getInitialsColor(name: string): string {
     if (!name?.trim()) return '#888';
-    
-    // Same color palette as ContactOrganizationService
     const colors = [
       '#FFB900', '#D83B01', '#B50E0E', '#E81123',
       '#B4009E', '#5C2D91', '#0078D7', '#00B4FF',
@@ -88,10 +81,8 @@ export class ContactHelperService {
       '#68217A', '#00188F', '#00BCF2', '#00B294',
       '#BAD80A', '#FFF100',
     ];
-    
-    // Same calculation logic as ContactOrganizationService
     const letter = name.trim()[0].toUpperCase();
-    const colorIndex = letter.charCodeAt(0) - 65; // A=0, B=1, etc.
+    const colorIndex = letter.charCodeAt(0) - 65;
     return colors[colorIndex % colors.length];
   }
 }
