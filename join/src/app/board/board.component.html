@@ -444,25 +444,15 @@
           </div>
         </div>
       </div>
-      <div class="deleteConfirmationOverlay" *ngIf="formService.showDeleteConfirmationOverlay">
-        <div class="deleteConfirmationOverlay-content">
-          <div class="delete-confirmation-header">
-            <h2>Delete Task</h2>
-            <button class="close-btn" (click)="closeDeleteConfirmation()"><img src="./assets/img/icon_cancel.svg" alt="Close" /></button>
-          </div>
-          <div class="delete-confirmation-body">
-            <div class="warning-icon">
-              <img src="./assets/img/icon_delete.svg" alt="Warning" />
-            </div>
-            <p class="delete-message">Are you sure you want to delete the task <strong>"{{ formService.taskToDelete?.title }}"</strong>?</p>
-            <p class="delete-warning">This action cannot be undone.</p>
-          </div>
-          <div class="delete-confirmation-actions">
-            <button class="cancel-btn" (click)="closeDeleteConfirmation()">Cancel</button>
-            <button class="delete-confirm-btn" (click)="confirmDeleteTask()"><img src="./assets/img/icon_delete.svg" alt="Delete" />Delete Task</button>
-          </div>
-        </div>
-      </div>
+      
+      <!-- Delete Confirmation Component -->
+      <app-delete-confirmation 
+        [isVisible]="deleteConfirmationService.showDeleteConfirmationOverlay"
+        [taskToDelete]="deleteConfirmationService.taskToDelete"
+        (onCancel)="closeDeleteConfirmation()"
+        (onConfirm)="confirmDeleteTask()">
+      </app-delete-confirmation>
+      
       <div class="mobileMoveOverlay" *ngIf="showMobileMoveOverlay" (click)="closeMobileMoveOverlay()">
         <div class="mobileMoveOverlay-content" 
              (click)="$event.stopPropagation()"
