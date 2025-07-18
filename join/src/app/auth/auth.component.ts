@@ -2,8 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../services/auth.service';
-import { WelcomeOverlayService } from '../services/welcome-overlay.service';
+import { AuthService } from '../shared/services/auth.service';
+import { WelcomeOverlayService } from '../shared/services/welcome-overlay.service';
 
 /**
  * Authentication component for login and registration.
@@ -270,3 +270,4 @@ export class AuthComponent implements OnInit {
     return this.registerForm.valid && !this.isLoading;
   }
 }
+

@@ -2,7 +2,7 @@
 // This component should be removed in production
 
 import { Component } from '@angular/core';
-import { OnboardingService } from '../services/onboarding.service';
+import { OnboardingService } from '../shared/services/onboarding.service';
 import { CommonModule } from '@angular/common';
 
 @Component({

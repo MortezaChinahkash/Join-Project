@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../interfaces/task.interface';
-import { Contact } from './contact-data.service';
+import { Task } from '../../interfaces/task.interface';
+import { Contact } from '../../contacts/services/contact-data.service';
 import { BoardFormService } from './board-form.service';
 
 /**
@@ -77,3 +77,7 @@ export class TaskEditOverlayService {
     return this.selectedTask || this.formService.selectedTask;
   }
 }
+
+
+
+

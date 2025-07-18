@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task, TaskColumn } from '../interfaces/task.interface';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
 
 /**
  * Service for managing mobile task movement functionality.
@@ -206,3 +206,7 @@ export class BoardMobileService {
     return null;
   }
 }
+
+
+
+

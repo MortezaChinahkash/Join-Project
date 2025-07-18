@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Contact } from './contact-data.service';
-import { Task, TaskColumn } from '../interfaces/task.interface';
+import { Contact } from '../../contacts/services/contact-data.service';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { BoardDataService } from './board-data.service';
 import { BoardThumbnailService } from './board-thumbnail.service';
-import { TaskService } from './task.service';
+import { TaskService } from '../../shared/services/task.service';
 import { BoardUtilsService } from './board-utils.service';
 import { BoardTaskManagementService } from './board-task-management.service';
 
@@ -175,3 +175,7 @@ export class BoardInitializationService {
     });
   }
 }
+
+
+
+

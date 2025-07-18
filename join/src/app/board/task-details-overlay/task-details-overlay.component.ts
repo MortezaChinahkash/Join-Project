@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Contact } from '../../services/contact-data.service';
+import { Contact } from '../../contacts/services/contact-data.service';
 import { Task } from '../../interfaces/task.interface';
-import { BoardFormService } from '../../services/board-form.service';
-import { BoardUtilsService } from '../../services/board-utils.service';
-import { DeleteConfirmationService } from '../../services/delete-confirmation.service';
-import { TaskEditOverlayService } from '../../services/task-edit-overlay.service';
-import { ContactHelperService } from '../../services/contact-helper.service';
+import { BoardFormService } from '../services/board-form.service';
+import { BoardUtilsService } from '../services/board-utils.service';
+import { DeleteConfirmationService } from '../../shared/services/delete-confirmation.service';
+import { TaskEditOverlayService } from '../services/task-edit-overlay.service';
+import { ContactHelperService } from '../../contacts/services/contact-helper.service';
 
 /**
  * Task details overlay component for displaying detailed task information.
@@ -138,3 +138,4 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
     return this.contactHelperService.getInitialsColor(name);
   }
 }
+

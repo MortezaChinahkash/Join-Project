@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../interfaces/task.interface';
+import { Task } from '../../interfaces/task.interface';
 
 /**
  * Service for handling task display utilities and helper functions.
@@ -200,3 +200,7 @@ export class BoardUtilsService {
     return selectedTask.subtasks.filter(subtask => subtask.completed).length;
   }
 }
+
+
+
+

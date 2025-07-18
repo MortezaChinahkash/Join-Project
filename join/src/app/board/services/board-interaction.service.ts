@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task, TaskColumn } from '../interfaces/task.interface';
+import { Task, TaskColumn } from '../../interfaces/task.interface';
 import { BoardDragDropService } from './board-drag-drop.service';
 import { BoardThumbnailService } from './board-thumbnail.service';
 
@@ -122,3 +122,7 @@ export class BoardInteractionService {
     }, 500);
   }
 }
+
+
+
+

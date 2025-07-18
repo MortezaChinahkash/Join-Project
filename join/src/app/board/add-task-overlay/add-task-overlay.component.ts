@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Contact } from '../../services/contact-data.service';
+import { Contact } from '../../contacts/services/contact-data.service';
 import { TaskColumn } from '../../interfaces/task.interface';
-import { BoardFormService } from '../../services/board-form.service';
-import { BoardSubtaskService } from '../../services/board-subtask.service';
-import { ContactHelperService } from '../../services/contact-helper.service';
+import { BoardFormService } from '../services/board-form.service';
+import { BoardSubtaskService } from '../services/board-subtask.service';
+import { ContactHelperService } from '../../contacts/services/contact-helper.service';
 import { FlatpickrDirective } from '../../directives/flatpickr.directive';
 import { trigger, transition, style, animate } from '@angular/animations';
 
@@ -134,3 +134,4 @@ export class AddTaskOverlayComponent implements OnDestroy {
     // Service handles its own cleanup
   }
 }
+

@@ -95,3 +95,4 @@ export class ContactHelperService {
     return colors[colorIndex % colors.length];
   }
 }
+

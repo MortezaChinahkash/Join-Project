@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../interfaces/task.interface';
+import { Task } from '../../interfaces/task.interface';
 import { BoardUtilsService } from './board-utils.service';
 
 /**
@@ -89,3 +89,7 @@ export class BoardDisplayService {
     return this.utilsService.getPriorityIcon(priority);
   }
 }
+
+
+
+

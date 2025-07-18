@@ -564,6 +564,23 @@
     }
   }
 }
+
+@media (max-width: 1000px) {
+  .taskEditOverlay-content {
+    .task-edit-form {
+      .subtasks-container {
+        .subtask-item {
+          .subtask-input-group {
+            .subtask-hover-actions {
+              opacity: 1 !important;
+              visibility: visible !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 @media (max-width: 640px) {
   .taskEditOverlay-content {
     width: 95%;

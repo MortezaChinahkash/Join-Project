@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Task } from '../interfaces/task.interface';
+import { Task } from '../../interfaces/task.interface';
 import { TaskService } from './task.service';
 
 /**
@@ -74,3 +74,4 @@ export class DeleteConfirmationService {
     this.openDeleteConfirmation(task);
   }
 }
+

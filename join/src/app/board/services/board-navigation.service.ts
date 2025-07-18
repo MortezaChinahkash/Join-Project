@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Task } from '../interfaces/task.interface';
+import { Task } from '../../interfaces/task.interface';
 
 /**
  * Service for handling navigation and query parameter operations.
@@ -92,3 +92,7 @@ export class BoardNavigationService {
     });
   }
 }
+
+
+
+

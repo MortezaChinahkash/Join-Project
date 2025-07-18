@@ -106,3 +106,4 @@ export class TouchDetectionService {
     return false;
   }
 }
+

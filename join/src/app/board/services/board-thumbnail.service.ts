@@ -365,3 +365,7 @@ export class BoardThumbnailService {
     event.preventDefault();
   }
 }
+
+
+
+
