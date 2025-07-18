@@ -315,14 +315,14 @@
   }
 }
 
-// Mobile move button for task cards
+// Mobile move button for task cards - hidden by default, only visible on touch devices
 .mobile-move-btn {
   position: absolute;
   top: 8px;
   right: 8px;
   width: 32px;
   height: 32px;
-  display: flex; // Always show when rendered (controlled by *ngIf in template)
+  display: none; // Hidden by default
   align-items: center;
   justify-content: center;
   background: white;
@@ -351,6 +351,13 @@
   &:active {
     background-color: #e0e0e0;
     transform: scale(0.95) translateZ(0);
+  }
+}
+
+// Show mobile move buttons only on touch devices
+@media (hover: none) and (pointer: coarse) {
+  .mobile-move-btn {
+    display: flex; // Only show on touch devices
   }
 }
 
