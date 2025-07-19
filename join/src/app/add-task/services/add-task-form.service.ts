@@ -45,7 +45,24 @@ export class AddTaskFormService {
    * @param form - Form to set defaults for
    */
   setDefaultValues(form: FormGroup): void {
-    form.patchValue({ priority: 'medium' });
+    const today = new Date();
+    const todayFormatted = this.formatDateToAmerican(today);
+    form.patchValue({ 
+      priority: 'medium',
+      dueDate: todayFormatted
+    });
+  }
+
+  /**
+   * Formats a date to American format (MM/dd/yyyy).
+   * @param date - Date to format
+   * @returns Formatted date string
+   */
+  private formatDateToAmerican(date: Date): string {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
   }
   /**
    * Updates form with selected priority.

@@ -43,11 +43,11 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
    */
   private initializeFlatpickr(): void {
     const defaultOptions = {
-      dateFormat: 'd.m.Y',
+      dateFormat: 'm/d/Y',
       allowInput: true,
       minDate: 'today',
       locale: {
-        firstDayOfWeek: 1
+        firstDayOfWeek: 0 // Sunday as first day for American standard
       },
       onChange: (selectedDates: Date[]) => {
         const date = selectedDates.length > 0 ? selectedDates[0] : null;
@@ -62,7 +62,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
     this.flatpickrInstance = flatpickr(this.elementRef.nativeElement, mergedOptions);
   }
   /**
-   * Formats a date object to dd.mm.yyyy string format.
+   * Formats a date object to mm/dd/yyyy string format (American format).
    * @param date - The date to format
    * @returns The formatted date string
    */
@@ -70,7 +70,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-    return `${day}.${month}.${year}`;
+    return `${month}/${day}/${year}`;
   }
   /**
    * Sets up click handler for the calendar icon to open the date picker.

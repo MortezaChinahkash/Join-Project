@@ -17,6 +17,8 @@ import { Contact } from '../../contacts/services/contact-data.service';
 export class BoardFormService {
   // Form state
   taskForm: FormGroup;
+  private _isCategoryDropdownOpen: boolean = false;
+  
   constructor(
     private fb: FormBuilder,
     private validationService: BoardFormValidationService,
@@ -26,16 +28,32 @@ export class BoardFormService {
   ) {
     this.taskForm = this.createTaskForm();
   }
+  
+  /**
+   * Formats a date to American format (MM/dd/yyyy).
+   * 
+   * @param date - Date to format
+   * @returns Formatted date string
+   */
+  private formatDateToAmerican(date: Date): string {
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  }
   /**
    * Creates and initializes the task form.
    * 
    * @returns Configured FormGroup
    */
   private createTaskForm(): FormGroup {
+    const today = new Date();
+    const todayFormatted = this.formatDateToAmerican(today);
+    
     return this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      dueDate: [''],
+      dueDate: [todayFormatted],
       priority: ['medium', Validators.required],
       category: ['', Validators.required],
       subtasks: this.fb.array([])
@@ -171,12 +189,16 @@ export class BoardFormService {
    */
   resetForm(): void {
     this.taskForm.reset();
+    const today = new Date();
+    const todayFormatted = this.formatDateToAmerican(today);
     this.taskForm.patchValue({
       priority: 'medium',
-      category: ''
+      category: '',
+      dueDate: todayFormatted
     });
     this.contactSelectionService.clearSelectedContacts();
   }
+
   /**
    * Closes the form and resets state.
    */
@@ -300,12 +322,16 @@ export class BoardFormService {
   }
   selectCategory(category: string): void {
     this.taskForm.patchValue({ category });
+    this._isCategoryDropdownOpen = false;
   }
   get isCategoryDropdownOpen(): boolean {
-    return false; // Placeholder implementation
+    return this._isCategoryDropdownOpen;
   }
   toggleCategoryDropdown(): void {
-    // Placeholder implementation
+    this._isCategoryDropdownOpen = !this._isCategoryDropdownOpen;
+  }
+  closeCategoryDropdown(): void {
+    this._isCategoryDropdownOpen = false;
   }
   getCategoryDisplayText(form: any): string {
     const category = form?.get('category')?.value;

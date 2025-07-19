@@ -1,4 +1,4 @@
-﻿import { Component, EventEmitter, Input, Output, OnDestroy } from '@angular/core';
+﻿import { Component, EventEmitter, Input, Output, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Contact } from '../../contacts/services/contact-data.service';
@@ -97,6 +97,29 @@ export class AddTaskOverlayComponent implements OnDestroy {
    */
   onFormSubmit(): void {
     this.onSubmit.emit();
+  }
+  /**
+   * Handles clicks outside dropdowns to close them
+   */
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    
+    // Close category dropdown if clicking outside
+    if (this.formService.isCategoryDropdownOpen) {
+      const categoryDropdown = target.closest('.category-select-wrapper');
+      if (!categoryDropdown) {
+        this.formService.closeCategoryDropdown();
+      }
+    }
+    
+    // Close contacts dropdown if clicking outside
+    if (this.formService.isDropdownOpen) {
+      const contactsDropdown = target.closest('.custom-select-wrapper:not(.category-select-wrapper)');
+      if (!contactsDropdown) {
+        // This would need to be implemented in the service as well
+      }
+    }
   }
   /**
    * Adds a new subtask to the add task form
