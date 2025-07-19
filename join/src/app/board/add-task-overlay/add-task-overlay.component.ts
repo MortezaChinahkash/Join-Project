@@ -96,7 +96,15 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Handles form submission
    */
   onFormSubmit(): void {
-    this.onSubmit.emit();
+    // Mark all fields as touched to show validation errors
+    Object.keys(this.formService.taskForm.controls).forEach(key => {
+      this.formService.taskForm.get(key)?.markAsTouched();
+    });
+    
+    // Only emit if form is valid
+    if (this.formService.taskForm.valid && !this.formService.isDateInvalid('dueDate')) {
+      this.onSubmit.emit();
+    }
   }
   /**
    * Handles clicks outside dropdowns to close them

@@ -53,7 +53,7 @@ export class BoardFormService {
     return this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(10)]],
-      dueDate: [todayFormatted],
+      dueDate: [todayFormatted, Validators.required],
       priority: ['medium', Validators.required],
       category: ['', Validators.required],
       subtasks: this.fb.array([])
@@ -93,6 +93,33 @@ export class BoardFormService {
       priority: task.priority,
       category: task.category
     });
+    
+    // Populate subtasks
+    this.populateSubtasks(task.subtasks || []);
+  }
+
+  /**
+   * Populates the subtasks FormArray with task subtasks.
+   * 
+   * @param subtasks - Array of subtasks to populate
+   */
+  private populateSubtasks(subtasks: any[]): void {
+    const subtasksFormArray = this.subtasksFormArray;
+    
+    // Clear existing subtasks
+    while (subtasksFormArray.length !== 0) {
+      subtasksFormArray.removeAt(0);
+    }
+    
+    // Add each subtask to the FormArray
+    subtasks.forEach(subtask => {
+      const subtaskGroup = this.fb.group({
+        title: [subtask.title || ''],
+        completed: [subtask.completed || false],
+        id: [subtask.id || Date.now().toString()]
+      });
+      subtasksFormArray.push(subtaskGroup);
+    });
   }
   /**
    * Saves the current task.
@@ -131,6 +158,10 @@ export class BoardFormService {
     if (!currentTask) {
       throw new Error('No current task available');
     }
+    
+    // Extract subtasks from FormArray
+    const subtasks = formValue.subtasks || [];
+    
     return {
       ...currentTask,
       title: formValue.title,
@@ -138,7 +169,8 @@ export class BoardFormService {
       dueDate: formValue.dueDate,
       priority: formValue.priority,
       category: formValue.category,
-      assignedTo: this.contactSelectionService.getSelectedContactIds()
+      assignedTo: this.contactSelectionService.getSelectedContactIds(),
+      subtasks: subtasks
     };
   }
   /**
@@ -196,7 +228,21 @@ export class BoardFormService {
       category: '',
       dueDate: todayFormatted
     });
+    
+    // Clear subtasks FormArray
+    this.clearSubtasks();
+    
     this.contactSelectionService.clearSelectedContacts();
+  }
+
+  /**
+   * Clears all subtasks from the FormArray.
+   */
+  private clearSubtasks(): void {
+    const subtasksFormArray = this.subtasksFormArray;
+    while (subtasksFormArray.length !== 0) {
+      subtasksFormArray.removeAt(0);
+    }
   }
 
   /**
@@ -230,6 +276,9 @@ export class BoardFormService {
   }
   isDateInvalid(fieldName: string, form?: any): boolean {
     return this.validationService.isDateInvalid(form || this.taskForm, fieldName);
+  }
+  getFieldErrorMessage(fieldName: string): string {
+    return this.validationService.getFieldErrorMessage(this.taskForm, fieldName);
   }
   // Contact Selection Service Delegates
   get selectedContacts(): Contact[] {
@@ -322,6 +371,7 @@ export class BoardFormService {
   }
   selectCategory(category: string): void {
     this.taskForm.patchValue({ category });
+    this.taskForm.get('category')?.markAsTouched();
     this._isCategoryDropdownOpen = false;
   }
   get isCategoryDropdownOpen(): boolean {
@@ -341,13 +391,33 @@ export class BoardFormService {
   get subtasksFormArray(): any {
     return this.taskForm.get('subtasks');
   }
-  createSubtaskGroup(title: string = ''): any {
-    // Basic placeholder implementation
-    return { 
-      title: title, 
-      completed: false,
-      id: Date.now().toString()
-    };
+  createSubtaskGroup(title: string = '', completed: boolean = false): FormGroup {
+    return this.fb.group({
+      title: [title],
+      completed: [completed],
+      id: [Date.now().toString()]
+    });
+  }
+
+  /**
+   * Adds a new subtask to the form.
+   * 
+   * @param title - Title of the new subtask
+   */
+  addNewSubtask(title: string): void {
+    if (title.trim()) {
+      const subtaskGroup = this.createSubtaskGroup(title.trim());
+      this.subtasksFormArray.push(subtaskGroup);
+    }
+  }
+
+  /**
+   * Removes a subtask from the form by index.
+   * 
+   * @param index - Index of the subtask to remove
+   */
+  removeSubtaskByIndex(index: number): void {
+    this.subtasksFormArray.removeAt(index);
   }
   getSubtaskProgress(): number {
     const subtasks = this.selectedTask?.subtasks || [];

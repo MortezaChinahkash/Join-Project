@@ -22,10 +22,10 @@
                      [class.error]="formService.taskForm.get('title')?.invalid && formService.taskForm.get('title')?.touched"
                      (blur)="formService.taskForm.get('title')?.markAsTouched()" />
               <div class="error-message">
-                <span *ngIf="formService.taskForm.get('title')?.invalid && formService.taskForm.get('title')?.touched">
-                  Title is required
+                <span *ngIf="formService.isFieldInvalid('title')">
+                  {{ formService.getFieldErrorMessage('title') }}
                 </span>
-                <span *ngIf="!(formService.taskForm.get('title')?.invalid && formService.taskForm.get('title')?.touched)">&nbsp;</span>
+                <span *ngIf="!formService.isFieldInvalid('title')">&nbsp;</span>
               </div>
             </div>
             <div class="form-group">
@@ -44,15 +44,18 @@
                        placeholder="mm/dd/yyyy"
                        flatpickr
                        class="form-input date-input" 
-                       [class.error]="formService.taskForm.get('dueDate')?.invalid && formService.taskForm.get('dueDate')?.touched" 
+                       [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')"
                        (change)="formService.taskForm.get('dueDate')?.markAsTouched()" />
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
               <div class="error-message">
-                <span *ngIf="formService.taskForm.get('dueDate')?.invalid && formService.taskForm.get('dueDate')?.touched">
-                  Due date is required
+                <span *ngIf="formService.isFieldInvalid('dueDate')">
+                  {{ formService.getFieldErrorMessage('dueDate') }}
                 </span>
-                <span *ngIf="!(formService.taskForm.get('dueDate')?.invalid && formService.taskForm.get('dueDate')?.touched)">&nbsp;</span>
+                <span *ngIf="!formService.isFieldInvalid('dueDate') && formService.isDateInvalid('dueDate')">
+                  Due date cannot be in the past
+                </span>
+                <span *ngIf="!formService.isFieldInvalid('dueDate') && !formService.isDateInvalid('dueDate')">&nbsp;</span>
               </div>
             </div>
           </div>
@@ -104,8 +107,8 @@
               <label for="category">Category<span class="required">*</span></label>
               <div class="custom-select-wrapper category-select-wrapper">
                 <div class="custom-select" 
-                     [class.error]="formService.taskForm.get('category')?.invalid && formService.taskForm.get('category')?.touched" 
-                     (click)="formService.toggleCategoryDropdown(); $event.stopPropagation()">
+                     [class.error]="formService.isFieldInvalid('category')" 
+                     (click)="formService.toggleCategoryDropdown(); formService.taskForm.get('category')?.markAsTouched(); $event.stopPropagation()">
                   <span class="selected-text" *ngIf="formService.taskForm.get('category')?.value; else categoryPlaceholder">
                     {{ formService.getCategoryDisplayText(formService.taskForm.get('category')?.value) }}
                   </span>
@@ -124,10 +127,10 @@
                 </div>
               </div>
               <div class="error-message">
-                <span *ngIf="formService.taskForm.get('category')?.invalid && formService.taskForm.get('category')?.touched">
-                  Category is required
+                <span *ngIf="formService.isFieldInvalid('category')">
+                  {{ formService.getFieldErrorMessage('category') }}
                 </span>
-                <span *ngIf="!(formService.taskForm.get('category')?.invalid && formService.taskForm.get('category')?.touched)">&nbsp;</span>
+                <span *ngIf="!formService.isFieldInvalid('category')">&nbsp;</span>
               </div>
             </div>
             <div class="form-group">
