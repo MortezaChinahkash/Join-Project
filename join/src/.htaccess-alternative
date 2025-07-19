@@ -1,18 +1,26 @@
-Options -MultiViews -Indexes
+# Alternative .htaccess for servers with different configurations
+# Specifically for /Join/ subdirectory
 RewriteEngine On
-
-# Set the base directory for the application
 RewriteBase /Join/
 
-# Don't rewrite files or directories that exist
+# Handle requests for existing files and directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Don't rewrite for certain directories and file types
-RewriteCond %{REQUEST_URI} !^/Join/(assets|favicon\.ico|.*\.(js|css|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot|ico|json)).*$ [NC]
+# Exclude assets and static files from rewriting
+RewriteCond %{REQUEST_URI} !^/Join/(assets|public)/
+RewriteCond %{REQUEST_URI} !\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot|json|html)$ [NC]
 
-# Rewrite everything else to index.html to allow Angular routing
-RewriteRule ^.*$ /Join/index.html [L]
+# Redirect everything else to index.html in the Join directory
+RewriteRule ^(.*)$ /Join/index.html [L,QSA]
+
+# Alternative method - catch all
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /Join/index.html [L]
+
+# Force index.html for Angular routes
+ErrorDocument 404 /Join/index.html
 
 # Security headers
 <IfModule mod_headers.c>

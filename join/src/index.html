@@ -16,9 +16,23 @@
 <link rel="apple-touch-icon" href="/Favicon.png">
 <meta charset="utf-8">
 <title>Join</title>
-<base href="/">
+<base href="/Join/">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" type="image/x-icon" href="./assets/img/Favicon.png">
+<script>
+  // Single Page Application support for GitHub Pages and similar hosting
+  // Adjusted for /Join/ subdirectory
+  (function(l) {
+    if (l.search[1] === '/' ) {
+      var decoded = l.search.slice(1).split('&').map(function(s) { 
+        return s.replace(/~and~/g, '&')
+      }).join('?');
+      window.history.replaceState(null, null,
+          '/Join/' + decoded.substring(1) + l.hash
+      );
+    }
+  }(window.location))
+</script>
 </head>
 <body>
   <app-root></app-root>

@@ -1,0 +1,15 @@
+# Simple .htaccess for /Join/ subdirectory
+RewriteEngine On
+
+# Set base path
+RewriteBase /Join/
+
+# If the request is for a file or directory that exists, serve it
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect all other requests to index.html
+RewriteRule . index.html [L]
+
+# Alternative fallback
+ErrorDocument 404 /Join/index.html

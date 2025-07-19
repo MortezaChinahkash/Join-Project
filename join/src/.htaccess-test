@@ -1,0 +1,9 @@
+# TEST .htaccess - Very basic approach
+RewriteEngine On
+
+# Catch all non-existing files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect everything to index.html
+RewriteRule ^(.*)$ index.html [L,QSA]

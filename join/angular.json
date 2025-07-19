@@ -39,6 +39,41 @@
                 "glob": "web.config",
                 "input": "src",
                 "output": "/"
+              },
+              {
+                "glob": "404.html",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "nginx.conf",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": ".htaccess-alternative",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": ".htaccess-simple",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "_redirects",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": ".htaccess-test",
+                "input": "src",
+                "output": "/"
+              },
+              {
+                "glob": "spa-fallback.js",
+                "input": "src",
+                "output": "/"
               }
             ],
             "styles": [
