@@ -237,7 +237,6 @@ export class AuthService implements OnDestroy {
     return sessionAge <= this.SESSION_DURATION;
   }
   private clearExpiredSession(): void {
-    console.log('Stored session expired, removing from storage');
     localStorage.removeItem(this.STORAGE_KEY);
   }
   /**
@@ -379,7 +378,6 @@ export class AuthService implements OnDestroy {
     const sessionAge = currentTime - currentUser.loginTimestamp;
     // If session is older than 24 hours, auto-logout
     if (sessionAge > this.SESSION_DURATION) {
-      console.log('Session expired after 24 hours, logging out automatically');
       this.logout();
     }
   }

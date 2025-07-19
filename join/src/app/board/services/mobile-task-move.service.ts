@@ -176,19 +176,12 @@ export class MobileTaskMoveService {
     fromColumn: TaskColumn | null,
     updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => void
   ): void {
-    console.log('Mobile task move:', {
-      taskId: task.id,
-      taskTitle: task.title,
-      fromColumn: fromColumn,
-      toColumn: targetColumn
-    });
     // Update task column
     task.column = targetColumn;
     // Update in Firebase if task has an ID - using same method as drag & drop
     if (task.id) {
       this.taskService.updateTaskInFirebase(task)
         .then(() => {
-          console.log('Mobile task move: Task updated in Firebase successfully');
         })
         .catch((error) => {
           console.error('Mobile task move: Error updating task in Firebase:', error);

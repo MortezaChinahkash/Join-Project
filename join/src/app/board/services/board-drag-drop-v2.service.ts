@@ -209,10 +209,8 @@ export class BoardDragDropService {
         column: newColumn
       });
       if (success) {
-        console.log('Task moved successfully');
         onTaskUpdate();
       } else {
-        console.error('Error moving task');
         // Revert on error
         this.dragState.draggedTask.column = oldColumn;
         onTaskUpdate();

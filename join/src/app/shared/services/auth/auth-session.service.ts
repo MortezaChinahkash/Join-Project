@@ -46,11 +46,9 @@ export class AuthSessionService {
       const user = JSON.parse(userData);
       const sessionAge = Date.now() - user.loginTimestamp;
       if (sessionAge > this.SESSION_DURATION) {
-        console.log('Session expired, logging out...');
         onSessionExpired();
       }
     } catch (error) {
-      console.error('Error checking session:', error);
       onSessionExpired();
     }
   }
