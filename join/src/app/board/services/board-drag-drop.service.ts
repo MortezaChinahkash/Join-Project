@@ -27,6 +27,14 @@ export class BoardDragDropService {
   get dragOverColumn(): TaskColumn | null { return this.dragState.dragOverColumn; }
   get dragPlaceholderVisible(): boolean { return this.dragState.dragPlaceholderVisible; }
   get dragPlaceholderHeight(): number { return this.dragState.dragPlaceholderHeight; }
+  
+  /**
+   * Emergency cleanup method to restore board scroll wrapper overflow.
+   * Can be called from components or external services.
+   */
+  emergencyCleanup(): void {
+    this.dragState.emergencyCleanup();
+  }
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
    * Initiates task dragging with left mouse button click and sets up mouse event listeners.
@@ -120,7 +128,7 @@ export class BoardDragDropService {
    */
   private updateTaskDragWithPlaceholder(clientX: number, clientY: number): void {
     this.dragState.updateDragPosition(clientX, clientY);
-    this.autoScroll.handleAutoScroll(clientY);
+    this.autoScroll.handleAutoScroll(clientX, clientY);
     const column = this.getColumnAtPosition(clientX, clientY);
     this.handleColumnChange(column, clientX, clientY);
     this.dragState.setDragOverColumn(column);

@@ -14,14 +14,58 @@ export class BoardDragAutoScrollService {
   private autoScrollZone = 200; // pixels from top/bottom where auto-scroll activates
   private autoScrollSpeed = 8; // pixels per scroll step
   private autoScrollInterval: any = null;
+  private horizontalScrollInterval: any = null;
   private isAutoScrolling = false;
+  private isHorizontalScrolling = false;
   /**
    * Handles auto-scrolling when dragging tasks near the top or bottom of the viewport.
    * Starts auto-scroll if cursor is in the scroll zone, stops it otherwise.
    * 
+   * @param clientX - Current X position of cursor/touch (for horizontal scrolling)
+   * @param clientY - Current Y position of cursor/touch (for vertical scrolling)
+   */
+  handleAutoScroll(clientX: number, clientY?: number): void {
+    // Support both old signature (clientY only) and new signature (clientX, clientY)
+    const actualClientY = clientY !== undefined ? clientY : clientX;
+    const actualClientX = clientY !== undefined ? clientX : 0;
+    
+    this.handleVerticalScroll(actualClientY);
+    if (clientY !== undefined) {
+      this.handleHorizontalScroll(actualClientX);
+    }
+  }
+  
+  /**
+   * Handles horizontal auto-scrolling for board container.
+   * 
+   * @param clientX - Current X position of cursor/touch
+   */
+  private handleHorizontalScroll(clientX: number): void {
+    const boardScrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (!boardScrollWrapper) return;
+    
+    const containerRect = boardScrollWrapper.getBoundingClientRect();
+    const scrollZone = this.autoScrollZone;
+    
+    const distanceFromLeft = clientX - containerRect.left;
+    const distanceFromRight = containerRect.right - clientX;
+    
+    const isInLeftZone = distanceFromLeft < scrollZone && distanceFromLeft > 0;
+    const isInRightZone = distanceFromRight < scrollZone && distanceFromRight > 0;
+    
+    if (isInLeftZone || isInRightZone) {
+      this.startHorizontalAutoScroll(boardScrollWrapper, isInLeftZone);
+    } else {
+      this.stopHorizontalAutoScroll();
+    }
+  }
+  
+  /**
+   * Handles vertical auto-scrolling.
+   * 
    * @param clientY - Current Y position of cursor/touch
    */
-  handleAutoScroll(clientY: number): void {
+  private handleVerticalScroll(clientY: number): void {
     const viewportHeight = window.innerHeight;
     const scrollZone = this.autoScrollZone;
     // Check if we're in the auto-scroll zone
@@ -62,6 +106,41 @@ export class BoardDragAutoScrollService {
       this.autoScrollInterval = null;
     }
     this.isAutoScrolling = false;
+  }
+
+  /**
+   * Starts horizontal auto-scrolling for the board container.
+   * 
+   * @param container - The container element to scroll
+   * @param isScrollingLeft - True if scrolling left, false for right
+   * @private
+   */
+  private startHorizontalAutoScroll(container: HTMLElement, isScrollingLeft: boolean): void {
+    if (this.isHorizontalScrolling) return;
+    
+    this.isHorizontalScrolling = true;
+    this.horizontalScrollInterval = setInterval(() => {
+      const scrollAmount = isScrollingLeft ? -this.autoScrollSpeed : this.autoScrollSpeed;
+      container.scrollLeft += scrollAmount;
+      
+      // Stop if we've reached the edge
+      if (isScrollingLeft && container.scrollLeft <= 0) {
+        this.stopHorizontalAutoScroll();
+      } else if (!isScrollingLeft && container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+        this.stopHorizontalAutoScroll();
+      }
+    }, 16); // ~60fps
+  }
+
+  /**
+   * Stops horizontal auto-scrolling and cleans up the interval.
+   */
+  private stopHorizontalAutoScroll(): void {
+    if (this.horizontalScrollInterval) {
+      clearInterval(this.horizontalScrollInterval);
+      this.horizontalScrollInterval = null;
+    }
+    this.isHorizontalScrolling = false;
   }
   /**
    * Calculates adaptive scroll speed based on distance from edge.
@@ -140,5 +219,6 @@ export class BoardDragAutoScrollService {
    */
   cleanup(): void {
     this.stopAutoScroll();
+    this.stopHorizontalAutoScroll();
   }
 }

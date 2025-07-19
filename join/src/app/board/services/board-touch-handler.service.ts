@@ -108,7 +108,7 @@ export class BoardTouchHandlerService {
    */
   private updateTouchDrag(clientX: number, clientY: number): void {
     this.dragState.updateDragPosition(clientX, clientY);
-    this.autoScroll.handleAutoScroll(clientY);
+    this.autoScroll.handleAutoScroll(clientX, clientY);
     // Update drag over column with placeholder logic
     const column = this.getColumnAtPosition(clientX, clientY);
     const previousColumn = this.dragState.dragOverColumn;

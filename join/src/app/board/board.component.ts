@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -52,7 +52,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
   searchTerm: string = '';
   maxTitleLength: number = 40;
@@ -380,5 +380,39 @@ export class BoardComponent implements OnInit {
       },
       (task: Task) => this.openTaskDetails(task)
     );
+  }
+  
+  /**
+   * Angular lifecycle hook that runs when component is destroyed.
+   */
+  ngOnDestroy(): void {
+    // Emergency cleanup to ensure board scroll wrapper overflow is restored
+    this.dragDropService.emergencyCleanup();
+  }
+  
+  /**
+   * Host listener for window blur event to restore board scroll wrapper.
+   */
+  @HostListener('window:blur')
+  onWindowBlur(): void {
+    this.dragDropService.emergencyCleanup();
+  }
+  
+  /**
+   * Host listener for escape key to cancel drag and restore board scroll wrapper.
+   */
+  @HostListener('document:keydown.escape')
+  onEscapeKey(): void {
+    this.dragDropService.emergencyCleanup();
+  }
+  
+  /**
+   * Host listener for visibility change to restore board scroll wrapper.
+   */
+  @HostListener('document:visibilitychange')
+  onVisibilityChange(): void {
+    if (document.hidden) {
+      this.dragDropService.emergencyCleanup();
+    }
   }
 }

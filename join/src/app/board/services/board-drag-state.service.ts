@@ -28,6 +28,9 @@ export class BoardDragStateService {
   // Touch interaction state
   touchStartTime = 0;
   longPressTimeout: any = null;
+  // Board scroll wrapper overflow management
+  private boardScrollWrapper: HTMLElement | null = null;
+  private originalOverflowX: string = '';
   /**
    * Resets all drag state to initial values.
    */
@@ -40,6 +43,42 @@ export class BoardDragStateService {
     this.dragElement = null;
     this.isMousePressed = false;
     this.clearTimeouts();
+    this.restoreBoardScrollWrapper(); // Restore overflow when drag ends
+  }
+  
+  /**
+   * Sets board scroll wrapper overflow to visible during drag.
+   */
+  setBoardScrollWrapperForDrag(): void {
+    this.boardScrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (this.boardScrollWrapper) {
+      // Store original overflow-x value
+      this.originalOverflowX = window.getComputedStyle(this.boardScrollWrapper).overflowX;
+      // Set overflow-x to visible
+      this.boardScrollWrapper.style.overflowX = 'visible';
+    }
+  }
+  
+  /**
+   * Restores board scroll wrapper overflow to original state.
+   */
+  restoreBoardScrollWrapper(): void {
+    if (this.boardScrollWrapper && this.originalOverflowX) {
+      // Restore original overflow-x value
+      this.boardScrollWrapper.style.overflowX = this.originalOverflowX;
+      this.boardScrollWrapper = null;
+      this.originalOverflowX = '';
+    }
+  }
+  
+  /**
+   * Emergency cleanup method to ensure board scroll wrapper is restored.
+   * Should be called on window blur, escape key, etc.
+   */
+  emergencyCleanup(): void {
+    if (this.isDraggingTask) {
+      this.resetDragState();
+    }
   }
   /**
    * Clears all active timeouts.
@@ -65,6 +104,7 @@ export class BoardDragStateService {
     this.draggedTask = task;
     this.isDraggingTask = true;
     this.dragStartPosition = { x, y };
+    this.setBoardScrollWrapperForDrag(); // Set overflow to visible when drag starts
   }
   /**
    * Updates drag position.

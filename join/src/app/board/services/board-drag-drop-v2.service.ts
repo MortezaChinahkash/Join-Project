@@ -119,7 +119,7 @@ export class BoardDragDropService {
    */
   private updateTaskDrag(clientX: number, clientY: number): void {
     this.dragState.updateDragPosition(clientX, clientY);
-    this.autoScroll.handleAutoScroll(clientY);
+    this.autoScroll.handleAutoScroll(clientX, clientY);
     // Update drag over column
     const column = this.getColumnAtPosition(clientX, clientY);
     this.dragState.setDragOverColumn(column);

@@ -1,4 +1,4 @@
-﻿import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+﻿import { ApplicationConfig, provideZoneChangeDetection, isDevMode } from '@angular/core';
 import { provideRouter, withHashLocation } from '@angular/router';
 import { routes } from './app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -7,7 +7,10 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withHashLocation()), // Enable hash-based routing
+    // Use hash routing only in production, normal routing in development
+    isDevMode() 
+      ? provideRouter(routes) 
+      : provideRouter(routes, withHashLocation()),
     provideAnimations(), 
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideFirebaseApp(() => initializeApp({ 
