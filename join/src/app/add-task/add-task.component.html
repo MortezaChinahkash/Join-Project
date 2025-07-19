@@ -19,8 +19,9 @@
                 placeholder="Enter a title"
                 [attr.maxlength]="maxTitleLength"
                 [class.error]="taskForm.get('title')?.invalid && taskForm.get('title')?.touched">
-              <div class="error-message" *ngIf="getErrorMessage('title')">
-                {{ getErrorMessage('title') }}
+              <div class="error-message">
+                <span *ngIf="getErrorMessage('title'); else emptySpan">{{ getErrorMessage('title') }}</span>
+                <ng-template #emptySpan><span>&nbsp;</span></ng-template>
               </div>
             </div>
             <div class="form-group">
@@ -47,11 +48,16 @@
                   (change)="taskForm.get('dueDate')?.markAsTouched()">
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
-              <div class="error-message" *ngIf="getErrorMessage('dueDate') && !boardFormService.isDateInvalid('dueDate', taskForm)">
-                {{ getErrorMessage('dueDate') }}
-              </div>
-              <div *ngIf="boardFormService.isDateInvalid('dueDate', taskForm)" class="error-message">
-                The date cannot be in the past
+              <div class="error-message">
+                <span *ngIf="getErrorMessage('dueDate') && !boardFormService.isDateInvalid('dueDate', taskForm); else dateErrorElse">
+                  {{ getErrorMessage('dueDate') }}
+                </span>
+                <ng-template #dateErrorElse>
+                  <span *ngIf="boardFormService.isDateInvalid('dueDate', taskForm); else emptyDateSpan">
+                    The date cannot be in the past
+                  </span>
+                  <ng-template #emptyDateSpan><span>&nbsp;</span></ng-template>
+                </ng-template>
               </div>
             </div>
           </div>
@@ -86,8 +92,9 @@
                 <div [inlineSvg]="'assets/icons/priority_low.svg'" class="priority-icon-overlay low-icon"></div>
               </button>
             </div>
-            <div class="error-message" *ngIf="getErrorMessage('priority')">
-              {{ getErrorMessage('priority') }}
+            <div class="error-message">
+              <span *ngIf="getErrorMessage('priority'); else emptyPrioritySpan">{{ getErrorMessage('priority') }}</span>
+              <ng-template #emptyPrioritySpan><span>&nbsp;</span></ng-template>
             </div>
           </div>
           <div class="form-group">
