@@ -226,6 +226,18 @@ export class BoardFormContactSelectionService {
       contactIds.includes(contact.id || '')
     );
   }
+
+  /**
+   * Sets selected contacts from an array of contact names.
+   * 
+   * @param contactNames - Array of contact names
+   * @param allContacts - Array of all available contacts
+   */
+  setSelectedContactsByNames(contactNames: string[], allContacts: Contact[]): void {
+    this.selectedContacts = allContacts.filter(contact => 
+      contactNames.includes(contact.name)
+    );
+  }
   /**
    * Gets selected contact IDs.
    * 

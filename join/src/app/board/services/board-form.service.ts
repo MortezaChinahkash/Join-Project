@@ -6,6 +6,7 @@ import { BoardFormContactSelectionService } from './board-form-contact-selection
 import { BoardFormDataService } from './board-form-data.service';
 import { Task } from '../../interfaces/task.interface';
 import { Contact } from '../../contacts/services/contact-data.service';
+import { TaskService } from '../../shared/services/task.service';
 /**
  * Main orchestrator service for board form functionality.
  * Coordinates all specialized board form services and provides unified interface.
@@ -24,7 +25,8 @@ export class BoardFormService {
     private validationService: BoardFormValidationService,
     private overlayService: BoardFormOverlayService,
     private contactSelectionService: BoardFormContactSelectionService,
-    private dataService: BoardFormDataService
+    private dataService: BoardFormDataService,
+    private taskService: TaskService
   ) {
     this.taskForm = this.createTaskForm();
   }
@@ -73,12 +75,18 @@ export class BoardFormService {
    * Initializes form for editing an existing task.
    * 
    * @param task - Task to edit
+   * @param allContacts - Array of all available contacts
    */
-  initializeEditTask(task: Task): void {
+  initializeEditTask(task: Task, allContacts: Contact[] = []): void {
+    console.log('🎯 Initializing edit task:', task);
+    console.log('👥 Available contacts:', allContacts);
+    
     this.dataService.initializeForEdit(task);
     this.populateFormWithTask(task);
-    this.contactSelectionService.setSelectedContactsByIds(task.assignedTo, []);
+    this.contactSelectionService.setSelectedContactsByNames(task.assignedTo || [], allContacts);
     this.overlayService.openTaskEditOverlay(task);
+    
+    console.log('✅ Edit task initialized successfully');
   }
   /**
    * Populates form with task data.
@@ -86,10 +94,20 @@ export class BoardFormService {
    * @param task - Task data to populate
    */
   private populateFormWithTask(task: Task): void {
+    // Format the date if it exists
+    let formattedDate = task.dueDate;
+    if (task.dueDate) {
+      // If the date is in a different format, convert it to MM/dd/yyyy
+      const date = new Date(task.dueDate);
+      if (!isNaN(date.getTime())) {
+        formattedDate = this.formatDateToAmerican(date);
+      }
+    }
+
     this.taskForm.patchValue({
       title: task.title,
       description: task.description,
-      dueDate: task.dueDate,
+      dueDate: formattedDate,
       priority: task.priority,
       category: task.category
     });
@@ -127,23 +145,34 @@ export class BoardFormService {
    * @returns Promise<boolean> - Success status
    */
   async saveTask(): Promise<boolean> {
+    console.log('📝 Starting saveTask...');
+    
     if (!this.validateForm()) {
+      console.log('❌ Form validation failed');
       return false;
     }
+    
     try {
       const task = this.buildTaskFromForm();
+      console.log('🔧 Built task from form:', task);
+      console.log('📊 Edit mode:', this.dataService.getIsEditMode());
+      
       if (this.dataService.getIsEditMode()) {
         // Update existing task
+        console.log('🔄 Updating existing task...');
         await this.updateTask(task);
       } else {
         // Create new task
+        console.log('✨ Creating new task...');
         await this.createTask(task);
       }
+      
       this.dataService.saveChanges();
       this.closeForm();
+      console.log('✅ Task saved successfully');
       return true;
     } catch (error) {
-      console.error('Error saving task:', error);
+      console.error('❌ Error saving task:', error);
       return false;
     }
   }
@@ -154,13 +183,32 @@ export class BoardFormService {
    */
   private buildTaskFromForm(): Task {
     const formValue = this.taskForm.value;
-    const currentTask = this.dataService.getCurrentTask();
+    let currentTask = this.dataService.getCurrentTask();
+    
+    // If no current task exists (e.g., when creating new task), create a basic task structure
     if (!currentTask) {
-      throw new Error('No current task available');
+      // Determine the column - if we're in edit mode, use 'todo' as default, otherwise get from overlay service
+      const targetColumn = this.dataService.getIsEditMode() ? 'todo' : 'todo'; // Will enhance this later
+      
+      currentTask = {
+        id: this.generateTaskId(),
+        title: '',
+        description: '',
+        assignedTo: [],
+        dueDate: '',
+        priority: 'medium',
+        column: targetColumn,
+        subtasks: [],
+        category: '',
+        createdAt: new Date()
+      };
     }
     
     // Extract subtasks from FormArray
     const subtasks = formValue.subtasks || [];
+    
+    // Get selected contact names for assignedTo field
+    const selectedContactNames = this.contactSelectionService.selectedContacts.map(contact => contact.name);
     
     return {
       ...currentTask,
@@ -169,9 +217,18 @@ export class BoardFormService {
       dueDate: formValue.dueDate,
       priority: formValue.priority,
       category: formValue.category,
-      assignedTo: this.contactSelectionService.getSelectedContactIds(),
+      assignedTo: selectedContactNames,
       subtasks: subtasks
     };
+  }
+
+  /**
+   * Generates a temporary ID for new tasks.
+   * 
+   * @returns Generated string ID
+   */
+  private generateTaskId(): string {
+    return Date.now().toString() + Math.random().toString(36).substr(2, 9);
   }
   /**
    * Creates a new task.
@@ -179,8 +236,14 @@ export class BoardFormService {
    * @param task - Task to create
    */
   private async createTask(task: Task): Promise<void> {
-    // Implementation would depend on your backend service
-    console.log('Creating task:', task);
+    try {
+      const { id, ...taskWithoutId } = task;
+      await this.taskService.addTaskToFirebase(taskWithoutId, task.column);
+      console.log('✅ Task created successfully:', task);
+    } catch (error) {
+      console.error('❌ Error creating task:', error);
+      throw error;
+    }
   }
   /**
    * Updates an existing task.
@@ -188,8 +251,13 @@ export class BoardFormService {
    * @param task - Task to update
    */
   private async updateTask(task: Task): Promise<void> {
-    // Implementation would depend on your backend service
-    console.log('Updating task:', task);
+    try {
+      await this.taskService.updateTaskInFirebase(task);
+      console.log('✅ Task updated successfully:', task);
+    } catch (error) {
+      console.error('❌ Error updating task:', error);
+      throw error;
+    }
   }
   /**
    * Validates the form using validation service.
@@ -197,11 +265,22 @@ export class BoardFormService {
    * @returns True if form is valid
    */
   validateForm(): boolean {
-    const formValue = this.taskForm.value;
-    const validation = this.validationService.validateForm(formValue);
+    console.log('🔍 Validating form...');
+    console.log('📋 Form value:', this.taskForm.value);
+    console.log('✅ Form valid (Angular):', this.taskForm.valid);
+    console.log('❌ Form errors (Angular):', this.taskForm.errors);
+    
+    // Mark all fields as touched to show validation errors
+    this.taskForm.markAllAsTouched();
+    
+    // Pass the FormGroup itself, not the value
+    const validation = this.validationService.validateForm(this.taskForm);
+    
+    console.log('🧪 Custom validation result:', validation);
+    
     if (!validation.isValid) {
       // Handle validation errors - could display them in UI
-      console.warn('Form validation errors:', validation.errors);
+      console.warn('❌ Form validation errors:', validation.errors);
       return false;
     }
     return true;
@@ -212,8 +291,8 @@ export class BoardFormService {
    * @returns Array of validation error messages
    */
   getValidationErrors(): string[] {
-    const formValue = this.taskForm.value;
-    const validation = this.validationService.validateForm(formValue);
+    // Pass the FormGroup itself, not the value
+    const validation = this.validationService.validateForm(this.taskForm);
     return validation.errors;
   }
   /**
@@ -293,6 +372,9 @@ export class BoardFormService {
   toggleContactSelection(contact: Contact, event?: Event): void {
     this.contactSelectionService.toggleContact(contact);
   }
+  setSelectedContactsByNames(contactNames: string[], allContacts: Contact[]): void {
+    this.contactSelectionService.setSelectedContactsByNames(contactNames, allContacts);
+  }
   get isDropdownOpen(): boolean {
     return this.contactSelectionService.isDropdownOpen;
   }
@@ -350,7 +432,7 @@ export class BoardFormService {
   }
   editTask(contacts: Contact[]): void {
     if (this.selectedTask) {
-      this.initializeEditTask(this.selectedTask);
+      this.initializeEditTask(this.selectedTask, contacts);
     }
   }
   cancelEditTask(): void {
