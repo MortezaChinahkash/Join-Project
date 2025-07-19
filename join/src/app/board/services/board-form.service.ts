@@ -78,15 +78,10 @@ export class BoardFormService {
    * @param allContacts - Array of all available contacts
    */
   initializeEditTask(task: Task, allContacts: Contact[] = []): void {
-    console.log('🎯 Initializing edit task:', task);
-    console.log('👥 Available contacts:', allContacts);
-    
     this.dataService.initializeForEdit(task);
     this.populateFormWithTask(task);
     this.contactSelectionService.setSelectedContactsByNames(task.assignedTo || [], allContacts);
     this.overlayService.openTaskEditOverlay(task);
-    
-    console.log('✅ Edit task initialized successfully');
   }
   /**
    * Populates form with task data.
@@ -145,31 +140,23 @@ export class BoardFormService {
    * @returns Promise<boolean> - Success status
    */
   async saveTask(): Promise<boolean> {
-    console.log('📝 Starting saveTask...');
-    
     if (!this.validateForm()) {
-      console.log('❌ Form validation failed');
       return false;
     }
     
     try {
       const task = this.buildTaskFromForm();
-      console.log('🔧 Built task from form:', task);
-      console.log('📊 Edit mode:', this.dataService.getIsEditMode());
       
       if (this.dataService.getIsEditMode()) {
         // Update existing task
-        console.log('🔄 Updating existing task...');
         await this.updateTask(task);
       } else {
         // Create new task
-        console.log('✨ Creating new task...');
         await this.createTask(task);
       }
       
       this.dataService.saveChanges();
       this.closeForm();
-      console.log('✅ Task saved successfully');
       return true;
     } catch (error) {
       console.error('❌ Error saving task:', error);
@@ -239,7 +226,6 @@ export class BoardFormService {
     try {
       const { id, ...taskWithoutId } = task;
       await this.taskService.addTaskToFirebase(taskWithoutId, task.column);
-      console.log('✅ Task created successfully:', task);
     } catch (error) {
       console.error('❌ Error creating task:', error);
       throw error;
@@ -253,7 +239,6 @@ export class BoardFormService {
   private async updateTask(task: Task): Promise<void> {
     try {
       await this.taskService.updateTaskInFirebase(task);
-      console.log('✅ Task updated successfully:', task);
     } catch (error) {
       console.error('❌ Error updating task:', error);
       throw error;
@@ -265,18 +250,11 @@ export class BoardFormService {
    * @returns True if form is valid
    */
   validateForm(): boolean {
-    console.log('🔍 Validating form...');
-    console.log('📋 Form value:', this.taskForm.value);
-    console.log('✅ Form valid (Angular):', this.taskForm.valid);
-    console.log('❌ Form errors (Angular):', this.taskForm.errors);
-    
     // Mark all fields as touched to show validation errors
     this.taskForm.markAllAsTouched();
     
     // Pass the FormGroup itself, not the value
     const validation = this.validationService.validateForm(this.taskForm);
-    
-    console.log('🧪 Custom validation result:', validation);
     
     if (!validation.isValid) {
       // Handle validation errors - could display them in UI
