@@ -91,60 +91,64 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Assigned to</label>
+            <label for="assignedTo">Assigned to</label>
             <div class="custom-select-wrapper">
               <div class="custom-select" (click)="toggleDropdown()">
                 <div class="selected-contacts" *ngIf="selectedContacts.length > 0; else placeholder">
                   <div class="selected-contact-avatars">
-                    <div class="contact-avatar" 
-                         *ngFor="let contact of selectedContacts.slice(0, 4)" 
-                         [style.background-color]="getInitialsColor(contact.name)">
-                      {{ getInitials(contact.name) }}
-                    </div>
-                    <div class="more-contacts" *ngIf="selectedContacts.length > 4">
-                      +{{ selectedContacts.length - 4 }}
-                    </div>
+                    <div class="contact-avatar" *ngFor="let contact of selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
+                    <div class="more-contacts" *ngIf="selectedContacts.length > 4">+{{ selectedContacts.length - 4 }}</div>
                   </div>
                   <span class="selected-text">{{ getSelectedContactsText() }}</span>
                 </div>
-                <ng-template #placeholder>
-                  <span class="placeholder">Select contacts to assign</span>
-                </ng-template>
-                <div class="dropdown-arrow" [class.open]="isDropdownOpen">▼</div>
+                <ng-template #placeholder><span class="placeholder">Select contacts to assign</span></ng-template>
+                <svg class="dropdown-arrow" [class.open]="isDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </div>
               <div class="dropdown-options" *ngIf="isDropdownOpen">
-                <div class="dropdown-option" 
-                     *ngFor="let contact of contacts" 
-                     (click)="toggleContactSelection(contact, $event)">
-                  <div class="contact-avatar" 
-                       [style.background-color]="getInitialsColor(contact.name)">
-                    {{ getInitials(contact.name) }}
-                  </div>
+                <div class="dropdown-option" *ngFor="let contact of contacts" (click)="toggleContactSelection(contact, $event)">
+                  <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
                   <span class="contact-name">{{ contact.name }}</span>
                   <div class="checkbox-wrapper">
-                    <input type="checkbox" 
-                           [id]="'contact-' + contact.id" 
-                           [checked]="isContactSelected(contact)" 
-                           (click)="$event.stopPropagation()" />
+                    <input type="checkbox" [id]="'contact-' + contact.id" [checked]="isContactSelected(contact)" readonly />
                     <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="error-message">
+              <span>&nbsp;</span>
+            </div>
           </div>
           <div class="form-group">
             <label for="category">Category<span class="required">*</span></label>
-            <select 
-              id="category" 
-              formControlName="category" 
-              class="form-select"
-              [class.error]="taskForm.get('category')?.invalid && taskForm.get('category')?.touched">
-              <option value="" disabled>Select task category</option>
-              <option value="technical">Technical Task</option>
-              <option value="user-story">User Story</option>
-            </select>
-            <div class="error-message" *ngIf="getErrorMessage('category')">
-              {{ getErrorMessage('category') }}
+            <div class="custom-select-wrapper category-select-wrapper">
+              <div class="custom-select" 
+                   [class.error]="isFieldInvalid('category')" 
+                   (click)="toggleCategoryDropdown(); taskForm.get('category')?.markAsTouched(); $event.stopPropagation()">
+                <span class="selected-text" *ngIf="taskForm.get('category')?.value; else categoryPlaceholder">
+                  {{ getCategoryDisplayText(taskForm.get('category')?.value) }}
+                </span>
+                <ng-template #categoryPlaceholder><span class="placeholder">Select task category</span></ng-template>
+                <svg class="dropdown-arrow" [class.open]="isCategoryDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="dropdown-options category-dropdown-options" *ngIf="isCategoryDropdownOpen" (click)="$event.stopPropagation()">
+                <div class="dropdown-option" (click)="selectCategory('technical'); $event.stopPropagation()">
+                  <span class="category-name">Technical Task</span>
+                </div>
+                <div class="dropdown-option" (click)="selectCategory('user-story'); $event.stopPropagation()">
+                  <span class="category-name">User Story</span>
+                </div>
+              </div>
+            </div>
+            <div class="error-message">
+              <span *ngIf="isFieldInvalid('category')">
+                {{ getFieldErrorMessage('category') }}
+              </span>
+              <span *ngIf="!isFieldInvalid('category')">&nbsp;</span>
             </div>
           </div>
           <div class="form-group">

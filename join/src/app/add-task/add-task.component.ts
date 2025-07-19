@@ -32,6 +32,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
   selectedContacts: Contact[] = [];
   isDropdownOpen = false;
+  isCategoryDropdownOpen = false;
   isSubmitting = false;
   maxTitleLength: number = 40;
   taskAddedNotif = false;
@@ -103,6 +104,52 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+  
+  /**
+   * Toggles category dropdown.
+   */
+  toggleCategoryDropdown(): void {
+    this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
+  }
+  
+  /**
+   * Closes category dropdown.
+   */
+  closeCategoryDropdown(): void {
+    this.isCategoryDropdownOpen = false;
+  }
+  
+  /**
+   * Selects a category and closes dropdown.
+   */
+  selectCategory(category: string): void {
+    this.taskForm.patchValue({ category });
+    this.taskForm.get('category')?.markAsTouched();
+    this.isCategoryDropdownOpen = false;
+  }
+  
+  /**
+   * Gets display text for category.
+   */
+  getCategoryDisplayText(value: string): string {
+    return value === 'technical' ? 'Technical Task' : 
+           value === 'user-story' ? 'User Story' : 'Select Category';
+  }
+  
+  /**
+   * Checks if a field is invalid.
+   */
+  isFieldInvalid(fieldName: string): boolean {
+    const field = this.taskForm.get(fieldName);
+    return !!(field && field.invalid && field.touched);
+  }
+  
+  /**
+   * Gets field error message.
+   */
+  getFieldErrorMessage(fieldName: string): string {
+    return this.getErrorMessage(fieldName);
   }
   /**
    * Toggles contact selection.
@@ -235,12 +282,20 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    
+    // Close category dropdown if clicking outside
+    if (this.isCategoryDropdownOpen) {
+      const categoryDropdown = target.closest('.category-select-wrapper');
+      if (!categoryDropdown) {
+        this.closeCategoryDropdown();
+      }
+    }
+    
+    // Close contacts dropdown if clicking outside
     if (this.isDropdownOpen) {
-      const shouldCloseDropdown = !this.contactService.handleDropdownClick(
-        event, 
-        this.isDropdownOpen
-      );
-      if (shouldCloseDropdown) {
+      const contactDropdown = target.closest('.custom-select-wrapper:not(.category-select-wrapper)');
+      if (!contactDropdown) {
         this.isDropdownOpen = false;
       }
     }
