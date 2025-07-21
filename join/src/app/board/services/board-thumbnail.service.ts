@@ -72,48 +72,129 @@ export class BoardThumbnailService {
    * @param event - The mouse down event on the viewport
    */
   onViewportMouseDown(event: MouseEvent) {
+    this.initializeViewportDrag(event);
+    this.setupMouseEventListeners();
+  }
+
+  /**
+   * Initializes viewport dragging state and DOM elements.
+   */
+  private initializeViewportDrag(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
     this.isViewportDragging = true;
     this.dragStartX = event.clientX;
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    
+    const container = this.getBoardScrollWrapper();
     if (container) {
       this.dragStartScrollLeft = container.scrollLeft;
     }
+    
+    this.disableViewportTransition();
+  }
+
+  /**
+   * Gets the board scroll wrapper element.
+   */
+  private getBoardScrollWrapper(): HTMLElement | null {
+    return document.querySelector('.board-scroll-wrapper') as HTMLElement;
+  }
+
+  /**
+   * Disables viewport transition during drag.
+   */
+  private disableViewportTransition(): void {
     const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
     if (viewport) {
       viewport.style.transition = 'none';
     }
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!this.isViewportDragging) return;
-      e.preventDefault();
-      const deltaX = e.clientX - this.dragStartX;
-      const thumbnailWidth = 192;
-      const viewportWidth = this.thumbnailViewport.width;
-      const availableDragWidth = thumbnailWidth - viewportWidth;
-      const scrollRatio = availableDragWidth > 0 ? this.maxScrollPosition / availableDragWidth : 0;
-      const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
-      if (container) {
-        const clampedScroll = Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
-        container.scrollLeft = clampedScroll;
-        requestAnimationFrame(() => {
-          this.updateScrollPosition();
-        });
-      }
-    };
-    const handleMouseUp = () => {
-      this.isViewportDragging = false;
-      if (viewport) {
-        viewport.style.transition = 'all 0.1s ease';
-      }
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mouseleave', handleMouseUp);
-    };
+  }
+
+  /**
+   * Sets up mouse event listeners for viewport dragging.
+   */
+  private setupMouseEventListeners(): void {
+    const handleMouseMove = this.createMouseMoveHandler();
+    const handleMouseUp = this.createMouseUpHandler(handleMouseMove);
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseUp);
+  }
+
+  /**
+   * Creates mouse move handler for viewport dragging.
+   */
+  private createMouseMoveHandler(): (e: MouseEvent) => void {
+    return (e: MouseEvent) => {
+      if (!this.isViewportDragging) return;
+      e.preventDefault();
+      
+      const deltaX = e.clientX - this.dragStartX;
+      const scrollPosition = this.calculateNewScrollPosition(deltaX);
+      this.updateContainerScroll(scrollPosition);
+    };
+  }
+
+  /**
+   * Calculates new scroll position based on drag delta.
+   */
+  private calculateNewScrollPosition(deltaX: number): number {
+    const thumbnailWidth = 192;
+    const viewportWidth = this.thumbnailViewport.width;
+    const availableDragWidth = thumbnailWidth - viewportWidth;
+    const scrollRatio = availableDragWidth > 0 ? this.maxScrollPosition / availableDragWidth : 0;
+    const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
+    
+    return Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
+  }
+
+  /**
+   * Updates container scroll position.
+   */
+  private updateContainerScroll(scrollPosition: number): void {
+    const container = this.getBoardScrollWrapper();
+    if (container) {
+      container.scrollLeft = scrollPosition;
+      requestAnimationFrame(() => {
+        this.updateScrollPosition();
+      });
+    }
+  }
+
+  /**
+   * Creates mouse up handler for ending viewport drag.
+   */
+  private createMouseUpHandler(handleMouseMove: (e: MouseEvent) => void): () => void {
+    return () => {
+      this.finalizeDragOperation();
+      this.removeMouseEventListeners(handleMouseMove);
+    };
+  }
+
+  /**
+   * Finalizes drag operation and restores viewport transition.
+   */
+  private finalizeDragOperation(): void {
+    this.isViewportDragging = false;
+    const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
+    if (viewport) {
+      viewport.style.transition = 'all 0.1s ease';
+    }
+  }
+
+  /**
+   * Removes mouse event listeners.
+   */
+  private removeMouseEventListeners(handleMouseMove: (e: MouseEvent) => void): void {
+    const handleMouseUp = () => {
+      this.finalizeDragOperation();
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('mouseleave', handleMouseUp);
+    };
+    
+    handleMouseUp();
   }
 
   /**
