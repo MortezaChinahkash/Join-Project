@@ -223,31 +223,88 @@ export class BoardDragDropService {
    * @private
    */
   private startTaskDrag(clientX: number, clientY: number, task: Task, element: HTMLElement): void {
-    this.dragState.draggedTask = task;
-    this.dragState.isDraggingTask = true;
-    this.dragState.dragStartPosition = { x: clientX, y: clientY };
+    this.initializeDragState(task, clientX, clientY);
     this.enableDragOverflow();
     const taskCard = element.closest('.task-card') as HTMLElement;
     if (taskCard) {
-      this.dragState.dragElement = taskCard.cloneNode(true) as HTMLElement;
-      this.dragState.dragElement.style.position = 'fixed';
-      this.dragState.dragElement.style.pointerEvents = 'none';
-      this.dragState.dragElement.style.zIndex = '9999';
-      this.dragState.dragElement.style.transform = 'rotate(5deg)';
-      this.dragState.dragElement.style.transition = 'none';
-      this.dragState.dragElement.style.width = taskCard.offsetWidth + 'px';
-      this.dragState.dragElement.style.height = taskCard.offsetHeight + 'px';
-      this.dragState.dragElement.classList.add('task-dragging');
-      const rect = taskCard.getBoundingClientRect();
-      this.dragState.dragOffset = {
-        x: clientX - rect.left,
-        y: clientY - rect.top
-      };
-      this.dragState.updateDragElementPosition(clientX, clientY);
-      document.body.appendChild(this.dragState.dragElement);
-      taskCard.classList.add('task-dragging-original');
-      this.dragState.dragPlaceholderHeight = taskCard.offsetHeight;
+      this.createAndConfigureDragElement(taskCard, clientX, clientY);
     }
+  }
+
+  /**
+   * Initializes the basic drag state properties.
+   * 
+   * @param task - The task being dragged
+   * @param clientX - X coordinate
+   * @param clientY - Y coordinate
+   * @private
+   */
+  private initializeDragState(task: Task, clientX: number, clientY: number): void {
+    this.dragState.draggedTask = task;
+    this.dragState.isDraggingTask = true;
+    this.dragState.dragStartPosition = { x: clientX, y: clientY };
+  }
+
+  /**
+   * Creates and configures the visual drag element.
+   * 
+   * @param taskCard - The original task card element
+   * @param clientX - X coordinate
+   * @param clientY - Y coordinate
+   * @private
+   */
+  private createAndConfigureDragElement(taskCard: HTMLElement, clientX: number, clientY: number): void {
+    this.dragState.dragElement = taskCard.cloneNode(true) as HTMLElement;
+    this.configureDragElementStyles(taskCard);
+    this.calculateDragOffset(taskCard, clientX, clientY);
+    this.finalizeDragElement(taskCard);
+  }
+
+  /**
+   * Configures the visual styles for the drag element.
+   * 
+   * @param taskCard - The original task card element
+   * @private
+   */
+  private configureDragElementStyles(taskCard: HTMLElement): void {
+    const dragElement = this.dragState.dragElement!;
+    dragElement.style.position = 'fixed';
+    dragElement.style.pointerEvents = 'none';
+    dragElement.style.zIndex = '9999';
+    dragElement.style.transform = 'rotate(5deg)';
+    dragElement.style.transition = 'none';
+    dragElement.style.width = taskCard.offsetWidth + 'px';
+    dragElement.style.height = taskCard.offsetHeight + 'px';
+    dragElement.classList.add('task-dragging');
+  }
+
+  /**
+   * Calculates and sets the drag offset from cursor to element.
+   * 
+   * @param taskCard - The original task card element
+   * @param clientX - X coordinate
+   * @param clientY - Y coordinate
+   * @private
+   */
+  private calculateDragOffset(taskCard: HTMLElement, clientX: number, clientY: number): void {
+    const rect = taskCard.getBoundingClientRect();
+    this.dragState.dragOffset = {
+      x: clientX - rect.left,
+      y: clientY - rect.top
+    };
+    this.dragState.updateDragElementPosition(clientX, clientY);
+  }
+
+  /**
+   * Finalizes the drag element setup and adds it to the DOM.
+   * 
+   * @param taskCard - The original task card element
+   * @private
+   */
+  private finalizeDragElement(taskCard: HTMLElement): void {
+    document.body.appendChild(this.dragState.dragElement!);
+    taskCard.classList.add('task-dragging-original');
+    this.dragState.dragPlaceholderHeight = taskCard.offsetHeight;
   }
 
   /**
