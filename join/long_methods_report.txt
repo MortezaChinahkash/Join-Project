@@ -1,31 +1,5 @@
 
 
-File: board\services\drag-drop\board-drag-detection.service.ts
-------------------------------
-Method: checkElementForColumn
-Lines: 21
-Line Number: 41
-Content Preview:
-
-  private checkElementForColumn(element: Element): TaskColumn | null {
-    const columnElement = element.closest('.board-column') as HTMLElement;
-    if (columnElement) {
-      return columnElement.g......
-
-==================================================
-
-Method: findClosestColumn
-Lines: 22
-Line Number: 116
-Content Preview:
-
-  findClosestColumn(clientX: number, clientY: number): TaskColumn | null {
-    const columns = this.getAllBoardColumns();
-    let closestColumn: HTMLElement | null = null;
-    let minDistance = Infin......
-
-==================================================
-
 File: board\services\drag-drop\board-drag-state.service.ts
 ------------------------------
 Method: resetDragState
