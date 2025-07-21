@@ -225,7 +225,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
       if (this.editingSubtaskIndex === index) {
         this.saveSubtaskEdit();
       }
-    }, 150); /** Small delay to allow clicking save/delete buttons */
+    }, 150);
   }
 
   /**
