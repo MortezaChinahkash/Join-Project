@@ -1,5 +1,5 @@
 METHOD LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 00:58
+Generated: 22.07.2025 01:02
 ================================================================================
 Analyzing 100 TypeScript files for methods > 14 lines...
 
@@ -8,12 +8,6 @@ File: src\app\board\services\form\board-form-data.service.ts
   Method: validateTaskData (Line 285-309)
      Code lines: 18 | Total lines: 25
      Declaration: validateTaskData(): { isValid: boolean; errors: string[] } {...
-
-File: src\app\board\services\form\board-form-validation.service.ts
---------------------------------------------------------------------------------
-  Method: validateForm (Line 147-176)
-     Code lines: 25 | Total lines: 30
-     Declaration: validateForm(form: FormGroup): {...
 
 File: src\app\contacts\services\contacts-display.service.ts
 --------------------------------------------------------------------------------
@@ -42,38 +36,34 @@ File: src\app\onboarding-overlay\onboarding-overlay.component.ts
 ================================================================================
 === TOP 10 LONGEST METHODS ===
 ================================================================================
- 1. validateForm (25 lines)
-    File: src\app\board\services\form\board-form-validation.service.ts
-    Line: 147-176
-
- 2. buildContactDisplayObject (22 lines)
+ 1. buildContactDisplayObject (22 lines)
     File: src\app\contacts\services\contacts-display.service.ts
     Line: 227-249
 
- 3. validateTaskData (18 lines)
+ 2. validateTaskData (18 lines)
     File: src\app\board\services\form\board-form-data.service.ts
     Line: 285-309
 
- 4. getRightPosition (15 lines)
+ 3. getRightPosition (15 lines)
     File: src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 259-276
 
- 5. getLeftPosition (15 lines)
+ 4. getLeftPosition (15 lines)
     File: src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 281-298
 
- 6. getTopPosition (15 lines)
+ 5. getTopPosition (15 lines)
     File: src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 303-320
 
- 7. getBottomPosition (15 lines)
+ 6. getBottomPosition (15 lines)
     File: src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 325-342
 
 === SUMMARY ===
 Files analyzed: 100
-Files with long methods: 4
-Total methods > 14 lines: 7
-Average length: 17.9 lines
-Longest method: validateForm (25 lines)
+Files with long methods: 3
+Total methods > 14 lines: 6
+Average length: 16.7 lines
+Longest method: buildContactDisplayObject (22 lines)
 Consider refactoring methods longer than 20-25 lines
