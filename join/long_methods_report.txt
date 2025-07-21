@@ -1,38 +1,5 @@
 
 
-File: contacts\services\contact-helper.service.ts
-------------------------------
-Method: getInitialsColor
-Lines: 15
-Line Number: 75
-Content Preview:
-
-  getInitialsColor(name: string): string {
-    if (!name?.trim()) return '#888';
-    const colors = [
-      '#FFB900', '#D83B01', '#B50E0E', '#E81123',
-      '#B4009E', '#5C2D91', '#0078D7', '#00B4FF......
-
-==================================================
-
-File: contacts\services\contact-ui.service.ts
-------------------------------
-Method: handleKeyboardNavigation
-Lines: 16
-Line Number: 168
-Content Preview:
-
-  handleKeyboardNavigation(
-    event: KeyboardEvent, 
-    contacts: Contact[], 
-    currentIndex: number
-  ): number {
-    switch (event.key) {
-      case 'ArrowDown':
-        event.preventDefault()......
-
-==================================================
-
 File: contacts\services\contacts-crud.service.ts
 ------------------------------
 Method: createContact
