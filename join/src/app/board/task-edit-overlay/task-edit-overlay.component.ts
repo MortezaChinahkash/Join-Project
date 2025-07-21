@@ -80,38 +80,94 @@ export class TaskEditOverlayComponent implements OnDestroy {
    */
   private setupDropdownClickListener(): void {
     this.removeDropdownClickListener();
-    this.dropdownClickListener = (event: Event) => {
-      const target = event.target as HTMLElement;
-      const dropdownContainer = target.closest('.contacts-dropdown');
-      const dropdownTrigger = target.closest('.dropdown-trigger');
-      /**
-       * Also check for AddTaskOverlay dropdown elements
-       */
-      const addTaskDropdownWrapper = target.closest('.custom-select-wrapper');
-      const addTaskDropdownOption = target.closest('.dropdown-option');
-      /**
-       * Don't close if clicking on AddTaskOverlay dropdown elements
-       */
-      if (addTaskDropdownWrapper || addTaskDropdownOption) {
-        return;
-      }
-
-      /**
-       * Close dropdown if clicked outside and dropdown is open
-       */
-      if (!dropdownContainer && this.formService.isDropdownOpen) {
-        this.formService.isDropdownOpen = false;
-      }
-
-      /**
-       * Don't close if clicking on the trigger (let the toggle handle it)
-       */
-      else if (dropdownTrigger) {
-        return;
-      }
-    };
-    /** Use capture phase */
+    this.dropdownClickListener = this.createDropdownClickHandler();
     document.addEventListener('click', this.dropdownClickListener, true);
+  }
+
+  /**
+   * Creates the dropdown click handler function.
+   * 
+   * @returns Click handler function
+   * @private
+   */
+  private createDropdownClickHandler(): (event: Event) => void {
+    return (event: Event) => {
+      const target = event.target as HTMLElement;
+      const targetElements = this.getTargetElements(target);
+      this.handleDropdownClick(targetElements);
+    };
+  }
+
+  /**
+   * Gets relevant DOM elements for dropdown click handling.
+   * 
+   * @param target - Event target element
+   * @returns Object with relevant elements
+   * @private
+   */
+  private getTargetElements(target: HTMLElement): {
+    dropdownContainer: Element | null;
+    dropdownTrigger: Element | null;
+    addTaskDropdownWrapper: Element | null;
+    addTaskDropdownOption: Element | null;
+  } {
+    return {
+      dropdownContainer: target.closest('.contacts-dropdown'),
+      dropdownTrigger: target.closest('.dropdown-trigger'),
+      addTaskDropdownWrapper: target.closest('.custom-select-wrapper'),
+      addTaskDropdownOption: target.closest('.dropdown-option')
+    };
+  }
+
+  /**
+   * Handles dropdown click logic based on target elements.
+   * 
+   * @param elements - Target elements object
+   * @private
+   */
+  private handleDropdownClick(elements: {
+    dropdownContainer: Element | null;
+    dropdownTrigger: Element | null;
+    addTaskDropdownWrapper: Element | null;
+    addTaskDropdownOption: Element | null;
+  }): void {
+    if (this.isAddTaskDropdownClick(elements)) {
+      return;
+    }
+    
+    if (this.shouldCloseDropdown(elements)) {
+      this.formService.isDropdownOpen = false;
+    }
+  }
+
+  /**
+   * Checks if click is on AddTaskOverlay dropdown elements.
+   * 
+   * @param elements - Target elements object
+   * @returns True if click is on AddTask dropdown
+   * @private
+   */
+  private isAddTaskDropdownClick(elements: {
+    addTaskDropdownWrapper: Element | null;
+    addTaskDropdownOption: Element | null;
+  }): boolean {
+    return !!(elements.addTaskDropdownWrapper || elements.addTaskDropdownOption);
+  }
+
+  /**
+   * Determines if dropdown should be closed.
+   * 
+   * @param elements - Target elements object
+   * @returns True if dropdown should close
+   * @private
+   */
+  private shouldCloseDropdown(elements: {
+    dropdownContainer: Element | null;
+    dropdownTrigger: Element | null;
+  }): boolean {
+    return !elements.dropdownContainer && 
+           !elements.dropdownTrigger && 
+           this.formService.isDropdownOpen;
   }
 
   /**
