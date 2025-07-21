@@ -1,49 +1,5 @@
 
 
-File: board\services\form\board-form-data.service.ts
-------------------------------
-Method: createNewTask
-Lines: 18
-Line Number: 25
-Content Preview:
-
-  createNewTask(status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'): Task {
-    const newTask: Task = {
-      id: this.generateTaskId(),
-      title: '',
-      description: '',
-      assign......
-
-==================================================
-
-Method: addSubtask
-Lines: 15
-Line Number: 169
-Content Preview:
-
-  addSubtask(title: string): Subtask {
-    if (!this.currentTask) {
-      throw new Error('No current task to add subtask to');
-    }
-    const subtask: Subtask = {
-      id: this.generateSubtaskId()......
-
-==================================================
-
-File: board\services\form\board-form-state.service.ts
-------------------------------
-Method: patchFormWithTaskData
-Lines: 15
-Line Number: 185
-Content Preview:
-
-  patchFormWithTaskData(taskData: any): void {
-    this.taskForm.patchValue(taskData);
-    if (taskData.subtasks && Array.isArray(taskData.subtasks)) {
-      while (this.subtasksFormArray.length !== ......
-
-==================================================
-
 File: board\services\form\board-form-v2.service.ts
 ------------------------------
 Method: saveTask
