@@ -198,6 +198,10 @@ export class BoardFormStateService {
         this.subtasksFormArray.removeAt(0);
       }
       // Add subtasks from task data
+      /**
+       * Handles forEach functionality.
+       * @param (subtask - (subtask parameter
+       */
       taskData.subtasks.forEach((subtask: any) => {
         const subtaskGroup = this.createSubtaskGroup(subtask.title, subtask.completed);
         this.subtasksFormArray.push(subtaskGroup);

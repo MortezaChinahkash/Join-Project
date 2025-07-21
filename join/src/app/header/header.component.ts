@@ -56,6 +56,9 @@ export class HeaderComponent {
     this.router.navigate(['/auth']);
   }
 
+  /**
+   * Handles logout functionality.
+   */
   async logout() {
     try {
       await this.authService.logout();
@@ -66,6 +69,10 @@ export class HeaderComponent {
     }
   }
   @HostListener('document:click', ['$event'])
+  /**
+   * Handles documentclick events.
+   * @param event - Event parameter
+   */
   onDocumentClick(event: Event) {
     const target = event.target as HTMLElement;
     const userElement = document.querySelector('.user');

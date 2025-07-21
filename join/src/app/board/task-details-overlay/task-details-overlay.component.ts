@@ -51,10 +51,16 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
     public taskEditOverlayService: TaskEditOverlayService,
     public contactHelperService: ContactHelperService
   ) {}
+  /**
+   * Angular lifecycle hook - component initialization.
+   */
   ngOnInit(): void {
     // Component initialization if needed
   }
 
+  /**
+   * Angular lifecycle hook - component cleanup.
+   */
   ngOnDestroy(): void {
     // Cleanup if needed
   }

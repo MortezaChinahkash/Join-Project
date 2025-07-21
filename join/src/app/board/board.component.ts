@@ -134,6 +134,9 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Angular lifecycle hook that runs after component initialization. */
+  /**
+   * Angular lifecycle hook - component initialization.
+   */
   ngOnInit(): void {
     this.initializationService.initializeComponent(
       (contacts) => { this.contacts = contacts; },
@@ -149,6 +152,9 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Distributes tasks into appropriate columns and sorts by priority. */
+  /**
+   * Handles distributeTasksToColumns functionality.
+   */
   private distributeTasksToColumns(): void {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
     const assigned = this.arrayManagementService.assignTasksToColumns(distributed);
@@ -171,12 +177,18 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Initializes local task arrays from the task service. */
+  /**
+   * Handles initializeLocalArrays functionality.
+   */
   private initializeLocalArrays(): void {
     const initialized = this.initializationService.initializeTaskArrays();
     this.assignTasksToColumns(initialized);
   }
 
   /** Updates task arrays after task changes. */
+  /**
+   * Updates taskarrays.
+   */
   private updateTaskArrays(): void {
     this.arrayManagementService.updateTaskArrays(
       this.tasks,
@@ -283,22 +295,43 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Safely truncates text to a maximum length. */
+  /**
+   * Handles truncate functionality.
+   * @param text - Text parameter
+   * @param limit - Limit parameter
+   * @returns String result
+   */
   truncate(text: string | null | undefined, limit: number = 200): string {
     return this.displayService.truncateText(text, limit);
   }
 
   /** Handles search input changes for task filtering. */
+  /**
+   * Handles searchchange events.
+   */
   onSearchChange(): void {
     // Search filtering is handled by the template via getFilteredTasks
     // This method is called when the search input value changes
   }
 
   // Interaction Service delegates
+  /**
+   * Handles taskmousedown events.
+   * @param event - Event parameter
+   * @param task - Task parameter
+   * @returns Promise that resolves when operation completes
+   */
   async onTaskMouseDown(event: MouseEvent, task: Task): Promise<void> {
     const wasDragged = await this.interactionService.handleTaskMouseDown(event, task, () => this.updateTaskArrays());
     if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
   }
 
+  /**
+   * Handles tasktouchstart events.
+   * @param event - Event parameter
+   * @param task - Task parameter
+   * @returns Promise that resolves when operation completes
+   */
   async onTaskTouchStart(event: TouchEvent, task: Task): Promise<void> {
     const wasDragged = await this.interactionService.handleTaskTouchStart(event, task, () => this.updateTaskArrays());
     if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
@@ -344,6 +377,11 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   get selectedTaskForMove(): Task | null { return this.mobileTaskMoveService.selectedTaskForMove; }
 
+  /**
+   * Gets currenttaskcolumn value.
+   * @param task - Task parameter
+   * @returns TaskColumn | null
+   */
   getCurrentTaskColumn(task: Task): TaskColumn | null {
     return this.mobileTaskMoveService.getCurrentTaskColumn(task, {
       todoTasks: this.todoTasks, inProgressTasks: this.inProgressTasks,
@@ -456,6 +494,9 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Host listener for window blur event to restore board scroll wrapper.
    */
   @HostListener('window:blur')
+  /**
+   * Handles windowblur events.
+   */
   onWindowBlur(): void {
     this.dragDropService.emergencyCleanup();
   }
@@ -464,6 +505,9 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Host listener for escape key to cancel drag and restore board scroll wrapper.
    */
   @HostListener('document:keydown.escape')
+  /**
+   * Handles escapekey events.
+   */
   onEscapeKey(): void {
     this.dragDropService.emergencyCleanup();
   }
@@ -472,6 +516,9 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Host listener for visibility change to restore board scroll wrapper.
    */
   @HostListener('document:visibilitychange')
+  /**
+   * Handles visibilitychange events.
+   */
   onVisibilityChange(): void {
     if (document.hidden) {
       this.dragDropService.emergencyCleanup();

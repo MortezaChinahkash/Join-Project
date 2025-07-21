@@ -9,6 +9,10 @@ export class InlineSvgDirective implements OnChanges {
     private el: ElementRef,
     private svgLoader: SvgLoaderService,
   ) {}
+  /**
+   * Angular lifecycle hook - handles input changes.
+   * @param changes - Changes parameter
+   */
   ngOnChanges(changes: SimpleChanges) {
     if (changes['url'] && this.url) {
       this.svgLoader.loadSvg(this.url).subscribe(svgText => {

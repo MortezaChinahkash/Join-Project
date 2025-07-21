@@ -344,6 +344,10 @@ export class SummaryComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Handles findTaskWithNearestDeadline functionality.
+   * @param urgentTasks - Urgenttasks parameter
+   */
   private findTaskWithNearestDeadline(urgentTasks: Task[]) {
     return urgentTasks.reduce((nearest, current) => {
       const currentDate = this.parseDueDate(current.dueDate!);
@@ -367,6 +371,11 @@ export class SummaryComponent implements OnInit, OnDestroy {
     return this.parseStandardDateFormat(dateString);
   }
 
+  /**
+   * Handles parseGermanDateFormat functionality.
+   * @param dateString - Datestring parameter
+   * @returns Date
+   */
   private parseGermanDateFormat(dateString: string): Date {
     const parts = dateString.split('.');
     if (parts.length !== 3) {
@@ -376,11 +385,23 @@ export class SummaryComponent implements OnInit, OnDestroy {
     return this.validateAndCreateDate(day, month - 1, year);
   }
 
+  /**
+   * Handles parseStandardDateFormat functionality.
+   * @param dateString - Datestring parameter
+   * @returns Date
+   */
   private parseStandardDateFormat(dateString: string): Date {
     const parsed = new Date(dateString);
     return isNaN(parsed.getTime()) ? new Date() : parsed;
   }
 
+  /**
+   * Validates andcreatedate.
+   * @param day - Day parameter
+   * @param month - Month parameter
+   * @param year - Year parameter
+   * @returns Date
+   */
   private validateAndCreateDate(day: number, month: number, year: number): Date {
     if (isNaN(day) || isNaN(month) || isNaN(year)) {
       return new Date();

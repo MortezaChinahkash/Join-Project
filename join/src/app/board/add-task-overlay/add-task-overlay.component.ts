@@ -119,6 +119,10 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Handles clicks outside dropdowns to close them
    */
   @HostListener('document:click', ['$event'])
+  /**
+   * Handles documentclick events.
+   * @param event - Event parameter
+   */
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     

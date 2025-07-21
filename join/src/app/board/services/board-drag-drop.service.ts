@@ -146,6 +146,12 @@ export class BoardDragDropService {
     this.dragState.setDragOverColumn(column);
   }
 
+  /**
+   * Handles columnchange.
+   * @param column - Column parameter
+   * @param clientX - Clientx parameter
+   * @param clientY - Clienty parameter
+   */
   private handleColumnChange(column: TaskColumn | null, clientX: number, clientY: number): void {
     const previousColumn = this.dragState.dragOverColumn;
     if (column !== previousColumn) {
@@ -153,6 +159,10 @@ export class BoardDragDropService {
     }
   }
 
+  /**
+   * Updates placeholderforcolumn.
+   * @param column - Column parameter
+   */
   private updatePlaceholderForColumn(column: TaskColumn | null): void {
     if (this.shouldShowPlaceholder(column)) {
       const placeholderHeight = this.calculatePlaceholderHeight();
@@ -162,12 +172,21 @@ export class BoardDragDropService {
     }
   }
 
+  /**
+   * Handles shouldShowPlaceholder functionality.
+   * @param column - Column parameter
+   * @returns Boolean result
+   */
   private shouldShowPlaceholder(column: TaskColumn | null): boolean {
     return !!(column && 
              this.dragState.draggedTask && 
              column !== this.dragState.draggedTask.column);
   }
 
+  /**
+   * Handles calculatePlaceholderHeight functionality.
+   * @returns Numeric result
+   */
   private calculatePlaceholderHeight(): number {
     const taskElement = document.querySelector('.task-card[style*="opacity: 0.5"]') as HTMLElement;
     return taskElement ? taskElement.offsetHeight : 80;
@@ -226,12 +245,22 @@ export class BoardDragDropService {
     this.initializeDragElementPosition(dragElement, originalRect, clientX, clientY);
   }
 
+  /**
+   * Handles cloneAndStyleDragElement functionality.
+   * @param taskElement - Taskelement parameter
+   * @returns HTMLElement
+   */
   private cloneAndStyleDragElement(taskElement: HTMLElement): HTMLElement {
     const dragElement = taskElement.cloneNode(true) as HTMLElement;
     this.applyDragElementStyles(dragElement, taskElement);
     return dragElement;
   }
 
+  /**
+   * Handles applyDragElementStyles functionality.
+   * @param dragElement - Dragelement parameter
+   * @param taskElement - Taskelement parameter
+   */
   private applyDragElementStyles(dragElement: HTMLElement, taskElement: HTMLElement): void {
     dragElement.style.position = 'fixed';
     dragElement.style.pointerEvents = 'none';
@@ -243,6 +272,13 @@ export class BoardDragDropService {
     dragElement.style.height = `${taskElement.offsetHeight}px`;
   }
 
+  /**
+   * Handles initializeDragElementPosition functionality.
+   * @param dragElement - Dragelement parameter
+   * @param originalRect - Originalrect parameter
+   * @param clientX - Clientx parameter
+   * @param clientY - Clienty parameter
+   */
   private initializeDragElementPosition(dragElement: HTMLElement, originalRect: DOMRect, clientX: number, clientY: number): void {
     const offsetX = clientX - originalRect.left;
     const offsetY = clientY - originalRect.top;
@@ -288,10 +324,20 @@ export class BoardDragDropService {
     this.processTaskColumnChange(oldColumn, newColumn, onTaskUpdate);
   }
 
+  /**
+   * Validates droppreconditions.
+   * @returns Boolean result
+   */
   private validateDropPreconditions(): boolean {
     return !!(this.dragState.draggedTask && this.dragState.dragOverColumn);
   }
 
+  /**
+   * Processes taskcolumnchange.
+   * @param oldColumn - Oldcolumn parameter
+   * @param newColumn - Newcolumn parameter
+   * @param onTaskUpdate - Ontaskupdate parameter
+   */
   private processTaskColumnChange(oldColumn: TaskColumn, newColumn: TaskColumn, onTaskUpdate: () => void): void {
     if (oldColumn !== newColumn) {
       this.updateTaskColumn(newColumn);
@@ -300,10 +346,18 @@ export class BoardDragDropService {
     onTaskUpdate();
   }
 
+  /**
+   * Updates taskcolumn.
+   * @param newColumn - Newcolumn parameter
+   */
   private updateTaskColumn(newColumn: TaskColumn): void {
     this.dragState.draggedTask!.column = newColumn;
   }
 
+  /**
+   * Updates taskinfirebase.
+   * @param oldColumn - Oldcolumn parameter
+   */
   private updateTaskInFirebase(oldColumn: TaskColumn): void {
     if (this.dragState.draggedTask!.id) {
       this.taskService.updateTaskInFirebase(this.dragState.draggedTask!)
@@ -314,6 +368,11 @@ export class BoardDragDropService {
         });
     }
   }
+  /**
+   * Handles firebaseupdateerror.
+   * @param error - Error parameter
+   * @param oldColumn - Oldcolumn parameter
+   */
   private handleFirebaseUpdateError(error: any, oldColumn: TaskColumn): void {
     console.error('Error updating task in Firebase:', error);
     this.dragState.draggedTask!.column = oldColumn;
