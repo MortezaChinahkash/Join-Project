@@ -136,18 +136,58 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
    */
   private setupIconClick(): void {
     setTimeout(() => {
-      const wrapper = this.elementRef.nativeElement.parentElement;
-      if (wrapper) {
-        const calendarIcon = wrapper.querySelector('.date-icon');
-        if (calendarIcon) {
-          calendarIcon.addEventListener('click', () => {
-            if (this.flatpickrInstance) {
-              this.flatpickrInstance.open();
-            }
-          });
-        }
-      }
+      this.findAndAttachIconClickHandler();
     }, 0);
+  }
+
+  /**
+   * Finds the calendar icon and attaches click handler.
+   * 
+   * @private
+   */
+  private findAndAttachIconClickHandler(): void {
+    const wrapper = this.getElementWrapper();
+    if (wrapper) {
+      const calendarIcon = this.findCalendarIcon(wrapper);
+      if (calendarIcon) {
+        this.attachClickHandler(calendarIcon);
+      }
+    }
+  }
+
+  /**
+   * Gets the wrapper element containing the calendar icon.
+   * 
+   * @returns Parent element or null
+   * @private
+   */
+  private getElementWrapper(): Element | null {
+    return this.elementRef.nativeElement.parentElement;
+  }
+
+  /**
+   * Finds the calendar icon within the wrapper element.
+   * 
+   * @param wrapper - Wrapper element to search in
+   * @returns Calendar icon element or null
+   * @private
+   */
+  private findCalendarIcon(wrapper: Element): Element | null {
+    return wrapper.querySelector('.date-icon');
+  }
+
+  /**
+   * Attaches click handler to the calendar icon.
+   * 
+   * @param calendarIcon - Calendar icon element
+   * @private
+   */
+  private attachClickHandler(calendarIcon: Element): void {
+    calendarIcon.addEventListener('click', () => {
+      if (this.flatpickrInstance) {
+        this.flatpickrInstance.open();
+      }
+    });
   }
 
   /**
