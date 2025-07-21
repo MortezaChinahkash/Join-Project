@@ -19,6 +19,7 @@ import { AddTaskContactService } from './services/add-task-contact.service';
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
+
 @Component({
   selector: 'app-add-task',
   standalone: true,
@@ -26,6 +27,7 @@ import { AddTaskContactService } from './services/add-task-contact.service';
   templateUrl: './add-task.component.html',
   styleUrl: './add-task.component.scss'
 })
+
 export class AddTaskComponent implements OnInit, OnDestroy {
   taskForm: FormGroup;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
@@ -51,6 +53,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   ) {
     this.taskForm = this.formService.createTaskForm();
   }
+
   /**
    * Component initialization.
    */
@@ -99,6 +102,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       console.error('Error loading contacts:', error);
     }
   }
+
   /**
    * Sets task priority.
    */
@@ -272,6 +276,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.isSubmitting = false;
     }
   }
+
   /**
    * Prepares task data from form.
    */
@@ -309,7 +314,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     
-    // Close category dropdown if clicking outside
     if (this.isCategoryDropdownOpen) {
       const categoryDropdown = target.closest('.category-select-wrapper');
       if (!categoryDropdown) {
@@ -317,7 +321,6 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       }
     }
     
-    // Close contacts dropdown if clicking outside
     if (this.isDropdownOpen) {
       const contactDropdown = target.closest('.custom-select-wrapper:not(.category-select-wrapper)');
       if (!contactDropdown) {
