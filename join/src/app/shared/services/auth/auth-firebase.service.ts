@@ -83,23 +83,54 @@ export class AuthFirebaseService {
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      const userCredential = await runInInjectionContext(this.injector, () => 
-        createUserWithEmailAndPassword(this.auth, email, password)
-      );
-      await runInInjectionContext(this.injector, () => 
-        updateProfile(userCredential.user, {
-          displayName: name.trim()
-        })
-      );
-      const user = this.mapFirebaseUserToUser(userCredential.user);
-      user.name = name.trim();
-      user.loginTimestamp = Date.now();
-      localStorage.setItem('join_new_user', 'true');
-      return user;
+      const userCredential = await this.createFirebaseUser(email, password);
+      await this.setUserDisplayName(userCredential.user, name);
+      return this.createRegisteredUser(userCredential.user, name);
     } catch (error: any) {
-
       throw this.handleAuthError(error);
     }
+  }
+
+  /**
+   * Creates a new Firebase user with email and password.
+   * @param email - User's email address
+   * @param password - User's password
+   * @returns Firebase user credential
+   * @private
+   */
+  private async createFirebaseUser(email: string, password: string): Promise<any> {
+    return await runInInjectionContext(this.injector, () => 
+      createUserWithEmailAndPassword(this.auth, email, password)
+    );
+  }
+
+  /**
+   * Sets the display name for a Firebase user during registration.
+   * @param firebaseUser - Firebase user object
+   * @param name - User's display name
+   * @private
+   */
+  private async setUserDisplayName(firebaseUser: any, name: string): Promise<void> {
+    await runInInjectionContext(this.injector, () => 
+      updateProfile(firebaseUser, {
+        displayName: name.trim()
+      })
+    );
+  }
+
+  /**
+   * Creates a registered user object from Firebase user.
+   * @param firebaseUser - Firebase user object
+   * @param name - User's display name
+   * @returns Registered user object
+   * @private
+   */
+  private createRegisteredUser(firebaseUser: any, name: string): User {
+    const user = this.mapFirebaseUserToUser(firebaseUser);
+    user.name = name.trim();
+    user.loginTimestamp = Date.now();
+    localStorage.setItem('join_new_user', 'true');
+    return user;
   }
 
   /**
