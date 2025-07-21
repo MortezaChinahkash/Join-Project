@@ -48,58 +48,115 @@ export class BoardDragDropService {
         resolve(false);
         return;
       }
-      this.dragState.isMousePressed = true;
-      this.dragState.mouseDownTime = Date.now();
-      this.dragState.initialMousePosition = { x: event.clientX, y: event.clientY };
-      let hasMoved = false;
-      let dragStarted = false;
-      this.dragState.dragDelayTimeout = setTimeout(() => {
-        if (this.dragState.isMousePressed && !hasMoved) {
-          this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
-          dragStarted = true;
-        }
-      }, this.dragState.dragDelay);
-
-      const handleMouseMove = (e: MouseEvent) => {
-        if (!this.dragState.isMousePressed) return;
-        const deltaX = Math.abs(e.clientX - this.dragState.initialMousePosition.x);
-        const deltaY = Math.abs(e.clientY - this.dragState.initialMousePosition.y);
-        if (deltaX > this.dragState.dragThreshold || deltaY > this.dragState.dragThreshold) {
-          hasMoved = true;
-          if (!dragStarted && !this.dragState.isDraggingTask) {
-            if (this.dragState.dragDelayTimeout) {
-              clearTimeout(this.dragState.dragDelayTimeout);
-              this.dragState.dragDelayTimeout = null;
-            }
-            this.startTaskDrag(e.clientX, e.clientY, task, event.target as HTMLElement);
-            dragStarted = true;
-          }
-        }
-        if (this.dragState.isDraggingTask) {
-          e.preventDefault();
-          this.updateTaskDrag(e.clientX, e.clientY);
-        }
-      };
-
-      const handleMouseUp = () => {
-        this.dragState.isMousePressed = false;
-        if (this.dragState.dragDelayTimeout) {
-          clearTimeout(this.dragState.dragDelayTimeout);
-          this.dragState.dragDelayTimeout = null;
-        }
-        if (this.dragState.isDraggingTask) {
-          this.endTaskDrag(onTaskUpdate);
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-
+      
+      const dragContext = this.initializeMouseDragState(event, task);
+      const handleMouseMove = this.createMouseMoveHandler(event, task, dragContext);
+      const handleMouseUp = this.createMouseUpHandler(onTaskUpdate, resolve, handleMouseMove);
+      
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     });
+  }
+
+  /**
+   * Initializes the mouse drag state and sets up the delay timeout.
+   * 
+   * @param event - The mouse event from the task element
+   * @param task - The task object to be dragged
+   * @returns Object containing drag context variables
+   * @private
+   */
+  private initializeMouseDragState(event: MouseEvent, task: Task): { hasMoved: boolean; dragStarted: boolean } {
+    this.dragState.isMousePressed = true;
+    this.dragState.mouseDownTime = Date.now();
+    this.dragState.initialMousePosition = { x: event.clientX, y: event.clientY };
+    const dragContext = { hasMoved: false, dragStarted: false };
+    
+    this.dragState.dragDelayTimeout = setTimeout(() => {
+      if (this.dragState.isMousePressed && !dragContext.hasMoved) {
+        this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
+        dragContext.dragStarted = true;
+      }
+    }, this.dragState.dragDelay);
+    
+    return dragContext;
+  }
+
+  /**
+   * Creates the mouse move event handler for drag operations.
+   * 
+   * @param event - The original mouse event
+   * @param task - The task object being dragged
+   * @param dragContext - The drag context containing movement state
+   * @returns Mouse move event handler function
+   * @private
+   */
+  private createMouseMoveHandler(event: MouseEvent, task: Task, dragContext: { hasMoved: boolean; dragStarted: boolean }): (e: MouseEvent) => void {
+    return (e: MouseEvent) => {
+      if (!this.dragState.isMousePressed) return;
+      
+      const deltaX = Math.abs(e.clientX - this.dragState.initialMousePosition.x);
+      const deltaY = Math.abs(e.clientY - this.dragState.initialMousePosition.y);
+      
+      if (deltaX > this.dragState.dragThreshold || deltaY > this.dragState.dragThreshold) {
+        this.handleMouseMovementThreshold(e, task, event, dragContext);
+      }
+      
+      if (this.dragState.isDraggingTask) {
+        e.preventDefault();
+        this.updateTaskDrag(e.clientX, e.clientY);
+      }
+    };
+  }
+
+  /**
+   * Handles mouse movement that exceeds the drag threshold.
+   * 
+   * @param e - The current mouse event
+   * @param task - The task object being dragged
+   * @param originalEvent - The original mouse down event
+   * @param dragContext - The drag context containing movement state
+   * @private
+   */
+  private handleMouseMovementThreshold(e: MouseEvent, task: Task, originalEvent: MouseEvent, dragContext: { hasMoved: boolean; dragStarted: boolean }): void {
+    dragContext.hasMoved = true;
+    if (!dragContext.dragStarted && !this.dragState.isDraggingTask) {
+      if (this.dragState.dragDelayTimeout) {
+        clearTimeout(this.dragState.dragDelayTimeout);
+        this.dragState.dragDelayTimeout = null;
+      }
+      this.startTaskDrag(e.clientX, e.clientY, task, originalEvent.target as HTMLElement);
+      dragContext.dragStarted = true;
+    }
+  }
+
+  /**
+   * Creates the mouse up event handler for ending drag operations.
+   * 
+   * @param onTaskUpdate - Callback to update local task arrays
+   * @param resolve - Promise resolve function
+   * @param handleMouseMove - The mouse move handler to remove
+   * @returns Mouse up event handler function
+   * @private
+   */
+  private createMouseUpHandler(onTaskUpdate: () => void, resolve: (value: boolean) => void, handleMouseMove: (e: MouseEvent) => void): () => void {
+    return () => {
+      this.dragState.isMousePressed = false;
+      if (this.dragState.dragDelayTimeout) {
+        clearTimeout(this.dragState.dragDelayTimeout);
+        this.dragState.dragDelayTimeout = null;
+      }
+      
+      if (this.dragState.isDraggingTask) {
+        this.endTaskDrag(onTaskUpdate);
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+      
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', arguments.callee as EventListener);
+    };
   }
 
   /**
