@@ -72,6 +72,11 @@ export class OnboardingService {
   ) {
     this.initializeOnboarding();
     (window as any).startOnboarding = () => this.manualStartOnboarding();
+    
+    window.addEventListener('user-registered', () => {
+      console.log('OnboardingService: user-registered event received');
+      this.triggerNewUserOnboarding();
+    });
   }
 
   /**
@@ -89,28 +94,38 @@ export class OnboardingService {
    * Checks if onboarding should be shown and starts it if needed.
    */
   private checkAndStartOnboarding(): void {
+    console.log('OnboardingService: checkAndStartOnboarding called, isAuthenticated:', this.authService.isAuthenticated);
     if (!this.authService.isAuthenticated) {
       return;
     }
-    const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
-    const isNewUser = localStorage.getItem('join_new_user');
-    if (!isCompleted && isNewUser) {
-      localStorage.removeItem('join_new_user');
-      setTimeout(() => {
-        this.startOnboarding();
-      }, 1000);
-    }
+    
+    setTimeout(() => {
+      const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
+      const isNewUser = localStorage.getItem('join_new_user');
+      console.log('OnboardingService: checking conditions - isCompleted:', isCompleted, 'isNewUser:', isNewUser);
+      
+      if (isNewUser) {
+        console.log('OnboardingService: New user detected, resetting onboarding completion status');
+        localStorage.removeItem(this.ONBOARDING_COMPLETED_KEY);
+        localStorage.removeItem('join_new_user');
+        setTimeout(() => {
+          this.startOnboarding();
+        }, 1000);
+      }
+    }, 500);
   }
   
   /**
    * Starts the onboarding tour.
    */
   public startOnboarding(): void {
+    console.log('OnboardingService: startOnboarding called, isAuthenticated:', this.authService.isAuthenticated);
     if (!this.authService.isAuthenticated) {
       return;
     }
     this.currentStepSubject.next(0);
     this.showOnboardingSubject.next(true);
+    console.log('OnboardingService: onboarding started, showOnboarding set to true');
     const firstStep = this.onboardingSteps[0];
     this.router.navigate([firstStep.route]);
   }
@@ -217,5 +232,15 @@ export class OnboardingService {
   public manualStartOnboarding(): void {
     localStorage.removeItem(this.ONBOARDING_COMPLETED_KEY);
     this.startOnboarding();
+  }
+
+  /**
+   * Triggers onboarding check for new users (called after registration).
+   */
+  public triggerNewUserOnboarding(): void {
+    console.log('OnboardingService: triggerNewUserOnboarding called');
+    setTimeout(() => {
+      this.checkAndStartOnboarding();
+    }, 1500);
   }
 }

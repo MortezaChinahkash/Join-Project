@@ -34,6 +34,7 @@ export class AuthService implements OnDestroy {
     private auth: Auth,
     private welcomeOverlayService: WelcomeOverlayService
   ) {
+
     setTimeout(() => {
       this.initializeAuthListener();
       this.loadUserFromStorage();
@@ -147,15 +148,28 @@ export class AuthService implements OnDestroy {
       const userCredential = await runInInjectionContext(this.injector, () => 
         createUserWithEmailAndPassword(this.auth, email, password)
       );
+
       await runInInjectionContext(this.injector, () => 
         updateProfile(userCredential.user, {
           displayName: name.trim()
         })
       );
       const user = this.mapFirebaseUserToUser(userCredential.user);
+
       user.name = name.trim();
+
       user.loginTimestamp = Date.now();
+
       localStorage.setItem('join_new_user', 'true');
+      console.log('AuthService: New user flag set in localStorage');
+      
+      this.setCurrentUser(user);
+      
+      setTimeout(() => {
+        console.log('AuthService: Dispatching user-registered event');
+        window.dispatchEvent(new CustomEvent('user-registered'));
+      }, 500);
+      
       return user;
     } catch (error: any) {
 
@@ -189,6 +203,7 @@ export class AuthService implements OnDestroy {
       await runInInjectionContext(this.injector, () => 
         signOut(this.auth)
       );
+
       this.router.navigate(['/auth']);
     } catch (error) {
 
@@ -309,6 +324,7 @@ export class AuthService implements OnDestroy {
    */
   private handleAuthError(error: any): Error {
     console.error('Auth error:', error);
+
     switch (error.code) {
       case 'auth/user-not-found':
       case 'auth/wrong-password':
@@ -343,6 +359,7 @@ export class AuthService implements OnDestroy {
     if (this.currentUser.isGuest) {
       return 'GU';
     }
+
     return this.currentUser.name
       .split(' ')
       .map(name => name.charAt(0).toUpperCase())
@@ -378,6 +395,7 @@ export class AuthService implements OnDestroy {
           displayName: name.trim()
         })
       );
+
       const currentUser = this.currentUser;
       if (currentUser) {
         currentUser.name = name.trim();
@@ -395,6 +413,7 @@ export class AuthService implements OnDestroy {
    * Starts periodic session check to auto-logout after 24 hours.
    */
   private startSessionCheck(): void {
+
     this.sessionCheckInterval = setInterval(() => {
       this.checkSessionExpiry();
     }, 5 * 60 * 1000);
@@ -410,6 +429,7 @@ export class AuthService implements OnDestroy {
     if (!currentUser) return;
     const currentTime = Date.now();
     const sessionAge = currentTime - currentUser.loginTimestamp;
+
     if (sessionAge > this.SESSION_DURATION) {
       this.logout();
     }
