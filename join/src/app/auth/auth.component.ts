@@ -49,6 +49,7 @@ export class AuthComponent implements OnInit {
       }
     }, 500);
   }
+
   /**
    * Initializes the login and registration forms with validation.
    */
@@ -117,6 +118,7 @@ export class AuthComponent implements OnInit {
       this.markFormGroupTouched(this.loginForm);
     }
   }
+
   /**
    * Handles user registration.
    */
@@ -139,6 +141,7 @@ export class AuthComponent implements OnInit {
       this.markFormGroupTouched(this.registerForm);
     }
   }
+
   /**
    * Handles guest login.
    */
@@ -158,6 +161,7 @@ export class AuthComponent implements OnInit {
       }
     }
   }
+
   /**
    * Marks all form controls as touched to trigger validation display.
    */
@@ -167,6 +171,7 @@ export class AuthComponent implements OnInit {
       control?.markAsTouched();
     });
   }
+
   /**
    * Gets user-friendly error messages from error objects.
    */
@@ -221,6 +226,7 @@ export class AuthComponent implements OnInit {
     }
     return '';
   }
+
   /**
    * Gets the placeholder text for input fields - shows error or default placeholder.
    */

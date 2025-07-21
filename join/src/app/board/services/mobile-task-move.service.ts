@@ -108,6 +108,7 @@ export class MobileTaskMoveService {
     if (!task) return null;
     return this.mobileService.getCurrentTaskColumn(task, taskArrays);
   }
+
   /**
    * Gets previous column in workflow.
    * @param currentColumn - Current column
@@ -149,6 +150,7 @@ export class MobileTaskMoveService {
       this.moveTaskToColumn(this.selectedTaskForMove, previousColumn, currentColumn, updateCallback);
     }
   }
+
   /**
    * Moves selected task to next column.
    * @param taskArrays - Object containing all task arrays
@@ -170,6 +172,7 @@ export class MobileTaskMoveService {
       this.moveTaskToColumn(this.selectedTaskForMove, nextColumn, currentColumn, updateCallback);
     }
   }
+
   /**
    * Moves task to specified column.
    * @param task - Task to move

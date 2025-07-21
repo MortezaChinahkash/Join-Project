@@ -68,6 +68,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
     const mergedOptions = { ...defaultOptions, ...this.options };
     this.flatpickrInstance = flatpickr(this.elementRef.nativeElement, mergedOptions);
   }
+
   /**
    * Formats a date object to mm/dd/yyyy string format (American format).
    * @param date - The date to format
@@ -98,6 +99,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
       }
     }, 0);
   }
+
   /**
    * ControlValueAccessor implementation - writes a value to the form control.
    * @param value - The value to set in the date picker

@@ -55,6 +55,7 @@ export class BoardFormStateService {
     // Mark priority field as touched to trigger validation
     this.taskForm.get('priority')?.markAsTouched();
   }
+
   /**
    * Handles category change events and triggers validation.
    * 

@@ -37,6 +37,7 @@ export class BoardFormService {
   ) {
     this.taskForm = this.createTaskForm();
   }
+
   /**
    * Creates and initializes the reactive task form with validation rules.
    * 
@@ -89,6 +90,7 @@ export class BoardFormService {
     // Mark priority field as touched to trigger validation
     this.taskForm.get('priority')?.markAsTouched();
   }
+
   /**
    * Handles category change events and triggers validation.
    * 
@@ -193,6 +195,7 @@ export class BoardFormService {
       }
     }
   }
+
   /**
    * Marks all form controls as touched to trigger validation display.
    * 
@@ -210,6 +213,7 @@ export class BoardFormService {
       }
     });
   }
+
   /**
    * Checks if a form field is invalid and has been touched.
    * 
@@ -308,6 +312,7 @@ export class BoardFormService {
 
     document.addEventListener('click', this.documentClickListener);
   }
+
   /**
    * Removes document click listener
    */
@@ -360,6 +365,7 @@ export class BoardFormService {
     this.isCategoryDropdownOpen = false;
     this.removeDocumentClickListener();
   }
+
   /**
    * Gets display text for category value
    * 
@@ -387,6 +393,7 @@ export class BoardFormService {
 
     this.isDropdownOpen = false;
   }
+
   /**
    * Gets the currently selected contact from the form.
    * 
@@ -546,6 +553,7 @@ export class BoardFormService {
       console.error('âŒ Error updating task:', error);
     }
   }
+
   /**
    * Toggles the completion status of a subtask and auto-saves changes.
    * 
@@ -590,6 +598,7 @@ export class BoardFormService {
       document.addEventListener('click', this.assignedContactsClickListener);
     }, 10);
   }
+
   /**
    * Removes assigned contacts document click listener
    */

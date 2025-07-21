@@ -94,6 +94,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.visible = false;
     }, 1500);
   }
+
   /**
    * Gets the current date formatted for display.
    * @returns Formatted date string
@@ -120,6 +121,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       return 'Good night';
     }
   }
+
   /**
    * Gets the current year.
    * @returns Current year as number
@@ -238,6 +240,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   /**
    * Gets the count of open tasks (todo, in progress, awaiting feedback).
    * @returns Number of open tasks
@@ -348,6 +351,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       return currentDate < nearestDate ? current : nearest;
     });
   }
+
   /**
    * Parses a due date string in German format (DD.MM.YYYY) to a Date object.
    * @param dateString - Date string in format DD.MM.YYYY

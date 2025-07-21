@@ -61,6 +61,7 @@ export class NavComponent implements OnInit {
       this.updateActiveRoute();
     });
   }
+
   /**
    * Checks if a route is currently active.
    * @param route - Route to check

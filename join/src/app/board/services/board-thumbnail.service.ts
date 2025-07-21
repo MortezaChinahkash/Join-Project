@@ -69,6 +69,7 @@ export class BoardThumbnailService {
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
     }
   }
+
   /**
    * Handles viewport drag start for thumbnail navigation.
    * Initiates viewport dragging and sets up mouse event listeners for smooth drag interaction.
@@ -124,6 +125,7 @@ export class BoardThumbnailService {
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseUp); // Handle mouse leaving window
   }
+
   /**
    * Handles viewport touch start for thumbnail navigation on touch devices.
    * Initiates viewport dragging and sets up touch event listeners for smooth drag interaction.
@@ -182,6 +184,7 @@ export class BoardThumbnailService {
     document.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('touchcancel', handleTouchEnd); // Handle touch cancel
   }
+
   /**
    * Handles thumbnail touch events for navigation on touch devices.
    * Calculates scroll position based on touch location and smoothly scrolls to target position.
@@ -209,6 +212,7 @@ export class BoardThumbnailService {
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
     }
   }
+
   /**
    * Updates scroll position and thumbnail viewport calculations.
    * Determines if scroll overview should be shown based on window width and content overflow.
@@ -300,6 +304,7 @@ export class BoardThumbnailService {
       }, 1000);
     }
   }
+
   /**
    * Resets all thumbnail and scroll state variables.
    * Useful for cleanup when component is destroyed.

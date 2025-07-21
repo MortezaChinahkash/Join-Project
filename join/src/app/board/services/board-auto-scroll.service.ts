@@ -124,6 +124,7 @@ export class BoardAutoScrollService {
       }
     }
   }
+
   /**
    * Starts vertical auto-scroll with specified parameters.
    * 
@@ -177,6 +178,7 @@ export class BoardAutoScrollService {
       }
     }, 16); // ~60fps for smooth scrolling
   }
+
   /**
    * Stops vertical auto-scroll.
    */

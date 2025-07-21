@@ -41,6 +41,7 @@ export class BoardDataService {
       return collectionData(taskRef, { idField: 'id' }) as Observable<Task[]>;
     });
   }
+
   /**
    * Loads all contacts from Firebase and returns an observable.
    * 
@@ -52,6 +53,7 @@ export class BoardDataService {
       return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
     });
   }
+
   /**
    * Sorts contacts alphabetically by name.
    * 
@@ -105,6 +107,7 @@ export class BoardDataService {
       this.assignTaskToColumn(task, result);
     });
   }
+
   /**
    * Assigns a single task to its appropriate column.
    * 
@@ -137,6 +140,7 @@ export class BoardDataService {
         this.handleUnknownColumn(task, result);
     }
   }
+
   /**
    * Handles tasks with unknown or undefined columns.
    * 

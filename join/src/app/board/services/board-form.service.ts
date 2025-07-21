@@ -170,6 +170,7 @@ export class BoardFormService {
       return false;
     }
   }
+
   /**
    * Builds task object from form data.
    * 
@@ -240,6 +241,7 @@ export class BoardFormService {
       throw error;
     }
   }
+
   /**
    * Updates an existing task.
    * 
@@ -254,6 +256,7 @@ export class BoardFormService {
       throw error;
     }
   }
+
   /**
    * Validates the form using validation service.
    * 

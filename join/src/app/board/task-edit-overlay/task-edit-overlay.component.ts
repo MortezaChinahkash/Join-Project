@@ -74,6 +74,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
       this.setupDropdownClickListener();
     }, 0);
   }
+
   /**
    * Sets up document click listener for dropdown
    */
@@ -94,12 +95,14 @@ export class TaskEditOverlayComponent implements OnDestroy {
       if (addTaskDropdownWrapper || addTaskDropdownOption) {
         return;
       }
+
       /**
        * Close dropdown if clicked outside and dropdown is open
        */
       if (!dropdownContainer && this.formService.isDropdownOpen) {
         this.formService.isDropdownOpen = false;
       }
+
       /**
        * Don't close if clicking on the trigger (let the toggle handle it)
        */
@@ -110,6 +113,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
     /** Use capture phase */
     document.addEventListener('click', this.dropdownClickListener, true);
   }
+
   /**
    * Removes dropdown click listener
    */
@@ -144,6 +148,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
 
     document.addEventListener('click', this.documentClickListener);
   }
+
   /**
    * Removes document click listener
    */
@@ -222,6 +227,7 @@ export class TaskEditOverlayComponent implements OnDestroy {
       }
     }, 150); /** Small delay to allow clicking save/delete buttons */
   }
+
   /**
    * Saves the current subtask edit
    */

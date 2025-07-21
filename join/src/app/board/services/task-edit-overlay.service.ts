@@ -59,6 +59,7 @@ export class TaskEditOverlayService {
       console.error('âŒ Error saving task changes:', error);
     }
   }
+
   /**
    * Gets the current editing state
    */

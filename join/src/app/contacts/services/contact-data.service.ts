@@ -13,6 +13,7 @@ export interface Contact {
   /** Flag to indicate if this is the current user */
   isCurrentUser?: boolean;
 }
+
 /**
  * Service for managing contact data operations with Firestore.
  * Handles CRUD operations for contacts including add, update, delete, and fetch.
@@ -36,6 +37,7 @@ export class ContactDataService {
       return collectionData(contactsCollection, { idField: 'id' }) as Observable<Contact[]>;
     });
   }
+
   /**
    * Adds a new contact to Firestore.
    * @param contactData - Contact data to add
@@ -59,6 +61,7 @@ export class ContactDataService {
       phone: contactData.phone,
     };
   }
+
   /**
    * Updates an existing contact in Firestore.
    * @param contactId - ID of the contact to update
@@ -75,6 +78,7 @@ export class ContactDataService {
       phone: contactData.phone,
     });
   }
+
   /**
    * Deletes a contact from Firestore.
    * @param contactId - ID of the contact to delete

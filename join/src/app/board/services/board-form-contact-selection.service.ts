@@ -58,6 +58,7 @@ export class BoardFormContactSelectionService {
       return `${this.selectedContacts[0].name} +${this.selectedContacts.length - 1} more`;
     }
   }
+
   /**
    * Gets the first selected contact (for single selection scenarios).
    * 
@@ -124,6 +125,7 @@ export class BoardFormContactSelectionService {
       document.addEventListener('click', this.documentClickListener!);
     }, 100);
   }
+
   /**
    * Removes document click listener.
    */
@@ -179,6 +181,7 @@ export class BoardFormContactSelectionService {
       document.addEventListener('click', this.assignedContactsClickListener!);
     }, 100);
   }
+
   /**
    * Removes assigned contacts click listener.
    */

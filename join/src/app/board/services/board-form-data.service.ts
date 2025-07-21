@@ -316,6 +316,7 @@ export class BoardFormDataService {
       this.performAutoSave();
     }, this.autoSaveDelay);
   }
+
   /**
    * Clears the auto-save timeout.
    */

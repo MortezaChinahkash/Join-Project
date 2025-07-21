@@ -104,6 +104,7 @@ export class BoardDragDropService {
       document.addEventListener('mouseup', handleMouseUp);
     });
   }
+
   /**
    * Handles touch start events on tasks for mobile drag & drop functionality.
    * Implements long press detection (500ms) to initiate dragging on touch devices.
@@ -155,6 +156,7 @@ export class BoardDragDropService {
       document.addEventListener('touchend', handleTouchEnd);
     });
   }
+
   /**
    * Initiates the task dragging process by creating a visual clone and setting up drag state.
    * Creates a rotated clone of the task card and calculates the drag offset for smooth positioning.
@@ -279,6 +281,7 @@ export class BoardDragDropService {
       this.dragPlaceholderVisible = false;
     }
   }
+
   /**
    * Enhanced column detection method using geometric bounds as fallback.
    * Iterates through all board columns and checks if the cursor position is within column boundaries.
@@ -367,6 +370,7 @@ export class BoardDragDropService {
       }, 8); // Even higher frequency for ultra-smooth scrolling
     }
   }
+
   /**
    * Simple and direct auto-scroll implementation as fallback.
    * This method provides a more straightforward approach using the content container.
@@ -464,6 +468,7 @@ export class BoardDragDropService {
     this.disableDragOverflow();
     if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
   }
+
   /**
    * Handles drag over events on board columns to show visual feedback.
    * Prevents default behavior and shows placeholder when dragging over a different column.
@@ -586,6 +591,7 @@ export class BoardDragDropService {
     }
     return scrolled;
   }
+
   /**
    * Finds the main scrollable container in the application.
    * Looks for common scrollable container patterns used in Angular apps.

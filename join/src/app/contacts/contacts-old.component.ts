@@ -81,6 +81,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   ) {
     this.addContactForm = this.createContactForm();
   }
+
   /**
    * Angular lifecycle hook - component initialization.
    */
@@ -273,6 +274,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.handleOperationError('adding', error);
     }
   }
+
   /**
    * Performs update contact operation.
    * @param contactData - Contact data to update
@@ -295,6 +297,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.handleOperationError('updating', error);
     }
   }
+
   /**
    * Updates the current user's profile in Firebase Auth.
    * @param contactData - Contact data to update
@@ -357,6 +360,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   private handleOperationError(operation: string, error: any): void {
     console.error(`Error ${operation} contact:`, error);
   }
+
   /**
    * Ensures phone field has a value.
    */
@@ -420,6 +424,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.handleDeleteError(error);
     }
   }
+
   /**
    * Handles successful contact deletion.
    * @param contactId - ID of deleted contact
@@ -449,6 +454,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.suppressAnimation = false;
     }, 0);
   }
+
   /**
    * Selects a contact and handles mobile view.
    * @param contact - Contact to select
@@ -506,6 +512,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.contactSuccessMessageOverlay = false;
     });
   }
+
   /**
    * Gets contact initials for display.
    * @param name - Contact name

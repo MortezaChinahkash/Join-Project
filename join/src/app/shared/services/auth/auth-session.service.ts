@@ -24,6 +24,7 @@ export class AuthSessionService {
       this.checkSession(onSessionExpired);
     }, this.CHECK_INTERVAL);
   }
+
   /**
    * Stops periodic session checking.
    */
@@ -54,6 +55,7 @@ export class AuthSessionService {
       onSessionExpired();
     }
   }
+
   /**
    * Manually checks session validity.
    * 

@@ -107,6 +107,7 @@ export class ContactsDisplayService {
     }
     return phone; // Return original if can't format
   }
+
   /**
    * Gets display text for contact based on available information.
    * 
@@ -227,6 +228,7 @@ export class ContactsDisplayService {
       truncatedEmail: this.truncateEmail(contact.email)
     };
   }
+
   /**
    * Gets contact list item class names based on state.
    * 
@@ -254,6 +256,7 @@ export class ContactsDisplayService {
   getContactSearchText(contact: Contact): string {
     return `${contact.name} ${contact.email} ${contact.phone || ''}`.toLowerCase();
   }
+
   /**
    * Validates if contact has minimum required data for display.
    * 

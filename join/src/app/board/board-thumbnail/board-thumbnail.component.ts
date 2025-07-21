@@ -56,6 +56,7 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
       this.thumbnailService.setupScrollListener();
     }, 500);
   }
+
   /**
    * Handles thumbnail click events.
    * @param event - Mouse event

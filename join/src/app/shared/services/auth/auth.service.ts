@@ -58,6 +58,7 @@ export class AuthService {
       throw error;
     }
   }
+
   /**
    * Registers a new user account.
    * 
@@ -81,6 +82,7 @@ export class AuthService {
       throw error;
     }
   }
+
   /**
    * Logs in user as guest.
    * 
@@ -101,6 +103,7 @@ export class AuthService {
       throw error;
     }
   }
+
   /**
    * Logs out the current user.
    * 
@@ -123,6 +126,7 @@ export class AuthService {
       throw new Error('Failed to logout. Please try again.');
     }
   }
+
   /**
    * Extends the current user session.
    * 
@@ -195,6 +199,7 @@ export class AuthService {
       throw error;
     }
   }
+
   /**
    * Initializes the authentication system.
    * Sets up Firebase auth listener and checks for existing session.
@@ -227,6 +232,7 @@ export class AuthService {
       console.error('Error initializing auth:', error);
     }
   }
+
   /**
    * Starts session monitoring for automatic logout.
    * 
@@ -238,6 +244,7 @@ export class AuthService {
       this.logout();
     });
   }
+
   /**
    * Generates initials from a user's name.
    * 

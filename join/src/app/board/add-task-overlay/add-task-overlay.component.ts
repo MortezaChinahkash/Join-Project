@@ -63,6 +63,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
   ) {
     // No need for local dropdown listener - using the service listener instead
   }
+
   /**
    * Track by function for contact list
    */
@@ -113,6 +114,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
       this.onSubmit.emit();
     }
   }
+
   /**
    * Handles clicks outside dropdowns to close them
    */

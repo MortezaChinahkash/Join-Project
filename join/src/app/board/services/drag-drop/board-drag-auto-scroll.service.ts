@@ -98,6 +98,7 @@ export class BoardDragAutoScrollService {
       window.scrollBy(0, scrollDirection);
     }, 16); // ~60fps
   }
+
   /**
    * Stops auto-scrolling and cleans up the interval.
    */
@@ -186,6 +187,7 @@ export class BoardDragAutoScrollService {
       scrollContainer.scrollTop += scrollSpeed;
     }
   }
+
   /**
    * Finds the scrollable container element in the DOM.
    * 

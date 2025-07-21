@@ -132,6 +132,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   ) {
     this.initializeLocalArrays();
   }
+
   /** Angular lifecycle hook that runs after component initialization. */
   ngOnInit(): void {
     this.initializationService.initializeComponent(
@@ -146,6 +147,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     );
   }
+
   /** Distributes tasks into appropriate columns and sorts by priority. */
   private distributeTasksToColumns(): void {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
@@ -167,6 +169,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.awaitingFeedbackTasks = distributed.awaitingFeedbackTasks;
     this.doneTasks = distributed.doneTasks;
   }
+
   /** Initializes local task arrays from the task service. */
   private initializeLocalArrays(): void {
     const initialized = this.initializationService.initializeTaskArrays();
@@ -207,6 +210,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.initializeLocalArrays();
     });
   }
+
   /**
    * Opens task details overlay for the specified task.
    * @param task - Task to display details for
@@ -260,6 +264,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.taskManagementService.closeTaskDetailsOverlay();
     });
   }
+
   /**
    * Closes the delete confirmation dialog.
    */
@@ -373,6 +378,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     );
   }
+
   /**
    * Moves selected task to next column.
    */
@@ -390,6 +396,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     );
   }
+
   /**
    * Handles task movement between columns.
    * @param task - Task being moved

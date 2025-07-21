@@ -40,6 +40,7 @@ export class BoardSubtaskService {
       }
     }, 0);
   }
+
   /**
    * Finds the input element for a specific subtask.
    * 
@@ -79,6 +80,7 @@ export class BoardSubtaskService {
       subtasksFormArray.push(newSubtaskGroup);
     }
   }
+
   /**
    * Validates and trims subtask title.
    * 
@@ -130,6 +132,7 @@ export class BoardSubtaskService {
       subtaskGroup.patchValue({ completed });
     }
   }
+
   /**
    * Gets the current completion status of a subtask.
    * 
@@ -158,6 +161,7 @@ export class BoardSubtaskService {
       return count + (isCompleted ? 1 : 0);
     }, 0);
   }
+
   /**
    * Calculates completion percentage of subtasks.
    * 

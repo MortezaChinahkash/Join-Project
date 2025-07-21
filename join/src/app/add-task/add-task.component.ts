@@ -51,6 +51,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   ) {
     this.taskForm = this.formService.createTaskForm();
   }
+
   /**
    * Component initialization.
    */
@@ -99,6 +100,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       console.error('Error loading contacts:', error);
     }
   }
+
   /**
    * Sets task priority.
    */
@@ -272,6 +274,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.isSubmitting = false;
     }
   }
+
   /**
    * Prepares task data from form.
    */

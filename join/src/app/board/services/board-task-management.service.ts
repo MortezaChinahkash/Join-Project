@@ -240,6 +240,7 @@ export class BoardTaskManagementService {
     }
     return updated;
   }
+
   /**
    * Adds task to specified column array.
    * @param task - Task to add

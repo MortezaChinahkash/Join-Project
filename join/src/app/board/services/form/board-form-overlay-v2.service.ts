@@ -94,6 +94,7 @@ export class BoardFormOverlayService {
       }, delay);
     });
   }
+
   /**
    * Switches from details view to edit view.
    */
@@ -104,6 +105,7 @@ export class BoardFormOverlayService {
       this.isEditingTask = true;
     }
   }
+
   /**
    * Switches from edit view to details view.
    */
@@ -114,6 +116,7 @@ export class BoardFormOverlayService {
       this.isEditingTask = false;
     }
   }
+
   /**
    * Gets the currently active overlay type.
    * 

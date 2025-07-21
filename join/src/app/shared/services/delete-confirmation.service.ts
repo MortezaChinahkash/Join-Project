@@ -58,6 +58,7 @@ export class DeleteConfirmationService {
       console.error('âŒ Error deleting task:', error);
     }
   }
+
   /**
    * Initiates the delete process by opening the confirmation overlay.
    * 

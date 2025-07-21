@@ -50,6 +50,7 @@ export class BoardLifecycleService {
       error: onError
     });
   }
+
   /**
    * Loads tasks from Firebase and subscribes to real-time updates.
    * @param onTasksLoaded - Callback when tasks are loaded
@@ -64,6 +65,7 @@ export class BoardLifecycleService {
       error: onError
     });
   }
+
   /**
    * Sets up the scroll listener for thumbnail navigation.
    */

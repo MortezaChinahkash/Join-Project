@@ -71,6 +71,7 @@ export class BoardUtilsService {
 
     return sortedTasks;
   }
+
   /**
    * Filters tasks based on search term in title and description.
    * 

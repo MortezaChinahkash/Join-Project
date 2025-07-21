@@ -47,6 +47,7 @@ export class ContactsCrudService {
       throw new Error('Failed to create contact');
     }
   }
+
   /**
    * Updates an existing contact.
    * 
@@ -74,6 +75,7 @@ export class ContactsCrudService {
       throw new Error('Failed to update contact');
     }
   }
+
   /**
    * Deletes a contact.
    * 
@@ -97,6 +99,7 @@ export class ContactsCrudService {
       throw new Error('Failed to delete contact');
     }
   }
+
   /**
    * Gets a contact by ID.
    * 
@@ -118,6 +121,7 @@ export class ContactsCrudService {
       return null;
     }
   }
+
   /**
    * Finds a contact by email address.
    * 
@@ -136,6 +140,7 @@ export class ContactsCrudService {
       return null;
     }
   }
+
   /**
    * Gets all contacts with current user included.
    * 
@@ -155,6 +160,7 @@ export class ContactsCrudService {
       throw new Error('Failed to load contacts');
     }
   }
+
   /**
    * Adds a contact to the local array and maintains sort order.
    * 
@@ -334,6 +340,7 @@ export class ContactsCrudService {
     }
     return { successful, failed };
   }
+
   /**
    * Exports contacts to a specific format.
    * 

@@ -43,6 +43,7 @@ export class BoardInteractionService {
   ): Promise<boolean> {
     return await this.dragDropService.onTaskMouseDown(event, task, updateCallback);
   }
+
   /**
    * Handles touch start on task for drag operation or details opening.
    * @param event - Touch event
@@ -57,6 +58,7 @@ export class BoardInteractionService {
   ): Promise<boolean> {
     return await this.dragDropService.onTaskTouchStart(event, task, updateCallback);
   }
+
   /**
    * Handles drag over event on columns.
    * @param event - Drag event
