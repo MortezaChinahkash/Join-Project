@@ -464,26 +464,56 @@ export class SummaryComponent implements OnInit, OnDestroy {
    * Falls back to general board navigation if no urgent task with deadline exists.
    */
   navigateToNearestUrgentTask(): void {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const urgentTasksWithDueDate = this.tasks.filter(task => 
-      task.priority === 'urgent' && 
-      task.dueDate && 
-      this.parseDueDate(task.dueDate) >= today
-    );
+    const urgentTasksWithDueDate = this.filterUrgentTasksForNavigation();
+    
     if (urgentTasksWithDueDate.length === 0) {
       this.router.navigate(['/board']);
       return;
     }
-    const nearestUrgentTask = urgentTasksWithDueDate.reduce((nearest, current) => {
+    
+    const nearestUrgentTask = this.selectNearestUrgentTask(urgentTasksWithDueDate);
+    this.navigateToBoardWithTask(nearestUrgentTask);
+  }
+
+  /**
+   * Filters urgent tasks that have a due date today or in the future for navigation.
+   * @returns Array of urgent tasks with valid due dates
+   * @private
+   */
+  private filterUrgentTasksForNavigation(): Task[] {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    return this.tasks.filter(task => 
+      task.priority === 'urgent' && 
+      task.dueDate && 
+      this.parseDueDate(task.dueDate) >= today
+    );
+  }
+
+  /**
+   * Selects the urgent task with the nearest due date from the provided list.
+   * @param urgentTasks - Array of urgent tasks to search through
+   * @returns The task with the nearest due date
+   * @private
+   */
+  private selectNearestUrgentTask(urgentTasks: Task[]): Task {
+    return urgentTasks.reduce((nearest, current) => {
       const currentDate = this.parseDueDate(current.dueDate!);
       const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
+  }
 
+  /**
+   * Navigates to the board with the specified task selected and urgent filter applied.
+   * @param task - The task to select in the board
+   * @private
+   */
+  private navigateToBoardWithTask(task: Task): void {
     this.router.navigate(['/board'], { 
       queryParams: { 
-        selectedTask: nearestUrgentTask.id,
+        selectedTask: task.id,
         filter: 'urgent'
       }
     });
