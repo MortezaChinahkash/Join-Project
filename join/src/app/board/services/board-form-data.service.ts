@@ -24,7 +24,20 @@ export class BoardFormDataService {
    * @returns New task object
    */
   createNewTask(status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'): Task {
-    const newTask: Task = {
+    const newTask = this.buildTaskWithDefaults(status);
+    this.initializeTaskState(newTask);
+    return newTask;
+  }
+
+  /**
+   * Builds a new task object with default values.
+   * 
+   * @param status - Initial task status
+   * @returns New task object with defaults
+   * @private
+   */
+  private buildTaskWithDefaults(status: 'todo' | 'inprogress' | 'awaiting' | 'done'): Task {
+    return {
       id: this.generateTaskId(),
       title: '',
       description: '',
@@ -36,10 +49,18 @@ export class BoardFormDataService {
       category: '',
       createdAt: new Date()
     };
-    this.currentTask = newTask;
+  }
+
+  /**
+   * Initializes the service state for a new task.
+   * 
+   * @param task - The newly created task
+   * @private
+   */
+  private initializeTaskState(task: Task): void {
+    this.currentTask = task;
     this.isEditMode = false;
     this.originalTask = null;
-    return newTask;
   }
 
   /**
