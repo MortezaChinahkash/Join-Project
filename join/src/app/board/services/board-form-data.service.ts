@@ -284,14 +284,11 @@ export class BoardFormDataService {
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-    
     if (!this.validateTaskExists(errors)) {
       return { isValid: false, errors };
     }
-    
     this.validateRequiredFields(errors);
     this.validateDueDate(errors);
-    
     return { isValid: errors.length === 0, errors };
   }
 

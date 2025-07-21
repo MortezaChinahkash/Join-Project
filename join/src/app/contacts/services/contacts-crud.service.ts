@@ -323,21 +323,66 @@ export class ContactsCrudService {
     errors: string[];
   } {
     const errors: string[] = [];
+    this.validateRequiredFields(contactData, errors);
+    this.validateEmailField(contactData, errors);
+    this.validateNameLength(contactData, errors);
+    this.validatePhoneField(contactData, errors);
+    return this.buildValidationResult(errors);
+  }
+
+  /**
+   * Validates required contact fields.
+   * 
+   * @param contactData - Contact data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateRequiredFields(contactData: Partial<Contact>, errors: string[]): void {
     if (!contactData.name?.trim()) {
       errors.push('Name is required');
     }
     if (!contactData.email?.trim()) {
       errors.push('Email is required');
     }
+  }
+
+  /**
+   * Validates email field format.
+   * 
+   * @param contactData - Contact data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateEmailField(contactData: Partial<Contact>, errors: string[]): void {
     if (contactData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(contactData.email)) {
         errors.push('Invalid email format');
       }
     }
+  }
+
+  /**
+   * Validates name field length.
+   * 
+   * @param contactData - Contact data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateNameLength(contactData: Partial<Contact>, errors: string[]): void {
     if (contactData.name && contactData.name.length < 2) {
       errors.push('Name must be at least 2 characters long');
     }
+  }
+
+  /**
+   * Validates phone field format.
+   * 
+   * @param contactData - Contact data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validatePhoneField(contactData: Partial<Contact>, errors: string[]): void {
     if (contactData.phone && contactData.phone !== 'N/A') {
       const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
       const cleanPhone = contactData.phone.replace(/[\s\-\(\)]/g, '');
@@ -345,6 +390,16 @@ export class ContactsCrudService {
         errors.push('Invalid phone number format');
       }
     }
+  }
+
+  /**
+   * Builds the final validation result.
+   * 
+   * @param errors - Array of validation errors
+   * @returns Validation result object
+   * @private
+   */
+  private buildValidationResult(errors: string[]): { isValid: boolean; errors: string[] } {
     return {
       isValid: errors.length === 0,
       errors
@@ -401,21 +456,79 @@ export class ContactsCrudService {
     successful: Contact[];
     failed: { data: Partial<Contact>; error: string }[];
   }> {
-    const successful: Contact[] = [];
-    const failed: { data: Partial<Contact>; error: string }[] = [];
-    for (const contactData of contactsData) {
-      try {
-        const newContact = await this.createContact(contactData);
-        successful.push(newContact);
-      } catch (error) {
+    const results = this.initializeBulkCreateResults();
+    await this.processBulkContactCreation(contactsData, results);
+    return results;
+  }
 
-        failed.push({
-          data: contactData,
-          error: error instanceof Error ? error.message : 'Unknown error'
-        });
-      }
+  /**
+   * Initializes the results structure for bulk contact creation.
+   * 
+   * @returns Initial results object
+   * @private
+   */
+  private initializeBulkCreateResults(): {
+    successful: Contact[];
+    failed: { data: Partial<Contact>; error: string }[];
+  } {
+    return {
+      successful: [],
+      failed: []
+    };
+  }
+
+  /**
+   * Processes the bulk creation of contacts.
+   * 
+   * @param contactsData - Array of contact data to process
+   * @param results - Results object to populate
+   * @private
+   */
+  private async processBulkContactCreation(
+    contactsData: Partial<Contact>[], 
+    results: { successful: Contact[]; failed: { data: Partial<Contact>; error: string }[] }
+  ): Promise<void> {
+    for (const contactData of contactsData) {
+      await this.processSingleContactCreation(contactData, results);
     }
-    return { successful, failed };
+  }
+
+  /**
+   * Processes creation of a single contact in bulk operation.
+   * 
+   * @param contactData - Contact data to create
+   * @param results - Results object to update
+   * @private
+   */
+  private async processSingleContactCreation(
+    contactData: Partial<Contact>,
+    results: { successful: Contact[]; failed: { data: Partial<Contact>; error: string }[] }
+  ): Promise<void> {
+    try {
+      const newContact = await this.createContact(contactData);
+      results.successful.push(newContact);
+    } catch (error) {
+      this.handleBulkCreationError(contactData, error, results);
+    }
+  }
+
+  /**
+   * Handles errors during bulk contact creation.
+   * 
+   * @param contactData - Contact data that failed
+   * @param error - Error that occurred
+   * @param results - Results object to update
+   * @private
+   */
+  private handleBulkCreationError(
+    contactData: Partial<Contact>,
+    error: any,
+    results: { successful: Contact[]; failed: { data: Partial<Contact>; error: string }[] }
+  ): void {
+    results.failed.push({
+      data: contactData,
+      error: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 
   /**
