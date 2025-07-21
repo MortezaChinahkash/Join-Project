@@ -71,7 +71,7 @@ export class BoardFormService {
   initializeNewTask(status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'): void {
     const newTask = this.dataService.createNewTask(status);
     this.resetForm();
-    this.overlayService.openAddTaskOverlay();
+    this.overlayService.openAddTaskOverlay(status);
   }
 
   /**
@@ -183,7 +183,8 @@ export class BoardFormService {
     let currentTask = this.dataService.getCurrentTask();
     
     if (!currentTask) {
-      const targetColumn = this.dataService.getIsEditMode() ? 'todo' : 'todo';
+      // Use the current column from overlay service or default to 'todo'
+      const targetColumn = this.overlayService.getCurrentColumn();
       
       currentTask = {
         id: this.generateTaskId(),
