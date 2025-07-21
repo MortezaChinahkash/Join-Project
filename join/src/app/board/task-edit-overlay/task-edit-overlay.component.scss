@@ -293,10 +293,10 @@
   .taskEditOverlay-content {
     .task-edit-form {
       .priority-buttons {
-        display: flex !important; flex-wrap: nowrap !important; justify-content: center !important; flex-direction: row;
+        display: flex !important; flex-wrap: nowrap !important; justify-content: space-between !important; flex-direction: row;
       }
       .priority-btn {
-        flex: 1; font-size: 12px !important; padding: 5px !important; margin: 2px !important;
+         font-size: 16px !important; padding: 5px !important; margin: 2px !important;
         .priority-icon-overlay, img { width: 16px !important; height: 16px !important; }
       }
     }
@@ -311,7 +311,7 @@
         flex-direction: row; max-width: 100%;
       }
       .priority-btn {
-        flex: 1; font-size: 10px !important; padding: 3px !important; margin: 1px !important;
+         font-size: 16px !important; padding: 3px !important; margin: 1px !important;
         .priority-icon-overlay, img { width: 12px !important; height: 12px !important; }
       }
     }
@@ -326,7 +326,7 @@
         flex-direction: row; width: 100%; max-width: 100%; gap: 2px;
       }
       .priority-btn {
-        flex: 1 1 0; min-width: 0; font-size: 9px !important; padding: 4px 2px !important;
+         min-width: 0; font-size: 16px !important; padding: 4px 2px !important;
         margin: 0 !important; text-align: center; white-space: nowrap; overflow: hidden;
         .priority-icon-overlay, img { width: 10px !important; height: 10px !important; }
       }
