@@ -100,19 +100,55 @@ export class OnboardingService {
     }
     
     setTimeout(() => {
-      const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
-      const isNewUser = localStorage.getItem('join_new_user');
-      console.log('OnboardingService: checking conditions - isCompleted:', isCompleted, 'isNewUser:', isNewUser);
-      
-      if (isNewUser) {
-        console.log('OnboardingService: New user detected, resetting onboarding completion status');
-        localStorage.removeItem(this.ONBOARDING_COMPLETED_KEY);
-        localStorage.removeItem('join_new_user');
-        setTimeout(() => {
-          this.startOnboarding();
-        }, 1000);
-      }
+      this.processOnboardingConditions();
     }, 500);
+  }
+
+  /**
+   * Processes onboarding conditions and starts if needed.
+   * 
+   * @private
+   */
+  private processOnboardingConditions(): void {
+    const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
+    const isNewUser = localStorage.getItem('join_new_user');
+    console.log('OnboardingService: checking conditions - isCompleted:', isCompleted, 'isNewUser:', isNewUser);
+    
+    if (isNewUser) {
+      this.handleNewUserOnboarding();
+    }
+  }
+
+  /**
+   * Handles onboarding for new users.
+   * 
+   * @private
+   */
+  private handleNewUserOnboarding(): void {
+    console.log('OnboardingService: New user detected, resetting onboarding completion status');
+    this.clearNewUserFlags();
+    this.scheduleOnboardingStart();
+  }
+
+  /**
+   * Clears new user flags from localStorage.
+   * 
+   * @private
+   */
+  private clearNewUserFlags(): void {
+    localStorage.removeItem(this.ONBOARDING_COMPLETED_KEY);
+    localStorage.removeItem('join_new_user');
+  }
+
+  /**
+   * Schedules onboarding to start after delay.
+   * 
+   * @private
+   */
+  private scheduleOnboardingStart(): void {
+    setTimeout(() => {
+      this.startOnboarding();
+    }, 1000);
   }
   
   /**
