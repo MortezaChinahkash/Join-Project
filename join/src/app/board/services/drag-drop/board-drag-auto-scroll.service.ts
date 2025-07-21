@@ -162,23 +162,56 @@ export class BoardDragAutoScrollService {
    * @param event - Mouse or touch event
    */
   emergencyAutoScroll(event: MouseEvent | TouchEvent): void {
-    const scrollSpeed = 15;
-    const scrollZone = 100;
-    const viewportHeight = window.innerHeight;
-    let clientY: number;
-    if (event instanceof MouseEvent) {
-      clientY = event.clientY;
-    } else {
-      const touch = event.touches[0];
-      clientY = touch ? touch.clientY : 0;
-    }
+    const scrollConfig = this.getEmergencyScrollConfig();
+    const clientY = this.extractClientY(event);
     const scrollContainer = this.findScrollableContainer();
     if (!scrollContainer) return;
-    if (clientY < scrollZone) {
-      scrollContainer.scrollTop -= scrollSpeed;
-    } else if (clientY > viewportHeight - scrollZone) {
+    this.performEmergencyScroll(scrollContainer, clientY, scrollConfig);
+  }
 
-      scrollContainer.scrollTop += scrollSpeed;
+  /**
+   * Gets the configuration for emergency scroll parameters.
+   * 
+   * @returns Emergency scroll configuration
+   * @private
+   */
+  private getEmergencyScrollConfig(): { scrollSpeed: number; scrollZone: number; viewportHeight: number } {
+    return {
+      scrollSpeed: 15,
+      scrollZone: 100,
+      viewportHeight: window.innerHeight
+    };
+  }
+
+  /**
+   * Extracts the Y coordinate from mouse or touch event.
+   * 
+   * @param event - Mouse or touch event
+   * @returns Y coordinate
+   * @private
+   */
+  private extractClientY(event: MouseEvent | TouchEvent): number {
+    if (event instanceof MouseEvent) {
+      return event.clientY;
+    } else {
+      const touch = event.touches[0];
+      return touch ? touch.clientY : 0;
+    }
+  }
+
+  /**
+   * Performs the actual emergency scroll based on cursor position.
+   * 
+   * @param scrollContainer - The container to scroll
+   * @param clientY - Y coordinate of cursor/touch
+   * @param config - Scroll configuration
+   * @private
+   */
+  private performEmergencyScroll(scrollContainer: HTMLElement, clientY: number, config: { scrollSpeed: number; scrollZone: number; viewportHeight: number }): void {
+    if (clientY < config.scrollZone) {
+      scrollContainer.scrollTop -= config.scrollSpeed;
+    } else if (clientY > config.viewportHeight - config.scrollZone) {
+      scrollContainer.scrollTop += config.scrollSpeed;
     }
   }
 
