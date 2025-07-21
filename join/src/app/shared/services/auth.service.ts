@@ -48,20 +48,58 @@ export class AuthService implements OnDestroy {
   private initializeAuthListener(): void {
     runInInjectionContext(this.injector, () => {
       onAuthStateChanged(this.auth, (firebaseUser) => {
-        if (firebaseUser) {
-          const user = this.mapFirebaseUserToUser(firebaseUser);
-          this.currentUserSubject.next(user);
-          this.saveUserToStorage(user);
-          this.startSessionCheck();
-        } else {
-          if (this.currentUserSubject.value) {
-            this.currentUserSubject.next(null);
-            localStorage.removeItem(this.STORAGE_KEY);
-          }
-          this.stopSessionCheck();
-        }
+        this.handleAuthStateChange(firebaseUser);
       });
     });
+  }
+
+  /**
+   * Handles Firebase auth state changes.
+   * 
+   * @param firebaseUser - Firebase user object or null
+   * @private
+   */
+  private handleAuthStateChange(firebaseUser: FirebaseUser | null): void {
+    if (firebaseUser) {
+      this.handleUserAuthenticated(firebaseUser);
+    } else {
+      this.handleUserUnauthenticated();
+    }
+  }
+
+  /**
+   * Handles authenticated user state.
+   * 
+   * @param firebaseUser - Authenticated Firebase user
+   * @private
+   */
+  private handleUserAuthenticated(firebaseUser: FirebaseUser): void {
+    const user = this.mapFirebaseUserToUser(firebaseUser);
+    this.currentUserSubject.next(user);
+    this.saveUserToStorage(user);
+    this.startSessionCheck();
+  }
+
+  /**
+   * Handles unauthenticated user state.
+   * 
+   * @private
+   */
+  private handleUserUnauthenticated(): void {
+    if (this.currentUserSubject.value) {
+      this.clearCurrentUserSession();
+    }
+    this.stopSessionCheck();
+  }
+
+  /**
+   * Clears current user session data.
+   * 
+   * @private
+   */
+  private clearCurrentUserSession(): void {
+    this.currentUserSubject.next(null);
+    localStorage.removeItem(this.STORAGE_KEY);
   }
 
   /**
@@ -69,20 +107,52 @@ export class AuthService implements OnDestroy {
    */
   async waitForAuthReady(): Promise<User | null> {
     return new Promise((resolve) => {
-      runInInjectionContext(this.injector, () => {
-        const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
-          unsubscribe();
-          if (firebaseUser) {
-            const user = this.mapFirebaseUserToUser(firebaseUser);
-            this.currentUserSubject.next(user);
-            this.saveUserToStorage(user);
-            resolve(user);
-          } else {
-            resolve(null);
-          }
-        });
+      this.setupAuthReadyListener(resolve);
+    });
+  }
+
+  /**
+   * Sets up auth state listener for auth ready check.
+   * 
+   * @param resolve - Promise resolve function
+   * @private
+   */
+  private setupAuthReadyListener(resolve: (value: User | null) => void): void {
+    runInInjectionContext(this.injector, () => {
+      const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
+        unsubscribe();
+        this.resolveAuthReady(firebaseUser, resolve);
       });
     });
+  }
+
+  /**
+   * Resolves auth ready promise based on Firebase user state.
+   * 
+   * @param firebaseUser - Firebase user or null
+   * @param resolve - Promise resolve function
+   * @private
+   */
+  private resolveAuthReady(firebaseUser: FirebaseUser | null, resolve: (value: User | null) => void): void {
+    if (firebaseUser) {
+      this.handleAuthReadyWithUser(firebaseUser, resolve);
+    } else {
+      resolve(null);
+    }
+  }
+
+  /**
+   * Handles auth ready when user is authenticated.
+   * 
+   * @param firebaseUser - Authenticated Firebase user
+   * @param resolve - Promise resolve function
+   * @private
+   */
+  private handleAuthReadyWithUser(firebaseUser: FirebaseUser, resolve: (value: User | null) => void): void {
+    const user = this.mapFirebaseUserToUser(firebaseUser);
+    this.currentUserSubject.next(user);
+    this.saveUserToStorage(user);
+    resolve(user);
   }
 
   /**
@@ -145,36 +215,92 @@ export class AuthService implements OnDestroy {
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      const userCredential = await runInInjectionContext(this.injector, () => 
-        createUserWithEmailAndPassword(this.auth, email, password)
-      );
-
-      await runInInjectionContext(this.injector, () => 
-        updateProfile(userCredential.user, {
-          displayName: name.trim()
-        })
-      );
-      const user = this.mapFirebaseUserToUser(userCredential.user);
-
-      user.name = name.trim();
-
-      user.loginTimestamp = Date.now();
-
-      localStorage.setItem('join_new_user', 'true');
-      console.log('AuthService: New user flag set in localStorage');
-      
-      this.setCurrentUser(user);
-      
-      setTimeout(() => {
-        console.log('AuthService: Dispatching user-registered event');
-        window.dispatchEvent(new CustomEvent('user-registered'));
-      }, 500);
-      
+      const userCredential = await this.createFirebaseUser(email, password);
+      await this.updateFirebaseUserProfile(userCredential.user, name);
+      const user = this.prepareRegisteredUser(userCredential.user, name);
+      this.finalizeRegistration(user);
       return user;
     } catch (error: any) {
-
       throw this.handleAuthError(error);
     }
+  }
+
+  /**
+   * Creates a new Firebase user account.
+   * 
+   * @param email - User's email address
+   * @param password - User's password
+   * @returns Firebase user credential
+   * @private
+   */
+  private async createFirebaseUser(email: string, password: string): Promise<any> {
+    return await runInInjectionContext(this.injector, () => 
+      createUserWithEmailAndPassword(this.auth, email, password)
+    );
+  }
+
+  /**
+   * Updates Firebase user profile with display name.
+   * 
+   * @param firebaseUser - Firebase user object
+   * @param name - User's display name
+   * @private
+   */
+  private async updateFirebaseUserProfile(firebaseUser: FirebaseUser, name: string): Promise<void> {
+    await runInInjectionContext(this.injector, () => 
+      updateProfile(firebaseUser, {
+        displayName: name.trim()
+      })
+    );
+  }
+
+  /**
+   * Prepares user object for registered user.
+   * 
+   * @param firebaseUser - Firebase user object
+   * @param name - User's display name
+   * @returns Prepared user object
+   * @private
+   */
+  private prepareRegisteredUser(firebaseUser: FirebaseUser, name: string): User {
+    const user = this.mapFirebaseUserToUser(firebaseUser);
+    user.name = name.trim();
+    user.loginTimestamp = Date.now();
+    return user;
+  }
+
+  /**
+   * Finalizes user registration with storage and event dispatch.
+   * 
+   * @param user - Registered user object
+   * @private
+   */
+  private finalizeRegistration(user: User): void {
+    this.setNewUserFlag();
+    this.setCurrentUser(user);
+    this.scheduleRegistrationEvent();
+  }
+
+  /**
+   * Sets new user flag in localStorage.
+   * 
+   * @private
+   */
+  private setNewUserFlag(): void {
+    localStorage.setItem('join_new_user', 'true');
+    console.log('AuthService: New user flag set in localStorage');
+  }
+
+  /**
+   * Schedules user registration event dispatch.
+   * 
+   * @private
+   */
+  private scheduleRegistrationEvent(): void {
+    setTimeout(() => {
+      console.log('AuthService: Dispatching user-registered event');
+      window.dispatchEvent(new CustomEvent('user-registered'));
+    }, 500);
   }
 
   /**
@@ -324,24 +450,65 @@ export class AuthService implements OnDestroy {
    */
   private handleAuthError(error: any): Error {
     console.error('Auth error:', error);
+    return this.createUserFriendlyError(error.code);
+  }
 
-    switch (error.code) {
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        return new Error('Invalid email or password');
-      case 'auth/email-already-in-use':
-        return new Error('An account with this email already exists');
-      case 'auth/weak-password':
-        return new Error('Password should be at least 6 characters');
-      case 'auth/invalid-email':
-        return new Error('Please enter a valid email address');
-      case 'auth/operation-not-allowed':
-        return new Error('This operation is not allowed');
-      case 'auth/too-many-requests':
-        return new Error('Too many failed attempts. Please try again later');
-      default:
-        return new Error('An error occurred during authentication');
-    }
+  /**
+   * Creates user-friendly error message based on Firebase error code.
+   * 
+   * @param errorCode - Firebase error code
+   * @returns User-friendly error
+   * @private
+   */
+  private createUserFriendlyError(errorCode: string): Error {
+    const loginErrors = this.getLoginErrors();
+    const registrationErrors = this.getRegistrationErrors();
+    const securityErrors = this.getSecurityErrors();
+    
+    return loginErrors[errorCode] || 
+           registrationErrors[errorCode] || 
+           securityErrors[errorCode] || 
+           new Error('An error occurred during authentication');
+  }
+
+  /**
+   * Gets login-related error mappings.
+   * 
+   * @returns Object with login error mappings
+   * @private
+   */
+  private getLoginErrors(): { [key: string]: Error } {
+    return {
+      'auth/user-not-found': new Error('Invalid email or password'),
+      'auth/wrong-password': new Error('Invalid email or password'),
+      'auth/invalid-email': new Error('Please enter a valid email address')
+    };
+  }
+
+  /**
+   * Gets registration-related error mappings.
+   * 
+   * @returns Object with registration error mappings
+   * @private
+   */
+  private getRegistrationErrors(): { [key: string]: Error } {
+    return {
+      'auth/email-already-in-use': new Error('An account with this email already exists'),
+      'auth/weak-password': new Error('Password should be at least 6 characters'),
+      'auth/operation-not-allowed': new Error('This operation is not allowed')
+    };
+  }
+
+  /**
+   * Gets security-related error mappings.
+   * 
+   * @returns Object with security error mappings
+   * @private
+   */
+  private getSecurityErrors(): { [key: string]: Error } {
+    return {
+      'auth/too-many-requests': new Error('Too many failed attempts. Please try again later')
+    };
   }
 
   /**
@@ -386,27 +553,66 @@ export class AuthService implements OnDestroy {
    * @param name - New display name
    */
   async updateUserProfile(name: string): Promise<void> {
+    this.validateCurrentUser();
+    try {
+      await this.updateFirebaseProfile(name);
+      this.updateLocalUserProfile(name);
+    } catch (error) {
+      this.handleProfileUpdateError(error);
+    }
+  }
+
+  /**
+   * Validates that a current user exists for profile update.
+   * 
+   * @throws Error if no authenticated user found
+   * @private
+   */
+  private validateCurrentUser(): void {
     if (!this.auth.currentUser) {
       throw new Error('No authenticated user found');
     }
-    try {
-      await runInInjectionContext(this.injector, () => 
-        updateProfile(this.auth.currentUser!, {
-          displayName: name.trim()
-        })
-      );
+  }
 
-      const currentUser = this.currentUser;
-      if (currentUser) {
-        currentUser.name = name.trim();
-        this.currentUserSubject.next(currentUser);
-        this.saveUserToStorage(currentUser);
-      }
-    } catch (error) {
+  /**
+   * Updates Firebase user profile with new display name.
+   * 
+   * @param name - New display name
+   * @private
+   */
+  private async updateFirebaseProfile(name: string): Promise<void> {
+    await runInInjectionContext(this.injector, () => 
+      updateProfile(this.auth.currentUser!, {
+        displayName: name.trim()
+      })
+    );
+  }
 
-      console.error('Error updating user profile:', error);
-      throw new Error('Failed to update user profile');
+  /**
+   * Updates local user profile and saves to storage.
+   * 
+   * @param name - New display name
+   * @private
+   */
+  private updateLocalUserProfile(name: string): void {
+    const currentUser = this.currentUser;
+    if (currentUser) {
+      currentUser.name = name.trim();
+      this.currentUserSubject.next(currentUser);
+      this.saveUserToStorage(currentUser);
     }
+  }
+
+  /**
+   * Handles profile update errors.
+   * 
+   * @param error - Error that occurred
+   * @throws Error with profile update failure message
+   * @private
+   */
+  private handleProfileUpdateError(error: any): never {
+    console.error('Error updating user profile:', error);
+    throw new Error('Failed to update user profile');
   }
 
   /**
