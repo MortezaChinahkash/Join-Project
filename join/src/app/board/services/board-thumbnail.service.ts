@@ -1,26 +1,14 @@
 ﻿import { Injectable } from '@angular/core';
+import { BoardThumbnailDomService } from './board-thumbnail-dom.service';
+import { BoardThumbnailCalculationsService } from './board-thumbnail-calculations.service';
+import { BoardThumbnailEventsService } from './board-thumbnail-events.service';
+
 /**
- * Service for handling board thumbnail navigation and scroll functionality.
- * Manages horizontal scrolling overview, viewport tracking, and thumbnail interactions.
+ * Main service for handling board thumbnail navigation and scroll functionality.
+ * Coordinates between DOM, calculations, and events services.
  * 
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
- */
-/**
- * Service for managing board thumbnail displays and navigation.
- * Handles thumbnail generation, view switching, and miniature board representations.
- * 
- * This service provides methods for:
- * - Board thumbnail generation and caching
- * - Thumbnail navigation and view switching
- * - Miniature board layout calculations
- * - Thumbnail update synchronization with main board
- * - Performance-optimized thumbnail rendering
- * - Thumbnail interaction event handling
- * 
- * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
- * @version 1.0.0
- * @since 2024
  */
 @Injectable({
   providedIn: 'root'
@@ -37,437 +25,97 @@ export class BoardThumbnailService {
     height: 96
   };
   isDragging = false;
-  isViewportDragging = false;
-  dragStartX = 0;
-  dragStartScrollLeft = 0;
+
+  constructor(
+    private domService: BoardThumbnailDomService,
+    private calculationsService: BoardThumbnailCalculationsService,
+    private eventsService: BoardThumbnailEventsService
+  ) {}
+
   /**
    * Handles thumbnail click events for navigation.
-   * Calculates scroll position based on click location and smoothly scrolls to target position.
-   * 
-   * @param event - The mouse click event on the thumbnail
    */
   onThumbnailClick(event: MouseEvent) {
-    if (this.shouldIgnoreThumbnailClick()) return;
-    
-    event.stopPropagation();
-    const clickData = this.extractClickData(event);
-    const scrollPercentage = this.calculateClickScrollPercentage(clickData);
-    this.scrollToClickPosition(scrollPercentage);
-  }
-
-  /**
-   * Checks if thumbnail click should be ignored.
-   */
-  private shouldIgnoreThumbnailClick(): boolean {
-    return this.isDragging || this.isViewportDragging;
-  }
-
-  /**
-   * Extracts click data from mouse event.
-   */
-  private extractClickData(event: MouseEvent): { clickX: number; thumbnailWidth: number } {
-    const thumbnail = event.currentTarget as HTMLElement;
-    const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
-    const rect = thumbnailContent.getBoundingClientRect();
-    const clickX = event.clientX - rect.left - 4;
-    const thumbnailWidth = rect.width - 8;
-    
-    return { clickX, thumbnailWidth };
-  }
-
-  /**
-   * Calculates scroll percentage based on click position.
-   */
-  private calculateClickScrollPercentage(clickData: { clickX: number; thumbnailWidth: number }): number {
-    const { clickX, thumbnailWidth } = clickData;
-    const viewportWidth = this.thumbnailViewport.width;
-    const availableClickWidth = thumbnailWidth - viewportWidth;
-    const adjustedClickX = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
-    
-    return availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
-  }
-
-  /**
-   * Scrolls to position based on click percentage.
-   */
-  private scrollToClickPosition(percentage: number): void {
-    const container = this.getBoardScrollWrapper();
-    if (container) {
-      const scrollPosition = (percentage / 100) * this.maxScrollPosition;
-      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-    }
+    if (this.eventsService.shouldIgnoreThumbnailClick(this.isDragging, this.eventsService.getIsViewportDragging())) return;
+    this.eventsService.handleThumbnailClick(event, this.thumbnailViewport.width, this.maxScrollPosition);
   }
 
   /**
    * Handles viewport drag start for thumbnail navigation.
-   * Initiates viewport dragging and sets up mouse event listeners for smooth drag interaction.
-   * 
-   * @param event - The mouse down event on the viewport
    */
   onViewportMouseDown(event: MouseEvent) {
-    this.initializeViewportDrag(event);
-    this.setupMouseEventListeners();
-  }
-
-  /**
-   * Initializes viewport dragging state and DOM elements.
-   */
-  private initializeViewportDrag(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isViewportDragging = true;
-    this.dragStartX = event.clientX;
-    
-    const container = this.getBoardScrollWrapper();
-    if (container) {
-      this.dragStartScrollLeft = container.scrollLeft;
-    }
-    
-    this.disableViewportTransition();
-  }
-
-  /**
-   * Gets the board scroll wrapper element.
-   */
-  private getBoardScrollWrapper(): HTMLElement | null {
-    return document.querySelector('.board-scroll-wrapper') as HTMLElement;
-  }
-
-  /**
-   * Disables viewport transition during drag.
-   */
-  private disableViewportTransition(): void {
-    const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
-    if (viewport) {
-      viewport.style.transition = 'none';
-    }
-  }
-
-  /**
-   * Sets up mouse event listeners for viewport dragging.
-   */
-  private setupMouseEventListeners(): void {
-    const handleMouseMove = this.createMouseMoveHandler();
-    const handleMouseUp = this.createMouseUpHandler(handleMouseMove);
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-    document.addEventListener('mouseleave', handleMouseUp);
-  }
-
-  /**
-   * Creates mouse move handler for viewport dragging.
-   */
-  private createMouseMoveHandler(): (e: MouseEvent) => void {
-    return (e: MouseEvent) => {
-      if (!this.isViewportDragging) return;
-      e.preventDefault();
-      
-      const deltaX = e.clientX - this.dragStartX;
-      const scrollPosition = this.calculateNewScrollPosition(deltaX);
-      this.updateContainerScroll(scrollPosition);
-    };
-  }
-
-  /**
-   * Calculates new scroll position based on drag delta.
-   */
-  private calculateNewScrollPosition(deltaX: number): number {
-    const thumbnailWidth = 192;
-    const viewportWidth = this.thumbnailViewport.width;
-    const availableDragWidth = thumbnailWidth - viewportWidth;
-    const scrollRatio = availableDragWidth > 0 ? this.maxScrollPosition / availableDragWidth : 0;
-    const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
-    
-    return Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
-  }
-
-  /**
-   * Updates container scroll position.
-   */
-  private updateContainerScroll(scrollPosition: number): void {
-    const container = this.getBoardScrollWrapper();
-    if (container) {
-      container.scrollLeft = scrollPosition;
-      requestAnimationFrame(() => {
-        this.updateScrollPosition();
-      });
-    }
-  }
-
-  /**
-   * Creates mouse up handler for ending viewport drag.
-   */
-  private createMouseUpHandler(handleMouseMove: (e: MouseEvent) => void): () => void {
-    return () => {
-      this.finalizeDragOperation();
-      this.removeMouseEventListeners(handleMouseMove);
-    };
-  }
-
-  /**
-   * Finalizes drag operation and restores viewport transition.
-   */
-  private finalizeDragOperation(): void {
-    this.isViewportDragging = false;
-    const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
-    if (viewport) {
-      viewport.style.transition = 'all 0.1s ease';
-    }
-  }
-
-  /**
-   * Removes mouse event listeners.
-   */
-  private removeMouseEventListeners(handleMouseMove: (e: MouseEvent) => void): void {
-    const handleMouseUp = () => {
-      this.finalizeDragOperation();
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('mouseleave', handleMouseUp);
-    };
-    
-    handleMouseUp();
+    this.eventsService.initializeViewportDrag(event);
+    const handleMouseMove = this.eventsService.createMouseMoveHandler(
+      this.thumbnailViewport.width, 
+      this.maxScrollPosition, 
+      () => this.updateScrollPosition()
+    );
+    const handleMouseUp = this.eventsService.createMouseUpHandler(handleMouseMove);
+    this.eventsService.setupMouseEventListeners(handleMouseMove, handleMouseUp);
   }
 
   /**
    * Handles viewport touch start for thumbnail navigation on touch devices.
-   * Initiates viewport dragging and sets up touch event listeners for smooth drag interaction.
-   * 
-   * @param event - The touch start event on the viewport
    */
   onViewportTouchStart(event: TouchEvent) {
-    this.initializeViewportTouchDrag(event);
-    this.setupTouchEventListeners();
-  }
-
-  /**
-   * Initializes viewport touch dragging state and DOM elements.
-   */
-  private initializeViewportTouchDrag(event: TouchEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.isViewportDragging = true;
-    const touch = event.touches[0];
-    this.dragStartX = touch.clientX;
-    
-    const container = this.getBoardScrollWrapper();
-    if (container) {
-      this.dragStartScrollLeft = container.scrollLeft;
-    }
-    
-    this.disableViewportTransition();
-  }
-
-  /**
-   * Sets up touch event listeners for viewport dragging.
-   */
-  private setupTouchEventListeners(): void {
-    const handleTouchMove = this.createTouchMoveHandler();
-    const handleTouchEnd = this.createTouchEndHandler(handleTouchMove);
-
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchEnd);
-  }
-
-  /**
-   * Creates touch move handler for viewport dragging.
-   */
-  private createTouchMoveHandler(): (e: TouchEvent) => void {
-    return (e: TouchEvent) => {
-      if (!this.isViewportDragging) return;
-      e.preventDefault();
-      
-      const touch = e.touches[0];
-      const deltaX = touch.clientX - this.dragStartX;
-      const scrollPosition = this.calculateNewScrollPosition(deltaX);
-      this.updateContainerScroll(scrollPosition);
-    };
-  }
-
-  /**
-   * Creates touch end handler for ending viewport drag.
-   */
-  private createTouchEndHandler(handleTouchMove: (e: TouchEvent) => void): () => void {
-    return () => {
-      this.finalizeDragOperation();
-      this.removeTouchEventListeners(handleTouchMove);
-    };
-  }
-
-  /**
-   * Removes touch event listeners.
-   */
-  private removeTouchEventListeners(handleTouchMove: (e: TouchEvent) => void): void {
-    const handleTouchEnd = () => {
-      this.finalizeDragOperation();
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('touchcancel', handleTouchEnd);
-    };
-    
-    handleTouchEnd();
+    this.eventsService.initializeViewportTouchDrag(event);
+    const handleTouchMove = this.eventsService.createTouchMoveHandler(
+      this.thumbnailViewport.width, 
+      this.maxScrollPosition, 
+      () => this.updateScrollPosition()
+    );
+    const handleTouchEnd = this.eventsService.createTouchEndHandler(handleTouchMove);
+    this.eventsService.setupTouchEventListeners(handleTouchMove, handleTouchEnd);
   }
 
   /**
    * Handles thumbnail touch events for navigation on touch devices.
-   * Calculates scroll position based on touch location and smoothly scrolls to target position.
-   * 
-   * @param event - The touch event on the thumbnail
    */
   onThumbnailTouchStart(event: TouchEvent) {
-    if (this.shouldIgnoreThumbnailTouch()) return;
-    
-    event.stopPropagation();
-    const touchData = this.extractTouchData(event);
-    const scrollPercentage = this.calculateTouchScrollPercentage(touchData);
-    this.scrollToTouchPosition(scrollPercentage);
-  }
-
-  /**
-   * Checks if thumbnail touch should be ignored.
-   */
-  private shouldIgnoreThumbnailTouch(): boolean {
-    return this.isDragging || this.isViewportDragging;
-  }
-
-  /**
-   * Extracts touch data from touch event.
-   */
-  private extractTouchData(event: TouchEvent): { touchX: number; rect: DOMRect; thumbnailWidth: number } {
-    const thumbnail = event.currentTarget as HTMLElement;
-    const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
-    const rect = thumbnailContent.getBoundingClientRect();
-    const touch = event.touches[0];
-    const touchX = touch.clientX - rect.left - 4;
-    const thumbnailWidth = rect.width - 8;
-    
-    return { touchX, rect, thumbnailWidth };
-  }
-
-  /**
-   * Calculates scroll percentage based on touch position.
-   */
-  private calculateTouchScrollPercentage(touchData: { touchX: number; thumbnailWidth: number }): number {
-    const { touchX, thumbnailWidth } = touchData;
-    const viewportWidth = this.thumbnailViewport.width;
-    const availableClickWidth = thumbnailWidth - viewportWidth;
-    const adjustedTouchX = Math.max(0, Math.min(availableClickWidth, touchX - (viewportWidth / 2)));
-    
-    return availableClickWidth > 0 ? (adjustedTouchX / availableClickWidth) * 100 : 0;
-  }
-
-  /**
-   * Scrolls to position based on touch percentage.
-   */
-  private scrollToTouchPosition(percentage: number): void {
-    const container = this.getBoardScrollWrapper();
-    if (container) {
-      const scrollPosition = (percentage / 100) * this.maxScrollPosition;
-      container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
-    }
+    if (this.eventsService.shouldIgnoreThumbnailTouch(this.isDragging, this.eventsService.getIsViewportDragging())) return;
+    this.eventsService.handleThumbnailTouch(event, this.thumbnailViewport.width, this.maxScrollPosition);
   }
 
   /**
    * Updates scroll position and thumbnail viewport calculations.
-   * Determines if scroll overview should be shown based on window width and content overflow.
-   * 
-   * @private
    */
   updateScrollPosition() {
-    const containers = this.getScrollContainers();
+    const containers = this.domService.getScrollContainers();
     if (!containers.container || !containers.boardContainer) return;
     
-    this.updateScrollValues(containers.container, containers.boardContainer);
-    this.determineScrollOverviewVisibility();
-    this.updateThumbnailCalculations(containers.container, containers.boardContainer);
-  }
-
-  /**
-   * Gets the scroll container elements.
-   */
-  private getScrollContainers(): { container: HTMLElement | null; boardContainer: HTMLElement | null } {
-    return {
-      container: document.querySelector('.board-scroll-wrapper') as HTMLElement,
-      boardContainer: document.querySelector('.board-container') as HTMLElement
-    };
-  }
-
-  /**
-   * Updates basic scroll position values.
-   */
-  private updateScrollValues(container: HTMLElement, boardContainer: HTMLElement): void {
-    this.scrollPosition = container.scrollLeft;
-    this.maxScrollPosition = boardContainer.scrollWidth - container.clientWidth;
-  }
-
-  /**
-   * Determines if scroll overview should be visible.
-   */
-  private determineScrollOverviewVisibility(): void {
-    const windowWidth = window.innerWidth;
-    const shouldShowScroll = windowWidth >= 1000 && windowWidth <= 1750 && this.maxScrollPosition > 0;
-    this.showScrollOverview = shouldShowScroll;
-  }
-
-  /**
-   * Updates thumbnail calculations based on scroll state.
-   */
-  private updateThumbnailCalculations(container: HTMLElement, boardContainer: HTMLElement): void {
+    const scrollValues = this.calculationsService.updateScrollValues(containers.container, containers.boardContainer);
+    this.scrollPosition = scrollValues.scrollPosition;
+    this.maxScrollPosition = scrollValues.maxScrollPosition;
+    
+    this.showScrollOverview = this.calculationsService.determineScrollOverviewVisibility(this.maxScrollPosition);
+    
     if (this.maxScrollPosition > 0) {
-      this.calculateActiveScrollMetrics(container, boardContainer);
-      this.updateThumbnailViewport(container, boardContainer);
+      const metrics = this.calculationsService.calculateActiveScrollMetrics(
+        containers.container, 
+        containers.boardContainer, 
+        this.scrollPosition, 
+        this.maxScrollPosition
+      );
+      this.scrollPercentage = metrics.scrollPercentage;
+      this.thumbWidth = metrics.thumbWidth;
+      
+      this.thumbnailViewport = this.calculationsService.updateThumbnailViewport(
+        containers.container, 
+        containers.boardContainer, 
+        this.scrollPosition, 
+        this.maxScrollPosition
+      );
     } else {
-      this.resetScrollMetrics();
+      this.scrollPercentage = 0;
+      this.thumbWidth = 100;
     }
   }
 
   /**
-   * Calculates scroll metrics when scrolling is active.
-   */
-  private calculateActiveScrollMetrics(container: HTMLElement, boardContainer: HTMLElement): void {
-    this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
-    this.thumbWidth = (container.clientWidth / boardContainer.scrollWidth) * 100;
-  }
-
-  /**
-   * Resets scroll metrics when no scrolling is needed.
-   */
-  private resetScrollMetrics(): void {
-    this.scrollPercentage = 0;
-    this.thumbWidth = 100;
-  }
-
-  /**
-   * Updates the thumbnail viewport position and size based on current scroll state.
-   * Calculates viewport dimensions and position within the thumbnail for accurate representation.
-   * 
-   * @param container - The main scroll container element
-   * @param boardContainer - The board container element with all columns
-   * @private
-   */
-  private updateThumbnailViewport(container: HTMLElement, boardContainer: HTMLElement) {
-    const thumbnailWidth = 192;
-    const containerWidth = container.clientWidth;
-    const scrollWidth = boardContainer.scrollWidth;
-    const viewportWidthRatio = containerWidth / scrollWidth;
-    const viewportPositionRatio = this.maxScrollPosition > 0 ? this.scrollPosition / this.maxScrollPosition : 0;
-    const viewportWidth = Math.min(thumbnailWidth, Math.max(20, viewportWidthRatio * thumbnailWidth));
-    const viewportLeft = Math.max(0, Math.min(thumbnailWidth - viewportWidth, viewportPositionRatio * (thumbnailWidth - viewportWidth)));
-    this.thumbnailViewport = {
-      left: viewportLeft,
-      width: viewportWidth,
-      height: 96
-    };
-  }
-
-  /**
    * Sets up scroll event listeners and window resize handlers.
-   * Initializes scroll position calculations with multiple attempts to ensure proper loading.
    */
   setupScrollListener() {
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    const container = this.domService.getBoardScrollWrapper();
     if (container) {
       let isScrolling = false;
       container.addEventListener('scroll', () => {
@@ -479,34 +127,26 @@ export class BoardThumbnailService {
           });
         }
       });
+      
       window.addEventListener('resize', () => {
         setTimeout(() => {
           this.updateScrollPosition();
         }, 100);
       });
-      setTimeout(() => {
-        this.updateScrollPosition();
-      }, 100);
-
-      setTimeout(() => {
-        this.updateScrollPosition();
-      }, 500);
-
-      setTimeout(() => {
-        this.updateScrollPosition();
-      }, 1000);
+      
+      // Initialize with multiple attempts
+      setTimeout(() => this.updateScrollPosition(), 100);
+      setTimeout(() => this.updateScrollPosition(), 500);
+      setTimeout(() => this.updateScrollPosition(), 1000);
     }
   }
 
   /**
    * Resets all thumbnail and scroll state variables.
-   * Useful for cleanup when component is destroyed.
    */
   resetThumbnailState() {
     this.isDragging = false;
-    this.isViewportDragging = false;
-    this.dragStartX = 0;
-    this.dragStartScrollLeft = 0;
+    this.eventsService.resetDragState();
     this.scrollPosition = 0;
     this.maxScrollPosition = 0;
     this.scrollPercentage = 0;
@@ -516,9 +156,6 @@ export class BoardThumbnailService {
 
   /**
    * Handles viewport click events.
-   * Provides click feedback while preventing drag interference.
-   * 
-   * @param event - The mouse click event on the viewport
    */
   onViewportClick(event: MouseEvent): void {
     event.stopPropagation();
