@@ -263,13 +263,39 @@ export class BoardFormService {
    * @returns Promise that resolves when task is saved
    */
   async saveTask(): Promise<void> {
+    this.validateFormData();
+    const taskData = this.buildTaskData();
+    
+    if (this.overlayService.isEditingTask && this.selectedTask) {
+      await this.updateExistingTask(taskData);
+    } else {
+      await this.createNewTask(taskData);
+    }
+  }
+
+  /**
+   * Validates form data and throws error if invalid.
+   * 
+   * @private
+   */
+  private validateFormData(): void {
     const validation = this.formState.validateForm();
     if (!validation.isValid) {
       throw new Error(`Form validation failed: ${validation.errors.join(', ')}`);
     }
+  }
+
+  /**
+   * Builds task data object from form and selected contacts.
+   * 
+   * @returns Partial task data object
+   * @private
+   */
+  private buildTaskData(): Partial<Task> {
     const formData = this.formState.getFormData();
     const contactNames = this.contactService.getSelectedContacts().map(c => c.name);
-    const taskData: Partial<Task> = {
+    
+    return {
       title: formData.title,
       description: formData.description,
       dueDate: formData.dueDate,
@@ -279,17 +305,40 @@ export class BoardFormService {
       subtasks: formData.subtasks || [],
       column: this.overlayService.isEditingTask ? this.selectedTask?.column : this.overlayService.currentColumn
     };
-    if (this.overlayService.isEditingTask && this.selectedTask) {
-      await this.taskService.updateTask(this.selectedTask.id!, { ...this.selectedTask, ...taskData });
-    } else {
-      const newTask: Task = {
-        id: Date.now().toString(),
-        ...taskData
-      } as Task;
-      const taskDataForFirebase = { ...taskData } as Omit<Task, 'id'>;
-      delete (taskDataForFirebase as any).id;
-      await this.taskService.addTaskToFirebase(taskDataForFirebase, this.overlayService.currentColumn);
-    }
+  }
+
+  /**
+   * Updates an existing task with new data.
+   * 
+   * @param taskData - Task data to update
+   * @private
+   */
+  private async updateExistingTask(taskData: Partial<Task>): Promise<void> {
+    await this.taskService.updateTask(this.selectedTask!.id!, { ...this.selectedTask!, ...taskData });
+  }
+
+  /**
+   * Creates and saves a new task.
+   * 
+   * @param taskData - Task data for new task
+   * @private
+   */
+  private async createNewTask(taskData: Partial<Task>): Promise<void> {
+    const taskDataForFirebase = this.prepareTaskDataForFirebase(taskData);
+    await this.taskService.addTaskToFirebase(taskDataForFirebase, this.overlayService.currentColumn);
+  }
+
+  /**
+   * Prepares task data for Firebase by removing ID field.
+   * 
+   * @param taskData - Original task data
+   * @returns Task data without ID for Firebase
+   * @private
+   */
+  private prepareTaskDataForFirebase(taskData: Partial<Task>): Omit<Task, 'id'> {
+    const taskDataForFirebase = { ...taskData } as Omit<Task, 'id'>;
+    delete (taskDataForFirebase as any).id;
+    return taskDataForFirebase;
   }
 
   /**
