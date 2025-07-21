@@ -47,18 +47,51 @@ export class BoardThumbnailService {
    * @param event - The mouse click event on the thumbnail
    */
   onThumbnailClick(event: MouseEvent) {
-    if (this.isDragging || this.isViewportDragging) return;
+    if (this.shouldIgnoreThumbnailClick()) return;
+    
     event.stopPropagation();
+    const clickData = this.extractClickData(event);
+    const scrollPercentage = this.calculateClickScrollPercentage(clickData);
+    this.scrollToClickPosition(scrollPercentage);
+  }
+
+  /**
+   * Checks if thumbnail click should be ignored.
+   */
+  private shouldIgnoreThumbnailClick(): boolean {
+    return this.isDragging || this.isViewportDragging;
+  }
+
+  /**
+   * Extracts click data from mouse event.
+   */
+  private extractClickData(event: MouseEvent): { clickX: number; thumbnailWidth: number } {
     const thumbnail = event.currentTarget as HTMLElement;
     const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
     const rect = thumbnailContent.getBoundingClientRect();
     const clickX = event.clientX - rect.left - 4;
     const thumbnailWidth = rect.width - 8;
+    
+    return { clickX, thumbnailWidth };
+  }
+
+  /**
+   * Calculates scroll percentage based on click position.
+   */
+  private calculateClickScrollPercentage(clickData: { clickX: number; thumbnailWidth: number }): number {
+    const { clickX, thumbnailWidth } = clickData;
     const viewportWidth = this.thumbnailViewport.width;
     const availableClickWidth = thumbnailWidth - viewportWidth;
     const adjustedClickX = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
-    const percentage = availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    
+    return availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
+  }
+
+  /**
+   * Scrolls to position based on click percentage.
+   */
+  private scrollToClickPosition(percentage: number): void {
+    const container = this.getBoardScrollWrapper();
     if (container) {
       const scrollPosition = (percentage / 100) * this.maxScrollPosition;
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
@@ -204,51 +237,77 @@ export class BoardThumbnailService {
    * @param event - The touch start event on the viewport
    */
   onViewportTouchStart(event: TouchEvent) {
+    this.initializeViewportTouchDrag(event);
+    this.setupTouchEventListeners();
+  }
+
+  /**
+   * Initializes viewport touch dragging state and DOM elements.
+   */
+  private initializeViewportTouchDrag(event: TouchEvent): void {
     event.preventDefault();
     event.stopPropagation();
     this.isViewportDragging = true;
     const touch = event.touches[0];
     this.dragStartX = touch.clientX;
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    
+    const container = this.getBoardScrollWrapper();
     if (container) {
       this.dragStartScrollLeft = container.scrollLeft;
     }
-    const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
-    if (viewport) {
-      viewport.style.transition = 'none';
-    }
-    const handleTouchMove = (e: TouchEvent) => {
+    
+    this.disableViewportTransition();
+  }
+
+  /**
+   * Sets up touch event listeners for viewport dragging.
+   */
+  private setupTouchEventListeners(): void {
+    const handleTouchMove = this.createTouchMoveHandler();
+    const handleTouchEnd = this.createTouchEndHandler(handleTouchMove);
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchcancel', handleTouchEnd);
+  }
+
+  /**
+   * Creates touch move handler for viewport dragging.
+   */
+  private createTouchMoveHandler(): (e: TouchEvent) => void {
+    return (e: TouchEvent) => {
       if (!this.isViewportDragging) return;
       e.preventDefault();
+      
       const touch = e.touches[0];
       const deltaX = touch.clientX - this.dragStartX;
-      const thumbnailWidth = 192;
-      const viewportWidth = this.thumbnailViewport.width;
-      const availableDragWidth = thumbnailWidth - viewportWidth;
-      const scrollRatio = availableDragWidth > 0 ? this.maxScrollPosition / availableDragWidth : 0;
-      const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
-      if (container) {
-        const clampedScroll = Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
-        container.scrollLeft = clampedScroll;
-        requestAnimationFrame(() => {
-          this.updateScrollPosition();
-        });
-      }
+      const scrollPosition = this.calculateNewScrollPosition(deltaX);
+      this.updateContainerScroll(scrollPosition);
     };
+  }
+
+  /**
+   * Creates touch end handler for ending viewport drag.
+   */
+  private createTouchEndHandler(handleTouchMove: (e: TouchEvent) => void): () => void {
+    return () => {
+      this.finalizeDragOperation();
+      this.removeTouchEventListeners(handleTouchMove);
+    };
+  }
+
+  /**
+   * Removes touch event listeners.
+   */
+  private removeTouchEventListeners(handleTouchMove: (e: TouchEvent) => void): void {
     const handleTouchEnd = () => {
-      this.isViewportDragging = false;
-      if (viewport) {
-        viewport.style.transition = 'all 0.1s ease';
-      }
+      this.finalizeDragOperation();
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('touchcancel', handleTouchEnd);
     };
-
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchEnd);
+    
+    handleTouchEnd();
   }
 
   /**
@@ -317,23 +376,67 @@ export class BoardThumbnailService {
    * @private
    */
   updateScrollPosition() {
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
-    const boardContainer = document.querySelector('.board-container') as HTMLElement;
-    if (container && boardContainer) {
-      this.scrollPosition = container.scrollLeft;
-      this.maxScrollPosition = boardContainer.scrollWidth - container.clientWidth;
-      const windowWidth = window.innerWidth;
-      const shouldShowScroll = windowWidth >= 1000 && windowWidth <= 1750 && this.maxScrollPosition > 0;
-      this.showScrollOverview = shouldShowScroll;
-      if (this.maxScrollPosition > 0) {
-        this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
-        this.thumbWidth = (container.clientWidth / boardContainer.scrollWidth) * 100;
-        this.updateThumbnailViewport(container, boardContainer);
-      } else {
-        this.scrollPercentage = 0;
-        this.thumbWidth = 100;
-      }
+    const containers = this.getScrollContainers();
+    if (!containers.container || !containers.boardContainer) return;
+    
+    this.updateScrollValues(containers.container, containers.boardContainer);
+    this.determineScrollOverviewVisibility();
+    this.updateThumbnailCalculations(containers.container, containers.boardContainer);
+  }
+
+  /**
+   * Gets the scroll container elements.
+   */
+  private getScrollContainers(): { container: HTMLElement | null; boardContainer: HTMLElement | null } {
+    return {
+      container: document.querySelector('.board-scroll-wrapper') as HTMLElement,
+      boardContainer: document.querySelector('.board-container') as HTMLElement
+    };
+  }
+
+  /**
+   * Updates basic scroll position values.
+   */
+  private updateScrollValues(container: HTMLElement, boardContainer: HTMLElement): void {
+    this.scrollPosition = container.scrollLeft;
+    this.maxScrollPosition = boardContainer.scrollWidth - container.clientWidth;
+  }
+
+  /**
+   * Determines if scroll overview should be visible.
+   */
+  private determineScrollOverviewVisibility(): void {
+    const windowWidth = window.innerWidth;
+    const shouldShowScroll = windowWidth >= 1000 && windowWidth <= 1750 && this.maxScrollPosition > 0;
+    this.showScrollOverview = shouldShowScroll;
+  }
+
+  /**
+   * Updates thumbnail calculations based on scroll state.
+   */
+  private updateThumbnailCalculations(container: HTMLElement, boardContainer: HTMLElement): void {
+    if (this.maxScrollPosition > 0) {
+      this.calculateActiveScrollMetrics(container, boardContainer);
+      this.updateThumbnailViewport(container, boardContainer);
+    } else {
+      this.resetScrollMetrics();
     }
+  }
+
+  /**
+   * Calculates scroll metrics when scrolling is active.
+   */
+  private calculateActiveScrollMetrics(container: HTMLElement, boardContainer: HTMLElement): void {
+    this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
+    this.thumbWidth = (container.clientWidth / boardContainer.scrollWidth) * 100;
+  }
+
+  /**
+   * Resets scroll metrics when no scrolling is needed.
+   */
+  private resetScrollMetrics(): void {
+    this.scrollPercentage = 0;
+    this.thumbWidth = 100;
   }
 
   /**
