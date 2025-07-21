@@ -258,19 +258,52 @@ export class BoardThumbnailService {
    * @param event - The touch event on the thumbnail
    */
   onThumbnailTouchStart(event: TouchEvent) {
-    if (this.isDragging || this.isViewportDragging) return;
+    if (this.shouldIgnoreThumbnailTouch()) return;
+    
     event.stopPropagation();
+    const touchData = this.extractTouchData(event);
+    const scrollPercentage = this.calculateTouchScrollPercentage(touchData);
+    this.scrollToTouchPosition(scrollPercentage);
+  }
+
+  /**
+   * Checks if thumbnail touch should be ignored.
+   */
+  private shouldIgnoreThumbnailTouch(): boolean {
+    return this.isDragging || this.isViewportDragging;
+  }
+
+  /**
+   * Extracts touch data from touch event.
+   */
+  private extractTouchData(event: TouchEvent): { touchX: number; rect: DOMRect; thumbnailWidth: number } {
     const thumbnail = event.currentTarget as HTMLElement;
     const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
     const rect = thumbnailContent.getBoundingClientRect();
     const touch = event.touches[0];
-    const clickX = touch.clientX - rect.left - 4;
+    const touchX = touch.clientX - rect.left - 4;
     const thumbnailWidth = rect.width - 8;
+    
+    return { touchX, rect, thumbnailWidth };
+  }
+
+  /**
+   * Calculates scroll percentage based on touch position.
+   */
+  private calculateTouchScrollPercentage(touchData: { touchX: number; thumbnailWidth: number }): number {
+    const { touchX, thumbnailWidth } = touchData;
     const viewportWidth = this.thumbnailViewport.width;
     const availableClickWidth = thumbnailWidth - viewportWidth;
-    const adjustedClickX = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
-    const percentage = availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    const adjustedTouchX = Math.max(0, Math.min(availableClickWidth, touchX - (viewportWidth / 2)));
+    
+    return availableClickWidth > 0 ? (adjustedTouchX / availableClickWidth) * 100 : 0;
+  }
+
+  /**
+   * Scrolls to position based on touch percentage.
+   */
+  private scrollToTouchPosition(percentage: number): void {
+    const container = this.getBoardScrollWrapper();
     if (container) {
       const scrollPosition = (percentage / 100) * this.maxScrollPosition;
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
