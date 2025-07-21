@@ -239,7 +239,7 @@ export class TaskService {
     }
     return false;
   }
-  
+
   /**
    * Creates a new subtask object.
    * @param title - Title for the subtask
@@ -289,6 +289,7 @@ export class TaskService {
     }
     return false;
   }
+
   /**
    * Updates a task in Firebase.
    * @param task - Task to update
@@ -308,6 +309,7 @@ export class TaskService {
       throw error;
     }
   }
+
   /**
    * Validates task data before Firebase update.
    * @param task - Task to validate
