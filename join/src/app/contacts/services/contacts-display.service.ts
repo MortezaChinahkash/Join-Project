@@ -214,6 +214,27 @@ export class ContactsDisplayService {
     truncatedName: string;
     truncatedEmail: string;
   } {
+    return this.buildContactDisplayObject(contact);
+  }
+
+  /**
+   * Builds the complete contact display object.
+   * 
+   * @param contact - Contact object
+   * @returns Formatted contact display object
+   * @private
+   */
+  private buildContactDisplayObject(contact: Contact): {
+    initials: string;
+    name: string;
+    email: string;
+    phone: string;
+    color: string;
+    isCurrentUser: boolean;
+    displayName: string;
+    truncatedName: string;
+    truncatedEmail: string;
+  } {
     return {
       initials: this.getContactInitials(contact.name),
       name: contact.name,
