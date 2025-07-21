@@ -31,57 +31,113 @@ export class BoardTouchHandlerService {
     return new Promise((resolve) => {
       const touch = event.touches[0];
       if (!touch) { resolve(false); return; }
-      this.dragState.touchStartTime = Date.now();
-      const startX = touch.clientX;
-      const startY = touch.clientY;
-      let hasMoved = false;
-      let dragStarted = false;
-      this.dragState.longPressTimeout = setTimeout(() => {
-        if (!hasMoved && !this.dragState.isDraggingTask) {
-          this.startTouchDrag(startX, startY, task, event.target as HTMLElement);
-          dragStarted = true;
-          if (navigator.vibrate) {
-            navigator.vibrate(50);
-          }
-        }
-      }, this.LONG_PRESS_DURATION);
-
-      const handleTouchMove = (e: TouchEvent) => {
-        const moveTouch = e.touches[0];
-        if (!moveTouch) return;
-        const deltaX = Math.abs(moveTouch.clientX - startX);
-        const deltaY = Math.abs(moveTouch.clientY - startY);
-        if (deltaX > this.TOUCH_MOVE_THRESHOLD || deltaY > this.TOUCH_MOVE_THRESHOLD) {
-          hasMoved = true;
-          if (this.dragState.longPressTimeout) {
-            clearTimeout(this.dragState.longPressTimeout);
-            this.dragState.longPressTimeout = null;
-          }
-        }
-        if (this.dragState.isDraggingTask) {
-          e.preventDefault();
-          this.autoScroll.emergencyAutoScroll(e);
-          this.updateTouchDrag(moveTouch.clientX, moveTouch.clientY);
-        }
-      };
-
-      const handleTouchEnd = (e: TouchEvent) => {
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);
-        if (this.dragState.longPressTimeout) {
-          clearTimeout(this.dragState.longPressTimeout);
-          this.dragState.longPressTimeout = null;
-        }
-        if (this.dragState.isDraggingTask) {
-          this.finishTouchDrag(onTaskUpdate);
-        }
-        resolve(dragStarted);
-      };
-
+      
+      const touchContext = this.initializeTouchDragState(event, task);
+      const handleTouchMove = this.createTouchMoveHandler(touchContext);
+      const handleTouchEnd = this.createTouchEndHandler(onTaskUpdate, resolve, touchContext, handleTouchMove);
+      
       document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
       document.addEventListener('touchend', handleTouchEnd);
     });
+  }
+
+  /**
+   * Initializes the touch drag state and sets up the long press timeout.
+   * 
+   * @param event - The touch event
+   * @param task - The task object being dragged
+   * @returns Object containing touch context variables
+   * @private
+   */
+  private initializeTouchDragState(event: TouchEvent, task: Task): { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean } {
+    const touch = event.touches[0];
+    this.dragState.touchStartTime = Date.now();
+    const touchContext = { 
+      startX: touch.clientX, 
+      startY: touch.clientY, 
+      hasMoved: false, 
+      dragStarted: false 
+    };
+    
+    this.dragState.longPressTimeout = setTimeout(() => {
+      if (!touchContext.hasMoved && !this.dragState.isDraggingTask) {
+        this.startTouchDrag(touchContext.startX, touchContext.startY, task, event.target as HTMLElement);
+        touchContext.dragStarted = true;
+        this.tryVibrate();
+      }
+    }, this.LONG_PRESS_DURATION);
+    
+    return touchContext;
+  }
+
+  /**
+   * Creates the touch move event handler for drag operations.
+   * 
+   * @param touchContext - The touch context containing position and state
+   * @returns Touch move event handler function
+   * @private
+   */
+  private createTouchMoveHandler(touchContext: { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean }): (e: TouchEvent) => void {
+    return (e: TouchEvent) => {
+      const moveTouch = e.touches[0];
+      if (!moveTouch) return;
+      
+      const deltaX = Math.abs(moveTouch.clientX - touchContext.startX);
+      const deltaY = Math.abs(moveTouch.clientY - touchContext.startY);
+      
+      if (deltaX > this.TOUCH_MOVE_THRESHOLD || deltaY > this.TOUCH_MOVE_THRESHOLD) {
+        this.handleTouchMovementThreshold(touchContext);
+      }
+      
+      if (this.dragState.isDraggingTask) {
+        e.preventDefault();
+        this.autoScroll.emergencyAutoScroll(e);
+        this.updateTouchDrag(moveTouch.clientX, moveTouch.clientY);
+      }
+    };
+  }
+
+  /**
+   * Handles touch movement that exceeds the movement threshold.
+   * 
+   * @param touchContext - The touch context containing movement state
+   * @private
+   */
+  private handleTouchMovementThreshold(touchContext: { hasMoved: boolean }): void {
+    touchContext.hasMoved = true;
+    if (this.dragState.longPressTimeout) {
+      clearTimeout(this.dragState.longPressTimeout);
+      this.dragState.longPressTimeout = null;
+    }
+  }
+
+  /**
+   * Creates the touch end event handler for ending drag operations.
+   * 
+   * @param onTaskUpdate - Callback to update local task arrays
+   * @param resolve - Promise resolve function
+   * @param touchContext - The touch context containing drag state
+   * @param handleTouchMove - The touch move handler to remove
+   * @returns Touch end event handler function
+   * @private
+   */
+  private createTouchEndHandler(onTaskUpdate: () => void, resolve: (value: boolean) => void, touchContext: { dragStarted: boolean }, handleTouchMove: (e: TouchEvent) => void): (e: TouchEvent) => void {
+    const handleTouchEnd = (e: TouchEvent) => {
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
+      
+      if (this.dragState.longPressTimeout) {
+        clearTimeout(this.dragState.longPressTimeout);
+        this.dragState.longPressTimeout = null;
+      }
+      
+      if (this.dragState.isDraggingTask) {
+        this.finishTouchDrag(onTaskUpdate);
+      }
+      
+      resolve(touchContext.dragStarted);
+    };
+    return handleTouchEnd;
   }
 
   /**
@@ -239,5 +295,19 @@ export class BoardTouchHandlerService {
   cleanup(): void {
     this.dragState.clearTimeouts();
     this.autoScroll.cleanup();
+  }
+
+  /**
+   * Safely attempts to trigger device vibration if supported and allowed.
+   * @private
+   */
+  private tryVibrate(): void {
+    try {
+      if ('vibrate' in navigator && typeof navigator.vibrate === 'function') {
+        navigator.vibrate(50);
+      }
+    } catch (error) {
+      // Silently ignore vibration errors
+    }
   }
 }
