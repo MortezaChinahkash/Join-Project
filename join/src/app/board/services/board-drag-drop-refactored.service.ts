@@ -172,45 +172,131 @@ export class BoardDragDropService {
     return new Promise((resolve) => {
       event.preventDefault();
       const touch = event.touches[0];
-      let dragStarted = false;
-      this.dragState.longPressTimeout = setTimeout(() => {
-        this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
-        dragStarted = true;
-      }, 500);
-
-      const handleTouchMove = (e: TouchEvent) => {
-        const touch = e.touches[0];
-        if (this.dragState.isDraggingTask) {
-          e.preventDefault();
-          this.autoScroll.emergencyAutoScroll(e);
-          this.updateTaskDrag(touch.clientX, touch.clientY);
-        } else {
-          if (this.dragState.longPressTimeout) {
-            clearTimeout(this.dragState.longPressTimeout);
-            this.dragState.longPressTimeout = null;
-          }
-        }
-      };
-
-      const handleTouchEnd = () => {
-        if (this.dragState.longPressTimeout) {
-          clearTimeout(this.dragState.longPressTimeout);
-          this.dragState.longPressTimeout = null;
-        }
-        if (this.dragState.isDraggingTask) {
-          this.endTaskDrag(onTaskUpdate);
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-        document.removeEventListener('touchmove', handleTouchMove);
-        document.removeEventListener('touchend', handleTouchEnd);
-      };
-
-      document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-      document.addEventListener('touchend', handleTouchEnd);
+      const dragContext = this.initializeTouchDragState(event, touch, task);
+      const handleTouchMove = this.createTouchMoveHandler();
+      const handleTouchEnd = this.createTouchEndHandler(onTaskUpdate, resolve, handleTouchMove);
+      this.attachTouchEventListeners(handleTouchMove, handleTouchEnd);
     });
+  }
+
+  /**
+   * Initializes touch drag state and sets up long press timeout.
+   * 
+   * @param event - The original touch event
+   * @param touch - The touch object from the event
+   * @param task - The task object to be dragged
+   * @returns Object containing drag context
+   * @private
+   */
+  private initializeTouchDragState(event: TouchEvent, touch: Touch, task: Task): { dragStarted: boolean } {
+    const dragContext = { dragStarted: false };
+    this.dragState.longPressTimeout = setTimeout(() => {
+      this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
+      dragContext.dragStarted = true;
+    }, 500);
+    return dragContext;
+  }
+
+  /**
+   * Creates the touch move event handler for drag operations.
+   * 
+   * @returns Touch move event handler function
+   * @private
+   */
+  private createTouchMoveHandler(): (e: TouchEvent) => void {
+    return (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (this.dragState.isDraggingTask) {
+        this.handleActiveTouchDrag(e, touch);
+      } else {
+        this.cancelLongPressTimeout();
+      }
+    };
+  }
+
+  /**
+   * Handles touch drag when dragging is active.
+   * 
+   * @param e - The touch event
+   * @param touch - The touch object
+   * @private
+   */
+  private handleActiveTouchDrag(e: TouchEvent, touch: Touch): void {
+    e.preventDefault();
+    this.autoScroll.emergencyAutoScroll(e);
+    this.updateTaskDrag(touch.clientX, touch.clientY);
+  }
+
+  /**
+   * Cancels the long press timeout if it exists.
+   * 
+   * @private
+   */
+  private cancelLongPressTimeout(): void {
+    if (this.dragState.longPressTimeout) {
+      clearTimeout(this.dragState.longPressTimeout);
+      this.dragState.longPressTimeout = null;
+    }
+  }
+
+  /**
+   * Creates the touch end event handler for ending drag operations.
+   * 
+   * @param onTaskUpdate - Callback to update local task arrays
+   * @param resolve - Promise resolve function
+   * @param handleTouchMove - The touch move handler to remove
+   * @returns Touch end event handler function
+   * @private
+   */
+  private createTouchEndHandler(onTaskUpdate: () => void, resolve: (value: boolean) => void, handleTouchMove: (e: TouchEvent) => void): () => void {
+    return () => {
+      this.cancelLongPressTimeout();
+      const dragWasActive = this.resolveTouchDragEnd(onTaskUpdate, resolve);
+      this.removeTouchEventListeners(handleTouchMove, arguments.callee as EventListener);
+    };
+  }
+
+  /**
+   * Resolves touch drag end and returns whether drag was active.
+   * 
+   * @param onTaskUpdate - Callback to update local task arrays
+   * @param resolve - Promise resolve function
+   * @returns Whether drag was active
+   * @private
+   */
+  private resolveTouchDragEnd(onTaskUpdate: () => void, resolve: (value: boolean) => void): boolean {
+    if (this.dragState.isDraggingTask) {
+      this.endTaskDrag(onTaskUpdate);
+      resolve(true);
+      return true;
+    } else {
+      resolve(false);
+      return false;
+    }
+  }
+
+  /**
+   * Attaches touch event listeners to the document.
+   * 
+   * @param handleTouchMove - Touch move handler function
+   * @param handleTouchEnd - Touch end handler function
+   * @private
+   */
+  private attachTouchEventListeners(handleTouchMove: (e: TouchEvent) => void, handleTouchEnd: () => void): void {
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+  }
+
+  /**
+   * Removes touch event listeners from the document.
+   * 
+   * @param handleTouchMove - Touch move handler function
+   * @param handleTouchEnd - Touch end handler function
+   * @private
+   */
+  private removeTouchEventListeners(handleTouchMove: (e: TouchEvent) => void, handleTouchEnd: EventListener): void {
+    document.removeEventListener('touchmove', handleTouchMove);
+    document.removeEventListener('touchend', handleTouchEnd);
   }
 
   /**
