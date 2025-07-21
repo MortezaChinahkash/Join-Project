@@ -69,45 +69,124 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
    * Subscribes to onboarding service observables.
    */
   private subscribeToOnboarding(): void {
-    const showSub = this.onboardingService.showOnboarding$.subscribe(show => {
+    const showSub = this.createShowOnboardingSubscription();
+    const stepSub = this.createStepChangeSubscription();
+    this.subscriptions.push(showSub, stepSub);
+  }
+
+  /**
+   * Creates subscription for show onboarding observable.
+   * 
+   * @returns Subscription for show onboarding changes
+   * @private
+   */
+  private createShowOnboardingSubscription(): Subscription {
+    return this.onboardingService.showOnboarding$.subscribe(show => {
       this.showOnboarding = show;
       if (show) {
-        setTimeout(() => this.updateHighlightPosition(), 100);
+        this.scheduleHighlightUpdate();
       }
     });
-    const stepSub = this.onboardingService.currentStep$.subscribe(() => {
-      this.currentStep = this.onboardingService.getCurrentStep();
-      this.currentStepNumber = this.onboardingService.getCurrentStepNumber();
-      this.totalSteps = this.onboardingService.getTotalSteps();
-      if (this.showOnboarding) {
-        setTimeout(() => this.updateHighlightPosition(), 100);
-      }
-    });
+  }
 
-    this.subscriptions.push(showSub, stepSub);
+  /**
+   * Creates subscription for step change observable.
+   * 
+   * @returns Subscription for step changes
+   * @private
+   */
+  private createStepChangeSubscription(): Subscription {
+    return this.onboardingService.currentStep$.subscribe(() => {
+      this.updateStepInformation();
+      if (this.showOnboarding) {
+        this.scheduleHighlightUpdate();
+      }
+    });
+  }
+
+  /**
+   * Updates step information from onboarding service.
+   * 
+   * @private
+   */
+  private updateStepInformation(): void {
+    this.currentStep = this.onboardingService.getCurrentStep();
+    this.currentStepNumber = this.onboardingService.getCurrentStepNumber();
+    this.totalSteps = this.onboardingService.getTotalSteps();
+  }
+
+  /**
+   * Schedules highlight position update with timeout.
+   * 
+   * @private
+   */
+  private scheduleHighlightUpdate(): void {
+    setTimeout(() => this.updateHighlightPosition(), 100);
   }
 
   /**
    * Updates the position of the highlight around the target element.
    */
   private updateHighlightPosition(): void {
-    if (!this.currentStep || !this.showOnboarding) return;
-    const targetElement = document.querySelector(this.currentStep.targetElementSelector);
+    if (!this.shouldUpdateHighlight()) return;
+    
+    const targetElement = this.findTargetElement();
     if (targetElement) {
-      const rect = targetElement.getBoundingClientRect();
-      const padding = 8;
-      this.highlightPosition = {
-        top: `${rect.top - padding}px`,
-        left: `${rect.left - padding}px`,
-        width: `${rect.width + (padding * 2)}px`,
-
-        height: `${rect.height + (padding * 2)}px`
-      };
+      this.setHighlightPositionFromElement(targetElement);
     } else {
-      this.highlightPosition = {
-        top: '0px', left: '0px', width: '0px', height: '0px'
-      };
+      this.resetHighlightPosition();
     }
+  }
+
+  /**
+   * Checks if highlight position should be updated.
+   * 
+   * @returns True if highlight should be updated
+   * @private
+   */
+  private shouldUpdateHighlight(): boolean {
+    return !!(this.currentStep && this.showOnboarding);
+  }
+
+  /**
+   * Finds the target element for current step.
+   * 
+   * @returns Target element or null
+   * @private
+   */
+  private findTargetElement(): Element | null {
+    return document.querySelector(this.currentStep!.targetElementSelector);
+  }
+
+  /**
+   * Sets highlight position based on target element dimensions.
+   * 
+   * @param targetElement - Element to highlight
+   * @private
+   */
+  private setHighlightPositionFromElement(targetElement: Element): void {
+    const rect = targetElement.getBoundingClientRect();
+    const padding = 8;
+    this.highlightPosition = {
+      top: `${rect.top - padding}px`,
+      left: `${rect.left - padding}px`,
+      width: `${rect.width + (padding * 2)}px`,
+      height: `${rect.height + (padding * 2)}px`
+    };
+  }
+
+  /**
+   * Resets highlight position to default values.
+   * 
+   * @private
+   */
+  private resetHighlightPosition(): void {
+    this.highlightPosition = {
+      top: '0px', 
+      left: '0px', 
+      width: '0px', 
+      height: '0px'
+    };
   }
 
   /**
