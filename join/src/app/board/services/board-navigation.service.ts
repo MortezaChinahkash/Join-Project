@@ -29,6 +29,7 @@ import { Task } from '../../interfaces/task.interface';
 })
 export class BoardNavigationService {
   constructor(private route: ActivatedRoute) {}
+
   /**
    * Handles query parameters to open specific tasks or apply filters.
    * @param taskArrays - Object containing all task arrays

@@ -24,18 +24,21 @@ export class BoardFormOverlayService {
     this.showAddTaskOverlay = true;
     this.currentColumn = column;
   }
+
   /**
    * Closes the add task overlay and resets overlay state.
    */
   closeAddTaskOverlay(): void {
     this.showAddTaskOverlay = false;
   }
+
   /**
    * Opens the task details overlay.
    */
   openTaskDetailsOverlay(): void {
     this.showTaskDetailsOverlay = true;
   }
+
   /**
    * Closes the task details overlay and resets editing state.
    */
@@ -43,18 +46,21 @@ export class BoardFormOverlayService {
     this.showTaskDetailsOverlay = false;
     this.isEditingTask = false;
   }
+
   /**
    * Starts editing mode for a task.
    */
   startEditingTask(): void {
     this.isEditingTask = true;
   }
+
   /**
    * Cancels editing mode for a task.
    */
   cancelEditingTask(): void {
     this.isEditingTask = false;
   }
+
   /**
    * Checks if any overlay is currently open.
    * 
@@ -63,6 +69,7 @@ export class BoardFormOverlayService {
   isAnyOverlayOpen(): boolean {
     return this.showAddTaskOverlay || this.showTaskDetailsOverlay;
   }
+
   /**
    * Closes all overlays and resets all states.
    */
@@ -71,6 +78,7 @@ export class BoardFormOverlayService {
     this.showTaskDetailsOverlay = false;
     this.isEditingTask = false;
   }
+
   /**
    * Gets the current overlay state as an object.
    * 
@@ -89,6 +97,7 @@ export class BoardFormOverlayService {
       currentColumn: this.currentColumn
     };
   }
+
   /**
    * Sets the current column for new task creation.
    * 
@@ -97,6 +106,7 @@ export class BoardFormOverlayService {
   setCurrentColumn(column: TaskColumn): void {
     this.currentColumn = column;
   }
+
   /**
    * Gets the current column for new task creation.
    * 

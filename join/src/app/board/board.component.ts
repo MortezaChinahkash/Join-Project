@@ -44,10 +44,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('slideInRight', [
       transition(':enter', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
+
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+
       ]),
       transition(':leave', [
         animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+
       ])
     ])
   ]
@@ -133,11 +136,14 @@ export class BoardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializationService.initializeComponent(
       (contacts) => { this.contacts = contacts; },
+
       (tasks) => {
         this.tasks = tasks;
         this.distributeTasksToColumns();
       },
+
       () => {} // Empty callback since we handle query params in distributeTasksToColumns
+
     );
   }
   /** Distributes tasks into appropriate columns and sorts by priority. */
@@ -148,6 +154,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     // Handle query parameters after tasks are distributed to arrays
     setTimeout(() => this.handleQueryParams(), 50);
   }
+
   /** Assigns distributed tasks to component arrays. */
   private assignTasksToColumns(distributed: {
     todoTasks: Task[];
@@ -165,12 +172,14 @@ export class BoardComponent implements OnInit, OnDestroy {
     const initialized = this.initializationService.initializeTaskArrays();
     this.assignTasksToColumns(initialized);
   }
+
   /** Updates task arrays after task changes. */
   private updateTaskArrays(): void {
     this.arrayManagementService.updateTaskArrays(
       this.tasks,
       this.formService.selectedTask,
       (updatedTasks) => { this.tasks = updatedTasks; },
+
       () => this.distributeTasksToColumns()
     );
   }
@@ -182,12 +191,14 @@ export class BoardComponent implements OnInit, OnDestroy {
   openAddTaskOverlay(column: TaskColumn = 'todo'): void {
     this.taskManagementService.openAddTaskOverlay(column);
   }
+
   /**
    * Closes the add task overlay.
    */
   closeAddTaskOverlay(): void {
     this.taskManagementService.closeAddTaskOverlay();
   }
+
   /**
    * Submits the task form and updates local arrays.
    */
@@ -203,36 +214,42 @@ export class BoardComponent implements OnInit, OnDestroy {
   openTaskDetails(task: Task): void {
     this.taskManagementService.openTaskDetails(task);
   }
+
   /**
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
     this.taskManagementService.closeTaskDetailsOverlay();
   }
+
   /**
    * Enters edit mode for the selected task.
    */
   editTask(): void {
     this.taskManagementService.editTask(this.contacts);
   }
+
   /**
    * Cancels task editing and reverts changes.
    */
   cancelEditTask(): void {
     this.taskManagementService.cancelEditTask();
   }
+
   /**
    * Saves task changes and updates arrays.
    */
   async saveTaskChanges(): Promise<void> {
     await this.taskManagementService.saveTaskChanges(() => this.updateTaskArrays());
   }
+
   /**
    * Deletes the selected task and updates arrays.
    */
   async deleteTask(): Promise<void> {
     await this.taskManagementService.deleteTask();
   }
+
   /**
    * Confirms task deletion and updates arrays.
    */
@@ -249,6 +266,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   closeDeleteConfirmation(): void {
     this.taskManagementService.closeDeleteConfirmation();
   }
+
   /**
    * Toggles subtask completion status.
    * @param subtaskIndex - Index of the subtask to toggle
@@ -258,57 +276,86 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.updateTaskArrays()
     );
   }
+
   /** Safely truncates text to a maximum length. */
   truncate(text: string | null | undefined, limit: number = 200): string {
     return this.displayService.truncateText(text, limit);
   }
+
   /** Handles search input changes for task filtering. */
   onSearchChange(): void {
     // Search filtering is handled by the template via getFilteredTasks
     // This method is called when the search input value changes
   }
+
   // Interaction Service delegates
   async onTaskMouseDown(event: MouseEvent, task: Task): Promise<void> {
     const wasDragged = await this.interactionService.handleTaskMouseDown(event, task, () => this.updateTaskArrays());
     if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
   }
+
   async onTaskTouchStart(event: TouchEvent, task: Task): Promise<void> {
     const wasDragged = await this.interactionService.handleTaskTouchStart(event, task, () => this.updateTaskArrays());
     if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
   }
+
   onColumnDragOver(event: DragEvent, column: TaskColumn): void { this.interactionService.handleColumnDragOver(event, column); }
+
   onColumnDragLeave(event: DragEvent): void { this.interactionService.handleColumnDragLeave(event); }
+
   onColumnDrop(event: DragEvent, column: TaskColumn): void { this.interactionService.handleColumnDrop(event, column); }
+
   onThumbnailClick(event: MouseEvent): void { this.interactionService.handleThumbnailClick(event); }
+
   onThumbnailTouchStart(event: TouchEvent): void { this.interactionService.handleThumbnailTouchStart(event); }
+
   onViewportMouseDown(event: MouseEvent): void { this.interactionService.handleViewportMouseDown(event); }
+
   onViewportTouchStart(event: TouchEvent): void { this.interactionService.handleViewportTouchStart(event); }
+
   onViewportClick(event: MouseEvent): void { this.interactionService.handleViewportClick(event); }
+
   // Display Service delegates
   getTaskProgress(task: Task): number { return this.displayService.getTaskProgress(task); }
+
   getCompletedSubtasks(task: Task): number { return this.displayService.getCompletedSubtasks(task); }
+
   getPriorityIcon(priority: Task['priority']): string { return this.displayService.getPriorityIcon(priority); }
+
   getFilteredTasks(tasks: Task[]): Task[] { return this.displayService.getFilteredTasks(tasks, this.searchTerm); }
+
   get noSearchResults(): boolean {
     return this.displayService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
   }
+
   // Mobile Task Move Service delegates
   onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveTask(event, task); }
+
   closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobileMoveOverlay(); }
+
   get showMobileMoveOverlay(): boolean { return this.mobileTaskMoveService.showMobileMoveOverlay; }
+
   get overlayPosition(): { top: number; right: number } { return this.mobileTaskMoveService.overlayPosition; }
+
   get selectedTaskForMove(): Task | null { return this.mobileTaskMoveService.selectedTaskForMove; }
+
   getCurrentTaskColumn(task: Task): TaskColumn | null {
     return this.mobileTaskMoveService.getCurrentTaskColumn(task, {
       todoTasks: this.todoTasks, inProgressTasks: this.inProgressTasks,
       awaitingFeedbackTasks: this.awaitingFeedbackTasks, doneTasks: this.doneTasks
     });
   }
+
   getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getPreviousColumn(currentColumn); }
+
   getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getNextColumn(currentColumn); }
+
   getColumnDisplayName(column: TaskColumn): string { return this.mobileTaskMoveService.getColumnDisplayName(column); }
+
   onMobileMoveButtonMouseDown(event: MouseEvent): void { this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event); }
+
   onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task); }
+
   /**
    * Moves selected task to previous column.
    */
@@ -323,6 +370,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => {
         this.handleTaskMove(task, fromColumn, toColumn);
       }
+
     );
   }
   /**
@@ -339,6 +387,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => {
         this.handleTaskMove(task, fromColumn, toColumn);
       }
+
     );
   }
   /**
@@ -361,12 +410,18 @@ export class BoardComponent implements OnInit, OnDestroy {
     );
     this.assignTasksToColumns(updatedColumns);
   }
+
   // Contact Helper Service delegates
   getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts); }
+
   hasRemainingContacts(assignedContacts: string[]): boolean { return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts); }
+
   getRemainingContactsCount(assignedContacts: string[]): number { return this.contactHelperService.getRemainingContactsCount(assignedContacts, this.contacts); }
+
   getInitials(name: string): string { return this.contactHelperService.getInitials(name); }
+
   getInitialsColor(name: string): string { return this.contactHelperService.getInitialsColor(name); }
+
   /**
    * Handles query parameters to open specific tasks or apply filters.
    */

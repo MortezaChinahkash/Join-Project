@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class SvgLoaderService {
   constructor(private http: HttpClient) {}
+
   /**
    * Loads SVG content from a given URL as text.
    * 

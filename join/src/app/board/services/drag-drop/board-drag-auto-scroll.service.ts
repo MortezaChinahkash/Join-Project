@@ -77,6 +77,7 @@ export class BoardDragAutoScrollService {
       this.stopAutoScroll();
     }
   }
+
   /**
    * Starts auto-scroll in the specified direction.
    * 
@@ -127,6 +128,7 @@ export class BoardDragAutoScrollService {
       if (isScrollingLeft && container.scrollLeft <= 0) {
         this.stopHorizontalAutoScroll();
       } else if (!isScrollingLeft && container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+
         this.stopHorizontalAutoScroll();
       }
     }, 16); // ~60fps
@@ -142,6 +144,7 @@ export class BoardDragAutoScrollService {
     }
     this.isHorizontalScrolling = false;
   }
+
   /**
    * Calculates adaptive scroll speed based on distance from edge.
    * 
@@ -154,6 +157,7 @@ export class BoardDragAutoScrollService {
     const speedMultiplier = Math.max(1, Math.min(3, distance / 50));
     return this.autoScrollSpeed * speedMultiplier;
   }
+
   /**
    * Emergency auto-scroll implementation for touch devices.
    * Scrolls the main content container for better mobile support.
@@ -178,6 +182,7 @@ export class BoardDragAutoScrollService {
     if (clientY < scrollZone) {
       scrollContainer.scrollTop -= scrollSpeed;
     } else if (clientY > viewportHeight - scrollZone) {
+
       scrollContainer.scrollTop += scrollSpeed;
     }
   }
@@ -201,6 +206,7 @@ export class BoardDragAutoScrollService {
     // Try document element
     return document.documentElement;
   }
+
   /**
    * Checks if an element is scrollable.
    * 
@@ -213,6 +219,7 @@ export class BoardDragAutoScrollService {
     const overflowY = style.overflowY;
     return overflowY === 'scroll' || overflowY === 'auto' || element.scrollHeight > element.clientHeight;
   }
+
   /**
    * Cleans up all auto-scroll related resources.
    * Should be called when component is destroyed.

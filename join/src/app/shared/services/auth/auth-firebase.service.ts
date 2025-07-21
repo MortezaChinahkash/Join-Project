@@ -66,6 +66,7 @@ export class AuthFirebaseService {
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
+
       throw this.handleAuthError(error);
     }
   }
@@ -97,6 +98,7 @@ export class AuthFirebaseService {
       localStorage.setItem('join_new_user', 'true');
       return user;
     } catch (error: any) {
+
       throw this.handleAuthError(error);
     }
   }
@@ -113,6 +115,7 @@ export class AuthFirebaseService {
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
+
       throw this.handleAuthError(error);
     }
   }
@@ -125,6 +128,7 @@ export class AuthFirebaseService {
     try {
       await runInInjectionContext(this.injector, () => signOut(this.auth));
     } catch (error: any) {
+
       console.error('Error during logout:', error);
       throw error;
     }
@@ -145,6 +149,7 @@ export class AuthFirebaseService {
         updateProfile(currentUser, updates)
       );
     } catch (error: any) {
+
       console.error('Error updating user profile:', error);
       throw error;
     }
@@ -165,6 +170,7 @@ export class AuthFirebaseService {
       loginTimestamp: Date.now() // Current timestamp
     };
   }
+
   /**
    * Handles Firebase authentication errors and converts them to user-friendly messages.
    * 
@@ -206,6 +212,7 @@ export class AuthFirebaseService {
     }
     return new Error(message);
   }
+
   /**
    * Gets the current Firebase user.
    * 
@@ -214,6 +221,7 @@ export class AuthFirebaseService {
   getCurrentFirebaseUser(): FirebaseUser | null {
     return this.auth.currentUser;
   }
+
   /**
    * Checks if Firebase auth is ready.
    * 

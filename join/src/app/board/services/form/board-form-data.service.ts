@@ -9,6 +9,7 @@ import { Contact } from '../../../contacts/services/contact-data.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardFormDataService {
   // Data state
   private currentTask: Task | null = null;
@@ -42,6 +43,7 @@ export class BoardFormDataService {
     this.originalTask = null;
     return newTask;
   }
+
   /**
    * Initializes form data for editing an existing task.
    * 
@@ -52,6 +54,7 @@ export class BoardFormDataService {
     this.originalTask = this.deepCloneTask(task);
     this.isEditMode = true;
   }
+
   /**
    * Gets the current task being edited or created.
    * 
@@ -60,6 +63,7 @@ export class BoardFormDataService {
   getCurrentTask(): Task | null {
     return this.currentTask;
   }
+
   /**
    * Gets the original task (before editing).
    * 
@@ -68,6 +72,7 @@ export class BoardFormDataService {
   getOriginalTask(): Task | null {
     return this.originalTask;
   }
+
   /**
    * Checks if form is in edit mode.
    * 
@@ -76,6 +81,7 @@ export class BoardFormDataService {
   getIsEditMode(): boolean {
     return this.isEditMode;
   }
+
   /**
    * Updates a field in the current task.
    * 
@@ -89,6 +95,7 @@ export class BoardFormDataService {
       this.scheduleAutoSave();
     }
   }
+
   /**
    * Updates task title.
    * 
@@ -97,6 +104,7 @@ export class BoardFormDataService {
   updateTitle(title: string): void {
     this.updateTaskField('title', title);
   }
+
   /**
    * Updates task description.
    * 
@@ -105,6 +113,7 @@ export class BoardFormDataService {
   updateDescription(description: string): void {
     this.updateTaskField('description', description);
   }
+
   /**
    * Updates task due date.
    * 
@@ -113,6 +122,7 @@ export class BoardFormDataService {
   updateDueDate(dueDate: string): void {
     this.updateTaskField('dueDate', dueDate);
   }
+
   /**
    * Updates task priority.
    * 
@@ -121,6 +131,7 @@ export class BoardFormDataService {
   updatePriority(priority: 'low' | 'medium' | 'urgent'): void {
     this.updateTaskField('priority', priority);
   }
+
   /**
    * Updates task category.
    * 
@@ -129,6 +140,7 @@ export class BoardFormDataService {
   updateCategory(category: string): void {
     this.updateTaskField('category', category);
   }
+
   /**
    * Updates task status.
    * 
@@ -137,6 +149,7 @@ export class BoardFormDataService {
   updateStatus(status: 'todo' | 'inprogress' | 'awaiting' | 'done'): void {
     this.updateTaskField('column', status);
   }
+
   /**
    * Updates assigned contacts.
    * 
@@ -149,6 +162,7 @@ export class BoardFormDataService {
       this.scheduleAutoSave();
     }
   }
+
   /**
    * Adds a subtask to the current task.
    * 
@@ -170,6 +184,7 @@ export class BoardFormDataService {
     }
     return subtask;
   }
+
   /**
    * Updates a subtask.
    * 
@@ -189,6 +204,7 @@ export class BoardFormDataService {
       }
     }
   }
+
   /**
    * Removes a subtask from the current task.
    * 
@@ -204,6 +220,7 @@ export class BoardFormDataService {
       }
     }
   }
+
   /**
    * Gets all subtasks for the current task.
    * 
@@ -212,6 +229,7 @@ export class BoardFormDataService {
   getSubtasks(): Subtask[] {
     return this.currentTask?.subtasks || [];
   }
+
   /**
    * Checks if the current task has been modified.
    * 
@@ -221,6 +239,7 @@ export class BoardFormDataService {
     if (!this.currentTask || !this.originalTask) return false;
     return JSON.stringify(this.currentTask) !== JSON.stringify(this.originalTask);
   }
+
   /**
    * Reverts changes to the original task state.
    */
@@ -229,6 +248,7 @@ export class BoardFormDataService {
       this.currentTask = this.deepCloneTask(this.originalTask);
     }
   }
+
   /**
    * Saves the current task state as the new original.
    */
@@ -237,6 +257,7 @@ export class BoardFormDataService {
       this.originalTask = this.deepCloneTask(this.currentTask);
     }
   }
+
   /**
    * Validates the current task data.
    * 
@@ -267,6 +288,7 @@ export class BoardFormDataService {
     }
     return { isValid: errors.length === 0, errors };
   }
+
   /**
    * Enables auto-save functionality.
    * 
@@ -276,6 +298,7 @@ export class BoardFormDataService {
     this.autoSaveEnabled = true;
     this.autoSaveDelay = delay;
   }
+
   /**
    * Disables auto-save functionality.
    */
@@ -283,6 +306,7 @@ export class BoardFormDataService {
     this.autoSaveEnabled = false;
     this.clearAutoSaveTimeout();
   }
+
   /**
    * Schedules an auto-save operation.
    */
@@ -301,6 +325,7 @@ export class BoardFormDataService {
       this.autoSaveTimeout = null;
     }
   }
+
   /**
    * Performs the auto-save operation.
    */
@@ -311,6 +336,7 @@ export class BoardFormDataService {
       this.saveChanges();
     }
   }
+
   /**
    * Generates a unique task ID.
    * 
@@ -319,6 +345,7 @@ export class BoardFormDataService {
   private generateTaskId(): string {
     return 'task_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   }
+
   /**
    * Generates a unique subtask ID.
    * 
@@ -327,6 +354,7 @@ export class BoardFormDataService {
   private generateSubtaskId(): string {
     return 'subtask_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   }
+
   /**
    * Creates a deep clone of a task object.
    * 
@@ -336,6 +364,7 @@ export class BoardFormDataService {
   private deepCloneTask(task: Task): Task {
     return JSON.parse(JSON.stringify(task));
   }
+
   /**
    * Resets the service state.
    */
@@ -345,6 +374,7 @@ export class BoardFormDataService {
     this.isEditMode = false;
     this.disableAutoSave();
   }
+
   /**
    * Cleanup method to clear timeouts and reset state.
    */

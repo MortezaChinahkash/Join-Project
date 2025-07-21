@@ -22,6 +22,7 @@ export class BoardUtilsService {
     const completed = task.subtasks.filter(subtask => subtask.completed).length;
     return (completed / task.subtasks.length) * 100;
   }
+
   /**
    * Gets the number of completed subtasks for a task.
    * 
@@ -32,6 +33,7 @@ export class BoardUtilsService {
     if (!task.subtasks) return 0;
     return task.subtasks.filter(subtask => subtask.completed).length;
   }
+
   /**
    * Gets the appropriate priority icon path for a task.
    * 
@@ -51,6 +53,7 @@ export class BoardUtilsService {
         return './assets/img/icon_priority_medium.svg';
     }
   }
+
   /**
    * Sorts tasks by priority (urgent > medium > low).
    * 
@@ -65,6 +68,7 @@ export class BoardUtilsService {
       // HÃ¶here PrioritÃ¤t (hÃ¶here Zahl) kommt zuerst
       return priorityB - priorityA;
     });
+
     return sortedTasks;
   }
   /**
@@ -84,6 +88,7 @@ export class BoardUtilsService {
       (task.description && task.description.toLowerCase().includes(searchTermLower))
     );
   }
+
   /**
    * Checks if search returned no results across all task arrays.
    * 
@@ -118,6 +123,7 @@ export class BoardUtilsService {
     if (!assignedTo || assignedTo.length === 0) return [];
     return assignedTo.slice(0, 4);
   }
+
   /**
    * Gets the count of contacts beyond the display limit.
    * 
@@ -128,6 +134,7 @@ export class BoardUtilsService {
     if (!assignedTo || assignedTo.length <= 4) return 0;
     return assignedTo.length - 4;
   }
+
   /**
    * Checks if there are contacts beyond the display limit.
    * 
@@ -137,6 +144,7 @@ export class BoardUtilsService {
   hasRemainingContacts(assignedTo: string[]): boolean {
     return assignedTo && assignedTo.length > 4;
   }
+
   /**
    * Checks if task has multiple assigned contacts.
    * 
@@ -146,6 +154,7 @@ export class BoardUtilsService {
   hasMultipleContacts(assignedTo: string[]): boolean {
     return assignedTo && assignedTo.length > 1;
   }
+
   /**
    * Gets the total count of assigned contacts.
    * 
@@ -155,6 +164,7 @@ export class BoardUtilsService {
   getContactCount(assignedTo: string[]): number {
     return assignedTo ? assignedTo.length : 0;
   }
+
   // Subtask progress methods for task details
   /**
    * Gets the subtask completion progress for the selected task.
@@ -169,6 +179,7 @@ export class BoardUtilsService {
     const completed = selectedTask.subtasks.filter(subtask => subtask.completed).length;
     return (completed / selectedTask.subtasks.length) * 100;
   }
+
   /**
    * Gets the count of completed subtasks for the selected task.
    * 

@@ -25,6 +25,7 @@ export class AddTaskContactService {
       return this.addContactToSelection(contact, updatedContacts);
     }
   }
+
   /**
    * Checks if a contact is currently selected.
    * @param contact - Contact to check
@@ -34,6 +35,7 @@ export class AddTaskContactService {
   isContactSelected(contact: Contact, selectedContacts: Contact[]): boolean {
     return selectedContacts.some(c => c.id === contact.id);
   }
+
   /**
    * Removes a contact from selection.
    * @param contact - Contact to remove
@@ -47,6 +49,7 @@ export class AddTaskContactService {
     }
     return selectedContacts;
   }
+
   /**
    * Adds a contact to selection.
    * @param contact - Contact to add
@@ -57,6 +60,7 @@ export class AddTaskContactService {
     selectedContacts.push(contact);
     return selectedContacts;
   }
+
   /**
    * Formats selected contacts into display text.
    * @param contacts - Selected contacts array
@@ -78,6 +82,7 @@ export class AddTaskContactService {
   processContactsData(contactsData: Contact[]): Contact[] {
     return contactsData.sort((a, b) => a.name.localeCompare(b.name));
   }
+
   /**
    * Handles dropdown visibility based on click target.
    * @param event - Click event
@@ -89,6 +94,7 @@ export class AddTaskContactService {
     const target = event.target as HTMLElement;
     return this.isClickInsideDropdownArea(target);
   }
+
   /**
    * Checks if click is inside dropdown area.
    * @param target - Click target element
@@ -99,6 +105,7 @@ export class AddTaskContactService {
     const contactsDropdown = target.closest('.contacts-dropdown');
     return !!(dropdownWrapper || contactsDropdown);
   }
+
   /**
    * Extracts contact names from selected contacts.
    * @param selectedContacts - Array of selected contacts
@@ -107,6 +114,7 @@ export class AddTaskContactService {
   extractContactNames(selectedContacts: Contact[]): string[] {
     return selectedContacts.map(c => c.name);
   }
+
   /**
    * Validates contact selection.
    * @param selectedContacts - Selected contacts array
@@ -124,6 +132,7 @@ export class AddTaskContactService {
     }
     return { isValid: true };
   }
+
   /**
    * Finds a contact by ID.
    * @param contacts - Array of contacts to search
@@ -133,6 +142,7 @@ export class AddTaskContactService {
   findContactById(contacts: Contact[], contactId: string): Contact | undefined {
     return contacts.find(c => c.id === contactId);
   }
+
   /**
    * Filters contacts by search term.
    * @param contacts - Contacts to filter
@@ -147,6 +157,7 @@ export class AddTaskContactService {
       contact.email.toLowerCase().includes(term)
     );
   }
+
   /**
    * Groups contacts by first letter of name.
    * @param contacts - Contacts to group

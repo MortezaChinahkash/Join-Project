@@ -21,6 +21,7 @@ export class DeleteConfirmationService {
    */
   taskToDelete: Task | null = null;
   constructor(private taskService: TaskService) {}
+
   /**
    * Opens the delete confirmation overlay for the specified task.
    * 
@@ -30,6 +31,7 @@ export class DeleteConfirmationService {
     this.taskToDelete = task;
     this.showDeleteConfirmationOverlay = true;
   }
+
   /**
    * Closes the delete confirmation overlay and resets the task to delete.
    */
@@ -37,6 +39,7 @@ export class DeleteConfirmationService {
     this.showDeleteConfirmationOverlay = false;
     this.taskToDelete = null;
   }
+
   /**
    * Confirms and deletes the task after user confirmation.
    * 
@@ -51,6 +54,7 @@ export class DeleteConfirmationService {
       onTaskUpdate();
       this.closeDeleteConfirmation();
     } catch (error) {
+
       console.error('âŒ Error deleting task:', error);
     }
   }

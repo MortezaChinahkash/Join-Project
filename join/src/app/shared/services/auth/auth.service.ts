@@ -35,6 +35,7 @@ export class AuthService {
   constructor() {
     this.initializeAuth();
   }
+
   /**
    * Authenticates user with email and password.
    * 
@@ -52,6 +53,7 @@ export class AuthService {
       // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
+
       console.error('Login error:', error);
       throw error;
     }
@@ -74,6 +76,7 @@ export class AuthService {
       // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
+
       console.error('Registration error:', error);
       throw error;
     }
@@ -93,6 +96,7 @@ export class AuthService {
       // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
+
       console.error('Guest login error:', error);
       throw error;
     }
@@ -114,6 +118,7 @@ export class AuthService {
       // Navigate to login page
       await this.router.navigate(['/login']);
     } catch (error: any) {
+
       console.error('Error during logout:', error);
       throw new Error('Failed to logout. Please try again.');
     }
@@ -129,6 +134,7 @@ export class AuthService {
     }
     this.authState.extendSession();
   }
+
   /**
    * Checks if the current user is authenticated.
    * 
@@ -137,6 +143,7 @@ export class AuthService {
   isAuthenticatedUser(): boolean {
     return this.authState.isAuthenticated;
   }
+
   /**
    * Checks if the current user is a guest.
    * 
@@ -145,6 +152,7 @@ export class AuthService {
   isGuestUser(): boolean {
     return this.authState.isGuest;
   }
+
   /**
    * Gets the current user data.
    * 
@@ -153,6 +161,7 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.authState.currentUser;
   }
+
   /**
    * Waits for authentication to be ready.
    * 
@@ -161,6 +170,7 @@ export class AuthService {
   async waitForAuth(): Promise<User | null> {
     return this.authFirebase.waitForAuthReady();
   }
+
   /**
    * Updates user profile information.
    * 
@@ -180,6 +190,7 @@ export class AuthService {
         this.authState.setCurrentUser(updatedUser);
       }
     } catch (error: any) {
+
       console.error('Failed to update profile:', error);
       throw error;
     }
@@ -204,6 +215,7 @@ export class AuthService {
           this.authSession.stopSessionCheck();
         }
       });
+
       // Wait for initial auth state
       const user = await this.authFirebase.waitForAuthReady();
       if (user) {
@@ -211,6 +223,7 @@ export class AuthService {
         this.startSessionMonitoring();
       }
     } catch (error: any) {
+
       console.error('Error initializing auth:', error);
     }
   }
@@ -239,6 +252,7 @@ export class AuthService {
       .slice(0, 2)
       .join('');
   }
+
   /**
    * Generates a random color for the user.
    * 
@@ -252,6 +266,7 @@ export class AuthService {
     ];
     return colors[Math.floor(Math.random() * colors.length)];
   }
+
   /**
    * Clears any cached user data.
    * 

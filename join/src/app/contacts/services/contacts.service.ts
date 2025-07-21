@@ -17,6 +17,7 @@ import { AuthService } from '../../shared/services/auth.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class ContactsService implements OnDestroy {
   // Data state
   private contacts: Contact[] = [];
@@ -37,26 +38,45 @@ export class ContactsService implements OnDestroy {
   ) {}
   // Expose state observables
   get showAddContactOverlay$(): Observable<boolean> { return this.stateService.showAddContactOverlay$; }
+
   get showEditContactOverlay$(): Observable<boolean> { return this.stateService.showEditContactOverlay$; }
+
   get showMobileMoreMenu$(): Observable<boolean> { return this.stateService.showMobileMoreMenu$; }
+
   get contactSuccessMessageOverlay$(): Observable<boolean> { return this.stateService.contactSuccessMessageOverlay$; }
+
   get isMobileView$(): Observable<boolean> { return this.stateService.isMobileView$; }
+
   get showMobileSingleContact$(): Observable<boolean> { return this.stateService.showMobileSingleContact$; }
+
   get suppressAnimation$(): Observable<boolean> { return this.stateService.suppressAnimation$; }
+
   get contactSuccessMessageText$(): Observable<string> { return this.stateService.contactSuccessMessageText$; }
+
   // Expose state properties
   get showAddContactOverlay(): boolean { return this.stateService.showAddContactOverlay; }
+
   get showEditContactOverlay(): boolean { return this.stateService.showEditContactOverlay; }
+
   get showMobileMoreMenu(): boolean { return this.stateService.showMobileMoreMenu; }
+
   get contactSuccessMessageOverlay(): boolean { return this.stateService.contactSuccessMessageOverlay; }
+
   get isMobileView(): boolean { return this.stateService.isMobileView; }
+
   get showMobileSingleContact(): boolean { return this.stateService.showMobileSingleContact; }
+
   get suppressAnimation(): boolean { return this.stateService.suppressAnimation; }
+
   get contactSuccessMessageText(): string { return this.stateService.contactSuccessMessageText; }
+
   // Expose data properties
   get allContacts(): Contact[] { return this.contacts; }
+
   get contactGroups(): { [key: string]: Contact[] } { return this.groupedContacts; }
+
   get currentContact(): Contact | null { return this.selectedContact; }
+
   /**
    * Initializes the contacts service.
    */
@@ -65,6 +85,7 @@ export class ContactsService implements OnDestroy {
     this.setupResizeListener();
     this.loadContacts();
   }
+
   /**
    * Loads contacts from the data service.
    */
@@ -75,6 +96,7 @@ export class ContactsService implements OnDestroy {
         error: (error) => this.handleLoadError(error)
       });
   }
+
   /**
    * Handles successful contact loading.
    * 
@@ -84,6 +106,7 @@ export class ContactsService implements OnDestroy {
     this.contacts = this.crudService.getAllContactsWithCurrentUser(contacts);
     this.groupContacts();
   }
+
   /**
    * Handles contact loading errors.
    * 
@@ -92,18 +115,21 @@ export class ContactsService implements OnDestroy {
   private handleLoadError(error: any): void {
     console.error('Error loading contacts:', error);
   }
+
   /**
    * Groups contacts by first letter of name.
    */
   private groupContacts(): void {
     this.groupedContacts = this.organizationService.groupContactsByLetter(this.contacts);
   }
+
   /**
    * Sets up window resize listener for responsive behavior.
    */
   private setupResizeListener(): void {
     this.resizeCleanup = this.stateService.setupResizeListener();
   }
+
   // Form Management Methods
   /**
    * Gets the contact form instance.
@@ -113,6 +139,7 @@ export class ContactsService implements OnDestroy {
   getContactForm(): FormGroup {
     return this.formService.getForm();
   }
+
   /**
    * Opens the add contact overlay and resets form.
    */
@@ -120,12 +147,14 @@ export class ContactsService implements OnDestroy {
     this.stateService.openAddContactOverlay();
     this.formService.resetForm();
   }
+
   /**
    * Closes the add contact overlay.
    */
   closeAddContactOverlay(): void {
     this.stateService.closeAddContactOverlay();
   }
+
   /**
    * Opens edit contact overlay for a specific contact.
    * 
@@ -136,12 +165,14 @@ export class ContactsService implements OnDestroy {
     this.selectedContact = contact;
     this.formService.populateForm(contact);
   }
+
   /**
    * Closes the edit contact overlay.
    */
   closeEditContactOverlay(): void {
     this.stateService.closeEditContactOverlay();
   }
+
   // CRUD Operations
   /**
    * Handles add contact form submission.
@@ -149,12 +180,14 @@ export class ContactsService implements OnDestroy {
   async onSubmitAddContact(): Promise<void> {
     await this.processContactForm('add');
   }
+
   /**
    * Handles update contact form submission.
    */
   async onSubmitUpdateContact(): Promise<void> {
     await this.processContactForm('update');
   }
+
   /**
    * Processes contact form submission for add or update operations.
    * 
@@ -170,6 +203,7 @@ export class ContactsService implements OnDestroy {
         await this.performUpdateContact(formData);
       }
     } catch (error) {
+
       this.handleOperationError(operation, error);
     }
   }
@@ -182,6 +216,7 @@ export class ContactsService implements OnDestroy {
     const newContact = await this.crudService.createContact(contactData, this.contacts);
     this.handleContactAdded(newContact);
   }
+
   /**
    * Performs update contact operation.
    * 
@@ -194,6 +229,7 @@ export class ContactsService implements OnDestroy {
     const updatedContact = await this.crudService.updateContact(this.selectedContact.id, contactData);
     this.handleContactUpdated(updatedContact);
   }
+
   /**
    * Deletes the currently selected contact.
    */
@@ -204,6 +240,7 @@ export class ContactsService implements OnDestroy {
       await this.crudService.deleteContact(this.selectedContact.id);
       this.handleContactDeleted(this.selectedContact.id);
     } catch (error) {
+
       this.handleDeleteError(error);
     }
   }
@@ -219,6 +256,7 @@ export class ContactsService implements OnDestroy {
     this.showSuccessMessage('Contact successfully created!');
     this.selectContact(newContact);
   }
+
   /**
    * Handles successful contact update.
    * 
@@ -235,6 +273,7 @@ export class ContactsService implements OnDestroy {
     this.closeEditContactOverlay();
     this.showSuccessMessage('Contact successfully updated!');
   }
+
   /**
    * Handles successful contact deletion.
    * 
@@ -246,6 +285,7 @@ export class ContactsService implements OnDestroy {
     this.showSuccessMessage('Contact successfully deleted!');
     this.clearSelectedContactAsync();
   }
+
   /**
    * Handles operation errors.
    * 
@@ -254,6 +294,7 @@ export class ContactsService implements OnDestroy {
    */
   private handleOperationError(operation: string, error: any): void {
     console.error(`Error ${operation} contact:`, error);
+
     this.stateService.enableAnimations();
   }
   /**
@@ -265,6 +306,7 @@ export class ContactsService implements OnDestroy {
     console.error('Error deleting contact:', error);
     this.stateService.enableAnimations();
   }
+
   /**
    * Clears selected contact asynchronously.
    */
@@ -286,6 +328,7 @@ export class ContactsService implements OnDestroy {
       this.stateService.showMobileSingleContactView();
     }
   }
+
   /**
    * Selects the current user and creates a contact-like object for display.
    */
@@ -295,6 +338,7 @@ export class ContactsService implements OnDestroy {
       this.selectContact(currentUserContact);
     }
   }
+
   /**
    * Navigates back to contact list on mobile.
    */
@@ -302,6 +346,7 @@ export class ContactsService implements OnDestroy {
     this.stateService.backToContactList();
     this.selectedContact = null;
   }
+
   /**
    * Handles FAB button click based on current state.
    */
@@ -313,18 +358,21 @@ export class ContactsService implements OnDestroy {
       this.openAddContactOverlay();
     }
   }
+
   /**
    * Opens mobile more menu.
    */
   openMoreMenu(): void {
     this.stateService.openMobileMoreMenu();
   }
+
   /**
    * Closes mobile more menu.
    */
   closeMoreMenu(): void {
     this.stateService.closeMobileMoreMenu();
   }
+
   /**
    * Shows success message with automatic hiding.
    * 
@@ -342,6 +390,7 @@ export class ContactsService implements OnDestroy {
   updateMobileViewStatus(): void {
     this.stateService.updateMobileViewStatus();
   }
+
   // Display Delegation Methods
   /**
    * Gets contact initials for display.
@@ -352,6 +401,7 @@ export class ContactsService implements OnDestroy {
   getInitials(name: string): string {
     return this.displayService.getContactInitials(name);
   }
+
   /**
    * Gets contact color for avatar.
    * 
@@ -361,6 +411,7 @@ export class ContactsService implements OnDestroy {
   getInitialsColor(name: string): string {
     return this.displayService.getContactColor(name);
   }
+
   /**
    * Truncates contact name if longer than 25 characters.
    * 
@@ -370,6 +421,7 @@ export class ContactsService implements OnDestroy {
   getTruncatedName(name: string): string {
     return this.displayService.getTruncatedName(name);
   }
+
   /**
    * Checks if a contact name is considered long (>25 characters).
    * 
@@ -379,6 +431,7 @@ export class ContactsService implements OnDestroy {
   isLongName(name: string): boolean {
     return this.displayService.isLongName(name);
   }
+
   /**
    * Truncates email if longer than 23 characters with ellipsis ending.
    * 
@@ -388,6 +441,7 @@ export class ContactsService implements OnDestroy {
   truncateEmail(email: string): string {
     return this.displayService.truncateEmail(email);
   }
+
   /**
    * Gets the current logged-in user.
    * 
@@ -396,6 +450,7 @@ export class ContactsService implements OnDestroy {
   getCurrentUser() {
     return this.displayService.getCurrentUser();
   }
+
   /**
    * Gets the display name for the current user.
    * 
@@ -404,6 +459,7 @@ export class ContactsService implements OnDestroy {
   getCurrentUserDisplayName(): string {
     return this.displayService.getCurrentUserDisplayName();
   }
+
   // Form Validation Methods
   /**
    * Checks if a specific field has errors.
@@ -414,6 +470,7 @@ export class ContactsService implements OnDestroy {
   hasFieldError(fieldName: string): boolean {
     return this.formService.hasFieldError(fieldName);
   }
+
   /**
    * Gets error message for a specific field.
    * 
@@ -423,6 +480,7 @@ export class ContactsService implements OnDestroy {
   getFieldError(fieldName: string): string {
     return this.formService.getFieldError(fieldName);
   }
+
   // Static Methods for External Use
   /**
    * Static method for getting contact initials (for external use).
@@ -433,6 +491,7 @@ export class ContactsService implements OnDestroy {
   static getInitials(name: string): string {
     return ContactsDisplayService.getInitials(name);
   }
+
   /**
    * Static method for getting contact color (for external use).
    * 
@@ -442,6 +501,7 @@ export class ContactsService implements OnDestroy {
   static getInitialsColor(name: string): string {
     return ContactsDisplayService.getInitialsColor(name);
   }
+
   // Lifecycle Methods
   /**
    * Angular lifecycle hook - component cleanup.
@@ -449,6 +509,7 @@ export class ContactsService implements OnDestroy {
   ngOnDestroy(): void {
     this.cleanup();
   }
+
   /**
    * Cleanup method for service destruction.
    */

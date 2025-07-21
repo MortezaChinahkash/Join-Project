@@ -13,6 +13,7 @@ export const appConfig: ApplicationConfig = {
       : provideRouter(routes, withHashLocation()),
     provideAnimations(), 
     provideZoneChangeDetection({ eventCoalescing: true }), 
+
     provideFirebaseApp(() => initializeApp({ 
       projectId: "join-project-a437a", 
       appId: "1:848614889298:web:c448e996f46de06252cc8b", 
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
       messagingSenderId: "848614889298", 
       measurementId: "G-X4R986D1CT" 
     })), 
+
     provideFirestore(() => getFirestore())
   ]
 };

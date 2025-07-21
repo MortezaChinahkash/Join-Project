@@ -23,6 +23,7 @@ export class AppComponent {
   getTitle(): string {
     return this.title;
   }
+
   /**
    * Sets the application title.
    * @param newTitle - New title to set

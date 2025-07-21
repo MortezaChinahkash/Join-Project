@@ -18,11 +18,15 @@ import { Instance } from 'flatpickr/dist/types/instance';
 })
 export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccessor {
   @Input() options: any = {};
+
   @Output() dateChange = new EventEmitter<Date | null>();
   private flatpickrInstance: Instance | null = null;
   private onChange = (value: any) => {};
+
   private onTouched = () => {};
+
   constructor(private elementRef: ElementRef) {}
+
   /**
    * Angular lifecycle hook - initializes the directive.
    */
@@ -30,6 +34,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
     this.initializeFlatpickr();
     this.setupIconClick();
   }
+
   /**
    * Angular lifecycle hook - cleans up the flatpickr instance.
    */
@@ -38,6 +43,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
       this.flatpickrInstance.destroy();
     }
   }
+
   /**
    * Initializes the flatpickr instance with default and custom options.
    */
@@ -54,6 +60,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
         this.onChange(date ? this.formatDate(date) : '');
         this.dateChange.emit(date);
       },
+
       onClose: () => {
         this.onTouched();
       }
@@ -72,6 +79,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
     const day = String(date.getDate()).padStart(2, '0');
     return `${month}/${day}/${year}`;
   }
+
   /**
    * Sets up click handler for the calendar icon to open the date picker.
    */
@@ -99,6 +107,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
       this.flatpickrInstance.setDate(value || '', false);
     }
   }
+
   /**
    * ControlValueAccessor implementation - registers the onChange callback.
    * @param fn - The callback function to register
@@ -106,6 +115,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
+
   /**
    * ControlValueAccessor implementation - registers the onTouched callback.
    * @param fn - The callback function to register
@@ -113,6 +123,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
+
   /**
    * ControlValueAccessor implementation - sets the disabled state of the control.
    * @param isDisabled - Whether the control should be disabled

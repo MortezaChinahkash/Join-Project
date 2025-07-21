@@ -10,6 +10,7 @@ import { AuthService } from '../../shared/services/auth.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class ContactsCrudService {
   constructor(
     private dataService: ContactDataService,
@@ -41,6 +42,7 @@ export class ContactsCrudService {
       });
       return newContact;
     } catch (error) {
+
       console.error('Error creating contact:', error);
       throw new Error('Failed to create contact');
     }
@@ -67,6 +69,7 @@ export class ContactsCrudService {
         return { ...contact, ...contactData } as Contact;
       }
     } catch (error) {
+
       console.error('Error updating contact:', error);
       throw new Error('Failed to update contact');
     }
@@ -89,6 +92,7 @@ export class ContactsCrudService {
     try {
       await this.dataService.deleteContactFromFirestore(contactId);
     } catch (error) {
+
       console.error('Error deleting contact:', error);
       throw new Error('Failed to delete contact');
     }
@@ -109,6 +113,7 @@ export class ContactsCrudService {
       // Since we don't have a direct method, we'll return null and let the component handle it
       return null;
     } catch (error) {
+
       console.error('Error getting contact by ID:', error);
       return null;
     }
@@ -126,6 +131,7 @@ export class ContactsCrudService {
         contact.email.toLowerCase() === email.toLowerCase()
       ) || null;
     } catch (error) {
+
       console.error('Error finding contact by email:', error);
       return null;
     }
@@ -144,6 +150,7 @@ export class ContactsCrudService {
       }
       return existingContacts;
     } catch (error) {
+
       console.error('Error loading contacts:', error);
       throw new Error('Failed to load contacts');
     }
@@ -158,6 +165,7 @@ export class ContactsCrudService {
   addContactToArray(contacts: Contact[], newContact: Contact): Contact[] {
     return this.organizationService.addContactToArray(contacts, newContact);
   }
+
   /**
    * Updates a contact in the local array.
    * 
@@ -168,6 +176,7 @@ export class ContactsCrudService {
   updateContactInArray(contacts: Contact[], updatedContact: Contact): Contact[] {
     return this.organizationService.updateContactInArray(contacts, updatedContact);
   }
+
   /**
    * Removes a contact from the local array.
    * 
@@ -178,6 +187,7 @@ export class ContactsCrudService {
   removeContactFromArray(contacts: Contact[], contactId: string): Contact[] {
     return this.organizationService.removeContactFromArray(contacts, contactId);
   }
+
   /**
    * Updates the current user's profile in Firebase Auth.
    * 
@@ -195,6 +205,7 @@ export class ContactsCrudService {
     // Note: Phone is not stored in Firebase Auth, only in the temporary contact object
     // This is handled in the component level for display purposes
   }
+
   /**
    * Gets the current user as a contact object.
    * 
@@ -213,6 +224,7 @@ export class ContactsCrudService {
       isCurrentUser: true
     };
   }
+
   /**
    * Validates contact data before operations.
    * 
@@ -255,6 +267,7 @@ export class ContactsCrudService {
       errors
     };
   }
+
   /**
    * Searches contacts by name or email.
    * 
@@ -272,6 +285,7 @@ export class ContactsCrudService {
       contact.email.toLowerCase().includes(searchTerm)
     );
   }
+
   /**
    * Gets contact statistics.
    * 
@@ -293,6 +307,7 @@ export class ContactsCrudService {
       groups
     };
   }
+
   /**
    * Bulk creates contacts from an array.
    * 
@@ -310,6 +325,7 @@ export class ContactsCrudService {
         const newContact = await this.createContact(contactData);
         successful.push(newContact);
       } catch (error) {
+
         failed.push({
           data: contactData,
           error: error instanceof Error ? error.message : 'Unknown error'
@@ -338,6 +354,7 @@ export class ContactsCrudService {
     }
     throw new Error('Unsupported export format');
   }
+
   /**
    * Cleanup method for service destruction.
    */

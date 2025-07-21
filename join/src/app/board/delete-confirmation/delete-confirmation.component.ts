@@ -37,6 +37,7 @@ export class DeleteConfirmationComponent {
   cancel(): void {
     this.onCancel.emit();
   }
+
   /**
    * Handles the confirm action
    */

@@ -37,6 +37,7 @@ export class NavComponent implements OnInit {
   ngOnInit(): void {
     this.initializeNavigation();
   }
+
   /**
    * Initializes navigation state and active route tracking.
    */
@@ -44,12 +45,14 @@ export class NavComponent implements OnInit {
     this.updateActiveRoute();
     this.setupRouteTracking();
   }
+
   /**
    * Updates the currently active route.
    */
   private updateActiveRoute(): void {
     this.activeRoute = this.router.url;
   }
+
   /**
    * Sets up route change tracking.
    */
@@ -66,6 +69,7 @@ export class NavComponent implements OnInit {
   isRouteActive(route: string): boolean {
     return this.activeRoute === route;
   }
+
   /**
    * Navigates to the specified route.
    * @param route - Route to navigate to
@@ -73,6 +77,7 @@ export class NavComponent implements OnInit {
   navigateToRoute(route: string): void {
     this.router.navigate([route]);
   }
+
   /**
    * Gets navigation item CSS classes.
    * @param route - Route for the navigation item
@@ -81,18 +86,21 @@ export class NavComponent implements OnInit {
   getNavItemClasses(route: string): string {
     return this.isRouteActive(route) ? 'nav-item active' : 'nav-item';
   }
+
   /**
    * Gets the current user from AuthService.
    */
   get currentUser() {
     return this.authService.currentUser;
   }
+
   /**
    * Checks if user is authenticated.
    */
   get isAuthenticated(): boolean {
     return this.authService.isAuthenticated;
   }
+
   /**
    * Navigates to the login page.
    */

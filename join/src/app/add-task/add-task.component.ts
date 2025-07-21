@@ -57,10 +57,12 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initializeComponent();
   }
+
   /**
    * Component cleanup.
    */
   ngOnDestroy(): void {}
+
   /**
    * Initializes component data and state.
    */
@@ -68,6 +70,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.setDefaultValues();
     await this.loadContacts();
   }
+
   /**
    * Sets default form values.
    */
@@ -75,6 +78,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.selectedPriority = 'medium';
     this.formService.setDefaultValues(this.taskForm);
   }
+
   /**
    * Loads contacts from Firestore.
    */
@@ -83,12 +87,15 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       runInInjectionContext(this.injector, () => {
         const contactsCollection = collection(this.firestore, 'contacts');
         collectionData(contactsCollection, { idField: 'id' }).subscribe(
+
           (data: DocumentData[]) => {
             this.contacts = this.contactService.processContactsData(data as Contact[]);
           }
+
         );
       });
     } catch (error) {
+
       console.error('Error loading contacts:', error);
     }
   }
@@ -99,6 +106,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.selectedPriority = priority;
     this.formService.updateFormPriority(this.taskForm, priority);
   }
+
   /**
    * Toggles contact dropdown.
    */
@@ -125,6 +133,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    */
   selectCategory(category: string): void {
     this.taskForm.patchValue({ category });
+
     this.taskForm.get('category')?.markAsTouched();
     this.isCategoryDropdownOpen = false;
   }
@@ -151,6 +160,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
   getFieldErrorMessage(fieldName: string): string {
     return this.getErrorMessage(fieldName);
   }
+
   /**
    * Toggles contact selection.
    */
@@ -162,36 +172,42 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     );
     this.formService.updateFormAssignedContacts(this.taskForm, this.selectedContacts);
   }
+
   /**
    * Checks if contact is selected.
    */
   isContactSelected(contact: Contact): boolean {
     return this.contactService.isContactSelected(contact, this.selectedContacts);
   }
+
   /**
    * Gets contact initials.
    */
   getInitials(name: string): string {
     return ContactsComponent.getInitials(name);
   }
+
   /**
    * Gets contact color.
    */
   getInitialsColor(name: string): string {
     return ContactsComponent.getInitialsColor(name);
   }
+
   /**
    * Gets subtasks form array.
    */
   get subtasksFormArray(): FormArray {
     return this.formService.getSubtasksFormArray(this.taskForm);
   }
+
   /**
    * Adds new subtask.
    */
   addSubtask(): void {
     this.formService.addSubtask(this.taskForm);
   }
+
   /**
    * Adds new subtask from input field.
    */
@@ -201,36 +217,42 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       this.newSubtaskTitle = '';
     }
   }
+
   /**
    * Starts editing a subtask.
    */
   editSubtask(index: number): void {
     this.editingSubtaskIndex = index;
   }
+
   /**
    * Stops editing current subtask.
    */
   stopEditingSubtask(): void {
     this.editingSubtaskIndex = null;
   }
+
   /**
    * Handles subtask input focus.
    */
   onSubtaskInputFocus(index: number): void {
     this.editingSubtaskIndex = index;
   }
+
   /**
    * Removes subtask.
    */
   removeSubtask(index: number): void {
     this.formService.removeSubtask(this.taskForm, index);
   }
+
   /**
    * Gets selected contacts display text.
    */
   getSelectedContactsText(): string {
     return this.contactService.formatSelectedContactsText(this.selectedContacts);
   }
+
   /**
    * Handles form submission.
    */
@@ -244,6 +266,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       await this.taskService.addTaskToFirebase(taskData, 'todo');
       this.resetForm();
     } catch (error) {
+
       console.error('Error creating task:', error);
     } finally {
       this.isSubmitting = false;
@@ -267,6 +290,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       createdAt: new Date()
     };
   }
+
   /**
    * Resets form to initial state.
    */
@@ -277,6 +301,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
     this.formService.clearAllSubtasks(this.taskForm);
     this.setDefaultValues();
   }
+
   /**
    * Handles document clicks.
    */
@@ -300,6 +325,7 @@ export class AddTaskComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   /**
    * Gets validation error message.
    */

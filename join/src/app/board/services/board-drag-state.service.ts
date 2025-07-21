@@ -8,6 +8,7 @@ import { Task, TaskColumn } from '../../interfaces/task.interface';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardDragStateService {
   // Task drag and drop state properties
   draggedTask: Task | null = null;
@@ -80,6 +81,7 @@ export class BoardDragStateService {
       this.resetDragState();
     }
   }
+
   /**
    * Clears all active timeouts.
    */
@@ -93,6 +95,7 @@ export class BoardDragStateService {
       this.longPressTimeout = null;
     }
   }
+
   /**
    * Sets the dragged task and initial position.
    * 
@@ -106,6 +109,7 @@ export class BoardDragStateService {
     this.dragStartPosition = { x, y };
     this.setBoardScrollWrapperForDrag(); // Set overflow to visible when drag starts
   }
+
   /**
    * Updates drag position.
    * 
@@ -118,6 +122,7 @@ export class BoardDragStateService {
       this.dragElement.style.top = `${y - this.dragOffset.y}px`;
     }
   }
+
   /**
    * Sets the drag element and calculates offset.
    * 
@@ -133,6 +138,7 @@ export class BoardDragStateService {
       y: mouseY - rect.top
     };
   }
+
   /**
    * Sets the drag element with pre-calculated offset.
    * 
@@ -147,6 +153,7 @@ export class BoardDragStateService {
       y: offsetY
     };
   }
+
   /**
    * Checks if movement exceeds drag threshold.
    * 
@@ -159,6 +166,7 @@ export class BoardDragStateService {
     const deltaY = Math.abs(currentY - this.initialMousePosition.y);
     return deltaX > this.dragThreshold || deltaY > this.dragThreshold;
   }
+
   /**
    * Sets mouse press state and initial position.
    * 
@@ -170,6 +178,7 @@ export class BoardDragStateService {
     this.mouseDownTime = Date.now();
     this.initialMousePosition = { x, y };
   }
+
   /**
    * Checks if drag delay has elapsed.
    * 
@@ -178,6 +187,7 @@ export class BoardDragStateService {
   dragDelayElapsed(): boolean {
     return Date.now() - this.mouseDownTime >= this.dragDelay;
   }
+
   /**
    * Sets drag over column for visual feedback.
    * 
@@ -186,6 +196,7 @@ export class BoardDragStateService {
   setDragOverColumn(column: TaskColumn | null): void {
     this.dragOverColumn = column;
   }
+
   /**
    * Sets placeholder visibility and height.
    * 

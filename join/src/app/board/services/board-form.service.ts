@@ -15,6 +15,7 @@ import { TaskService } from '../../shared/services/task.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardFormService {
   // Form state
   taskForm: FormGroup;
@@ -43,6 +44,7 @@ export class BoardFormService {
     const year = date.getFullYear();
     return `${month}/${day}/${year}`;
   }
+
   /**
    * Creates and initializes the task form.
    * 
@@ -61,6 +63,7 @@ export class BoardFormService {
       subtasks: this.fb.array([])
     });
   }
+
   /**
    * Initializes form for creating a new task.
    * 
@@ -71,6 +74,7 @@ export class BoardFormService {
     this.resetForm();
     this.overlayService.openAddTaskOverlay();
   }
+
   /**
    * Initializes form for editing an existing task.
    * 
@@ -83,6 +87,7 @@ export class BoardFormService {
     this.contactSelectionService.setSelectedContactsByNames(task.assignedTo || [], allContacts);
     this.overlayService.openTaskEditOverlay(task);
   }
+
   /**
    * Populates form with task data.
    * 
@@ -134,6 +139,7 @@ export class BoardFormService {
       subtasksFormArray.push(subtaskGroup);
     });
   }
+
   /**
    * Saves the current task.
    * 
@@ -159,6 +165,7 @@ export class BoardFormService {
       this.closeForm();
       return true;
     } catch (error) {
+
       console.error('❌ Error saving task:', error);
       return false;
     }
@@ -217,6 +224,7 @@ export class BoardFormService {
   private generateTaskId(): string {
     return Date.now().toString() + Math.random().toString(36).substr(2, 9);
   }
+
   /**
    * Creates a new task.
    * 
@@ -227,6 +235,7 @@ export class BoardFormService {
       const { id, ...taskWithoutId } = task;
       await this.taskService.addTaskToFirebase(taskWithoutId, task.column);
     } catch (error) {
+
       console.error('❌ Error creating task:', error);
       throw error;
     }
@@ -240,6 +249,7 @@ export class BoardFormService {
     try {
       await this.taskService.updateTaskInFirebase(task);
     } catch (error) {
+
       console.error('❌ Error updating task:', error);
       throw error;
     }
@@ -263,6 +273,7 @@ export class BoardFormService {
     }
     return true;
   }
+
   /**
    * Gets form validation errors.
    * 
@@ -273,6 +284,7 @@ export class BoardFormService {
     const validation = this.validationService.validateForm(this.taskForm);
     return validation.errors;
   }
+
   /**
    * Resets the form to initial state.
    */
@@ -311,6 +323,7 @@ export class BoardFormService {
     this.overlayService.closeAllOverlays();
     this.contactSelectionService.cleanup();
   }
+
   /**
    * Cancels form editing and reverts changes.
    */
@@ -324,6 +337,7 @@ export class BoardFormService {
       this.closeForm();
     }
   }
+
   // ============================================================================
   // DELEGATED METHODS TO SPECIALIZED SERVICES
   // ============================================================================
@@ -331,126 +345,162 @@ export class BoardFormService {
   isFieldInvalid(fieldName: string): boolean {
     return this.validationService.isFieldInvalid(this.taskForm, fieldName);
   }
+
   isDateInvalid(fieldName: string, form?: any): boolean {
     return this.validationService.isDateInvalid(form || this.taskForm, fieldName);
   }
+
   getFieldErrorMessage(fieldName: string): string {
     return this.validationService.getFieldErrorMessage(this.taskForm, fieldName);
   }
+
   // Contact Selection Service Delegates
   get selectedContacts(): Contact[] {
     return this.contactSelectionService.selectedContacts;
   }
+
   getSelectedContactsText(): string {
     return this.contactSelectionService.getSelectedContactsText();
   }
+
   isContactSelected(contact: Contact): boolean {
     return this.contactSelectionService.isContactSelected(contact);
   }
+
   toggleContactSelection(contact: Contact, event?: Event): void {
     this.contactSelectionService.toggleContact(contact);
   }
+
   setSelectedContactsByNames(contactNames: string[], allContacts: Contact[]): void {
     this.contactSelectionService.setSelectedContactsByNames(contactNames, allContacts);
   }
+
   get isDropdownOpen(): boolean {
     return this.contactSelectionService.isDropdownOpen;
   }
+
   set isDropdownOpen(value: boolean) {
     this.contactSelectionService.isDropdownOpen = value;
   }
+
   toggleDropdown(): void {
     this.contactSelectionService.toggleDropdown();
   }
+
   getDisplayedAssignedContacts(): string[] {
     return this.contactSelectionService.getDisplayedAssignedContacts();
   }
+
   hasMoreAssignedContacts(): boolean {
     return this.contactSelectionService.hasMoreAssignedContacts();
   }
+
   get showAssignedContactsDropdown(): boolean {
     return this.contactSelectionService.showAssignedContactsDropdown;
   }
+
   set showAssignedContactsDropdown(value: boolean) {
     this.contactSelectionService.showAssignedContactsDropdown = value;
   }
+
   toggleAssignedContactsDropdown(): void {
     this.contactSelectionService.toggleAssignedContactsDropdown();
   }
+
   getRemainingAssignedContactsCount(): number {
     return this.contactSelectionService.getRemainingAssignedContactsCount();
   }
+
   getRemainingAssignedContacts(): string[] {
     return this.contactSelectionService.getRemainingAssignedContacts();
   }
+
   // Overlay Service Delegates
   get showAddTaskOverlay(): boolean {
     return this.overlayService.showAddTaskOverlay;
   }
+
   get showTaskDetailsOverlay(): boolean {
     return this.overlayService.showTaskDetailsOverlay;
   }
+
   get selectedTask(): Task | null {
     return this.overlayService.selectedTask;
   }
+
   get isEditingTask(): boolean {
     return this.overlayService.isEditingTask;
   }
+
   openAddTaskOverlay(column?: any): void {
     this.overlayService.openAddTaskOverlay(column);
   }
+
   closeAddTaskOverlay(): void {
     this.overlayService.closeAllOverlays();
   }
+
   openTaskDetails(task: Task): void {
     this.overlayService.openTaskDetailsOverlay(task);
   }
+
   closeTaskDetailsOverlay(): void {
     this.overlayService.closeAllOverlays();
   }
+
   editTask(contacts: Contact[]): void {
     if (this.selectedTask) {
       this.initializeEditTask(this.selectedTask, contacts);
     }
   }
+
   cancelEditTask(): void {
     this.cancelEdit();
   }
+
   async saveTaskChanges(onTaskUpdate?: () => void): Promise<void> {
     const success = await this.saveTask();
     if (success && onTaskUpdate) {
       onTaskUpdate();
     }
   }
+
   // Data Service Delegates - Basic placeholder implementations
   get selectedPriority(): string {
     return this.taskForm.get('priority')?.value || 'medium';
   }
+
   selectPriority(priority: string): void {
     this.taskForm.patchValue({ priority });
   }
   selectCategory(category: string): void {
     this.taskForm.patchValue({ category });
+
     this.taskForm.get('category')?.markAsTouched();
     this._isCategoryDropdownOpen = false;
   }
   get isCategoryDropdownOpen(): boolean {
     return this._isCategoryDropdownOpen;
   }
+
   toggleCategoryDropdown(): void {
     this._isCategoryDropdownOpen = !this._isCategoryDropdownOpen;
   }
+
   closeCategoryDropdown(): void {
     this._isCategoryDropdownOpen = false;
   }
+
   getCategoryDisplayText(form: any): string {
     const category = form?.get('category')?.value;
     return category === 'technical' ? 'Technical Task' : 
            category === 'user-story' ? 'User Story' : 'Select Category';
   }
+
   get subtasksFormArray(): any {
     return this.taskForm.get('subtasks');
   }
+
   createSubtaskGroup(title: string = '', completed: boolean = false): FormGroup {
     return this.fb.group({
       title: [title],
@@ -479,21 +529,25 @@ export class BoardFormService {
   removeSubtaskByIndex(index: number): void {
     this.subtasksFormArray.removeAt(index);
   }
+
   getSubtaskProgress(): number {
     const subtasks = this.selectedTask?.subtasks || [];
     if (subtasks.length === 0) return 0;
     const completed = subtasks.filter(s => s.completed).length;
     return Math.round((completed / subtasks.length) * 100);
   }
+
   getCompletedSubtasksCount(): number {
     return this.selectedTask?.subtasks?.filter(s => s.completed).length || 0;
   }
+
   async onSubmit(updateCallback?: () => void): Promise<void> {
     const success = await this.saveTask();
     if (success && updateCallback) {
       updateCallback();
     }
   }
+
   async toggleSubtask(subtaskIndex: number, updateCallback?: () => void): Promise<void> {
     if (this.selectedTask && this.selectedTask.subtasks[subtaskIndex]) {
       this.selectedTask.subtasks[subtaskIndex].completed = !this.selectedTask.subtasks[subtaskIndex].completed;
@@ -502,6 +556,7 @@ export class BoardFormService {
       }
     }
   }
+
   // Delegation methods for overlay management
   /**
    * Opens the task form overlay.
@@ -518,12 +573,14 @@ export class BoardFormService {
       }
     }
   }
+
   /**
    * Closes the task form overlay.
    */
   closeOverlay(): void {
     this.overlayService.closeAllOverlays();
   }
+
   /**
    * Checks if overlay is open.
    * 
@@ -532,6 +589,7 @@ export class BoardFormService {
   isOverlayOpen(): boolean {
     return this.overlayService.isAnyOverlayOpen();
   }
+
   /**
    * Gets current overlay mode.
    * 
@@ -542,6 +600,7 @@ export class BoardFormService {
     if (this.overlayService.showTaskEditOverlay) return 'edit';
     return null;
   }
+
   // Delegation methods for contact selection
   /**
    * Toggles contact selection.
@@ -551,6 +610,7 @@ export class BoardFormService {
   toggleContact(contact: Contact): void {
     this.contactSelectionService.toggleContact(contact);
   }
+
   /**
    * Gets selected contacts.
    * 
@@ -559,18 +619,21 @@ export class BoardFormService {
   getSelectedContacts(): Contact[] {
     return this.contactSelectionService.selectedContacts;
   }
+
   /**
    * Opens contact dropdown.
    */
   openContactDropdown(): void {
     this.contactSelectionService.openDropdown();
   }
+
   /**
    * Closes contact dropdown.
    */
   closeContactDropdown(): void {
     this.contactSelectionService.closeDropdown();
   }
+
   /**
    * Checks if contact dropdown is open.
    * 
@@ -579,6 +642,7 @@ export class BoardFormService {
   isContactDropdownOpen(): boolean {
     return this.contactSelectionService.isDropdownOpen;
   }
+
   // Delegation methods for data management
   /**
    * Gets current task being edited.
@@ -588,6 +652,7 @@ export class BoardFormService {
   getCurrentTask(): Task | null {
     return this.dataService.getCurrentTask();
   }
+
   /**
    * Checks if form is in edit mode.
    * 
@@ -596,6 +661,7 @@ export class BoardFormService {
   isEditMode(): boolean {
     return this.dataService.getIsEditMode();
   }
+
   /**
    * Adds a subtask to current task.
    * 
@@ -604,6 +670,7 @@ export class BoardFormService {
   addSubtask(title: string): void {
     this.dataService.addSubtask(title);
   }
+
   /**
    * Removes a subtask from current task.
    * 
@@ -613,6 +680,7 @@ export class BoardFormService {
     const id = typeof subtaskId === 'number' ? subtaskId.toString() : subtaskId;
     this.dataService.removeSubtask(id);
   }
+
   /**
    * Gets all subtasks for current task.
    * 
@@ -621,6 +689,7 @@ export class BoardFormService {
   getSubtasks() {
     return this.dataService.getSubtasks();
   }
+
   // Delegation methods for validation
   /**
    * Gets basic form validation status.
@@ -630,6 +699,7 @@ export class BoardFormService {
   isFormValid(): boolean {
     return this.taskForm.valid;
   }
+
   /**
    * Gets Angular form validation errors.
    * 
@@ -638,6 +708,7 @@ export class BoardFormService {
   getFormErrors(): any {
     return this.taskForm.errors;
   }
+
   /**
    * Cleanup method for destroying the service.
    */

@@ -46,6 +46,7 @@ export class BoardLifecycleService {
         const sortedContacts = this.dataService.sortContactsAlphabetically(contacts);
         onContactsLoaded(sortedContacts);
       },
+
       error: onError
     });
   }
@@ -69,12 +70,14 @@ export class BoardLifecycleService {
   setupScrollListener(): void {
     this.interactionService.setupScrollListener();
   }
+
   /**
    * Handles fragment navigation to scroll to specific columns.
    */
   handleFragmentNavigation(): void {
     this.navigationService.handleFragmentNavigation();
   }
+
   /**
    * Handles query parameters to open specific tasks or apply filters.
    * @param columnArrays - Object containing all column arrays

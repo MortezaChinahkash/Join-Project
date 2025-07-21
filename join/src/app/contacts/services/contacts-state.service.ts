@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class ContactsStateService {
   // Overlay state subjects
   private showAddContactOverlaySubject = new BehaviorSubject<boolean>(false);
@@ -32,49 +33,63 @@ export class ContactsStateService {
   contactSuccessMessageText$ = this.contactSuccessMessageTextSubject.asObservable();
   // Getters for current values
   get showAddContactOverlay(): boolean { return this.showAddContactOverlaySubject.value; }
+
   get showEditContactOverlay(): boolean { return this.showEditContactOverlaySubject.value; }
+
   get showMobileMoreMenu(): boolean { return this.showMobileMoreMenuSubject.value; }
+
   get contactSuccessMessageOverlay(): boolean { return this.contactSuccessMessageOverlaySubject.value; }
+
   get isMobileView(): boolean { return this.isMobileViewSubject.value; }
+
   get showMobileSingleContact(): boolean { return this.showMobileSingleContactSubject.value; }
+
   get suppressAnimation(): boolean { return this.suppressAnimationSubject.value; }
+
   get contactSuccessMessageText(): string { return this.contactSuccessMessageTextSubject.value; }
+
   /**
    * Opens the add contact overlay.
    */
   openAddContactOverlay(): void {
     this.showAddContactOverlaySubject.next(true);
   }
+
   /**
    * Closes the add contact overlay.
    */
   closeAddContactOverlay(): void {
     this.showAddContactOverlaySubject.next(false);
   }
+
   /**
    * Opens the edit contact overlay.
    */
   openEditContactOverlay(): void {
     this.showEditContactOverlaySubject.next(true);
   }
+
   /**
    * Closes the edit contact overlay.
    */
   closeEditContactOverlay(): void {
     this.showEditContactOverlaySubject.next(false);
   }
+
   /**
    * Opens the mobile more menu.
    */
   openMobileMoreMenu(): void {
     this.showMobileMoreMenuSubject.next(true);
   }
+
   /**
    * Closes the mobile more menu.
    */
   closeMobileMoreMenu(): void {
     this.showMobileMoreMenuSubject.next(false);
   }
+
   /**
    * Shows the success message overlay.
    * 
@@ -84,12 +99,14 @@ export class ContactsStateService {
     this.contactSuccessMessageTextSubject.next(message);
     this.contactSuccessMessageOverlaySubject.next(true);
   }
+
   /**
    * Hides the success message overlay.
    */
   hideSuccessMessage(): void {
     this.contactSuccessMessageOverlaySubject.next(false);
   }
+
   /**
    * Updates mobile view status based on window width.
    * 
@@ -103,6 +120,7 @@ export class ContactsStateService {
       this.showMobileSingleContactSubject.next(false);
     }
   }
+
   /**
    * Shows mobile single contact view.
    */
@@ -111,6 +129,7 @@ export class ContactsStateService {
       this.showMobileSingleContactSubject.next(true);
     }
   }
+
   /**
    * Hides mobile single contact view and returns to list.
    */
@@ -118,18 +137,21 @@ export class ContactsStateService {
     this.showMobileSingleContactSubject.next(false);
     this.closeMobileMoreMenu();
   }
+
   /**
    * Enables animation suppression (for delete operations).
    */
   suppressAnimations(): void {
     this.suppressAnimationSubject.next(true);
   }
+
   /**
    * Disables animation suppression.
    */
   enableAnimations(): void {
     this.suppressAnimationSubject.next(false);
   }
+
   /**
    * Determines FAB action based on current mobile state.
    * 
@@ -138,6 +160,7 @@ export class ContactsStateService {
   getFabAction(): 'add' | 'more' {
     return (this.isMobileView && this.showMobileSingleContact) ? 'more' : 'add';
   }
+
   /**
    * Checks if any overlay is currently open.
    * 
@@ -149,6 +172,7 @@ export class ContactsStateService {
            this.showMobileMoreMenu || 
            this.contactSuccessMessageOverlay;
   }
+
   /**
    * Closes all overlays.
    */
@@ -158,6 +182,7 @@ export class ContactsStateService {
     this.closeMobileMoreMenu();
     this.hideSuccessMessage();
   }
+
   /**
    * Gets responsive state object for component updates.
    * 
@@ -174,6 +199,7 @@ export class ContactsStateService {
       showMobileMoreMenu: this.showMobileMoreMenu
     };
   }
+
   /**
    * Sets up window resize listener for responsive behavior.
    * 
@@ -187,6 +213,7 @@ export class ContactsStateService {
     // Return cleanup function
     return () => window.removeEventListener('resize', handleResize);
   }
+
   /**
    * Handles component initialization state setup.
    */
@@ -195,6 +222,7 @@ export class ContactsStateService {
     this.enableAnimations();
     this.closeAllOverlays();
   }
+
   /**
    * Resets all state to initial values.
    */
@@ -203,6 +231,7 @@ export class ContactsStateService {
     this.showMobileSingleContactSubject.next(false);
     this.enableAnimations();
   }
+
   /**
    * Handles navigation state for mobile views.
    * 
@@ -221,6 +250,7 @@ export class ContactsStateService {
         break;
     }
   }
+
   /**
    * Gets current overlay state summary.
    * 
@@ -239,6 +269,7 @@ export class ContactsStateService {
       successMessage: this.contactSuccessMessageOverlay
     };
   }
+
   /**
    * Cleanup method for service destruction.
    */

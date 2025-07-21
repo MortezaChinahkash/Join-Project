@@ -63,6 +63,7 @@ export class BoardDataService {
       a.name.toLowerCase().localeCompare(b.name.toLowerCase())
     );
   }
+
   /**
    * Distributes tasks into appropriate column arrays.
    * 
@@ -84,6 +85,7 @@ export class BoardDataService {
     this.categorizeTasksByColumn(tasks, result);
     return result;
   }
+
   /**
    * Categorizes tasks into their respective columns.
    * 

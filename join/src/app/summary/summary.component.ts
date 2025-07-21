@@ -46,6 +46,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     this.loadAllTasks();
     this.checkAndShowWelcomeOverlay();
   }
+
   /**
    * Angular lifecycle hook for component cleanup.
    */
@@ -57,6 +58,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.tasksSubscription.unsubscribe();
     }
   }
+
   /**
    * Subscribes to the current user observable.
    */
@@ -65,17 +67,20 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.currentUser = user;
     });
   }
+
   /**
    * Initializes summary data and statistics.
    */
   private initializeSummaryData(): void {
     this.loadTaskStatistics();
   }
+
   /**
    * Loads task statistics for display.
    */
   private loadTaskStatistics(): void {
   }
+
   /**
    * Checks if the welcome overlay should be shown.
    * Only shows if user came from login screen and is on mobile.
@@ -96,6 +101,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getCurrentDate(): string {
     return new Date().toLocaleDateString();
   }
+
   /**
    * Gets a time-appropriate greeting based on the current hour.
    * @returns English greeting string
@@ -105,8 +111,10 @@ export class SummaryComponent implements OnInit, OnDestroy {
     if (currentHour >= 5 && currentHour < 12) {
       return 'Good morning';
     } else if (currentHour >= 12 && currentHour < 18) {
+
       return 'Good afternoon';
     } else if (currentHour >= 18 && currentHour < 22) {
+
       return 'Good evening';
     } else {
       return 'Good night';
@@ -119,6 +127,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getCurrentYear(): number {
     return new Date().getFullYear();
   }
+
   /**
    * Gets the current month name.
    * @returns Current month name as string
@@ -127,6 +136,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const options: Intl.DateTimeFormatOptions = { month: 'long' };
     return new Date().toLocaleDateString('en-US', options);
   };
+
   /**
    * Gets the current day of the month.
    * @returns Current day as number
@@ -134,6 +144,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getCurrentDay(): number {
     return new Date().getDate();
   }
+
   /**
    * Gets the display name for the current user.
    * Returns 'Guest' for guest users, otherwise the user's name or 'User' as fallback.
@@ -148,18 +159,21 @@ export class SummaryComponent implements OnInit, OnDestroy {
     }
     return this.currentUser.name || 'User';
   }
+
   /**
    * Handles navigation to a specific section.
    * @param section - Section to navigate to
    */
   navigateToSection(section: string): void {
   }
+
   /**
    * Navigates to the board component.
    */
   navigateToBoard(): void {
     this.router.navigate(['/board']);
   }
+
   /**
    * Navigates to the board component filtered by todo tasks.
    */
@@ -169,6 +183,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'todo-column'
     });
   }
+
   /**
    * Navigates to the board component filtered by done tasks and scrolls to done section.
    */
@@ -178,6 +193,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'done-column'
     });
   }
+
   /**
    * Navigates to the board component filtered by tasks in board.
    */
@@ -187,6 +203,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'todo-column'
     });
   }
+
   /**
    * Navigates to the board component filtered by tasks in progress.
    */
@@ -196,6 +213,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'inprogress-column'
     });
   }
+
   /**
    * Navigates to the board component filtered by awaiting feedback tasks.
    */
@@ -205,6 +223,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       fragment: 'awaiting-column'
     });
   }
+
   /**
    * Loads all tasks for the current user.
    */
@@ -213,6 +232,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       next: (tasks) => {
         this.tasks = tasks;
       },
+
       error: (error) => {
         console.error('Error loading tasks:', error);
       }
@@ -229,6 +249,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'awaiting'
     ).length;
   }
+
   /**
    * Gets the count of tasks in progress.
    * @returns Number of in progress tasks
@@ -238,6 +259,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'inprogress'
     ).length;
   }
+
   /**
    * Gets the count of tasks awaiting feedback.
    * @returns Number of awaiting tasks
@@ -247,6 +269,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'awaiting'
     ).length;
   }
+
   /**
    * Gets the count of todo tasks.
    * @returns Number of todo tasks
@@ -256,6 +279,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'todo'
     ).length;
   }
+
   /**
    * Gets the count of completed tasks.
    * @returns Number of done tasks
@@ -265,6 +289,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       task.column === 'done'
     ).length;
   }
+
   /**
    * Gets the count of urgent tasks that have their deadline today.
    * @returns Number of urgent tasks due today
@@ -284,6 +309,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       return taskDueDate.getTime() === today.getTime();
     }).length;
   }
+
   /**
    * Gets the count of all urgent tasks regardless of due date.
    * @returns Number of urgent tasks
@@ -291,6 +317,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
   getUrgentTasksCount(): number {
     return this.tasks.filter(task => task.priority === 'urgent').length;
   }
+
   /**
    * Gets the nearest upcoming deadline for urgent tasks.
    * @returns Date object of the nearest urgent task deadline, or null if no urgent tasks with due dates exist
@@ -303,6 +330,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const nearestTask = this.findTaskWithNearestDeadline(urgentTasksWithDueDate);
     return this.parseDueDate(nearestTask.dueDate!);
   }
+
   private getUrgentTasksWithValidDueDate() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -312,6 +340,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       this.parseDueDate(task.dueDate) >= today
     );
   }
+
   private findTaskWithNearestDeadline(urgentTasks: Task[]) {
     return urgentTasks.reduce((nearest, current) => {
       const currentDate = this.parseDueDate(current.dueDate!);
@@ -333,6 +362,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     }
     return this.parseStandardDateFormat(dateString);
   }
+
   private parseGermanDateFormat(dateString: string): Date {
     const parts = dateString.split('.');
     if (parts.length !== 3) {
@@ -341,10 +371,12 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const [day, month, year] = parts.map(part => parseInt(part, 10));
     return this.validateAndCreateDate(day, month - 1, year);
   }
+
   private parseStandardDateFormat(dateString: string): Date {
     const parsed = new Date(dateString);
     return isNaN(parsed.getTime()) ? new Date() : parsed;
   }
+
   private validateAndCreateDate(day: number, month: number, year: number): Date {
     if (isNaN(day) || isNaN(month) || isNaN(year)) {
       return new Date();
@@ -355,6 +387,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
                    date.getDate() === day;
     return isValid ? date : new Date();
   }
+
   /**
    * Gets the formatted month name for the nearest urgent task deadline.
    * @returns Month name string or current month as fallback
@@ -367,6 +400,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const options: Intl.DateTimeFormatOptions = { month: 'long' };
     return deadline.toLocaleDateString('en-US', options);
   }
+
   /**
    * Gets the day number for the nearest urgent task deadline.
    * @returns Day number or current day as fallback
@@ -378,6 +412,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     }
     return deadline.getDate();
   }
+
   /**
    * Gets the year for the nearest urgent task deadline.
    * @returns Year number or current year as fallback
@@ -389,6 +424,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     }
     return deadline.getFullYear();
   }
+
   /**
    * Gets the appropriate deadline text based on whether urgent tasks with deadlines exist.
    * @returns Deadline description text
@@ -397,6 +433,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
     const deadline = this.getNearestUrgentTaskDeadline();
     return deadline ? 'Upcoming Deadline' : 'No Urgent Deadlines';
   }
+
   /**
    * Navigates to the board and opens the task details for the nearest urgent task.
    * Falls back to general board navigation if no urgent task with deadline exists.
@@ -418,6 +455,7 @@ export class SummaryComponent implements OnInit, OnDestroy {
       const nearestDate = this.parseDueDate(nearest.dueDate!);
       return currentDate < nearestDate ? current : nearest;
     });
+
     this.router.navigate(['/board'], { 
       queryParams: { 
         selectedTask: nearestUrgentTask.id,

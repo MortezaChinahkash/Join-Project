@@ -9,11 +9,13 @@ import { Contact } from './contact-data.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class ContactsFormService {
   private contactForm: FormGroup;
   constructor(private fb: FormBuilder) {
     this.contactForm = this.createContactForm();
   }
+
   /**
    * Creates the reactive form for contact management.
    * 
@@ -26,6 +28,7 @@ export class ContactsFormService {
       phone: ['', [this.phoneValidator]],
     });
   }
+
   /**
    * Custom validator for phone numbers.
    * 
@@ -45,6 +48,7 @@ export class ContactsFormService {
     }
     return null;
   }
+
   /**
    * Gets the contact form instance.
    * 
@@ -53,6 +57,7 @@ export class ContactsFormService {
   getForm(): FormGroup {
     return this.contactForm;
   }
+
   /**
    * Validates the contact form and marks fields as touched.
    * 
@@ -66,6 +71,7 @@ export class ContactsFormService {
     }
     return true;
   }
+
   /**
    * Ensures phone field has a value (sets to 'N/A' if empty).
    */
@@ -77,6 +83,7 @@ export class ContactsFormService {
       phoneControl?.updateValueAndValidity();
     }
   }
+
   /**
    * Prepares and sanitizes form data for submission.
    * 
@@ -90,6 +97,7 @@ export class ContactsFormService {
       phone: formValue.phone?.trim() || 'N/A'
     };
   }
+
   /**
    * Populates form with contact data for editing.
    * 
@@ -102,6 +110,7 @@ export class ContactsFormService {
       phone: contact.phone === 'N/A' ? '' : contact.phone,
     });
   }
+
   /**
    * Resets the form to initial state.
    */
@@ -109,6 +118,7 @@ export class ContactsFormService {
     this.contactForm.reset();
     this.contactForm.markAsUntouched();
   }
+
   /**
    * Checks if a specific field has errors.
    * 
@@ -119,6 +129,7 @@ export class ContactsFormService {
     const field = this.contactForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
+
   /**
    * Gets error message for a specific field.
    * 
@@ -146,6 +157,7 @@ export class ContactsFormService {
     }
     return '';
   }
+
   /**
    * Gets all form errors as an object.
    * 
@@ -159,6 +171,7 @@ export class ContactsFormService {
         errors[key] = error;
       }
     });
+
     return errors;
   }
   /**
@@ -169,6 +182,7 @@ export class ContactsFormService {
   hasErrors(): boolean {
     return this.contactForm.invalid;
   }
+
   /**
    * Gets form validation status.
    * 
@@ -177,12 +191,14 @@ export class ContactsFormService {
   isValid(): boolean {
     return this.contactForm.valid;
   }
+
   /**
    * Marks all fields as touched to trigger validation display.
    */
   markAllAsTouched(): void {
     this.contactForm.markAllAsTouched();
   }
+
   /**
    * Gets current form values.
    * 
@@ -191,6 +207,7 @@ export class ContactsFormService {
   getFormValues(): any {
     return this.contactForm.value;
   }
+
   /**
    * Validates specific field by name.
    * 
@@ -212,6 +229,7 @@ export class ContactsFormService {
       error: this.getFieldError(fieldName)
     };
   }
+
   /**
    * Sets a specific field value.
    * 
@@ -225,6 +243,7 @@ export class ContactsFormService {
       field.updateValueAndValidity();
     }
   }
+
   /**
    * Gets a specific field value.
    * 
@@ -234,6 +253,7 @@ export class ContactsFormService {
   getFieldValue(fieldName: string): any {
     return this.contactForm.get(fieldName)?.value;
   }
+
   /**
    * Validates form data for consistency and business rules.
    * 
@@ -268,6 +288,7 @@ export class ContactsFormService {
       errors
     };
   }
+
   /**
    * Creates a new form instance (useful for multiple forms).
    * 
@@ -276,6 +297,7 @@ export class ContactsFormService {
   createNewForm(): FormGroup {
     return this.createContactForm();
   }
+
   /**
    * Cleanup method for service destruction.
    */

@@ -25,10 +25,15 @@ export class BoardDragDropService {
   ) {}
   // Expose state properties through getters for backward compatibility
   get draggedTask() { return this.dragState.draggedTask; }
+
   get isDraggingTask() { return this.dragState.isDraggingTask; }
+
   get dragOverColumn() { return this.dragState.dragOverColumn; }
+
   get dragPlaceholderVisible() { return this.dragState.dragPlaceholderVisible; }
+
   get dragPlaceholderHeight() { return this.dragState.dragPlaceholderHeight; }
+
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
    * Initiates task dragging with left mouse button click and sets up mouse event listeners.
@@ -57,6 +62,7 @@ export class BoardDragDropService {
           dragStarted = true;
         }
       }, this.dragState.dragDelay);
+
       const handleMouseMove = (e: MouseEvent) => {
         if (!this.dragState.isMousePressed) return;
         const deltaX = Math.abs(e.clientX - this.dragState.initialMousePosition.x);
@@ -78,6 +84,7 @@ export class BoardDragDropService {
           this.updateTaskDrag(e.clientX, e.clientY);
         }
       };
+
       const handleMouseUp = () => {
         this.dragState.isMousePressed = false;
         if (this.dragState.dragDelayTimeout) {
@@ -93,6 +100,7 @@ export class BoardDragDropService {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
       };
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     });
@@ -116,6 +124,7 @@ export class BoardDragDropService {
         this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
         dragStarted = true;
       }, 500); // 500ms long press
+
       const handleTouchMove = (e: TouchEvent) => {
         const touch = e.touches[0];
         if (this.dragState.isDraggingTask) {
@@ -130,6 +139,7 @@ export class BoardDragDropService {
           }
         }
       };
+
       const handleTouchEnd = () => {
         if (this.dragState.longPressTimeout) {
           clearTimeout(this.dragState.longPressTimeout);
@@ -144,7 +154,9 @@ export class BoardDragDropService {
         document.removeEventListener('touchmove', handleTouchMove);
         document.removeEventListener('touchend', handleTouchEnd);
       };
+
       document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
       document.addEventListener('touchend', handleTouchEnd);
     });
   }
@@ -191,6 +203,7 @@ export class BoardDragDropService {
       this.dragState.dragPlaceholderHeight = taskCard.offsetHeight;
     }
   }
+
   /**
    * Updates the position of the dragged task element and determines target column.
    * 
@@ -209,6 +222,7 @@ export class BoardDragDropService {
     // Update drag over column and show/hide placeholder
     this.dragState.updateDragOverColumn(targetColumn);
   }
+
   /**
    * Handles drag over events on board columns to show visual feedback.
    * 
@@ -221,6 +235,7 @@ export class BoardDragDropService {
       this.dragState.updateDragOverColumn(column);
     }
   }
+
   /**
    * Handles drag leave events on board columns to hide placeholder.
    * 
@@ -233,6 +248,7 @@ export class BoardDragDropService {
       this.dragState.updateDragOverColumn(null);
     }
   }
+
   /**
    * Handles drop events on board columns.
    * 
@@ -243,6 +259,7 @@ export class BoardDragDropService {
     event.preventDefault();
     // The actual drop logic is handled in endTaskDrag()
   }
+
   /**
    * Ends the task drag operation and updates task position if dropped on valid target.
    * 
@@ -260,6 +277,7 @@ export class BoardDragDropService {
     // Clean up drag state
     this.cleanup();
   }
+
   /**
    * Resets all drag & drop state variables.
    */
@@ -268,6 +286,7 @@ export class BoardDragDropService {
     this.autoScroll.stopAutoScroll();
     this.disableDragOverflow();
   }
+
   /**
    * Cleans up drag operation and resets state.
    * @private
@@ -283,6 +302,7 @@ export class BoardDragDropService {
     // Reset state
     this.resetDragState();
   }
+
   /**
    * Enables drag overflow for the main content area.
    * @private
@@ -293,6 +313,7 @@ export class BoardDragDropService {
       mainContent.style.overflowX = 'visible';
     }
   }
+
   /**
    * Disables drag overflow for the main content area.
    * @private

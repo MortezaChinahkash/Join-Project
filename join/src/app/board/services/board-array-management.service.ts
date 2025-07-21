@@ -20,6 +20,7 @@ import { BoardTaskManagementService } from './board-task-management.service';
 })
 export class BoardArrayManagementService {
   constructor(private taskManagementService: BoardTaskManagementService) {}
+
   /**
    * Updates task arrays after task changes.
    * @param tasks - Current tasks array

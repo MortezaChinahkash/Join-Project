@@ -24,7 +24,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
     trigger('slideInRight', [
       transition(':enter', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
+
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+
       ])
     ])
   ]
@@ -67,24 +69,28 @@ export class AddTaskOverlayComponent implements OnDestroy {
   trackByContactId(index: number, contact: Contact): string {
     return contact.id || index.toString();
   }
+
   /**
    * Gets selected contacts from the form service
    */
   getSelectedContacts(contacts: Contact[]): Contact[] {
     return contacts.filter(contact => this.formService.isContactSelected(contact));
   }
+
   /**
    * Gets the initials color for a contact
    */
   getInitialsColor(name: string): string {
     return this.contactHelperService.getInitialsColor(name);
   }
+
   /**
    * Gets the initials from a contact name
    */
   getInitials(name: string): string {
     return this.contactHelperService.getInitials(name);
   }
+
   /**
    * Closes the add task overlay
    */
@@ -92,6 +98,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
     this.newSubtaskTitle = '';
     this.onClose.emit();
   }
+
   /**
    * Handles form submission
    */
@@ -129,6 +136,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
       }
     }
   }
+
   /**
    * Adds a new subtask to the add task form
    */
@@ -142,6 +150,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
       this.newSubtaskTitle = '';
     }
   }
+
   /**
    * Cleanup when component is destroyed
    */

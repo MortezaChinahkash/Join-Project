@@ -96,24 +96,28 @@ export class AuthService implements OnDestroy {
       loginTimestamp: Date.now() // Current timestamp
     };
   }
+
   /**
    * Gets the current user value.
    */
   get currentUser(): User | null {
     return this.currentUserSubject.value;
   }
+
   /**
    * Checks if user is currently authenticated.
    */
   get isAuthenticated(): boolean {
     return this.currentUser !== null;
   }
+
   /**
    * Checks if current user is a guest.
    */
   get isGuest(): boolean {
     return this.currentUser?.isGuest === true;
   }
+
   /**
    * Authenticates user with email and password using Firebase.
    * @param email - User's email address
@@ -127,6 +131,7 @@ export class AuthService implements OnDestroy {
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
+
       throw this.handleAuthError(error);
     }
   }
@@ -156,6 +161,7 @@ export class AuthService implements OnDestroy {
       localStorage.setItem('join_new_user', 'true');
       return user;
     } catch (error: any) {
+
       throw this.handleAuthError(error);
     }
   }
@@ -170,6 +176,7 @@ export class AuthService implements OnDestroy {
       const user = this.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
+
       throw this.handleAuthError(error);
     }
   }
@@ -186,6 +193,7 @@ export class AuthService implements OnDestroy {
       // Firebase auth state listener will handle clearing the user state
       this.router.navigate(['/auth']);
     } catch (error) {
+
       console.error('Logout error:', error);
       throw new Error('Logout failed');
     }
@@ -200,6 +208,7 @@ export class AuthService implements OnDestroy {
     this.router.navigate(['/auth']);
     return false;
   }
+
   /**
    * Sets the current user and saves to storage.
    */
@@ -207,6 +216,7 @@ export class AuthService implements OnDestroy {
     this.currentUserSubject.next(user);
     this.saveUserToStorage(user);
   }
+
   /**
    * Loads user from local storage on app initialization.
    */
@@ -218,6 +228,7 @@ export class AuthService implements OnDestroy {
         this.validateAndLoadSession(user);
       }
     } catch (error) {
+
       console.error('Error loading user from storage:', error);
       localStorage.removeItem(this.STORAGE_KEY);
     }
@@ -231,14 +242,17 @@ export class AuthService implements OnDestroy {
       this.currentUserSubject.next(user);
     }
   }
+
   private isSessionValid(user: any): boolean {
     const currentTime = Date.now();
     const sessionAge = currentTime - (user.loginTimestamp || 0);
     return sessionAge <= this.SESSION_DURATION;
   }
+
   private clearExpiredSession(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }
+
   /**
    * Saves user to local storage.
    */
@@ -246,6 +260,7 @@ export class AuthService implements OnDestroy {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
     } catch (error) {
+
       console.error('Error saving user to storage:', error);
     }
   }
@@ -260,6 +275,7 @@ export class AuthService implements OnDestroy {
     const remainingTime = this.SESSION_DURATION - sessionAge;
     return Math.max(0, remainingTime);
   }
+
   /**
    * Gets remaining session time formatted as string.
    */
@@ -274,6 +290,7 @@ export class AuthService implements OnDestroy {
       return `${minutes}m`;
     }
   }
+
   /**
    * Handles authentication errors and returns user-friendly messages.
    */
@@ -298,12 +315,14 @@ export class AuthService implements OnDestroy {
         return new Error('An error occurred during authentication');
     }
   }
+
   /**
    * Cleanup method to be called when service is destroyed.
    */
   ngOnDestroy(): void {
     this.stopSessionCheck();
   }
+
   /**
    * Gets user display name for UI.
    */
@@ -319,18 +338,21 @@ export class AuthService implements OnDestroy {
       .join('')
       .substring(0, 2);
   }
+
   /**
    * Gets user's full name.
    */
   getUserFullName(): string {
     return this.currentUser?.name || '';
   }
+
   /**
    * Gets user's email.
    */
   getUserEmail(): string {
     return this.currentUser?.email || '';
   }
+
   /**
    * Updates the current user's profile in Firebase Auth.
    * @param name - New display name
@@ -353,6 +375,7 @@ export class AuthService implements OnDestroy {
         this.saveUserToStorage(currentUser);
       }
     } catch (error) {
+
       console.error('Error updating user profile:', error);
       throw new Error('Failed to update user profile');
     }
@@ -365,6 +388,7 @@ export class AuthService implements OnDestroy {
     this.sessionCheckInterval = setInterval(() => {
       this.checkSessionExpiry();
     }, 5 * 60 * 1000);
+
     // Also check immediately
     this.checkSessionExpiry();
   }
@@ -381,6 +405,7 @@ export class AuthService implements OnDestroy {
       this.logout();
     }
   }
+
   /**
    * Stops the session check interval.
    */

@@ -51,6 +51,7 @@ export class ContactDataService {
       email: contactData.email,
       phone: contactData.phone,
     });
+
     return {
       id: docRef.id,
       name: contactData.name,
@@ -82,6 +83,7 @@ export class ContactDataService {
   async deleteContactFromFirestore(contactId: string): Promise<void> {
     return deleteDoc(doc(this.firestore, 'contacts', contactId));
   }
+
   /**
    * Validates contact data before saving.
    * @param contactData - Contact data to validate
@@ -90,6 +92,7 @@ export class ContactDataService {
   validateContactData(contactData: Partial<Contact>): boolean {
     return !!(contactData.name?.trim() && contactData.email?.trim());
   }
+
   /**
    * Ensures phone field has a value, defaults to "N/A" if empty.
    * @param phone - Phone value to check

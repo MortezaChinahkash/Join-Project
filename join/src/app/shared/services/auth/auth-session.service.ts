@@ -33,6 +33,7 @@ export class AuthSessionService {
       this.sessionCheckInterval = null;
     }
   }
+
   /**
    * Checks if current session is still valid.
    * 
@@ -49,6 +50,7 @@ export class AuthSessionService {
         onSessionExpired();
       }
     } catch (error) {
+
       onSessionExpired();
     }
   }
@@ -62,6 +64,7 @@ export class AuthSessionService {
     const sessionAge = Date.now() - loginTimestamp;
     return sessionAge <= this.SESSION_DURATION;
   }
+
   /**
    * Gets session timeout warning time (15 minutes before expiry).
    * 
@@ -70,6 +73,7 @@ export class AuthSessionService {
   getSessionWarningTime(): number {
     return 15 * 60 * 1000; // 15 minutes
   }
+
   /**
    * Checks if session is approaching expiry.
    * 
@@ -81,6 +85,7 @@ export class AuthSessionService {
     const timeUntilExpiry = this.SESSION_DURATION - sessionAge;
     return timeUntilExpiry <= this.getSessionWarningTime();
   }
+
   /**
    * Gets time until session expires.
    * 
@@ -91,6 +96,7 @@ export class AuthSessionService {
     const sessionAge = Date.now() - loginTimestamp;
     return Math.max(0, this.SESSION_DURATION - sessionAge);
   }
+
   /**
    * Extends session by updating timestamp.
    * 
@@ -99,6 +105,7 @@ export class AuthSessionService {
   extendSession(): number {
     return Date.now();
   }
+
   /**
    * Cleanup method for when service is destroyed.
    */

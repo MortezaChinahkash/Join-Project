@@ -33,6 +33,7 @@ export class BoardDragDetectionService {
     }
     return targetColumn;
   }
+
   /**
    * Checks if an element or its parents represent a board column.
    * 
@@ -64,6 +65,7 @@ export class BoardDragDetectionService {
     }
     return null;
   }
+
   /**
    * Enhanced column detection method using geometric bounds as fallback.
    * Iterates through all board columns and checks if the cursor position is within column boundaries.
@@ -88,6 +90,7 @@ export class BoardDragDetectionService {
     }
     return null;
   }
+
   /**
    * Validates if a column is a valid drop target.
    * 
@@ -99,6 +102,7 @@ export class BoardDragDetectionService {
     if (!column) return false;
     return column !== currentTaskColumn;
   }
+
   /**
    * Gets all available board columns in the DOM.
    * 
@@ -108,6 +112,7 @@ export class BoardDragDetectionService {
     const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
     return Array.from(columns);
   }
+
   /**
    * Finds the closest column to a given position.
    * Useful when exact position detection fails.

@@ -66,6 +66,7 @@ export class BoardInitializationService {
         const sortedContacts = this.dataService.sortContactsAlphabetically(contacts);
         onContactsLoaded(sortedContacts);
       },
+
       error: (error: any) => {
         console.error('Error loading contacts:', error);
       }
@@ -80,6 +81,7 @@ export class BoardInitializationService {
       next: (tasks: Task[]) => {
         onTasksLoaded(tasks);
       },
+
       error: (error: any) => {
         console.error('Error loading tasks:', error);
       }
@@ -137,6 +139,7 @@ export class BoardInitializationService {
       )
     };
   }
+
   /**
    * Distributes tasks into appropriate columns and sorts by priority.
    * @param tasks - Array of all tasks to distribute
@@ -150,6 +153,7 @@ export class BoardInitializationService {
   } {
     return this.taskManagementService.distributeAndSortTasks(tasks);
   }
+
   /**
    * Handles query parameters to open specific tasks or apply filters.
    * @param columnArrays - Object containing all column arrays

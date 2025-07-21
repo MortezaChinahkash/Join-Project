@@ -8,6 +8,7 @@ import { Contact } from '../../contacts/services/contact-data.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardFormContactSelectionService {
   // Contact selection state
   selectedContacts: Contact[] = [];
@@ -30,6 +31,7 @@ export class BoardFormContactSelectionService {
       this.selectedContacts.push(contact);
     }
   }
+
   /**
    * Checks if a contact is currently selected.
    * 
@@ -39,6 +41,7 @@ export class BoardFormContactSelectionService {
   isContactSelected(contact: Contact): boolean {
     return this.selectedContacts.some(c => c.id === contact.id);
   }
+
   /**
    * Gets display text for selected contacts.
    * 
@@ -49,6 +52,7 @@ export class BoardFormContactSelectionService {
     if (this.selectedContacts.length === 1) {
       return this.selectedContacts[0].name;
     } else if (this.selectedContacts.length === 2) {
+
       return this.selectedContacts.map(c => c.name).join(', ');
     } else {
       return `${this.selectedContacts[0].name} +${this.selectedContacts.length - 1} more`;
@@ -62,6 +66,7 @@ export class BoardFormContactSelectionService {
   getSelectedContact(): Contact | null {
     return this.selectedContacts.length > 0 ? this.selectedContacts[0] : null;
   }
+
   /**
    * Toggles the contact selection dropdown.
    */
@@ -72,6 +77,7 @@ export class BoardFormContactSelectionService {
       this.openDropdown();
     }
   }
+
   /**
    * Opens the contact selection dropdown.
    */
@@ -79,6 +85,7 @@ export class BoardFormContactSelectionService {
     this.isDropdownOpen = true;
     this.addDocumentClickListener();
   }
+
   /**
    * Closes the contact selection dropdown.
    */
@@ -90,12 +97,14 @@ export class BoardFormContactSelectionService {
     this.isDropdownOpen = false;
     this.removeDocumentClickListener();
   }
+
   /**
    * Prevents dropdown from closing on next close attempt.
    */
   preventNextClose(): void {
     this.preventDropdownClose = true;
   }
+
   /**
    * Adds document click listener to close dropdown when clicking outside.
    */
@@ -109,6 +118,7 @@ export class BoardFormContactSelectionService {
         this.closeDropdown();
       }
     };
+
     // Add with a small delay to prevent immediate closure
     setTimeout(() => {
       document.addEventListener('click', this.documentClickListener!);
@@ -123,6 +133,7 @@ export class BoardFormContactSelectionService {
       this.documentClickListener = undefined;
     }
   }
+
   /**
    * Toggles the assigned contacts dropdown for display.
    */
@@ -133,6 +144,7 @@ export class BoardFormContactSelectionService {
       this.openAssignedContactsDropdown();
     }
   }
+
   /**
    * Opens the assigned contacts dropdown.
    */
@@ -140,6 +152,7 @@ export class BoardFormContactSelectionService {
     this.showAssignedContactsDropdown = true;
     this.addAssignedContactsClickListener();
   }
+
   /**
    * Closes the assigned contacts dropdown.
    */
@@ -147,6 +160,7 @@ export class BoardFormContactSelectionService {
     this.showAssignedContactsDropdown = false;
     this.removeAssignedContactsClickListener();
   }
+
   /**
    * Adds click listener for assigned contacts dropdown.
    */
@@ -160,6 +174,7 @@ export class BoardFormContactSelectionService {
         this.closeAssignedContactsDropdown();
       }
     };
+
     setTimeout(() => {
       document.addEventListener('click', this.assignedContactsClickListener!);
     }, 100);
@@ -173,6 +188,7 @@ export class BoardFormContactSelectionService {
       this.assignedContactsClickListener = undefined;
     }
   }
+
   /**
    * Gets displayed assigned contacts (limited number for UI).
    * 
@@ -182,6 +198,7 @@ export class BoardFormContactSelectionService {
   getDisplayedAssignedContacts(limit: number = 3): string[] {
     return this.selectedContacts.slice(0, limit).map(contact => contact.name);
   }
+
   /**
    * Checks if there are more assigned contacts than displayed.
    * 
@@ -191,6 +208,7 @@ export class BoardFormContactSelectionService {
   hasMoreAssignedContacts(limit: number = 3): boolean {
     return this.selectedContacts.length > limit;
   }
+
   /**
    * Gets count of remaining assigned contacts not displayed.
    * 
@@ -200,6 +218,7 @@ export class BoardFormContactSelectionService {
   getRemainingAssignedContactsCount(limit: number = 3): number {
     return Math.max(0, this.selectedContacts.length - limit);
   }
+
   /**
    * Gets remaining assigned contacts not displayed.
    * 
@@ -209,12 +228,14 @@ export class BoardFormContactSelectionService {
   getRemainingAssignedContacts(limit: number = 3): string[] {
     return this.selectedContacts.slice(limit).map(contact => contact.name);
   }
+
   /**
    * Clears all selected contacts.
    */
   clearSelectedContacts(): void {
     this.selectedContacts = [];
   }
+
   /**
    * Sets selected contacts from an array of contact IDs.
    * 
@@ -238,6 +259,7 @@ export class BoardFormContactSelectionService {
       contactNames.includes(contact.name)
     );
   }
+
   /**
    * Gets selected contact IDs.
    * 
@@ -246,6 +268,7 @@ export class BoardFormContactSelectionService {
   getSelectedContactIds(): string[] {
     return this.selectedContacts.map(contact => contact.id || '').filter(id => id);
   }
+
   /**
    * Adds a contact to selection.
    * 
@@ -256,6 +279,7 @@ export class BoardFormContactSelectionService {
       this.selectedContacts.push(contact);
     }
   }
+
   /**
    * Removes a contact from selection.
    * 
@@ -267,6 +291,7 @@ export class BoardFormContactSelectionService {
       this.selectedContacts.splice(index, 1);
     }
   }
+
   /**
    * Gets count of selected contacts.
    * 
@@ -275,6 +300,7 @@ export class BoardFormContactSelectionService {
   getSelectedContactsCount(): number {
     return this.selectedContacts.length;
   }
+
   /**
    * Cleanup method to remove event listeners.
    */

@@ -25,10 +25,13 @@ import { ContactHelperService } from '../../contacts/services/contact-helper.ser
     trigger('slideInRight', [
       transition(':enter', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
+
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+
       ]),
       transition(':leave', [
         animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+
       ])
     ])
   ]
@@ -51,27 +54,32 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Component initialization if needed
   }
+
   ngOnDestroy(): void {
     // Cleanup if needed
   }
+
   /**
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
     this.onClose.emit();
   }
+
   /**
    * Enters edit mode for the selected task.
    */
   editTask(): void {
     this.onEdit.emit();
   }
+
   /**
    * Deletes the selected task.
    */
   deleteTask(): void {
     this.onDelete.emit();
   }
+
   /**
    * Toggles subtask completion status.
    * @param subtaskIndex - Index of the subtask to toggle
@@ -79,6 +87,7 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
   toggleSubtask(subtaskIndex: number): void {
     this.onSubtaskToggle.emit(subtaskIndex);
   }
+
   /**
    * Gets the selected task's due date for display.
    * @returns Due date string or null
@@ -90,6 +99,7 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
     const dueDate = this.selectedTask.dueDate.trim();
     return dueDate !== '' ? dueDate : null;
   }
+
   /**
    * Checks if the selected task has a due date.
    * @returns True if task has a due date, false otherwise
@@ -97,6 +107,7 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
   hasDueDate(): boolean {
     return !!(this.selectedTask && this.selectedTask.dueDate && this.selectedTask.dueDate.trim() !== '');
   }
+
   /**
    * Gets the formatted due date for display.
    * @returns Formatted due date string or null
@@ -107,6 +118,7 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
     }
     return this.selectedTask.dueDate;
   }
+
   /**
    * Gets initials from contact name for avatar display.
    * @param name - Full name of the contact
@@ -115,6 +127,7 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
   getInitials(name: string): string {
     return this.contactHelperService.getInitials(name);
   }
+
   /**
    * Gets background color for contact avatar based on name.
    * @param name - Full name of the contact

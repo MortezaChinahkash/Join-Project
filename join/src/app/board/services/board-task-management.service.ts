@@ -49,6 +49,7 @@ export class BoardTaskManagementService {
       (t) => t.id === this.formService.selectedTask?.id
     );
   }
+
   /**
    * Updates a task in the tasks array at the specified index.
    * @param tasks - Array of all tasks
@@ -63,6 +64,7 @@ export class BoardTaskManagementService {
     }
     return tasks;
   }
+
   /**
    * Removes the selected task from the tasks array.
    * @param tasks - Array of all tasks
@@ -73,6 +75,7 @@ export class BoardTaskManagementService {
       (t) => t.id !== this.formService.selectedTask!.id
     );
   }
+
   /**
    * Removes the task to delete from the tasks array.
    * @param tasks - Array of all tasks
@@ -83,6 +86,7 @@ export class BoardTaskManagementService {
       (t) => t.id !== this.deleteConfirmationService.taskToDelete!.id
     );
   }
+
   /**
    * Distributes tasks into appropriate columns and sorts by priority.
    * @param tasks - Array of all tasks
@@ -102,6 +106,7 @@ export class BoardTaskManagementService {
       doneTasks: this.utilsService.sortTasksByPriority(distributed.doneTasks)
     };
   }
+
   /**
    * Opens the add task overlay for the specified column.
    * @param column - Target column for the new task
@@ -109,12 +114,14 @@ export class BoardTaskManagementService {
   openAddTaskOverlay(column: TaskColumn = 'todo'): void {
     this.formService.openAddTaskOverlay(column);
   }
+
   /**
    * Closes the add task overlay.
    */
   closeAddTaskOverlay(): void {
     this.formService.closeAddTaskOverlay();
   }
+
   /**
    * Opens task details overlay for the specified task.
    * @param task - Task to display details for
@@ -122,12 +129,14 @@ export class BoardTaskManagementService {
   openTaskDetails(task: Task): void {
     this.formService.openTaskDetails(task);
   }
+
   /**
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
     this.formService.closeTaskDetailsOverlay();
   }
+
   /**
    * Enters edit mode for the selected task.
    * @param contacts - Array of all contacts for assignment
@@ -136,12 +145,14 @@ export class BoardTaskManagementService {
     if (!this.formService.selectedTask) return;
     this.taskEditOverlayService.openEditOverlay(this.formService.selectedTask, contacts);
   }
+
   /**
    * Cancels task editing and reverts changes.
    */
   cancelEditTask(): void {
     this.taskEditOverlayService.closeEditOverlay();
   }
+
   /**
    * Saves task changes and updates arrays.
    * @param updateCallback - Callback to update task arrays
@@ -149,6 +160,7 @@ export class BoardTaskManagementService {
   async saveTaskChanges(updateCallback: () => void): Promise<void> {
     await this.taskEditOverlayService.saveTaskChanges(updateCallback);
   }
+
   /**
    * Deletes the selected task and shows confirmation dialog.
    */
@@ -156,6 +168,7 @@ export class BoardTaskManagementService {
     if (!this.formService.selectedTask) return;
     this.deleteConfirmationService.deleteTask(this.formService.selectedTask);
   }
+
   /**
    * Confirms task deletion and updates arrays.
    * @param updateCallback - Callback to update task arrays after deletion
@@ -163,12 +176,14 @@ export class BoardTaskManagementService {
   async confirmDeleteTask(updateCallback: () => void): Promise<void> {
     await this.deleteConfirmationService.confirmDeleteTask(updateCallback);
   }
+
   /**
    * Closes the delete confirmation dialog.
    */
   closeDeleteConfirmation(): void {
     this.deleteConfirmationService.closeDeleteConfirmation();
   }
+
   /**
    * Submits the task form and calls update callback.
    * @param updateCallback - Callback to update task arrays
@@ -176,6 +191,7 @@ export class BoardTaskManagementService {
   async submitTaskForm(updateCallback: () => void): Promise<void> {
     await this.formService.onSubmit(updateCallback);
   }
+
   /**
    * Toggles subtask completion status.
    * @param subtaskIndex - Index of the subtask to toggle
@@ -184,6 +200,7 @@ export class BoardTaskManagementService {
   async toggleSubtask(subtaskIndex: number, updateCallback: () => void): Promise<void> {
     await this.formService.toggleSubtask(subtaskIndex, updateCallback);
   }
+
   /**
    * Removes task from its current column array.
    * @param task - Task to remove

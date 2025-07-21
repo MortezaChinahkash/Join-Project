@@ -27,23 +27,27 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
     showAddButton: boolean;
     emptyMessage: string;
   }[] = [];
+
   /**
    * Constructor for BoardThumbnailComponent
    * @param thumbnailService - Service for handling thumbnail functionality
    */
   constructor(public thumbnailService: BoardThumbnailService) {}
+
   /**
    * Angular lifecycle hook that runs after component initialization.
    */
   ngOnInit(): void {
     this.setupScrollListener();
   }
+
   /**
    * Angular lifecycle hook that runs before component destruction.
    */
   ngOnDestroy(): void {
     this.thumbnailService.resetThumbnailState();
   }
+
   /**
    * Sets up the scroll listener for thumbnail navigation.
    */
@@ -59,6 +63,7 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
   onThumbnailClick(event: MouseEvent): void {
     this.thumbnailService.onThumbnailClick(event);
   }
+
   /**
    * Handles thumbnail touch start events for touch devices.
    * @param event - Touch event
@@ -66,6 +71,7 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
   onThumbnailTouchStart(event: TouchEvent): void {
     this.thumbnailService.onThumbnailTouchStart(event);
   }
+
   /**
    * Handles viewport mouse down events.
    * @param event - Mouse event
@@ -73,6 +79,7 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
   onViewportMouseDown(event: MouseEvent): void {
     this.thumbnailService.onViewportMouseDown(event);
   }
+
   /**
    * Handles viewport touch start events for touch devices.
    * @param event - Touch event
@@ -80,6 +87,7 @@ export class BoardThumbnailComponent implements OnInit, OnDestroy {
   onViewportTouchStart(event: TouchEvent): void {
     this.thumbnailService.onViewportTouchStart(event);
   }
+
   /**
    * Handles viewport click events.
    * @param event - Mouse event

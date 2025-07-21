@@ -16,6 +16,7 @@ export class BoardFormStateService {
   constructor(private fb: FormBuilder) {
     this.taskForm = this.createTaskForm();
   }
+
   /**
    * Creates and initializes the reactive task form with validation rules.
    * 
@@ -32,6 +33,7 @@ export class BoardFormStateService {
       subtasks: this.fb.array([])
     });
   }
+
   /**
    * Gets the subtasks form array from the main form.
    * 
@@ -40,6 +42,7 @@ export class BoardFormStateService {
   get subtasksFormArray(): FormArray {
     return this.taskForm.get('subtasks') as FormArray;
   }
+
   /**
    * Sets the selected priority and updates the form.
    * 
@@ -48,6 +51,7 @@ export class BoardFormStateService {
   selectPriority(priority: 'urgent' | 'medium' | 'low'): void {
     this.selectedPriority = priority;
     this.taskForm.patchValue({ priority: priority });
+
     // Mark priority field as touched to trigger validation
     this.taskForm.get('priority')?.markAsTouched();
   }
@@ -62,6 +66,7 @@ export class BoardFormStateService {
     // Force update validation status
     this.taskForm.get('category')?.updateValueAndValidity();
   }
+
   /**
    * Resets the task form to its initial state with default values.
    */
@@ -81,6 +86,7 @@ export class BoardFormStateService {
     // Set medium as default selected priority
     this.selectedPriority = 'medium';
   }
+
   /**
    * Gets today's date as a formatted string for date inputs.
    * 
@@ -93,6 +99,7 @@ export class BoardFormStateService {
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
   /**
    * Checks if a date is in the past.
    * 
@@ -106,6 +113,7 @@ export class BoardFormStateService {
     today.setHours(0, 0, 0, 0); // Reset time to compare only dates
     return selectedDate < today; // True if date is in the past
   }
+
   /**
    * Adds a new subtask to the form array.
    */
@@ -116,6 +124,7 @@ export class BoardFormStateService {
     });
     this.subtasksFormArray.push(subtaskGroup);
   }
+
   /**
    * Removes a subtask from the form array.
    * 
@@ -126,6 +135,7 @@ export class BoardFormStateService {
       this.subtasksFormArray.removeAt(index);
     }
   }
+
   /**
    * Creates a subtask form group.
    * 
@@ -139,6 +149,7 @@ export class BoardFormStateService {
       completed: [completed]
     });
   }
+
   /**
    * Validates the entire form and returns validation result.
    * 
@@ -162,6 +173,7 @@ export class BoardFormStateService {
       errors
     };
   }
+
   /**
    * Gets form data as a plain object.
    * 
@@ -170,6 +182,7 @@ export class BoardFormStateService {
   getFormData(): any {
     return this.taskForm.value;
   }
+
   /**
    * Patches the form with task data for editing.
    * 

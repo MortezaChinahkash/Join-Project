@@ -51,15 +51,18 @@ import { CommonModule } from '@angular/common';
         font-size: 0.7rem;
       }
     }
+
   `]
 })
 export class OnboardingTestComponent {
   // Show controls only in development
   showControls = !window.location.hostname.includes('production');
   constructor(private onboardingService: OnboardingService) {}
+
   startOnboarding(): void {
     this.onboardingService.manualStartOnboarding();
   }
+
   resetOnboarding(): void {
     this.onboardingService.resetOnboarding();
   }

@@ -25,6 +25,7 @@ import { BoardUtilsService } from './board-utils.service';
 })
 export class BoardDisplayService {
   constructor(private utilsService: BoardUtilsService) {}
+
   /**
    * Safely truncates text to a maximum length.
    * @param text - Text to truncate
@@ -38,6 +39,7 @@ export class BoardDisplayService {
     }
     return content.slice(0, limit) + 'â€¦';
   }
+
   /**
    * Gets filtered tasks based on search term.
    * @param tasks - Tasks to filter
@@ -47,6 +49,7 @@ export class BoardDisplayService {
   getFilteredTasks(tasks: Task[], searchTerm: string): Task[] {
     return this.utilsService.getFilteredTasks(tasks, searchTerm);
   }
+
   /**
    * Checks if there are no search results across all columns.
    * @param searchTerm - Current search term
@@ -79,6 +82,7 @@ export class BoardDisplayService {
   getTaskProgress(task: Task): number {
     return this.utilsService.getTaskProgress(task);
   }
+
   /**
    * Gets number of completed subtasks.
    * @param task - Task to count subtasks for
@@ -87,6 +91,7 @@ export class BoardDisplayService {
   getCompletedSubtasks(task: Task): number {
     return this.utilsService.getCompletedSubtasks(task);
   }
+
   /**
    * Gets priority icon path for a task.
    * @param priority - Task priority level

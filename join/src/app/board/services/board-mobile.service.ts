@@ -24,6 +24,7 @@ export class BoardMobileService {
     const position = this.getInitialPosition(buttonRect, overlayWidth, gapSize);
     return this.adjustPositionForViewport(position, overlayWidth);
   }
+
   /**
    * Gets the initial position based on button location.
    * 
@@ -121,6 +122,7 @@ export class BoardMobileService {
     const currentIndex = columnOrder.indexOf(currentColumn);
     return this.getColumnAtIndex(columnOrder, currentIndex - 1);
   }
+
   /**
    * Gets the next column in the workflow order.
    * 
@@ -132,6 +134,7 @@ export class BoardMobileService {
     const currentIndex = columnOrder.indexOf(currentColumn);
     return this.getColumnAtIndex(columnOrder, currentIndex + 1);
   }
+
   /**
    * Safely gets column at specified index.
    * 
@@ -145,6 +148,7 @@ export class BoardMobileService {
     }
     return null;
   }
+
   /**
    * Gets the display name for a column.
    * 
@@ -160,6 +164,7 @@ export class BoardMobileService {
     };
     return columnMap[column];
   }
+
   /**
    * Finds the current column of a task from column arrays.
    * 

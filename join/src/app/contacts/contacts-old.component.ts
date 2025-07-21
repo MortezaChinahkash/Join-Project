@@ -28,15 +28,18 @@ import { AuthService, User } from '../shared/services/auth.service';
       transition('suppress => void', []),
       transition('* => *', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
+
         animate(
           '350ms cubic-bezier(.35,0,.25,1)',
           style({ transform: 'translateX(0)', opacity: 1 })
+
         ),
       ]),
       transition(':leave', [
         animate(
           '200ms cubic-bezier(.35,0,.25,1)',
           style({ transform: 'translateX(100%)', opacity: 0 })
+
         ),
       ]),
     ]),
@@ -86,6 +89,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.loadContacts();
     this.setupResizeListener();
   }
+
   /**
    * Angular lifecycle hook - component cleanup.
    */
@@ -93,6 +97,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.cleanupSubscriptions();
     this.removeResizeListener();
   }
+
   /**
    * Creates the reactive form for contact management.
    * @returns Configured FormGroup
@@ -104,12 +109,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
       phone: [''],
     });
   }
+
   /**
    * Initializes component state and UI.
    */
   private initializeComponent(): void {
     this.updateMobileViewStatus();
   }
+
   /**
    * Loads contacts from the data service.
    */
@@ -120,6 +127,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
         error: (error) => this.handleLoadError(error)
       });
   }
+
   /**
    * Handles successful contact loading.
    * @param contacts - Loaded contacts array
@@ -128,6 +136,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.contacts = contacts;
     this.groupContacts();
   }
+
   /**
    * Handles contact loading errors.
    * @param error - Error object
@@ -135,6 +144,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   private handleLoadError(error: any): void {
     console.error('Error loading contacts:', error);
   }
+
   /**
    * Sets up window resize listener for responsive behavior.
    */
@@ -142,6 +152,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.resizeListener = this.updateMobileViewStatus.bind(this);
     window.addEventListener('resize', this.resizeListener);
   }
+
   /**
    * Removes window resize listener.
    */
@@ -150,12 +161,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
       window.removeEventListener('resize', this.resizeListener);
     }
   }
+
   /**
    * Cleans up component subscriptions.
    */
   private cleanupSubscriptions(): void {
     this.contactsSubscription?.unsubscribe();
   }
+
   /**
    * Updates mobile view status and responsive state.
    */
@@ -167,12 +180,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.isMobileView = state.isMobileView;
     this.showMobileSingleContact = state.showMobileSingleContact;
   }
+
   /**
    * Groups contacts by first letter of name.
    */
   groupContacts(): void {
     this.groupedContacts = this.organizationService.groupContactsByLetter(this.contacts);
   }
+
   /**
    * Opens the add contact overlay.
    */
@@ -180,24 +195,28 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.showAddContactOverlay = true;
     this.addContactForm.reset();
   }
+
   /**
    * Closes the add contact overlay.
    */
   closeAddContactOverlay(): void {
     this.showAddContactOverlay = false;
   }
+
   /**
    * Handles add contact form submission.
    */
   onSubmitAddContact(): void {
     this.processContactForm('add');
   }
+
   /**
    * Handles update contact form submission.
    */
   onSubmitUpdateContact(): void {
     this.processContactForm('update');
   }
+
   /**
    * Processes contact form submission for add or update operations.
    * @param operation - Type of operation ('add' or 'update')
@@ -211,6 +230,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.performUpdateContact(formData);
     }
   }
+
   /**
    * Validates the contact form.
    * @returns True if form is valid
@@ -223,6 +243,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     }
     return true;
   }
+
   /**
    * Prepares form data for submission.
    * @returns Sanitized contact data
@@ -230,6 +251,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   private prepareFormData(): Partial<Contact> {
     return this.uiService.sanitizeContactData(this.addContactForm.value);
   }
+
   /**
    * Performs add contact operation.
    * @param contactData - Contact data to add
@@ -247,6 +269,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       });
       this.handleContactAdded(newContact);
     } catch (error) {
+
       this.handleOperationError('adding', error);
     }
   }
@@ -268,6 +291,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       }
       this.handleContactUpdated(contactData);
     } catch (error) {
+
       this.handleOperationError('updating', error);
     }
   }
@@ -287,6 +311,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     // Note: Phone is not stored in Firebase Auth, only in the temporary contact object
     // This is fine since the current user contact is recreated each time
   }
+
   /**
    * Handles successful contact addition.
    * @param newContact - Newly created contact
@@ -298,6 +323,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.showSuccessMessage('Contact successfully created!');
     this.selectContact(newContact);
   }
+
   /**
    * Handles successful contact update.
    * @param updatedData - Updated contact data
@@ -322,6 +348,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.closeEditContactOverlay();
     this.showSuccessMessage('Contact successfully updated!');
   }
+
   /**
    * Handles operation errors.
    * @param operation - Type of operation that failed
@@ -341,6 +368,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       phoneControl?.updateValueAndValidity();
     }
   }
+
   /**
    * Opens edit contact overlay.
    * @param contact - Contact to edit
@@ -350,6 +378,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.selectedContact = contact;
     this.populateFormWithContact(contact);
   }
+
   /**
    * Populates form with contact data.
    * @param contact - Contact data to populate form with
@@ -361,12 +390,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
       phone: contact.phone,
     });
   }
+
   /**
    * Closes edit contact overlay.
    */
   closeEditContactOverlay(): void {
     this.showEditContactOverlay = false;
   }
+
   /**
    * Deletes the currently selected contact.
    */
@@ -375,6 +406,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.suppressAnimation = true;
     this.performDeleteOperation(this.selectedContact.id);
   }
+
   /**
    * Performs contact deletion operation.
    * @param contactId - ID of contact to delete
@@ -384,6 +416,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       await this.dataService.deleteContactFromFirestore(contactId);
       this.handleContactDeleted(contactId);
     } catch (error) {
+
       this.handleDeleteError(error);
     }
   }
@@ -397,6 +430,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.showSuccessMessage('Contact successfully deleted!');
     this.clearSelectedContactAsync();
   }
+
   /**
    * Handles contact deletion errors.
    * @param error - Error object
@@ -405,6 +439,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     console.error('Error deleting contact:', error);
     this.suppressAnimation = false;
   }
+
   /**
    * Clears selected contact asynchronously.
    */
@@ -424,6 +459,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.showMobileSingleContact = true;
     }
   }
+
   /**
    * Navigates back to contact list on mobile.
    */
@@ -432,6 +468,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.selectedContact = null;
     this.closeMoreMenu();
   }
+
   /**
    * Handles FAB button click based on current state.
    */
@@ -443,18 +480,21 @@ export class ContactsComponent implements OnInit, OnDestroy {
       this.openAddContactOverlay();
     }
   }
+
   /**
    * Opens mobile more menu.
    */
   openMoreMenu(): void {
     this.showMobileMoreMenu = true;
   }
+
   /**
    * Closes mobile more menu.
    */
   closeMoreMenu(): void {
     this.showMobileMoreMenu = false;
   }
+
   /**
    * Shows success message with automatic hiding.
    * @param message - Message to display
@@ -474,6 +514,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getInitials(name: string): string {
     return this.organizationService.getContactInitials(name);
   }
+
   /**
    * Gets contact color for avatar.
    * @param name - Contact name
@@ -482,6 +523,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getInitialsColor(name: string): string {
     return this.organizationService.getContactColor(name);
   }
+
   /**
    * Truncates contact name if longer than 25 characters.
    * @param name - Contact name
@@ -493,6 +535,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     }
     return name;
   }
+
   /**
    * Checks if a contact name is considered long (>25 characters).
    * @param name - Contact name
@@ -501,6 +544,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   isLongName(name: string): boolean {
     return name.length > 25;
   }
+
   /**
    * Truncates email if longer than 23 characters with ellipsis ending
    * @param email - Email to truncate
@@ -511,6 +555,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     if (email.length <= 23) return email;
     return email.substring(0, 20) + '...';
   }
+
   /**
    * Gets the current logged-in user.
    * @returns Current user or null
@@ -518,6 +563,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
   getCurrentUser(): User | null {
     return this.authService.currentUser;
   }
+
   /**
    * Gets the display name for the current user.
    * @returns Display name or email
@@ -526,6 +572,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const user = this.getCurrentUser();
     return user?.name || user?.email || 'Unknown User';
   }
+
   /**
    * Selects the current user and creates a contact-like object for display.
    */
@@ -546,6 +593,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
       }
     }
   }
+
   /**
    * Static method for getting contact initials (for external use).
    * @param name - Contact name
@@ -555,6 +603,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
     const service = new ContactOrganizationService();
     return service.getContactInitials(name);
   }
+
   /**
    * Static method for getting contact color (for external use).
    * @param name - Contact name

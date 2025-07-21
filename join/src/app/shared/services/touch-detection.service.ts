@@ -36,6 +36,7 @@ export class TouchDetectionService {
     this._isTouchDevice = hasTouchSupport || hasPointerSupport;
     return this._isTouchDevice;
   }
+
   /**
    * Checks if device is mobile based on screen size and touch capability.
    * 
@@ -47,6 +48,7 @@ export class TouchDetectionService {
     // Consider it mobile if screen is small OR if it's a touch device with medium screen
     return screenWidth <= 1000 || (isTouchCapable && screenWidth <= 1200);
   }
+
   /**
    * Checks if mobile move buttons should be shown.
    * Since CSS media queries handle the main visibility logic,
@@ -59,6 +61,7 @@ export class TouchDetectionService {
     // This method can be simplified since CSS does the heavy lifting
     return this.isTouchDevice();
   }
+
   /**
    * Forces a re-detection of touch capabilities.
    * Useful for dynamic changes or testing.
@@ -66,6 +69,7 @@ export class TouchDetectionService {
   resetDetection(): void {
     this._isTouchDevice = null;
   }
+
   /**
    * Determines if this is a primary touch device (mobile/tablet) vs desktop with touchscreen.
    * Uses screen size and device characteristics to make the distinction.

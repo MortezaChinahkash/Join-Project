@@ -8,6 +8,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardFormValidationService {
   /**
    * Checks if a specific form field is invalid and has been touched.
@@ -20,6 +21,7 @@ export class BoardFormValidationService {
     const field = form.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
+
   /**
    * Checks if a date field is invalid (past date or empty).
    * 
@@ -35,6 +37,7 @@ export class BoardFormValidationService {
     today.setHours(0, 0, 0, 0);
     return selectedDate < today;
   }
+
   /**
    * Gets validation error message for a specific field.
    * 
@@ -77,6 +80,7 @@ export class BoardFormValidationService {
     };
     return displayNames[fieldName] || fieldName;
   }
+
   /**
    * Validates the entire form and returns validation summary.
    * 
@@ -102,6 +106,7 @@ export class BoardFormValidationService {
         }
       }
     });
+
     // Check for date-specific validation
     if (this.isDateInvalid(form)) {
       const dateError = 'Due date cannot be in the past';
@@ -127,6 +132,7 @@ export class BoardFormValidationService {
       return control && control.valid && control.value?.trim();
     });
   }
+
   /**
    * Checks if a form control has a specific error.
    * 
@@ -137,6 +143,7 @@ export class BoardFormValidationService {
   hasError(control: AbstractControl, errorType: string): boolean {
     return !!(control && control.errors && control.errors[errorType] && control.touched);
   }
+
   /**
    * Gets today's date string in YYYY-MM-DD format for date inputs.
    * 
@@ -146,6 +153,7 @@ export class BoardFormValidationService {
     const today = new Date();
     return today.toISOString().split('T')[0];
   }
+
   /**
    * Validates subtask title.
    * 
@@ -155,6 +163,7 @@ export class BoardFormValidationService {
   validateSubtaskTitle(title: string): boolean {
     return !!(title && title.trim().length >= 2 && title.trim().length <= 50);
   }
+
   /**
    * Sanitizes and validates form input.
    * 
@@ -166,6 +175,7 @@ export class BoardFormValidationService {
     if (!value) return '';
     return value.trim().substring(0, maxLength);
   }
+
   /**
    * Resets validation state for all form fields.
    * 

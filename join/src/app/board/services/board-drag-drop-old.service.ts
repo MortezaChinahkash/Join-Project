@@ -10,6 +10,7 @@ import { BoardThumbnailService } from './board-thumbnail.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardDragDropService {
   // Task drag and drop properties
   draggedTask: Task | null = null;
@@ -36,6 +37,7 @@ export class BoardDragDropService {
   isAutoScrolling = false;
   currentCursorY = 0; // Track current cursor position for auto-scroll
   constructor(private taskService: TaskService, private boardThumbnailService: BoardThumbnailService) {}
+
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
    * Initiates task dragging with left mouse button click and sets up mouse event listeners.
@@ -64,6 +66,7 @@ export class BoardDragDropService {
           dragStarted = true;
         }
       }, this.dragDelay);
+
       const handleMouseMove = (e: MouseEvent) => {
         if (!this.isMousePressed) return;
         const deltaX = Math.abs(e.clientX - this.initialMousePosition.x);
@@ -83,6 +86,7 @@ export class BoardDragDropService {
           this.updateTaskDrag(e.clientX, e.clientY);
         }
       };
+
       const handleMouseUp = () => {
         this.isMousePressed = false;
         if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
@@ -95,6 +99,7 @@ export class BoardDragDropService {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
       };
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     });
@@ -119,6 +124,7 @@ export class BoardDragDropService {
         this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
         dragStarted = true;
       }, 500); // 500ms long press
+
       const handleTouchMove = (e: TouchEvent) => {
         const touch = e.touches[0];
         if (this.isDraggingTask) {
@@ -131,6 +137,7 @@ export class BoardDragDropService {
           if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
         }
       };
+
       const handleTouchEnd = () => {
         if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
         if (this.isDraggingTask) {
@@ -142,7 +149,9 @@ export class BoardDragDropService {
         document.removeEventListener('touchmove', handleTouchMove);
         document.removeEventListener('touchend', handleTouchEnd);
       };
+
       document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
       document.addEventListener('touchend', handleTouchEnd);
     });
   }
@@ -196,6 +205,7 @@ export class BoardDragDropService {
       this.dragPlaceholderHeight = taskCard.offsetHeight;
     }
   }
+
   /**
    * Updates the position of the dragged task element and determines target column.
    * Uses multiple detection methods: elementsFromPoint, geometric bounds, and event delegation
@@ -226,6 +236,7 @@ export class BoardDragDropService {
         this.dragElement.style.pointerEvents = 'none';
       }
     });
+
     // Primary method: Check which column we're over using elementFromPoint
     const elements = document.elementsFromPoint(clientX, clientY);
     let targetColumn: TaskColumn | null = null;
@@ -289,6 +300,7 @@ export class BoardDragDropService {
     }
     return null;
   }
+
   /**
    * Handles auto-scrolling when dragging tasks near the top or bottom of the viewport.
    * Activates when the cursor is within the auto-scroll zone and starts continuous scrolling.
@@ -340,6 +352,7 @@ export class BoardDragDropService {
           // Update board overview viewport after scrolling
           this.boardThumbnailService.updateScrollPosition();
         } else if (currentInBottomZone) {
+
           // Speed increases as we get closer to the bottom
           const distanceFromBottom = window.innerHeight - this.currentCursorY;
           const speed = this.getAdaptiveScrollSpeed(distanceFromBottom);
@@ -387,6 +400,7 @@ export class BoardDragDropService {
       return;
     }
   }
+
   /**
    * Calculates adaptive scroll speed based on distance to the edge.
    * The closer to the edge, the faster the scrolling.
@@ -400,6 +414,7 @@ export class BoardDragDropService {
     const speed = Math.max(4, this.autoScrollSpeed + (proximity * 20));
     return speed;
   }
+
   /**
    * Stops the auto-scrolling functionality and clears the interval.
    * 
@@ -409,6 +424,7 @@ export class BoardDragDropService {
     if (this.autoScrollInterval) { clearInterval(this.autoScrollInterval); this.autoScrollInterval = null; }
     if (this.isAutoScrolling) { this.isAutoScrolling = false; }
   }
+
   /**
    * Completes the task dragging process and updates the task in Firebase if moved to a different column.
    * Cleans up the drag element, removes CSS classes, and updates the task's column in the database.
@@ -434,6 +450,7 @@ export class BoardDragDropService {
         // Call the update callback to refresh local arrays
         onTaskUpdate();
       } catch (error) {
+
         console.error('âŒ Error moving task:', error);
       }
     }
@@ -461,6 +478,7 @@ export class BoardDragDropService {
       this.dragPlaceholderVisible = true;
     }
   }
+
   /**
    * Handles drag leave events on board columns to hide placeholder.
    * Only hides placeholder when actually leaving the column area (not moving to child elements).
@@ -476,6 +494,7 @@ export class BoardDragDropService {
       this.dragPlaceholderVisible = false;
     }
   }
+
   /**
    * Handles drop events on board columns for proper event handling.
    * Prevents default behavior, actual drop logic is handled in endTaskDrag().
@@ -488,6 +507,7 @@ export class BoardDragDropService {
     // The actual drop logic is handled in endTaskDrag()
     // This just ensures proper event handling
   }
+
   /**
    * Resets all drag & drop state variables.
    * Useful for cleanup when component is destroyed or when resetting the board state.
@@ -507,6 +527,7 @@ export class BoardDragDropService {
     if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
     if (this.dragElement) { document.body.removeChild(this.dragElement); this.dragElement = null; }
   }
+
   /**
    * Emergency auto-scroll implementation that works with any cursor position.
    * This scrolls the main content container instead of creating artificial scroll areas.
@@ -550,6 +571,7 @@ export class BoardDragDropService {
       scrollableContainer.scrollBy(0, -scrollSpeed);
       scrolled = true;
     } else if (clientY > (viewportHeight - scrollZone) && containerScrollTop < maxScrollTop) {
+
       scrollableContainer.scrollBy(0, scrollSpeed);
       scrolled = true;
     }
@@ -558,6 +580,7 @@ export class BoardDragDropService {
       scrollableContainer.scrollBy(-scrollSpeed, 0);
       scrolled = true;
     } else if (clientX > (viewportWidth - scrollZone) && containerScrollLeft < maxScrollLeft) {
+
       scrollableContainer.scrollBy(scrollSpeed, 0);
       scrolled = true;
     }
@@ -599,6 +622,7 @@ export class BoardDragDropService {
     }
     return document.documentElement;
   }
+
   /**
    * Checks if an element is scrollable.
    * 
@@ -610,6 +634,7 @@ export class BoardDragDropService {
     const style = window.getComputedStyle(element);
     return style.overflowY === 'scroll' || style.overflowY === 'auto' || style.overflow === 'scroll' || style.overflow === 'auto';
   }
+
   /**
    * Enables overflow-x: visible on the board scroll wrapper during drag operations.
    * This allows tasks to be dragged outside the visible area while still maintaining
@@ -621,6 +646,7 @@ export class BoardDragDropService {
     const scrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
     if (scrollWrapper) { scrollWrapper.classList.add('dragging'); }
   }
+
   /**
    * Disables overflow-x: visible on the board scroll wrapper after drag operations.
    * This restores normal horizontal scrolling behavior for the board overview.

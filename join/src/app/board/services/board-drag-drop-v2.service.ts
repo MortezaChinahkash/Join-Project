@@ -13,6 +13,7 @@ import { BoardTouchHandlerService } from './board-touch-handler.service';
  * @version 2.0.0 - Refactored into multiple specialized services
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardDragDropService {
   constructor(
     private taskService: TaskService,
@@ -23,10 +24,15 @@ export class BoardDragDropService {
   ) {}
   // Expose state properties through getters for backward compatibility
   get draggedTask(): Task | null { return this.dragState.draggedTask; }
+
   get isDraggingTask(): boolean { return this.dragState.isDraggingTask; }
+
   get dragOverColumn(): TaskColumn | null { return this.dragState.dragOverColumn; }
+
   get dragPlaceholderVisible(): boolean { return this.dragState.dragPlaceholderVisible; }
+
   get dragPlaceholderHeight(): number { return this.dragState.dragPlaceholderHeight; }
+
   /**
    * Handles mouse down events on tasks for desktop drag & drop functionality.
    * Initiates task dragging with left mouse button click and sets up mouse event listeners.
@@ -51,6 +57,7 @@ export class BoardDragDropService {
           dragStarted = true;
         }
       }, this.dragState.dragDelay);
+
       const handleMouseMove = (e: MouseEvent) => {
         if (!this.dragState.isMousePressed) return;
         if (this.dragState.exceedsDragThreshold(e.clientX, e.clientY)) {
@@ -67,6 +74,7 @@ export class BoardDragDropService {
           this.updateTaskDrag(e.clientX, e.clientY);
         }
       };
+
       const handleMouseUp = () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
@@ -77,6 +85,7 @@ export class BoardDragDropService {
         }
         resolve(dragStarted);
       };
+
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     });
@@ -93,6 +102,7 @@ export class BoardDragDropService {
   onTaskTouchStart(event: TouchEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
     return this.touchHandler.onTaskTouchStart(event, task, onTaskUpdate);
   }
+
   /**
    * Starts task drag operation for desktop.
    * 
@@ -111,6 +121,7 @@ export class BoardDragDropService {
       taskElement.style.opacity = '0.5';
     }
   }
+
   /**
    * Updates task drag position.
    * 
@@ -124,6 +135,7 @@ export class BoardDragDropService {
     const column = this.getColumnAtPosition(clientX, clientY);
     this.dragState.setDragOverColumn(column);
   }
+
   /**
    * Finishes task drag operation.
    * 
@@ -147,6 +159,7 @@ export class BoardDragDropService {
     this.dragState.resetDragState();
     this.autoScroll.stopAutoScroll();
   }
+
   /**
    * Creates visual drag element.
    * 
@@ -170,6 +183,7 @@ export class BoardDragDropService {
     this.dragState.setDragElement(dragElement, clientX, clientY);
     this.dragState.updateDragPosition(clientX, clientY);
   }
+
   /**
    * Determines which column is at the given position.
    * 
@@ -192,6 +206,7 @@ export class BoardDragDropService {
     }
     return null;
   }
+
   /**
    * Handles task drop logic.
    * 
@@ -217,6 +232,7 @@ export class BoardDragDropService {
       }
     }
   }
+
   // Column drag event handlers for HTML5 drag API compatibility
   /**
    * Handles drag over events on columns.
@@ -228,6 +244,7 @@ export class BoardDragDropService {
     event.preventDefault();
     this.dragState.setDragOverColumn(column);
   }
+
   /**
    * Handles drag leave events on columns.
    * 
@@ -241,6 +258,7 @@ export class BoardDragDropService {
       this.dragState.setDragOverColumn(null);
     }
   }
+
   /**
    * Handles drop events on columns.
    * 
@@ -254,6 +272,7 @@ export class BoardDragDropService {
       // Drop logic is handled in finishTaskDrag
     }
   }
+
   /**
    * Cleanup method to stop all drag operations and clean up state.
    */

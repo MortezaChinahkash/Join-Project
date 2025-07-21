@@ -8,6 +8,7 @@ import { Task, TaskColumn } from '../../interfaces/task.interface';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardFormOverlayService {
   // Overlay states
   showAddTaskOverlay = false;
@@ -30,6 +31,7 @@ export class BoardFormOverlayService {
     this.currentColumn = column;
     this.showAddTaskOverlay = true;
   }
+
   /**
    * Opens the task details overlay for viewing a task.
    * 
@@ -41,6 +43,7 @@ export class BoardFormOverlayService {
     this.showTaskDetailsOverlay = true;
     this.isEditingTask = false;
   }
+
   /**
    * Opens the task edit overlay for editing a task.
    * 
@@ -52,6 +55,7 @@ export class BoardFormOverlayService {
     this.showTaskEditOverlay = true;
     this.isEditingTask = true;
   }
+
   /**
    * Opens the delete confirmation overlay.
    * 
@@ -61,6 +65,7 @@ export class BoardFormOverlayService {
     this.selectedTask = task;
     this.showDeleteConfirmationOverlay = true;
   }
+
   /**
    * Closes all overlays and resets states.
    */
@@ -75,6 +80,7 @@ export class BoardFormOverlayService {
       clearTimeout(this.overlayAnimationTimeout);
     }
   }
+
   /**
    * Closes overlays with animation delay.
    * 
@@ -120,6 +126,7 @@ export class BoardFormOverlayService {
     if (this.showDeleteConfirmationOverlay) return 'delete-confirmation';
     return null;
   }
+
   /**
    * Checks if any overlay is currently open.
    * 
@@ -131,6 +138,7 @@ export class BoardFormOverlayService {
            this.showTaskEditOverlay || 
            this.showDeleteConfirmationOverlay;
   }
+
   /**
    * Handles escape key press to close overlays.
    */
@@ -139,6 +147,7 @@ export class BoardFormOverlayService {
       this.closeAllOverlays();
     }
   }
+
   /**
    * Handles backdrop click to close overlays.
    * 
@@ -150,6 +159,7 @@ export class BoardFormOverlayService {
       this.closeAllOverlays();
     }
   }
+
   /**
    * Sets the current column for task operations.
    * 
@@ -158,6 +168,7 @@ export class BoardFormOverlayService {
   setCurrentColumn(column: TaskColumn): void {
     this.currentColumn = column;
   }
+
   /**
    * Gets the current column.
    * 
@@ -166,6 +177,7 @@ export class BoardFormOverlayService {
   getCurrentColumn(): TaskColumn {
     return this.currentColumn;
   }
+
   /**
    * Checks if a task is currently selected.
    * 
@@ -174,6 +186,7 @@ export class BoardFormOverlayService {
   hasSelectedTask(): boolean {
     return this.selectedTask !== null;
   }
+
   /**
    * Gets the selected task.
    * 
@@ -182,6 +195,7 @@ export class BoardFormOverlayService {
   getSelectedTask(): Task | null {
     return this.selectedTask;
   }
+
   /**
    * Clears the selected task.
    */
@@ -189,6 +203,7 @@ export class BoardFormOverlayService {
     this.selectedTask = null;
     this.isEditingTask = false;
   }
+
   /**
    * Checks if currently in edit mode.
    * 
@@ -197,6 +212,7 @@ export class BoardFormOverlayService {
   isInEditMode(): boolean {
     return this.isEditingTask;
   }
+
   /**
    * Cleanup method for service destruction.
    */

@@ -18,6 +18,7 @@ export class ContactUiService {
   isMobileView(): boolean {
     return window.innerWidth <= 1000;
   }
+
   /**
    * Shows success message for specified duration.
    * @param message - Message to display
@@ -40,6 +41,7 @@ export class ContactUiService {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email.trim());
   }
+
   /**
    * Validates contact form data.
    * @param contact - Contact data to validate
@@ -56,6 +58,7 @@ export class ContactUiService {
     if (!contact.email?.trim()) {
       errors.push('Email is required');
     } else if (!this.validateEmailFormat(contact.email)) {
+
       errors.push('Email format is invalid');
     }
     return {
@@ -75,6 +78,7 @@ export class ContactUiService {
       phone: contact.phone?.trim() || 'N/A'
     };
   }
+
   /**
    * Handles responsive behavior updates.
    * @param currentMobileState - Current mobile view state
@@ -103,6 +107,7 @@ export class ContactUiService {
   getFabAction(isMobileView: boolean, showSingleContact: boolean): 'add' | 'more' {
     return isMobileView && showSingleContact ? 'more' : 'add';
   }
+
   /**
    * Processes overlay transitions with proper timing.
    * @param action - Action to perform during transition

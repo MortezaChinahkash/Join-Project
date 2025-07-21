@@ -65,6 +65,7 @@ export class BoardInteractionService {
   handleColumnDragOver(event: DragEvent, column: TaskColumn): void {
     this.dragDropService.onColumnDragOver(event, column);
   }
+
   /**
    * Handles drag leave event on columns.
    * @param event - Drag event
@@ -72,6 +73,7 @@ export class BoardInteractionService {
   handleColumnDragLeave(event: DragEvent): void {
     this.dragDropService.onColumnDragLeave(event);
   }
+
   /**
    * Handles drop event on columns.
    * @param event - Drag event
@@ -80,6 +82,7 @@ export class BoardInteractionService {
   handleColumnDrop(event: DragEvent, column: TaskColumn): void {
     this.dragDropService.onColumnDrop(event, column);
   }
+
   /**
    * Handles thumbnail click events.
    * @param event - Mouse event
@@ -87,6 +90,7 @@ export class BoardInteractionService {
   handleThumbnailClick(event: MouseEvent): void {
     this.thumbnailService.onThumbnailClick(event);
   }
+
   /**
    * Handles thumbnail touch start events for touch devices.
    * @param event - Touch event
@@ -94,6 +98,7 @@ export class BoardInteractionService {
   handleThumbnailTouchStart(event: TouchEvent): void {
     this.thumbnailService.onThumbnailTouchStart(event);
   }
+
   /**
    * Handles viewport mouse down events.
    * @param event - Mouse event
@@ -101,6 +106,7 @@ export class BoardInteractionService {
   handleViewportMouseDown(event: MouseEvent): void {
     this.thumbnailService.onViewportMouseDown(event);
   }
+
   /**
    * Handles viewport touch start events for touch devices.
    * @param event - Touch event
@@ -108,6 +114,7 @@ export class BoardInteractionService {
   handleViewportTouchStart(event: TouchEvent): void {
     this.thumbnailService.onViewportTouchStart(event);
   }
+
   /**
    * Handles viewport click events.
    * @param event - Mouse event
@@ -115,6 +122,7 @@ export class BoardInteractionService {
   handleViewportClick(event: MouseEvent): void {
     this.thumbnailService.onViewportClick(event);
   }
+
   /**
    * Sets up the scroll listener for thumbnail navigation.
    */

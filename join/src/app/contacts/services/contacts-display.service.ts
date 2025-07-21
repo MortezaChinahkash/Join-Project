@@ -10,6 +10,7 @@ import { AuthService, User } from '../../shared/services/auth.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class ContactsDisplayService {
   constructor(
     private organizationService: ContactOrganizationService,
@@ -24,6 +25,7 @@ export class ContactsDisplayService {
   getContactInitials(name: string): string {
     return this.organizationService.getContactInitials(name);
   }
+
   /**
    * Gets contact color for avatar background.
    * 
@@ -33,6 +35,7 @@ export class ContactsDisplayService {
   getContactColor(name: string): string {
     return this.organizationService.getContactColor(name);
   }
+
   /**
    * Truncates contact name if longer than specified length.
    * 
@@ -47,6 +50,7 @@ export class ContactsDisplayService {
     }
     return name;
   }
+
   /**
    * Checks if a contact name is considered long.
    * 
@@ -57,6 +61,7 @@ export class ContactsDisplayService {
   isLongName(name: string, maxLength: number = 25): boolean {
     return name?.length > maxLength;
   }
+
   /**
    * Truncates email if longer than specified length.
    * 
@@ -81,6 +86,7 @@ export class ContactsDisplayService {
     }
     return email.substring(0, maxLength - 3) + '...';
   }
+
   /**
    * Formats phone number for display.
    * 
@@ -96,6 +102,7 @@ export class ContactsDisplayService {
     if (cleaned.length === 10) {
       return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
     } else if (cleaned.length === 11 && cleaned.startsWith('1')) {
+
       return `+1 (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7)}`;
     }
     return phone; // Return original if can't format
@@ -109,6 +116,7 @@ export class ContactsDisplayService {
   getContactDisplayText(contact: Contact): string {
     return contact.name || contact.email || 'Unnamed Contact';
   }
+
   /**
    * Gets secondary display text for contact (usually email).
    * 
@@ -121,6 +129,7 @@ export class ContactsDisplayService {
     }
     return this.formatPhone(contact.phone);
   }
+
   /**
    * Gets the current logged-in user.
    * 
@@ -129,6 +138,7 @@ export class ContactsDisplayService {
   getCurrentUser(): User | null {
     return this.authService.currentUser;
   }
+
   /**
    * Gets the display name for the current user.
    * 
@@ -138,6 +148,7 @@ export class ContactsDisplayService {
     const user = this.getCurrentUser();
     return user?.name || user?.email || 'Unknown User';
   }
+
   /**
    * Creates a contact-like object for the current user.
    * 
@@ -154,6 +165,7 @@ export class ContactsDisplayService {
       isCurrentUser: true
     };
   }
+
   /**
    * Checks if a contact is the current user.
    * 
@@ -163,6 +175,7 @@ export class ContactsDisplayService {
   isCurrentUserContact(contact: Contact): boolean {
     return contact.isCurrentUser === true || contact.id === 'current-user';
   }
+
   /**
    * Gets contact avatar style object.
    * 
@@ -174,6 +187,7 @@ export class ContactsDisplayService {
       backgroundColor: this.getContactColor(contact.name)
     };
   }
+
   /**
    * Gets contact status text (current user vs regular contact).
    * 
@@ -183,6 +197,7 @@ export class ContactsDisplayService {
   getContactStatusText(contact: Contact): string {
     return this.isCurrentUserContact(contact) ? 'You' : 'Contact';
   }
+
   /**
    * Formats contact for list display.
    * 
@@ -229,6 +244,7 @@ export class ContactsDisplayService {
     }
     return classes;
   }
+
   /**
    * Gets contact search text for filtering.
    * 
@@ -247,6 +263,7 @@ export class ContactsDisplayService {
   hasMinimumDisplayData(contact: Contact): boolean {
     return !!(contact.name?.trim() || contact.email?.trim());
   }
+
   /**
    * Gets contact priority for sorting (current user first).
    * 
@@ -256,6 +273,7 @@ export class ContactsDisplayService {
   getContactSortPriority(contact: Contact): number {
     return this.isCurrentUserContact(contact) ? 0 : 1;
   }
+
   /**
    * Formats contact tooltip text.
    * 
@@ -275,6 +293,7 @@ export class ContactsDisplayService {
     }
     return parts.join('\n');
   }
+
   /**
    * Gets contact accessibility label.
    * 
@@ -286,6 +305,7 @@ export class ContactsDisplayService {
     const status = this.isCurrentUserContact(contact) ? ' (current user)' : '';
     return `${name}${status}`;
   }
+
   /**
    * Static method for getting contact initials (for external use).
    * 
@@ -296,6 +316,7 @@ export class ContactsDisplayService {
     const service = new ContactOrganizationService();
     return service.getContactInitials(name);
   }
+
   /**
    * Static method for getting contact color (for external use).
    * 
@@ -306,6 +327,7 @@ export class ContactsDisplayService {
     const service = new ContactOrganizationService();
     return service.getContactColor(name);
   }
+
   /**
    * Cleanup method for service destruction.
    */

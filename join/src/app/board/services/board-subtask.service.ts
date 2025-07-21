@@ -50,6 +50,7 @@ export class BoardSubtaskService {
     const selector = `.taskEditOverlay [formGroupName="${index}"] input[formControlName="title"]`;
     return document.querySelector(selector) as HTMLInputElement;
   }
+
   /**
    * Activates an input element by focusing and selecting text.
    * 
@@ -59,6 +60,7 @@ export class BoardSubtaskService {
     inputElement.focus();
     inputElement.select();
   }
+
   /**
    * Adds a new subtask to the form array.
    * 
@@ -87,6 +89,7 @@ export class BoardSubtaskService {
     const trimmed = title.trim();
     return trimmed.length > 0 ? trimmed : null;
   }
+
   /**
    * Removes a subtask from the form array.
    * 
@@ -98,6 +101,7 @@ export class BoardSubtaskService {
       subtasksFormArray.removeAt(index);
     }
   }
+
   /**
    * Validates if the subtask index is within bounds.
    * 
@@ -108,6 +112,7 @@ export class BoardSubtaskService {
   private isValidSubtaskIndex(index: number, subtasksFormArray: FormArray): boolean {
     return index >= 0 && index < subtasksFormArray.length;
   }
+
   /**
    * Updates a subtask's completion status.
    * 
@@ -139,6 +144,7 @@ export class BoardSubtaskService {
     }
     return false;
   }
+
   /**
    * Counts completed subtasks in the form array.
    * 

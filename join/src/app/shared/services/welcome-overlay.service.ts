@@ -10,6 +10,7 @@ export class WelcomeOverlayService {
   markShouldShow(): void {
     this.shouldShowOverlay = true;
   }
+
   /**
    * Check if overlay should be shown and reset the flag
    */
@@ -18,6 +19,7 @@ export class WelcomeOverlayService {
     this.shouldShowOverlay = false; // Reset after checking
     return should;
   }
+
   /**
    * Clear the flag (useful for logout)
    */

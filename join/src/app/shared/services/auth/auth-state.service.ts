@@ -28,18 +28,21 @@ export class AuthStateService {
   get currentUser(): User | null {
     return this.currentUserSubject.value;
   }
+
   /**
    * Checks if user is currently authenticated.
    */
   get isAuthenticated(): boolean {
     return this.currentUser !== null;
   }
+
   /**
    * Checks if current user is a guest.
    */
   get isGuest(): boolean {
     return this.currentUser?.isGuest === true;
   }
+
   /**
    * Sets the current user and updates observers.
    * 
@@ -53,6 +56,7 @@ export class AuthStateService {
       this.clearUserFromStorage();
     }
   }
+
   /**
    * Loads user from local storage if session is still valid.
    */
@@ -74,6 +78,7 @@ export class AuthStateService {
         }
       }
     } catch (error) {
+
       console.error('Error loading user from storage:', error);
       localStorage.removeItem(this.STORAGE_KEY);
     }
@@ -88,6 +93,7 @@ export class AuthStateService {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
     } catch (error) {
+
       console.error('Error saving user to storage:', error);
     }
   }
@@ -98,6 +104,7 @@ export class AuthStateService {
   private clearUserFromStorage(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }
+
   /**
    * Formats session duration for display.
    * 
@@ -121,6 +128,7 @@ export class AuthStateService {
     if (!this.currentUser) return 0;
     return Date.now() - this.currentUser.loginTimestamp;
   }
+
   /**
    * Checks if current session has expired.
    * 
@@ -130,6 +138,7 @@ export class AuthStateService {
     const sessionAge = this.getSessionAge();
     return sessionAge > this.SESSION_DURATION;
   }
+
   /**
    * Gets remaining session time in milliseconds.
    * 
@@ -139,12 +148,14 @@ export class AuthStateService {
     const sessionAge = this.getSessionAge();
     return Math.max(0, this.SESSION_DURATION - sessionAge);
   }
+
   /**
    * Updates user timestamp to extend session.
    */
   extendSession(): void {
     if (this.currentUser) {
       const updatedUser = { ...this.currentUser, loginTimestamp: Date.now() };
+
       this.setCurrentUser(updatedUser);
     }
   }

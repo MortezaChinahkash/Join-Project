@@ -50,6 +50,7 @@ export class MobileTaskMoveService {
     this.selectedTaskForMove = task;
     this.showMobileMoveOverlay = true;
   }
+
   /**
    * Closes the mobile move overlay.
    */
@@ -58,6 +59,7 @@ export class MobileTaskMoveService {
     this.selectedTaskForMove = null;
     this.overlayPosition = { top: 0, right: 0 };
   }
+
   /**
    * Gets column display name.
    * @param column - Column identifier
@@ -66,6 +68,7 @@ export class MobileTaskMoveService {
   getColumnDisplayName(column: TaskColumn): string {
     return this.mobileService.getColumnDisplayName(column);
   }
+
   /**
    * Handles mobile move button mouse down event.
    * @param event - Mouse event
@@ -74,6 +77,7 @@ export class MobileTaskMoveService {
     event.preventDefault();
     event.stopPropagation();
   }
+
   /**
    * Handles mobile move button touch start event.
    * @param event - Touch event
@@ -88,6 +92,7 @@ export class MobileTaskMoveService {
     this.selectedTaskForMove = task;
     this.showMobileMoveOverlay = true;
   }
+
   /**
    * Gets current column of selected task.
    * @param task - Task to check
@@ -112,6 +117,7 @@ export class MobileTaskMoveService {
     if (!currentColumn) return null;
     return this.mobileService.getPreviousColumn(currentColumn);
   }
+
   /**
    * Gets next column in workflow.
    * @param currentColumn - Current column
@@ -121,6 +127,7 @@ export class MobileTaskMoveService {
     if (!currentColumn) return null;
     return this.mobileService.getNextColumn(currentColumn);
   }
+
   /**
    * Moves selected task to previous column.
    * @param taskArrays - Object containing all task arrays
@@ -183,6 +190,7 @@ export class MobileTaskMoveService {
       this.taskService.updateTaskInFirebase(task)
         .then(() => {
         })
+
         .catch((error) => {
           console.error('Mobile task move: Error updating task in Firebase:', error);
           // Revert the column change on Firebase error

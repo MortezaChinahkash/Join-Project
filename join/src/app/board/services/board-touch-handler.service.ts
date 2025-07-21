@@ -10,6 +10,7 @@ import { BoardAutoScrollService } from './board-auto-scroll.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardTouchHandlerService {
   private readonly LONG_PRESS_DURATION = 500; // milliseconds
   private readonly TOUCH_MOVE_THRESHOLD = 10; // pixels
@@ -46,6 +47,7 @@ export class BoardTouchHandlerService {
           }
         }
       }, this.LONG_PRESS_DURATION);
+
       const handleTouchMove = (e: TouchEvent) => {
         const moveTouch = e.touches[0];
         if (!moveTouch) return;
@@ -64,6 +66,7 @@ export class BoardTouchHandlerService {
           this.updateTouchDrag(moveTouch.clientX, moveTouch.clientY);
         }
       };
+
       const handleTouchEnd = (e: TouchEvent) => {
         document.removeEventListener('touchmove', handleTouchMove);
         document.removeEventListener('touchend', handleTouchEnd);
@@ -76,7 +79,9 @@ export class BoardTouchHandlerService {
         }
         resolve(dragStarted);
       };
+
       document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
       document.addEventListener('touchend', handleTouchEnd);
     });
   }
@@ -100,6 +105,7 @@ export class BoardTouchHandlerService {
     // Initialize placeholder state
     this.dragState.setPlaceholder(false, 0);
   }
+
   /**
    * Updates touch drag position.
    * 
@@ -126,6 +132,7 @@ export class BoardTouchHandlerService {
     }
     this.dragState.setDragOverColumn(column);
   }
+
   /**
    * Determines which column is at the given position.
    * 
@@ -150,6 +157,7 @@ export class BoardTouchHandlerService {
     }
     return null;
   }
+
   /**
    * Finishes touch drag operation.
    * 
@@ -175,6 +183,7 @@ export class BoardTouchHandlerService {
     this.dragState.resetDragState();
     this.autoScroll.stopAutoScroll();
   }
+
   /**
    * Creates visual drag element for touch.
    * 
@@ -198,6 +207,7 @@ export class BoardTouchHandlerService {
     this.dragState.setDragElement(dragElement, clientX, clientY);
     this.dragState.updateDragPosition(clientX, clientY);
   }
+
   /**
    * Handles task drop logic.
    * 
@@ -210,6 +220,7 @@ export class BoardTouchHandlerService {
     // Trigger update callback
     onTaskUpdate();
   }
+
   /**
    * Handles touch cancel events.
    */
@@ -222,6 +233,7 @@ export class BoardTouchHandlerService {
       this.cancelTouchDrag();
     }
   }
+
   /**
    * Cancels ongoing touch drag operation.
    */
@@ -239,6 +251,7 @@ export class BoardTouchHandlerService {
     this.dragState.resetDragState();
     this.autoScroll.stopAutoScroll();
   }
+
   /**
    * Cleanup method.
    */

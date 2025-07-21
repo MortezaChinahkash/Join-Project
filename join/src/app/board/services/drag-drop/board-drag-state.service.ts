@@ -69,6 +69,7 @@ export class BoardDragStateService {
     }
     this.isAutoScrolling = false;
   }
+
   /**
    * Sets the drag element position based on cursor coordinates.
    * 
@@ -81,6 +82,7 @@ export class BoardDragStateService {
     this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
     this.currentCursorY = clientY;
   }
+
   /**
    * Updates drag over column and placeholder visibility.
    * 
@@ -95,6 +97,7 @@ export class BoardDragStateService {
       this.dragPlaceholderVisible = false;
     }
   }
+
   /**
    * Checks if a drag operation is currently active.
    * 

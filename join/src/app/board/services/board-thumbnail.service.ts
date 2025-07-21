@@ -119,6 +119,7 @@ export class BoardThumbnailService {
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseleave', handleMouseUp);
     };
+
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
     document.addEventListener('mouseleave', handleMouseUp); // Handle mouse leaving window
@@ -175,7 +176,9 @@ export class BoardThumbnailService {
       document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('touchcancel', handleTouchEnd);
     };
+
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
+
     document.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('touchcancel', handleTouchEnd); // Handle touch cancel
   }
@@ -233,6 +236,7 @@ export class BoardThumbnailService {
       }
     }
   }
+
   /**
    * Updates the thumbnail viewport position and size based on current scroll state.
    * Calculates viewport dimensions and position within the thumbnail for accurate representation.
@@ -257,6 +261,7 @@ export class BoardThumbnailService {
       height: 96 // Full height minus header (120 - 24)
     };
   }
+
   /**
    * Sets up scroll event listeners and window resize handlers.
    * Initializes scroll position calculations with multiple attempts to ensure proper loading.
@@ -285,9 +290,11 @@ export class BoardThumbnailService {
       setTimeout(() => {
         this.updateScrollPosition();
       }, 100);
+
       setTimeout(() => {
         this.updateScrollPosition();
       }, 500);
+
       setTimeout(() => {
         this.updateScrollPosition();
       }, 1000);
@@ -308,6 +315,7 @@ export class BoardThumbnailService {
     this.thumbWidth = 100;
     this.showScrollOverview = false;
   }
+
   /**
    * Handles viewport click events.
    * Provides click feedback while preventing drag interference.

@@ -83,6 +83,7 @@ export class OnboardingService {
       }
     });
   }
+
   /**
    * Checks if onboarding should be shown and starts it if needed.
    */
@@ -116,6 +117,7 @@ export class OnboardingService {
     const firstStep = this.onboardingSteps[0];
     this.router.navigate([firstStep.route]);
   }
+
   /**
    * Moves to the next step in the onboarding.
    */
@@ -131,6 +133,7 @@ export class OnboardingService {
       this.completeOnboarding();
     }
   }
+
   /**
    * Moves to the previous step in the onboarding.
    */
@@ -144,12 +147,14 @@ export class OnboardingService {
       this.router.navigate([prevStep.route]);
     }
   }
+
   /**
    * Skips the onboarding tour.
    */
   public skipOnboarding(): void {
     this.completeOnboarding();
   }
+
   /**
    * Completes the onboarding and hides the overlay.
    */
@@ -158,6 +163,7 @@ export class OnboardingService {
     this.showOnboardingSubject.next(false);
     this.currentStepSubject.next(0);
   }
+
   /**
    * Gets the current step data.
    */
@@ -165,36 +171,42 @@ export class OnboardingService {
     const currentIndex = this.currentStepSubject.value;
     return this.onboardingSteps[currentIndex] || null;
   }
+
   /**
    * Gets all onboarding steps.
    */
   public getAllSteps(): OnboardingStep[] {
     return this.onboardingSteps;
   }
+
   /**
    * Checks if it's the first step.
    */
   public isFirstStep(): boolean {
     return this.currentStepSubject.value === 0;
   }
+
   /**
    * Checks if it's the last step.
    */
   public isLastStep(): boolean {
     return this.currentStepSubject.value === this.onboardingSteps.length - 1;
   }
+
   /**
    * Gets the current step number (1-based).
    */
   public getCurrentStepNumber(): number {
     return this.currentStepSubject.value + 1;
   }
+
   /**
    * Gets the total number of steps.
    */
   public getTotalSteps(): number {
     return this.onboardingSteps.length;
   }
+
   /**
    * Resets onboarding (for testing purposes).
    */
@@ -203,6 +215,7 @@ export class OnboardingService {
     this.showOnboardingSubject.next(false);
     this.currentStepSubject.next(0);
   }
+
   /**
    * Manually starts onboarding (for testing or manual trigger).
    */

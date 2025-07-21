@@ -33,6 +33,7 @@ export class BoardFormContactService {
       this.removeDocumentClickListener();
     }
   }
+
   /**
    * Toggles the category dropdown visibility and handles form validation.
    * Opens or closes the category selection dropdown and triggers validation when appropriate.
@@ -45,6 +46,7 @@ export class BoardFormContactService {
       this.removeDocumentClickListener();
     }
   }
+
   /**
    * Toggles contact selection in the assigned contacts list.
    * 
@@ -79,6 +81,7 @@ export class BoardFormContactService {
     this.isDropdownOpen = false;
     this.removeDocumentClickListener();
   }
+
   /**
    * Removes a contact from the selected contacts list.
    * 
@@ -90,12 +93,14 @@ export class BoardFormContactService {
       this.selectedContacts.splice(index, 1);
     }
   }
+
   /**
    * Clears all selected contacts.
    */
   clearSelectedContacts(): void {
     this.selectedContacts = [];
   }
+
   /**
    * Checks if a contact is currently selected.
    * 
@@ -105,6 +110,7 @@ export class BoardFormContactService {
   isContactSelected(contact: Contact): boolean {
     return this.selectedContacts.some(c => c.id === contact.id);
   }
+
   /**
    * Gets the display text for selected contacts.
    * 
@@ -122,6 +128,7 @@ export class BoardFormContactService {
     }
     return `${this.selectedContacts[0].name} and ${this.selectedContacts.length - 1} others`;
   }
+
   /**
    * Sets the selected contacts list.
    * 
@@ -130,6 +137,7 @@ export class BoardFormContactService {
   setSelectedContacts(contacts: Contact[]): void {
     this.selectedContacts = [...contacts];
   }
+
   /**
    * Gets a copy of the selected contacts array.
    * 
@@ -138,6 +146,7 @@ export class BoardFormContactService {
   getSelectedContacts(): Contact[] {
     return [...this.selectedContacts];
   }
+
   /**
    * Resets all contact selection state.
    */
@@ -149,6 +158,7 @@ export class BoardFormContactService {
     this.removeDocumentClickListener();
     this.removeAssignedContactsClickListener();
   }
+
   /**
    * Adds document click listener to close dropdowns when clicking outside.
    * @private
@@ -167,6 +177,7 @@ export class BoardFormContactService {
         this.removeDocumentClickListener();
       }
     };
+
     document.addEventListener('click', this.documentClickListener);
   }
   /**
@@ -179,6 +190,7 @@ export class BoardFormContactService {
       this.documentClickListener = undefined;
     }
   }
+
   /**
    * Adds assigned contacts click listener.
    * @private
@@ -193,6 +205,7 @@ export class BoardFormContactService {
         this.removeAssignedContactsClickListener();
       }
     };
+
     document.addEventListener('click', this.assignedContactsClickListener);
   }
   /**
@@ -205,6 +218,7 @@ export class BoardFormContactService {
       this.assignedContactsClickListener = undefined;
     }
   }
+
   /**
    * Toggles the assigned contacts dropdown.
    */
@@ -216,6 +230,7 @@ export class BoardFormContactService {
       this.removeAssignedContactsClickListener();
     }
   }
+
   /**
    * Cleanup method to remove all event listeners.
    * Should be called when component is destroyed.

@@ -24,6 +24,7 @@ export class ContactHelperService {
       .filter(contact => contact !== undefined) as Contact[];
     return contacts.slice(0, maxDisplay);
   }
+
   /**
    * Checks if there are remaining contacts not displayed.
    * @param assignedContacts - Array of assigned contact names
@@ -37,6 +38,7 @@ export class ContactHelperService {
       .filter(contact => contact !== undefined).length;
     return contactCount > maxDisplay;
   }
+
   /**
    * Gets count of remaining contacts not displayed.
    * @param assignedContacts - Array of assigned contact names
@@ -50,6 +52,7 @@ export class ContactHelperService {
       .filter(contact => contact !== undefined).length;
     return Math.max(0, contactCount - maxDisplay);
   }
+
   /**
    * Gets initials from contact name for avatar display.
    * @param name - Full name of the contact
@@ -63,6 +66,7 @@ export class ContactHelperService {
     }
     return (words[0].charAt(0) + words[words.length - 1].charAt(0)).toUpperCase();
   }
+
   /**
    * Gets background color for contact avatar based on name.
    * Uses the same color logic as the contacts component.

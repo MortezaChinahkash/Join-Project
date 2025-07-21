@@ -7,6 +7,7 @@
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardAutoScrollService {
   // Auto-scroll configuration
   autoScrollZone = 200; // pixels from edges where auto-scroll activates
@@ -96,6 +97,7 @@ export class BoardAutoScrollService {
       this.stopHorizontalAutoScroll();
     }
   }
+
   /**
    * Emergency auto-scroll for edge cases.
    * 
@@ -114,6 +116,7 @@ export class BoardAutoScrollService {
       const scrollSpeed = this.getAdaptiveScrollSpeed(scrollUpZone - relativeY);
       container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
     } else if (relativeY > scrollDownZone) {
+
       const maxScroll = container.scrollHeight - container.clientHeight;
       if (container.scrollTop < maxScroll) {
         const scrollSpeed = this.getAdaptiveScrollSpeed(relativeY - scrollDownZone);
@@ -136,6 +139,7 @@ export class BoardAutoScrollService {
         const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromTop);
         container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
       } else if (distanceFromBottom < this.autoScrollZone) {
+
         const maxScroll = container.scrollHeight - container.clientHeight;
         if (container.scrollTop < maxScroll) {
           const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromBottom);
@@ -162,6 +166,7 @@ export class BoardAutoScrollService {
         const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromLeft);
         container.scrollLeft = Math.max(0, container.scrollLeft - scrollSpeed);
       } else if (distanceFromRight < this.autoScrollZone) {
+
         const maxScroll = container.scrollWidth - container.clientWidth;
         if (container.scrollLeft < maxScroll) {
           const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromRight);
@@ -201,6 +206,7 @@ export class BoardAutoScrollService {
     this.stopVerticalAutoScroll();
     this.stopHorizontalAutoScroll();
   }
+
   /**
    * Calculates adaptive scroll speed based on distance from edge.
    * 
@@ -213,6 +219,7 @@ export class BoardAutoScrollService {
     const normalizedDistance = Math.max(0, Math.min(1, distance / this.autoScrollZone));
     return maxSpeed - (normalizedDistance * (maxSpeed - minSpeed));
   }
+
   /**
    * Finds the scrollable container element.
    * 
@@ -265,6 +272,7 @@ export class BoardAutoScrollService {
     // Last resort: document element
     return document.documentElement;
   }
+
   /**
    * Checks if an element is scrollable.
    * 

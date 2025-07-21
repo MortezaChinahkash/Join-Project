@@ -20,6 +20,7 @@ import { WelcomeOverlayService } from '../shared/services/welcome-overlay.servic
 })
 export class AuthComponent implements OnInit {
   @ViewChild('containerElement', { static: false }) containerElement!: ElementRef;
+
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   isLoginMode = true;
@@ -35,6 +36,7 @@ export class AuthComponent implements OnInit {
     this.initializeForms();
     this.removeAnimClass();
   }
+
   /**
    * Removes the 'anim' class from the container element.
    */
@@ -63,6 +65,7 @@ export class AuthComponent implements OnInit {
       acceptPrivacy: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
   }
+
   /**
    * Custom validator to check if passwords match.
    */
@@ -74,6 +77,7 @@ export class AuthComponent implements OnInit {
     }
     return null;
   }
+
   /**
    * Switches between login and registration modes.
    */
@@ -82,6 +86,7 @@ export class AuthComponent implements OnInit {
     this.errorMessage = '';
     this.resetForms();
   }
+
   /**
    * Resets both forms to their initial state.
    */
@@ -89,6 +94,7 @@ export class AuthComponent implements OnInit {
     this.loginForm.reset();
     this.registerForm.reset();
   }
+
   /**
    * Handles user login.
    */
@@ -102,6 +108,7 @@ export class AuthComponent implements OnInit {
         this.welcomeOverlayService.markShouldShow();
         this.router.navigate(['/summary']);
       } catch (error: any) {
+
         this.errorMessage = this.getErrorMessage(error);
       } finally {
         this.isLoading = false;
@@ -123,6 +130,7 @@ export class AuthComponent implements OnInit {
         this.welcomeOverlayService.markShouldShow();
         this.router.navigate(['/summary']);
       } catch (error: any) {
+
         this.errorMessage = this.getErrorMessage(error);
       } finally {
         this.isLoading = false;
@@ -143,6 +151,7 @@ export class AuthComponent implements OnInit {
         this.welcomeOverlayService.markShouldShow();
         this.router.navigate(['/summary']);
       } catch (error: any) {
+
         this.errorMessage = 'Guest login failed. Please try again.';
       } finally {
         this.isLoading = false;
@@ -180,6 +189,7 @@ export class AuthComponent implements OnInit {
     }
     return error?.message || 'An unexpected error occurred.';
   }
+
   /**
    * Checks if a form field has errors and has been touched.
    */
@@ -187,6 +197,7 @@ export class AuthComponent implements OnInit {
     const field = form.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
+
   /**
    * Gets the error message for a specific field.
    */
@@ -217,6 +228,7 @@ export class AuthComponent implements OnInit {
     const errorMessage = this.getFieldErrorMessage(form, fieldName);
     return errorMessage || defaultPlaceholder;
   }
+
   /**
    * Gets display name for form fields.
    */
@@ -229,12 +241,14 @@ export class AuthComponent implements OnInit {
     };
     return displayNames[fieldName] || fieldName;
   }
+
   /**
    * Checks if login form can be submitted.
    */
   canSubmitLogin(): boolean {
     return this.loginForm.valid && !this.isLoading;
   }
+
   /**
    * Checks if register form can be submitted.
    */

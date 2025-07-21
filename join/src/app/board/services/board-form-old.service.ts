@@ -54,6 +54,7 @@ export class BoardFormService {
       subtasks: this.fb.array([])
     });
   }
+
   /**
    * Opens the add task overlay for a specific column.
    * 
@@ -64,6 +65,7 @@ export class BoardFormService {
     this.currentColumn = column;
     this.resetForm();
   }
+
   /**
    * Closes the add task overlay and resets the form.
    */
@@ -74,6 +76,7 @@ export class BoardFormService {
     this.removeDocumentClickListener();
     this.resetForm();
   }
+
   /**
    * Sets the selected priority and updates the form.
    * 
@@ -82,6 +85,7 @@ export class BoardFormService {
   selectPriority(priority: 'urgent' | 'medium' | 'low') {
     this.selectedPriority = priority;
     this.taskForm.patchValue({ priority: priority });
+
     // Mark priority field as touched to trigger validation
     this.taskForm.get('priority')?.markAsTouched();
   }
@@ -96,6 +100,7 @@ export class BoardFormService {
     // Force update validation status
     this.taskForm.get('category')?.updateValueAndValidity();
   }
+
   /**
    * Resets the task form to its initial state with default values.
    */
@@ -121,6 +126,7 @@ export class BoardFormService {
     // Set medium as default selected priority
     this.selectedPriority = 'medium';
   }
+
   /**
    * Gets today's date as a formatted string for date inputs.
    * 
@@ -134,6 +140,7 @@ export class BoardFormService {
     const day = String(today.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
+
   /**
    * Handles form submission for creating a new task.
    * Validates the form, processes task data, saves to Firebase, and updates local arrays.
@@ -181,6 +188,7 @@ export class BoardFormService {
         // Schritt 8: Overlay schlieÃŸen
         this.closeAddTaskOverlay();
       } catch (error) {
+
         alert('Fehler beim Erstellen der Task. Bitte versuchen Sie es erneut.');
       }
     }
@@ -212,6 +220,7 @@ export class BoardFormService {
     const field = this.taskForm.get(fieldName);
     return !!(field && field.invalid && field.touched);
   }
+
   /**
    * Checks if the date field contains a date in the past
    * @param fieldName - The name of the date field to check
@@ -230,6 +239,7 @@ export class BoardFormService {
     today.setHours(0, 0, 0, 0); // Reset time to compare only dates
     return selectedDate < today; // True if date is in the past
   }
+
   /**
    * Toggles the contact dropdown visibility and manages click listeners.
    * Opens or closes the contact selection dropdown and handles outside click detection.
@@ -242,6 +252,7 @@ export class BoardFormService {
       this.removeDocumentClickListener();
     }
   }
+
   /**
    * Toggles the category dropdown visibility and handles form validation.
    * Opens or closes the category selection dropdown and triggers validation when appropriate.
@@ -258,6 +269,7 @@ export class BoardFormService {
       this.onCategoryChange();
     }
   }
+
   /**
    * Adds document click listener for closing dropdown when clicking outside
    */
@@ -293,6 +305,7 @@ export class BoardFormService {
         this.removeDocumentClickListener();
       }
     };
+
     document.addEventListener('click', this.documentClickListener);
   }
   /**
@@ -304,6 +317,7 @@ export class BoardFormService {
       this.documentClickListener = undefined;
     }
   }
+
   /**
    * Toggles contact selection in the dropdown.
    * 
@@ -323,6 +337,7 @@ export class BoardFormService {
       this.selectedContacts.splice(index, 1);
     }
   }
+
   /**
    * Checks if a contact is currently selected.
    * 
@@ -332,6 +347,7 @@ export class BoardFormService {
   isContactSelected(contact: Contact): boolean {
     return this.selectedContacts.some(c => c.id === contact.id);
   }
+
   /**
    * Selects a category and closes the dropdown
    * 
@@ -339,6 +355,7 @@ export class BoardFormService {
    */
   selectCategory(category: string): void {
     this.taskForm.patchValue({ category });
+
     this.onCategoryChange();
     this.isCategoryDropdownOpen = false;
     this.removeDocumentClickListener();
@@ -359,6 +376,7 @@ export class BoardFormService {
         return '';
     }
   }
+
   /**
    * Selects a single contact (for single-select mode).
    * 
@@ -366,6 +384,7 @@ export class BoardFormService {
    */
   selectContact(contact: Contact) {
     this.taskForm.patchValue({ assignedTo: contact.id });
+
     this.isDropdownOpen = false;
   }
   /**
@@ -379,6 +398,7 @@ export class BoardFormService {
     // Note: This would need access to contacts array, consider injecting or passing as parameter
     return null;
   }
+
   /**
    * Gets display text for selected contacts.
    * 
@@ -389,6 +409,7 @@ export class BoardFormService {
     if (this.selectedContacts.length === 1) {
       return this.selectedContacts[0].name;
     } else if (this.selectedContacts.length === 2) {
+
       return this.selectedContacts.map(c => c.name).join(', ');
     } else {
       return `${this.selectedContacts[0].name} +${this.selectedContacts.length - 1} more`;
@@ -399,6 +420,7 @@ export class BoardFormService {
     const formArray = this.taskForm.get('subtasks') as FormArray;
     return formArray;
   }
+
   /**
    * Adds a new empty subtask to the form array.
    */
@@ -410,6 +432,7 @@ export class BoardFormService {
     });
     this.subtasksFormArray.push(subtaskGroup);
   }
+
   /**
    * Removes a subtask from the form array.
    * 
@@ -418,6 +441,7 @@ export class BoardFormService {
   removeSubtask(index: number) {
     this.subtasksFormArray.removeAt(index);
   }
+
   // Task details and editing
   /**
    * Opens the task details overlay for a specific task.
@@ -429,6 +453,7 @@ export class BoardFormService {
     this.showTaskDetailsOverlay = true;
     this.isEditingTask = false;
   }
+
   /**
    * Closes the task details overlay and resets form state.
    */
@@ -442,6 +467,7 @@ export class BoardFormService {
     this.removeAssignedContactsClickListener();
     this.resetForm();
   }
+
   /**
    * Switches from task details view to edit mode.
    * Populates the form with current task data for editing.
@@ -480,6 +506,7 @@ export class BoardFormService {
       });
     }
   }
+
   /**
    * Cancels task editing and returns to task details view.
    */
@@ -488,6 +515,7 @@ export class BoardFormService {
     this.showTaskDetailsOverlay = true;
     this.resetForm();
   }
+
   /**
    * Saves changes to the currently selected task.
    * 
@@ -514,6 +542,7 @@ export class BoardFormService {
       this.isEditingTask = false;
       this.showTaskDetailsOverlay = true; // Return to task details overlay
     } catch (error) {
+
       console.error('âŒ Error updating task:', error);
     }
   }
@@ -529,6 +558,7 @@ export class BoardFormService {
     // Auto-save subtask changes
     await this.saveTaskChanges(onTaskUpdate);
   }
+
   // Assigned contacts dropdown methods for task details
   toggleAssignedContactsDropdown(): void {
     this.showAssignedContactsDropdown = !this.showAssignedContactsDropdown;
@@ -538,6 +568,7 @@ export class BoardFormService {
       this.removeAssignedContactsClickListener();
     }
   }
+
   /**
    * Adds document click listener for closing assigned contacts dropdown when clicking outside
    */
@@ -555,6 +586,7 @@ export class BoardFormService {
           this.removeAssignedContactsClickListener();
         }
       };
+
       document.addEventListener('click', this.assignedContactsClickListener);
     }, 10);
   }
@@ -567,6 +599,7 @@ export class BoardFormService {
       this.assignedContactsClickListener = undefined;
     }
   }
+
   /**
    * Gets the first 2 assigned contacts for display.
    * 
@@ -576,6 +609,7 @@ export class BoardFormService {
     if (!this.selectedTask?.assignedTo) return [];
     return this.selectedTask.assignedTo.slice(0, 2);
   }
+
   /**
    * Checks if there are more than 2 assigned contacts.
    * 
@@ -584,6 +618,7 @@ export class BoardFormService {
   hasMoreAssignedContacts(): boolean {
     return this.selectedTask?.assignedTo ? this.selectedTask.assignedTo.length > 2 : false;
   }
+
   /**
    * Gets the count of remaining assigned contacts not displayed.
    * 
@@ -593,6 +628,7 @@ export class BoardFormService {
     if (!this.selectedTask?.assignedTo || this.selectedTask.assignedTo.length <= 2) return 0;
     return this.selectedTask.assignedTo.length - 2;
   }
+
   /**
    * Gets the list of remaining assigned contacts for dropdown.
    * 
@@ -602,6 +638,7 @@ export class BoardFormService {
     if (!this.selectedTask?.assignedTo) return [];
     return this.selectedTask.assignedTo.slice(2);
   }
+
   /**
    * Gets the percentage of completed subtasks for the currently selected task.
    * 
@@ -612,6 +649,7 @@ export class BoardFormService {
     const completed = this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
     return (completed / this.selectedTask.subtasks.length) * 100;
   }
+
   /**
    * Gets the count of completed subtasks for the currently selected task.
    * 
@@ -621,6 +659,7 @@ export class BoardFormService {
     if (!this.selectedTask?.subtasks) return 0;
     return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
   }
+
 public createSubtaskGroup(title: string = '', completed: boolean = false) {
   return this.fb.group({
     title: [title],
