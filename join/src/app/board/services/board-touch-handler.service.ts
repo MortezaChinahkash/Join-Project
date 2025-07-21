@@ -307,7 +307,6 @@ export class BoardTouchHandlerService {
         navigator.vibrate(50);
       }
     } catch (error) {
-      // Silently ignore vibration errors
     }
   }
 }
