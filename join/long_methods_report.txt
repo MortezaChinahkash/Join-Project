@@ -1,36 +1,5 @@
 
 
-File: board\services\form\board-form-v2.service.ts
-------------------------------
-Method: saveTask
-Lines: 19
-Line Number: 88
-Content Preview:
-
-  async saveTask(): Promise<boolean> {
-    if (!this.validateForm()) {
-      return false;
-    }
-    try {
-      const task = this.buildTaskFromForm();
-      if (this.dataService.getIsEditMode()) {
- ......
-
-==================================================
-
-Method: buildTaskFromForm
-Lines: 16
-Line Number: 114
-Content Preview:
-
-  private buildTaskFromForm(): Task {
-    const formValue = this.taskForm.value;
-    const currentTask = this.dataService.getCurrentTask();
-    if (!currentTask) {
-      throw new Error('No current t......
-
-==================================================
-
 File: board\services\form\board-form-validation.service.ts
 ------------------------------
 Method: getFieldErrorMessage

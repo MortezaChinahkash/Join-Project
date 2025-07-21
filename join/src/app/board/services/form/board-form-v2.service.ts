@@ -91,20 +91,59 @@ export class BoardFormService {
       return false;
     }
     try {
-      const task = this.buildTaskFromForm();
-      if (this.dataService.getIsEditMode()) {
-        await this.updateTask(task);
-      } else {
-        await this.createTask(task);
-      }
-      this.dataService.saveChanges();
-      this.closeForm();
-      return true;
+      return await this.performTaskSave();
     } catch (error) {
-
-      console.error('Error saving task:', error);
-      return false;
+      return this.handleSaveError(error);
     }
+  }
+
+  /**
+   * Performs the actual task save operation.
+   * 
+   * @returns Promise<boolean> - Success status
+   * @private
+   */
+  private async performTaskSave(): Promise<boolean> {
+    const task = this.buildTaskFromForm();
+    await this.saveTaskBasedOnMode(task);
+    this.finalizeSaveOperation();
+    return true;
+  }
+
+  /**
+   * Saves task based on current mode (create or edit).
+   * 
+   * @param task - Task to save
+   * @private
+   */
+  private async saveTaskBasedOnMode(task: Task): Promise<void> {
+    if (this.dataService.getIsEditMode()) {
+      await this.updateTask(task);
+    } else {
+      await this.createTask(task);
+    }
+  }
+
+  /**
+   * Finalizes the save operation by updating state and closing form.
+   * 
+   * @private
+   */
+  private finalizeSaveOperation(): void {
+    this.dataService.saveChanges();
+    this.closeForm();
+  }
+
+  /**
+   * Handles save operation errors.
+   * 
+   * @param error - Error that occurred
+   * @returns False to indicate failure
+   * @private
+   */
+  private handleSaveError(error: any): boolean {
+    console.error('Error saving task:', error);
+    return false;
   }
 
   /**
