@@ -10,6 +10,7 @@ export interface User {
   isGuest: boolean;
   loginTimestamp: number; // Timestamp when user logged in
 }
+
 /**
  * Authentication service for handling user login, registration, and session management.
  * Manages user authentication state and provides methods for login, registration, and logout.
@@ -40,6 +41,7 @@ export class AuthService implements OnDestroy {
       this.startSessionCheck();
     }, 0);
   }
+
   /**
    * Initializes Firebase auth state listener.
    */
@@ -64,6 +66,7 @@ export class AuthService implements OnDestroy {
       });
     });
   }
+
   /**
    * Waits for Firebase auth to be ready and returns the current auth state.
    */
@@ -84,6 +87,7 @@ export class AuthService implements OnDestroy {
       });
     });
   }
+
   /**
    * Maps Firebase user to our User interface.
    */
@@ -135,6 +139,7 @@ export class AuthService implements OnDestroy {
       throw this.handleAuthError(error);
     }
   }
+
   /**
    * Registers a new user with Firebase Authentication.
    * @param name - User's full name
@@ -165,6 +170,7 @@ export class AuthService implements OnDestroy {
       throw this.handleAuthError(error);
     }
   }
+
   /**
    * Logs in user as guest using Firebase Anonymous Authentication.
    */
@@ -180,6 +186,7 @@ export class AuthService implements OnDestroy {
       throw this.handleAuthError(error);
     }
   }
+
   /**
    * Logs out the current user using Firebase.
    */
@@ -198,6 +205,7 @@ export class AuthService implements OnDestroy {
       throw new Error('Logout failed');
     }
   }
+
   /**
    * Checks if user is authorized to access protected routes.
    */
@@ -233,6 +241,11 @@ export class AuthService implements OnDestroy {
       localStorage.removeItem(this.STORAGE_KEY);
     }
   }
+
+  /**
+   * Validates and loads user session if still valid.
+   * @param user - User data from storage
+   */
   private validateAndLoadSession(user: any): void {
     if (!this.isSessionValid(user)) {
       this.clearExpiredSession();
@@ -243,12 +256,20 @@ export class AuthService implements OnDestroy {
     }
   }
 
+  /**
+   * Checks if the user session is still valid based on timestamp.
+   * @param user - User data to validate
+   * @returns True if session is still valid
+   */
   private isSessionValid(user: any): boolean {
     const currentTime = Date.now();
     const sessionAge = currentTime - (user.loginTimestamp || 0);
     return sessionAge <= this.SESSION_DURATION;
   }
 
+  /**
+   * Clears expired session data from local storage.
+   */
   private clearExpiredSession(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }
@@ -264,6 +285,7 @@ export class AuthService implements OnDestroy {
       console.error('Error saving user to storage:', error);
     }
   }
+
   /**
    * Gets remaining session time in milliseconds.
    */
@@ -380,6 +402,7 @@ export class AuthService implements OnDestroy {
       throw new Error('Failed to update user profile');
     }
   }
+
   /**
    * Starts periodic session check to auto-logout after 24 hours.
    */
@@ -392,6 +415,7 @@ export class AuthService implements OnDestroy {
     // Also check immediately
     this.checkSessionExpiry();
   }
+
   /**
    * Checks if current session has expired and logs out if necessary.
    */

@@ -257,6 +257,7 @@ export class BoardFormService {
       await this.taskService.addTaskToFirebase(taskDataForFirebase, this.overlayService.currentColumn);
     }
   }
+
   /**
    * Toggles the assigned contacts dropdown.
    */

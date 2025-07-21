@@ -74,6 +74,7 @@ export class BoardDisplayService {
       doneTasks
     );
   }
+
   /**
    * Gets task completion progress as percentage.
    * @param task - Task to calculate progress for

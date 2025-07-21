@@ -82,6 +82,7 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
 
     this.subscriptions.push(showSub, stepSub);
   }
+
   /**
    * Updates the position of the highlight around the target element.
    */
@@ -104,6 +105,7 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
       };
     }
   }
+
   /**
    * Gets the position styles for the tooltip.
    */
@@ -210,6 +212,7 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
     }
     return position;
   }
+
   /**
    * Gets the arrow direction class for the tooltip.
    */

@@ -105,6 +105,7 @@ export class BoardDragDropService {
       document.addEventListener('mouseup', handleMouseUp);
     });
   }
+
   /**
    * Handles touch start events on tasks for mobile drag & drop functionality.
    * Uses long press to initiate dragging on touch devices.
@@ -160,6 +161,7 @@ export class BoardDragDropService {
       document.addEventListener('touchend', handleTouchEnd);
     });
   }
+
   /**
    * Initiates the task dragging process by creating a visual clone and setting up drag state.
    * 

@@ -56,6 +56,7 @@ export class BoardInitializationService {
     this.handleFragmentNavigation();
     onQueryParamsHandled();
   }
+
   /**
    * Loads contacts from Firebase and sorts them alphabetically.
    * @param onContactsLoaded - Callback when contacts are loaded
@@ -72,6 +73,7 @@ export class BoardInitializationService {
       }
     });
   }
+
   /**
    * Loads tasks from Firebase and subscribes to real-time updates.
    * @param onTasksLoaded - Callback when tasks are loaded
@@ -87,6 +89,7 @@ export class BoardInitializationService {
       }
     });
   }
+
   /**
    * Sets up the scroll listener for thumbnail navigation.
    */
@@ -95,6 +98,7 @@ export class BoardInitializationService {
       this.thumbnailService.setupScrollListener();
     }, 500);
   }
+
   /**
    * Handles fragment navigation to scroll to specific columns.
    */
@@ -114,6 +118,7 @@ export class BoardInitializationService {
       }
     });
   }
+
   /**
    * Initializes and updates local task arrays with the latest data from the task service.
    * @returns Object with initialized task arrays for each column

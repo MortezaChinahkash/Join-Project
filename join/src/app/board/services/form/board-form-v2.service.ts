@@ -27,6 +27,7 @@ export class BoardFormService {
   ) {
     this.taskForm = this.createTaskForm();
   }
+
   /**
    * Creates and initializes the task form.
    * 
@@ -108,6 +109,7 @@ export class BoardFormService {
       return false;
     }
   }
+
   /**
    * Builds task object from form data.
    * 

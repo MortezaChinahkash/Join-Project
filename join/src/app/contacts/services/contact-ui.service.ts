@@ -32,6 +32,7 @@ export class ContactUiService {
       }, duration);
     });
   }
+
   /**
    * Validates email format.
    * @param email - Email to validate
@@ -66,6 +67,7 @@ export class ContactUiService {
       errors
     };
   }
+
   /**
    * Sanitizes contact input data.
    * @param contact - Contact data to sanitize
@@ -98,6 +100,7 @@ export class ContactUiService {
       showMobileSingleContact: newMobileState ? showSingleContact : false
     };
   }
+
   /**
    * Determines appropriate FAB action based on current state.
    * @param isMobileView - Current mobile view state
@@ -122,6 +125,7 @@ export class ContactUiService {
       }, delay);
     });
   }
+
   /**
    * Manages animation suppression for smooth transitions.
    * @param suppressCallback - Callback to execute with suppression
@@ -135,6 +139,7 @@ export class ContactUiService {
       }, 200);
     });
   }
+
   /**
    * Formats contact display information.
    * @param contact - Contact to format
@@ -153,6 +158,7 @@ export class ContactUiService {
       hasValidPhone: !!(contact.phone?.trim() && contact.phone !== 'N/A')
     };
   }
+
   /**
    * Handles keyboard navigation for contact selection.
    * @param event - Keyboard event

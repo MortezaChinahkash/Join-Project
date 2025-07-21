@@ -44,6 +44,7 @@ export class BoardMobileService {
     const rightPosition = Math.max(10, viewportWidth - buttonRect.right);
     return { top: topPosition, right: rightPosition };
   }
+
   /**
    * Adjusts position to ensure overlay stays within viewport bounds.
    * 
@@ -73,6 +74,7 @@ export class BoardMobileService {
     );
     return adjustedPosition;
   }
+
   /**
    * Adjusts horizontal position to prevent overflow.
    * 
@@ -91,6 +93,7 @@ export class BoardMobileService {
     }
     return rightPosition;
   }
+
   /**
    * Adjusts vertical position to prevent overflow.
    * 
@@ -111,6 +114,7 @@ export class BoardMobileService {
     }
     return Math.max(scrollY + minTopMargin, topPosition);
   }
+
   /**
    * Gets the previous column in the workflow order.
    * 

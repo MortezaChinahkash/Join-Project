@@ -63,6 +63,7 @@ export class BoardFormValidationService {
     }
     return 'This field is invalid';
   }
+
   /**
    * Gets display name for a field.
    * 
@@ -119,6 +120,7 @@ export class BoardFormValidationService {
       fieldErrors
     };
   }
+
   /**
    * Validates required fields for task creation.
    * 

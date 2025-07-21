@@ -74,6 +74,7 @@ export class AddTaskContactService {
     }
     return `${contacts[0].name} and ${contacts.length - 1} others`;
   }
+
   /**
    * Processes and sorts contacts data.
    * @param contactsData - Raw contacts data

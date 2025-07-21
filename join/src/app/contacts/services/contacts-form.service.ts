@@ -174,6 +174,7 @@ export class ContactsFormService {
 
     return errors;
   }
+
   /**
    * Checks if form has any validation errors.
    * 

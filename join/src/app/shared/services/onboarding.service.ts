@@ -11,6 +11,7 @@ export interface OnboardingStep {
   position: 'top' | 'bottom' | 'left' | 'right' | 'center';
   highlightNavItem?: string;
 }
+
 /**
  * Onboarding service for guiding new users through the application.
  * Manages the step-by-step tour for first-time users.
@@ -73,6 +74,7 @@ export class OnboardingService {
     // Add global function for testing
     (window as any).startOnboarding = () => this.manualStartOnboarding();
   }
+
   /**
    * Initializes the onboarding system.
    */

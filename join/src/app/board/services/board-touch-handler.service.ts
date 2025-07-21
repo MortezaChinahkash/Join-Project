@@ -85,6 +85,7 @@ export class BoardTouchHandlerService {
       document.addEventListener('touchend', handleTouchEnd);
     });
   }
+
   /**
    * Starts touch drag operation.
    * 

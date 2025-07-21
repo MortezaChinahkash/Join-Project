@@ -207,6 +207,7 @@ export class ContactsService implements OnDestroy {
       this.handleOperationError(operation, error);
     }
   }
+
   /**
    * Performs add contact operation.
    * 
@@ -244,6 +245,7 @@ export class ContactsService implements OnDestroy {
       this.handleDeleteError(error);
     }
   }
+
   /**
    * Handles successful contact addition.
    * 
@@ -297,6 +299,7 @@ export class ContactsService implements OnDestroy {
 
     this.stateService.enableAnimations();
   }
+
   /**
    * Handles delete operation errors.
    * 
@@ -384,6 +387,7 @@ export class ContactsService implements OnDestroy {
       this.stateService.hideSuccessMessage();
     });
   }
+
   /**
    * Updates mobile view status and responsive state.
    */

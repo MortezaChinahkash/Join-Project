@@ -53,6 +53,7 @@ export class BoardNavigationService {
       }
     });
   }
+
   /**
    * Opens task details for a specific task by its ID.
    * @param taskId - ID of the task to open
@@ -82,6 +83,7 @@ export class BoardNavigationService {
       openTaskCallback(targetTask);
     }
   }
+
   /**
    * Handles fragment navigation to scroll to specific columns.
    */

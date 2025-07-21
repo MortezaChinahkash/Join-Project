@@ -39,6 +39,7 @@ export class ContactOrganizationService {
       }
     }
   }
+
   /**
    * Extracts the first letter from a contact name.
    * @param name - Contact name
@@ -65,6 +66,7 @@ export class ContactOrganizationService {
     }
     grouped[letter].push(contact);
   }
+
   /**
    * Sorts contacts alphabetically within each letter group.
    * @param grouped - Grouped contacts object

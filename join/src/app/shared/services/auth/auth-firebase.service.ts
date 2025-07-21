@@ -31,6 +31,7 @@ export class AuthFirebaseService {
       });
     });
   }
+
   /**
    * Waits for Firebase auth to be ready and returns the current auth state.
    * 
@@ -51,6 +52,7 @@ export class AuthFirebaseService {
       });
     });
   }
+
   /**
    * Authenticates user with email and password using Firebase.
    * 
@@ -70,6 +72,7 @@ export class AuthFirebaseService {
       throw this.handleAuthError(error);
     }
   }
+
   /**
    * Registers a new user with Firebase Authentication.
    * 
@@ -102,6 +105,7 @@ export class AuthFirebaseService {
       throw this.handleAuthError(error);
     }
   }
+
   /**
    * Logs in user as guest using Firebase Anonymous Authentication.
    * 
@@ -119,6 +123,7 @@ export class AuthFirebaseService {
       throw this.handleAuthError(error);
     }
   }
+
   /**
    * Logs out the current user using Firebase.
    * 
@@ -133,6 +138,7 @@ export class AuthFirebaseService {
       throw error;
     }
   }
+
   /**
    * Updates user profile information.
    * 
@@ -154,6 +160,7 @@ export class AuthFirebaseService {
       throw error;
     }
   }
+
   /**
    * Maps Firebase user to our User interface.
    * 

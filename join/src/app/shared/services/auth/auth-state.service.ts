@@ -7,6 +7,7 @@ export interface User {
   isGuest: boolean;
   loginTimestamp: number; // Timestamp when user logged in
 }
+
 /**
  * Service for managing user state and local storage operations.
  * Handles user data persistence and state management.
@@ -83,6 +84,7 @@ export class AuthStateService {
       localStorage.removeItem(this.STORAGE_KEY);
     }
   }
+
   /**
    * Saves user data to local storage.
    * 
@@ -97,6 +99,7 @@ export class AuthStateService {
       console.error('Error saving user to storage:', error);
     }
   }
+
   /**
    * Clears user data from local storage.
    * @private
@@ -119,6 +122,7 @@ export class AuthStateService {
     }
     return `${minutes}m`;
   }
+
   /**
    * Gets session age in milliseconds.
    * 
@@ -159,6 +163,7 @@ export class AuthStateService {
       this.setCurrentUser(updatedUser);
     }
   }
+
   /**
    * Clears all user state and storage.
    */

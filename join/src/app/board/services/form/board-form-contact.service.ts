@@ -69,6 +69,7 @@ export class BoardFormContactService {
       this.preventDropdownClose = false;
     }, 100);
   }
+
   /**
    * Selects a contact from the dropdown.
    * 
@@ -180,6 +181,7 @@ export class BoardFormContactService {
 
     document.addEventListener('click', this.documentClickListener);
   }
+
   /**
    * Removes document click listener.
    * @private
@@ -208,6 +210,7 @@ export class BoardFormContactService {
 
     document.addEventListener('click', this.assignedContactsClickListener);
   }
+
   /**
    * Removes assigned contacts click listener.
    * @private

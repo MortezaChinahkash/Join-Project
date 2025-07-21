@@ -90,6 +90,7 @@ export class BoardDragDropService {
       document.addEventListener('mouseup', handleMouseUp);
     });
   }
+
   /**
    * Handles touch start events on tasks for mobile drag & drop functionality.
    * Delegates to TouchHandlerService for mobile-specific behavior.
