@@ -37,15 +37,44 @@ export class BoardDragStateService {
    * Useful for cleanup when component is destroyed or when resetting the board state.
    */
   resetDragState(): void {
+    this.resetBasicDragProperties();
+    this.resetPositionAndTimingProperties();
+    this.clearAllTimeouts();
+    this.cleanupDragElement();
+    this.resetScrollingState();
+  }
+
+  /**
+   * Resets basic drag operation properties.
+   * 
+   * @private
+   */
+  private resetBasicDragProperties(): void {
     this.isDraggingTask = false;
     this.draggedTask = null;
     this.dragOverColumn = null;
     this.dragPlaceholderVisible = false;
     this.dragPlaceholderHeight = 0;
+  }
+
+  /**
+   * Resets position and timing related properties.
+   * 
+   * @private
+   */
+  private resetPositionAndTimingProperties(): void {
     this.currentCursorY = 0;
     this.isMousePressed = false;
     this.mouseDownTime = 0;
     this.initialMousePosition = { x: 0, y: 0 };
+  }
+
+  /**
+   * Clears all active timeouts.
+   * 
+   * @private
+   */
+  private clearAllTimeouts(): void {
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
       this.longPressTimeout = null;
@@ -58,10 +87,26 @@ export class BoardDragStateService {
       clearInterval(this.autoScrollInterval);
       this.autoScrollInterval = null;
     }
+  }
+
+  /**
+   * Removes drag element from DOM if it exists.
+   * 
+   * @private
+   */
+  private cleanupDragElement(): void {
     if (this.dragElement) {
       document.body.removeChild(this.dragElement);
       this.dragElement = null;
     }
+  }
+
+  /**
+   * Resets auto-scrolling state.
+   * 
+   * @private
+   */
+  private resetScrollingState(): void {
     this.isAutoScrolling = false;
   }
 
