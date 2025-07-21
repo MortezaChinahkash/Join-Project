@@ -204,51 +204,77 @@ export class BoardThumbnailService {
    * @param event - The touch start event on the viewport
    */
   onViewportTouchStart(event: TouchEvent) {
+    this.initializeViewportTouchDrag(event);
+    this.setupTouchEventListeners();
+  }
+
+  /**
+   * Initializes viewport touch dragging state and DOM elements.
+   */
+  private initializeViewportTouchDrag(event: TouchEvent): void {
     event.preventDefault();
     event.stopPropagation();
     this.isViewportDragging = true;
     const touch = event.touches[0];
     this.dragStartX = touch.clientX;
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    
+    const container = this.getBoardScrollWrapper();
     if (container) {
       this.dragStartScrollLeft = container.scrollLeft;
     }
-    const viewport = document.querySelector('.thumbnail-viewport') as HTMLElement;
-    if (viewport) {
-      viewport.style.transition = 'none';
-    }
-    const handleTouchMove = (e: TouchEvent) => {
+    
+    this.disableViewportTransition();
+  }
+
+  /**
+   * Sets up touch event listeners for viewport dragging.
+   */
+  private setupTouchEventListeners(): void {
+    const handleTouchMove = this.createTouchMoveHandler();
+    const handleTouchEnd = this.createTouchEndHandler(handleTouchMove);
+
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchcancel', handleTouchEnd);
+  }
+
+  /**
+   * Creates touch move handler for viewport dragging.
+   */
+  private createTouchMoveHandler(): (e: TouchEvent) => void {
+    return (e: TouchEvent) => {
       if (!this.isViewportDragging) return;
       e.preventDefault();
+      
       const touch = e.touches[0];
       const deltaX = touch.clientX - this.dragStartX;
-      const thumbnailWidth = 192;
-      const viewportWidth = this.thumbnailViewport.width;
-      const availableDragWidth = thumbnailWidth - viewportWidth;
-      const scrollRatio = availableDragWidth > 0 ? this.maxScrollPosition / availableDragWidth : 0;
-      const newScrollLeft = this.dragStartScrollLeft + (deltaX * scrollRatio);
-      if (container) {
-        const clampedScroll = Math.max(0, Math.min(this.maxScrollPosition, newScrollLeft));
-        container.scrollLeft = clampedScroll;
-        requestAnimationFrame(() => {
-          this.updateScrollPosition();
-        });
-      }
+      const scrollPosition = this.calculateNewScrollPosition(deltaX);
+      this.updateContainerScroll(scrollPosition);
     };
+  }
+
+  /**
+   * Creates touch end handler for ending viewport drag.
+   */
+  private createTouchEndHandler(handleTouchMove: (e: TouchEvent) => void): () => void {
+    return () => {
+      this.finalizeDragOperation();
+      this.removeTouchEventListeners(handleTouchMove);
+    };
+  }
+
+  /**
+   * Removes touch event listeners.
+   */
+  private removeTouchEventListeners(handleTouchMove: (e: TouchEvent) => void): void {
     const handleTouchEnd = () => {
-      this.isViewportDragging = false;
-      if (viewport) {
-        viewport.style.transition = 'all 0.1s ease';
-      }
+      this.finalizeDragOperation();
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('touchcancel', handleTouchEnd);
     };
-
-    document.addEventListener('touchmove', handleTouchMove, { passive: false });
-
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchEnd);
+    
+    handleTouchEnd();
   }
 
   /**
