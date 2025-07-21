@@ -130,19 +130,59 @@ export class BoardInitializationService {
     doneTasks: Task[];
   } {
     return {
-      todoTasks: this.utilsService.sortTasksByPriority(
-        this.taskService.getTasksByColumn('todo')
-      ),
-      inProgressTasks: this.utilsService.sortTasksByPriority(
-        this.taskService.getTasksByColumn('inprogress')
-      ),
-      awaitingFeedbackTasks: this.utilsService.sortTasksByPriority(
-        this.taskService.getTasksByColumn('awaiting')
-      ),
-      doneTasks: this.utilsService.sortTasksByPriority(
-        this.taskService.getTasksByColumn('done')
-      )
+      todoTasks: this.initializeTodoTasks(),
+      inProgressTasks: this.initializeInProgressTasks(),
+      awaitingFeedbackTasks: this.initializeAwaitingTasks(),
+      doneTasks: this.initializeDoneTasks()
     };
+  }
+
+  /**
+   * Initializes and sorts todo tasks.
+   * 
+   * @returns Sorted array of todo tasks
+   * @private
+   */
+  private initializeTodoTasks(): Task[] {
+    return this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('todo')
+    );
+  }
+
+  /**
+   * Initializes and sorts in-progress tasks.
+   * 
+   * @returns Sorted array of in-progress tasks
+   * @private
+   */
+  private initializeInProgressTasks(): Task[] {
+    return this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('inprogress')
+    );
+  }
+
+  /**
+   * Initializes and sorts awaiting feedback tasks.
+   * 
+   * @returns Sorted array of awaiting feedback tasks
+   * @private
+   */
+  private initializeAwaitingTasks(): Task[] {
+    return this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('awaiting')
+    );
+  }
+
+  /**
+   * Initializes and sorts done tasks.
+   * 
+   * @returns Sorted array of done tasks
+   * @private
+   */
+  private initializeDoneTasks(): Task[] {
+    return this.utilsService.sortTasksByPriority(
+      this.taskService.getTasksByColumn('done')
+    );
   }
 
   /**
