@@ -343,23 +343,67 @@ export class BoardThumbnailService {
    * @private
    */
   updateScrollPosition() {
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
-    const boardContainer = document.querySelector('.board-container') as HTMLElement;
-    if (container && boardContainer) {
-      this.scrollPosition = container.scrollLeft;
-      this.maxScrollPosition = boardContainer.scrollWidth - container.clientWidth;
-      const windowWidth = window.innerWidth;
-      const shouldShowScroll = windowWidth >= 1000 && windowWidth <= 1750 && this.maxScrollPosition > 0;
-      this.showScrollOverview = shouldShowScroll;
-      if (this.maxScrollPosition > 0) {
-        this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
-        this.thumbWidth = (container.clientWidth / boardContainer.scrollWidth) * 100;
-        this.updateThumbnailViewport(container, boardContainer);
-      } else {
-        this.scrollPercentage = 0;
-        this.thumbWidth = 100;
-      }
+    const containers = this.getScrollContainers();
+    if (!containers.container || !containers.boardContainer) return;
+    
+    this.updateScrollValues(containers.container, containers.boardContainer);
+    this.determineScrollOverviewVisibility();
+    this.updateThumbnailCalculations(containers.container, containers.boardContainer);
+  }
+
+  /**
+   * Gets the scroll container elements.
+   */
+  private getScrollContainers(): { container: HTMLElement | null; boardContainer: HTMLElement | null } {
+    return {
+      container: document.querySelector('.board-scroll-wrapper') as HTMLElement,
+      boardContainer: document.querySelector('.board-container') as HTMLElement
+    };
+  }
+
+  /**
+   * Updates basic scroll position values.
+   */
+  private updateScrollValues(container: HTMLElement, boardContainer: HTMLElement): void {
+    this.scrollPosition = container.scrollLeft;
+    this.maxScrollPosition = boardContainer.scrollWidth - container.clientWidth;
+  }
+
+  /**
+   * Determines if scroll overview should be visible.
+   */
+  private determineScrollOverviewVisibility(): void {
+    const windowWidth = window.innerWidth;
+    const shouldShowScroll = windowWidth >= 1000 && windowWidth <= 1750 && this.maxScrollPosition > 0;
+    this.showScrollOverview = shouldShowScroll;
+  }
+
+  /**
+   * Updates thumbnail calculations based on scroll state.
+   */
+  private updateThumbnailCalculations(container: HTMLElement, boardContainer: HTMLElement): void {
+    if (this.maxScrollPosition > 0) {
+      this.calculateActiveScrollMetrics(container, boardContainer);
+      this.updateThumbnailViewport(container, boardContainer);
+    } else {
+      this.resetScrollMetrics();
     }
+  }
+
+  /**
+   * Calculates scroll metrics when scrolling is active.
+   */
+  private calculateActiveScrollMetrics(container: HTMLElement, boardContainer: HTMLElement): void {
+    this.scrollPercentage = (this.scrollPosition / this.maxScrollPosition) * 100;
+    this.thumbWidth = (container.clientWidth / boardContainer.scrollWidth) * 100;
+  }
+
+  /**
+   * Resets scroll metrics when no scrolling is needed.
+   */
+  private resetScrollMetrics(): void {
+    this.scrollPercentage = 0;
+    this.thumbWidth = 100;
   }
 
   /**
