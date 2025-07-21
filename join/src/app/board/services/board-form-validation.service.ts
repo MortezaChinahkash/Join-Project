@@ -152,23 +152,102 @@ export class BoardFormValidationService {
   } {
     const errors: string[] = [];
     const fieldErrors: { [key: string]: string } = {};
-    Object.keys(form.controls).forEach(key => {
-      const control = form.get(key);
-      if (control) {
-        control.markAsTouched();
-        if (control.invalid) {
-          const errorMessage = this.getFieldErrorMessage(form, key);
-          errors.push(errorMessage);
-          fieldErrors[key] = errorMessage;
-        }
-      }
-    });
+    
+    this.validateFormControls(form, errors, fieldErrors);
+    this.validateDateConstraints(form, errors, fieldErrors);
+    
+    return this.buildValidationResult(form, errors, fieldErrors);
+  }
 
-    if (this.isDateInvalid(form)) {
-      const dateError = 'Due date cannot be in the past';
-      errors.push(dateError);
-      fieldErrors['dueDate'] = dateError;
+  /**
+   * Validates all form controls and collects errors.
+   * 
+   * @param form - The form group to validate
+   * @param errors - Array to collect validation errors
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private validateFormControls(form: FormGroup, errors: string[], fieldErrors: { [key: string]: string }): void {
+    Object.keys(form.controls).forEach(key => {
+      this.validateSingleControl(form, key, errors, fieldErrors);
+    });
+  }
+
+  /**
+   * Validates a single form control.
+   * 
+   * @param form - The form group
+   * @param key - Control key to validate
+   * @param errors - Array to collect validation errors
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private validateSingleControl(form: FormGroup, key: string, errors: string[], fieldErrors: { [key: string]: string }): void {
+    const control = form.get(key);
+    if (control) {
+      control.markAsTouched();
+      if (control.invalid) {
+        this.addControlError(form, key, errors, fieldErrors);
+      }
     }
+  }
+
+  /**
+   * Adds error for an invalid control.
+   * 
+   * @param form - The form group
+   * @param key - Control key with error
+   * @param errors - Array to collect validation errors
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private addControlError(form: FormGroup, key: string, errors: string[], fieldErrors: { [key: string]: string }): void {
+    const errorMessage = this.getFieldErrorMessage(form, key);
+    errors.push(errorMessage);
+    fieldErrors[key] = errorMessage;
+  }
+
+  /**
+   * Validates date-specific constraints.
+   * 
+   * @param form - The form group to validate
+   * @param errors - Array to collect validation errors
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private validateDateConstraints(form: FormGroup, errors: string[], fieldErrors: { [key: string]: string }): void {
+    if (this.isDateInvalid(form)) {
+      this.addDateError(errors, fieldErrors);
+    }
+  }
+
+  /**
+   * Adds date validation error.
+   * 
+   * @param errors - Array to collect validation errors
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private addDateError(errors: string[], fieldErrors: { [key: string]: string }): void {
+    const dateError = 'Due date cannot be in the past';
+    errors.push(dateError);
+    fieldErrors['dueDate'] = dateError;
+  }
+
+  /**
+   * Builds the final validation result.
+   * 
+   * @param form - The form group
+   * @param errors - Collected validation errors
+   * @param fieldErrors - Collected field-specific errors
+   * @returns Validation result object
+   * @private
+   */
+  private buildValidationResult(form: FormGroup, errors: string[], fieldErrors: { [key: string]: string }): {
+    isValid: boolean;
+    errors: string[];
+    fieldErrors: { [key: string]: string };
+  } {
     return {
       isValid: form.valid && !this.isDateInvalid(form),
       errors,
