@@ -4,7 +4,7 @@ import glob
 
 def analyze_method_length(file_path):
     """
-    Analyze method/function lengths in TypeScript files
+    Analyze method/function lengths in TypeScript and JavaScript files
     """
     try:
         with open(file_path, 'r', encoding='utf-8') as f:
@@ -161,19 +161,47 @@ def extract_method_name(method_line):
     return None
 
 def scan_all_ts_files():
-    """Scan all TypeScript files for long methods"""
-    pattern = os.path.join("src", "app", "**", "*.ts")
-    files = glob.glob(pattern, recursive=True)
+    """Scan all TypeScript and JavaScript files for long methods"""
+    # Get the directory where this script is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Search for both .ts and .js files recursively from script directory
+    ts_pattern = os.path.join(script_dir, "**", "*.ts")
+    js_pattern = os.path.join(script_dir, "**", "*.js")
+    
+    ts_files = glob.glob(ts_pattern, recursive=True)
+    js_files = glob.glob(js_pattern, recursive=True)
+    all_files = ts_files + js_files
+    
+    # Filter out node_modules and other unwanted directories
+    excluded_dirs = ['node_modules', '.git', 'dist', 'build', '.angular', 'coverage']
+    files = []
+    for file_path in all_files:
+        # Check if file contains any excluded directory in its path
+        should_exclude = any(excluded_dir in file_path for excluded_dir in excluded_dirs)
+        if not should_exclude:
+            files.append(file_path)
+    
+    ts_files_filtered = [f for f in files if f.endswith('.ts')]
+    js_files_filtered = [f for f in files if f.endswith('.js')]
     
     # Prepare output content
     output_lines = []
     output_lines.append(f"METHOD LENGTH ANALYSIS REPORT")
     output_lines.append(f"Generated: {os.popen('date /t').read().strip()} {os.popen('time /t').read().strip()}")
     output_lines.append("=" * 80)
-    output_lines.append(f"Analyzing {len(files)} TypeScript files for methods > 14 lines...")
+    output_lines.append(f"Analyzing {len(files)} TypeScript/JavaScript files for methods > 14 lines...")
+    output_lines.append(f"Search directory: {script_dir}")
+    output_lines.append(f"TypeScript files: {len(ts_files_filtered)}")
+    output_lines.append(f"JavaScript files: {len(js_files_filtered)}")
+    output_lines.append(f"Excluded directories: {', '.join(excluded_dirs)}")
     output_lines.append("")
     
-    print(f"Analyzing {len(files)} TypeScript files for methods > 14 lines...")
+    print(f"Analyzing {len(files)} TypeScript/JavaScript files for methods > 14 lines...")
+    print(f"Search directory: {script_dir}")
+    print(f"TypeScript files: {len(ts_files_filtered)}")
+    print(f"JavaScript files: {len(js_files_filtered)}")
+    print(f"Excluded directories: {', '.join(excluded_dirs)}")
     print("")
     
     all_long_methods = []
@@ -281,4 +309,4 @@ def scan_all_ts_files():
         print(f"\nError saving to file: {e}")
 
 if __name__ == "__main__":
-    scan_all_ts_files()
+    scan_all_ts_files()  # Function name kept for compatibility
