@@ -1,0 +1,1395 @@
+JSDOC COVERAGE ANALYSIS REPORT
+Generated: 22.07.2025 01:33
+================================================================================
+Analyzing 108 TypeScript/JavaScript files for missing JSDoc...
+Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
+TypeScript files: 107
+JavaScript files: 1
+Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\main.ts
+--------------------------------------------------------------------------------
+  Method: provideFirebaseApp (Line 19)
+     Type: Arrow Function
+     Declaration: provideFirebaseApp(() => initializeApp(environment.firebase)),...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\app.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('AppComponent', () => {...
+
+  Method: it (Line 10)
+     Type: Arrow Function
+     Declaration: it('should create the app', () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it(`should have the 'join' title`, () => {...
+
+  Method: it (Line 22)
+     Type: Arrow Function
+     Declaration: it('should render title', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\app.config.ts
+--------------------------------------------------------------------------------
+  Method: provideZoneChangeDetection (Line 14)
+     Type: Method
+     Declaration: provideZoneChangeDetection({ eventCoalescing: true }),...
+
+  Method: provideFirebaseApp (Line 16)
+     Type: Arrow Function
+     Declaration: provideFirebaseApp(() => initializeApp({...
+
+  Method: provideFirestore (Line 27)
+     Type: Arrow Function
+     Declaration: provideFirestore(() => getFirestore())...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\inline-svg.directive.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 8)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\svg-loader.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 15)
+     Type: Constructor
+     Declaration: constructor(private http: HttpClient) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\add-task\services\add-task-form.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 15)
+     Type: Constructor
+     Declaration: constructor(private formBuilder: FormBuilder) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\auth\auth.component.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 29)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('BoardComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.ts
+--------------------------------------------------------------------------------
+  Method: style (Line 46)
+     Type: Method
+     Declaration: style({ transform: 'translateX(100%)', opacity: 0 }),...
+
+  Method: animate (Line 48)
+     Type: Method
+     Declaration: animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'transla...
+
+  Method: animate (Line 52)
+     Type: Method
+     Declaration: animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'transla...
+
+  Method: tasks (Line 71)
+     Type: Arrow Function
+     Declaration: tasks: () => this.todoTasks,...
+
+  Method: tasks (Line 78)
+     Type: Arrow Function
+     Declaration: tasks: () => this.inProgressTasks,...
+
+  Method: tasks (Line 85)
+     Type: Arrow Function
+     Declaration: tasks: () => this.awaitingFeedbackTasks,...
+
+  Method: tasks (Line 92)
+     Type: Arrow Function
+     Declaration: tasks: () => this.doneTasks,...
+
+  Method: onColumnDragOver (Line 336)
+     Type: Method
+     Declaration: onColumnDragOver(event: DragEvent, column: TaskColumn): void { this.in...
+
+  Method: onColumnDragLeave (Line 338)
+     Type: Method
+     Declaration: onColumnDragLeave(event: DragEvent): void { this.interactionService.ha...
+
+  Method: onColumnDrop (Line 340)
+     Type: Method
+     Declaration: onColumnDrop(event: DragEvent, column: TaskColumn): void { this.intera...
+
+  Method: onThumbnailClick (Line 342)
+     Type: Method
+     Declaration: onThumbnailClick(event: MouseEvent): void { this.interactionService.ha...
+
+  Method: onThumbnailTouchStart (Line 344)
+     Type: Method
+     Declaration: onThumbnailTouchStart(event: TouchEvent): void { this.interactionServi...
+
+  Method: onViewportMouseDown (Line 346)
+     Type: Method
+     Declaration: onViewportMouseDown(event: MouseEvent): void { this.interactionService...
+
+  Method: onViewportTouchStart (Line 348)
+     Type: Method
+     Declaration: onViewportTouchStart(event: TouchEvent): void { this.interactionServic...
+
+  Method: onViewportClick (Line 350)
+     Type: Method
+     Declaration: onViewportClick(event: MouseEvent): void { this.interactionService.han...
+
+  Method: getTaskProgress (Line 352)
+     Type: Method
+     Declaration: getTaskProgress(task: Task): number { return this.displayService.getTa...
+
+  Method: getCompletedSubtasks (Line 354)
+     Type: Method
+     Declaration: getCompletedSubtasks(task: Task): number { return this.displayService....
+
+  Method: getPriorityIcon (Line 356)
+     Type: Method
+     Declaration: getPriorityIcon(priority: Task['priority']): string { return this.disp...
+
+  Method: getFilteredTasks (Line 358)
+     Type: Method
+     Declaration: getFilteredTasks(tasks: Task[]): Task[] { return this.displayService.g...
+
+  Method: noSearchResults (Line 360)
+     Type: Getter
+     Declaration: get noSearchResults(): boolean {...
+
+  Method: onMobileMoveTask (Line 364)
+     Type: Method
+     Declaration: onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { t...
+
+  Method: closeMobileMoveOverlay (Line 366)
+     Type: Method
+     Declaration: closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobil...
+
+  Method: showMobileMoveOverlay (Line 368)
+     Type: Getter
+     Declaration: get showMobileMoveOverlay(): boolean { return this.mobileTaskMoveServi...
+
+  Method: overlayPosition (Line 370)
+     Type: Getter
+     Declaration: get overlayPosition(): { top: number; right: number } { return this.mo...
+
+  Method: selectedTaskForMove (Line 372)
+     Type: Getter
+     Declaration: get selectedTaskForMove(): Task | null { return this.mobileTaskMoveSer...
+
+  Method: getPreviousColumn (Line 386)
+     Type: Method
+     Declaration: getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null...
+
+  Method: getNextColumn (Line 388)
+     Type: Method
+     Declaration: getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null { r...
+
+  Method: getColumnDisplayName (Line 390)
+     Type: Method
+     Declaration: getColumnDisplayName(column: TaskColumn): string { return this.mobileT...
+
+  Method: onMobileMoveButtonMouseDown (Line 392)
+     Type: Method
+     Declaration: onMobileMoveButtonMouseDown(event: MouseEvent): void { this.mobileTask...
+
+  Method: onMobileMoveButtonTouchStart (Line 394)
+     Type: Method
+     Declaration: onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { th...
+
+  Method: getDisplayedContacts (Line 453)
+     Type: Method
+     Declaration: getDisplayedContacts(assignedContacts: string[]): Contact[] { return t...
+
+  Method: hasRemainingContacts (Line 455)
+     Type: Method
+     Declaration: hasRemainingContacts(assignedContacts: string[]): boolean { return thi...
+
+  Method: getRemainingContactsCount (Line 457)
+     Type: Method
+     Declaration: getRemainingContactsCount(assignedContacts: string[]): number { return...
+
+  Method: getInitials (Line 459)
+     Type: Method
+     Declaration: getInitials(name: string): string { return this.contactHelperService.g...
+
+  Method: getInitialsColor (Line 461)
+     Type: Method
+     Declaration: getInitialsColor(name: string): string { return this.contactHelperServ...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\add-task-overlay\add-task-overlay.component.ts
+--------------------------------------------------------------------------------
+  Method: style (Line 26)
+     Type: Method
+     Declaration: style({ transform: 'translateX(100%)', opacity: 0 }),...
+
+  Method: animate (Line 28)
+     Type: Method
+     Declaration: animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'transla...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board-thumbnail\board-thumbnail.component.ts
+--------------------------------------------------------------------------------
+  Method: tasks (Line 26)
+     Type: Arrow Function
+     Declaration: tasks: () => Task[];...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\delete-confirmation\delete-confirmation.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('DeleteConfirmationComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-array-management.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 22)
+     Type: Constructor
+     Declaration: constructor(private taskManagementService: BoardTaskManagementService)...
+
+  Method: updateTaskCallback (Line 34)
+     Type: Arrow Function
+     Declaration: updateTaskCallback: (updatedTasks: Task[]) => void,...
+
+  Method: findTaskIndex (Line 41)
+     Type: Method
+     Declaration: const taskIndex = this.taskManagementService.findTaskIndex(tasks);...
+
+  Method: distributeCallback (Line 115)
+     Type: Arrow Function
+     Declaration: distributeCallback: () => void...
+
+  Method: unknown_method (Line 166)
+     Type: Arrow Function
+     Declaration: }) => void...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-data.service.ts
+--------------------------------------------------------------------------------
+  Method: forEach (Line 106)
+     Type: Arrow Function
+     Declaration: tasks.forEach((task) => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-display.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 27)
+     Type: Constructor
+     Declaration: constructor(private utilsService: BoardUtilsService) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 19)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: initializeMouseDragState (Line 52)
+     Type: Method
+     Declaration: const dragContext = this.initializeMouseDragState(event, task);...
+
+  Method: setTimeout (Line 75)
+     Type: Arrow Function
+     Declaration: this.dragState.dragDelayTimeout = setTimeout(() => {...
+
+  Method: return (Line 95)
+     Type: Arrow Function
+     Declaration: return (e: MouseEvent) => {...
+
+  Method: abs (Line 98)
+     Type: Method
+     Declaration: const deltaX = Math.abs(e.clientX - this.dragState.initialMousePositio...
+
+  Method: initializeTouchDragState (Line 175)
+     Type: Method
+     Declaration: const dragContext = this.initializeTouchDragState(event, touch, task);...
+
+  Method: setTimeout (Line 193)
+     Type: Arrow Function
+     Declaration: this.dragState.longPressTimeout = setTimeout(() => {...
+
+  Method: resolveTouchDragEnd (Line 254)
+     Type: Method
+     Declaration: const dragWasActive = this.resolveTouchDragEnd(onTaskUpdate, resolve);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-v2.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 18)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: draggedTask (Line 25)
+     Type: Getter
+     Declaration: get draggedTask(): Task | null { return this.dragState.draggedTask; }...
+
+  Method: isDraggingTask (Line 27)
+     Type: Getter
+     Declaration: get isDraggingTask(): boolean { return this.dragState.isDraggingTask; ...
+
+  Method: dragOverColumn (Line 29)
+     Type: Getter
+     Declaration: get dragOverColumn(): TaskColumn | null { return this.dragState.dragOv...
+
+  Method: dragPlaceholderVisible (Line 31)
+     Type: Getter
+     Declaration: get dragPlaceholderVisible(): boolean { return this.dragState.dragPlac...
+
+  Method: dragPlaceholderHeight (Line 33)
+     Type: Getter
+     Declaration: get dragPlaceholderHeight(): number { return this.dragState.dragPlaceh...
+
+  Method: initializeMouseDragContext (Line 48)
+     Type: Method
+     Declaration: const dragContext = this.initializeMouseDragContext(event, task);...
+
+  Method: return (Line 97)
+     Type: Arrow Function
+     Declaration: return (e: MouseEvent) => {...
+
+  Method: return (Line 161)
+     Type: Arrow Function
+     Declaration: return () => {...
+
+  Method: querySelectorAll (Line 260)
+     Type: Method
+     Declaration: const taskCards = document.querySelectorAll('.task-card');...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 18)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: draggedTask (Line 25)
+     Type: Getter
+     Declaration: get draggedTask(): Task | null { return this.dragState.draggedTask; }...
+
+  Method: isDraggingTask (Line 27)
+     Type: Getter
+     Declaration: get isDraggingTask(): boolean { return this.dragState.isDraggingTask; ...
+
+  Method: dragOverColumn (Line 29)
+     Type: Getter
+     Declaration: get dragOverColumn(): TaskColumn | null { return this.dragState.dragOv...
+
+  Method: dragPlaceholderVisible (Line 31)
+     Type: Getter
+     Declaration: get dragPlaceholderVisible(): boolean { return this.dragState.dragPlac...
+
+  Method: dragPlaceholderHeight (Line 33)
+     Type: Getter
+     Declaration: get dragPlaceholderHeight(): number { return this.dragState.dragPlaceh...
+
+  Method: initializeMouseDragOperation (Line 59)
+     Type: Method
+     Declaration: const dragContext = this.initializeMouseDragOperation(event, task);...
+
+  Method: createMouseMoveEventHandler (Line 109)
+     Type: Method
+     Declaration: const mouseMove = this.createMouseMoveEventHandler(event, task, dragCo...
+
+  Method: return (Line 124)
+     Type: Arrow Function
+     Declaration: return (e: MouseEvent) => {...
+
+  Method: handleMouseUp (Line 188)
+     Type: Arrow Function
+     Declaration: const handleMouseUp = () => {...
+
+  Method: querySelectorAll (Line 346)
+     Type: Method
+     Declaration: const taskCards = document.querySelectorAll('.task-card');...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-contact-selection.service.ts
+--------------------------------------------------------------------------------
+  Method: unknown_method (Line 17)
+     Type: Private Method
+     Declaration: private documentClickListener?: (event: Event) => void;...
+
+  Method: unknown_method (Line 18)
+     Type: Private Method
+     Declaration: private assignedContactsClickListener?: (event: Event) => void;...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-refactored.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 20)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 23)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: selectedContacts (Line 411)
+     Type: Getter
+     Declaration: get selectedContacts(): Contact[] {...
+
+  Method: isDropdownOpen (Line 450)
+     Type: Getter
+     Declaration: get isDropdownOpen(): boolean {...
+
+  Method: isDropdownOpen (Line 454)
+     Type: Setter
+     Declaration: set isDropdownOpen(value: boolean) {...
+
+  Method: showAssignedContactsDropdown (Line 481)
+     Type: Getter
+     Declaration: get showAssignedContactsDropdown(): boolean {...
+
+  Method: showAssignedContactsDropdown (Line 485)
+     Type: Setter
+     Declaration: set showAssignedContactsDropdown(value: boolean) {...
+
+  Method: showAddTaskOverlay (Line 512)
+     Type: Getter
+     Declaration: get showAddTaskOverlay(): boolean {...
+
+  Method: showTaskDetailsOverlay (Line 516)
+     Type: Getter
+     Declaration: get showTaskDetailsOverlay(): boolean {...
+
+  Method: selectedTask (Line 520)
+     Type: Getter
+     Declaration: get selectedTask(): Task | null {...
+
+  Method: isEditingTask (Line 524)
+     Type: Getter
+     Declaration: get isEditingTask(): boolean {...
+
+  Method: selectedPriority (Line 587)
+     Type: Getter
+     Declaration: get selectedPriority(): string {...
+
+  Method: isCategoryDropdownOpen (Line 608)
+     Type: Getter
+     Declaration: get isCategoryDropdownOpen(): boolean {...
+
+  Method: subtasksFormArray (Line 638)
+     Type: Getter
+     Declaration: get subtasksFormArray(): any {...
+
+  Method: saveTask (Line 703)
+     Type: Method
+     Declaration: const success = await this.saveTask();...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-initialization.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 34)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: onContactsLoaded (Line 49)
+     Type: Arrow Function
+     Declaration: onContactsLoaded: (contacts: Contact[]) => void,...
+
+  Method: error (Line 71)
+     Type: Arrow Function
+     Declaration: error: (error: any) => {...
+
+  Method: error (Line 87)
+     Type: Arrow Function
+     Declaration: error: (error: any) => {...
+
+  Method: onTaskSelected (Line 214)
+     Type: Arrow Function
+     Declaration: onTaskSelected: (task: Task) => void...
+
+  Method: targetTask (Line 224)
+     Type: Arrow Function
+     Declaration: const targetTask = allTasks.find(task => task.id === params['taskId'])...
+
+  Method: setTimeout (Line 226)
+     Type: Arrow Function
+     Declaration: setTimeout(() => onTaskSelected(targetTask), 500);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-interaction.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 28)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: updateCallback (Line 42)
+     Type: Arrow Function
+     Declaration: updateCallback: () => void...
+
+  Method: updateCallback (Line 57)
+     Type: Arrow Function
+     Declaration: updateCallback: () => void...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-lifecycle.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 30)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: onContactsLoaded (Line 41)
+     Type: Arrow Function
+     Declaration: onContactsLoaded: (contacts: Contact[]) => void,...
+
+  Method: onTasksLoaded (Line 60)
+     Type: Arrow Function
+     Declaration: onTasksLoaded: (tasks: Task[]) => void,...
+
+  Method: onTaskSelected (Line 95)
+     Type: Arrow Function
+     Declaration: onTaskSelected: (task: Task) => void...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-mobile.service.ts
+--------------------------------------------------------------------------------
+  Method: max (Line 44)
+     Type: Method
+     Declaration: const rightPosition = Math.max(10, viewportWidth - buttonRect.right);...
+
+  Method: if (Line 186)
+     Type: Arrow Function
+     Declaration: if (columnArrays.todoTasks.some(t => t.id === task.id)) return 'todo';...
+
+  Method: if (Line 187)
+     Type: Arrow Function
+     Declaration: if (columnArrays.inProgressTasks.some(t => t.id === task.id)) return '...
+
+  Method: if (Line 188)
+     Type: Arrow Function
+     Declaration: if (columnArrays.awaitingFeedbackTasks.some(t => t.id === task.id)) re...
+
+  Method: if (Line 189)
+     Type: Arrow Function
+     Declaration: if (columnArrays.doneTasks.some(t => t.id === task.id)) return 'done';...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-navigation.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 31)
+     Type: Constructor
+     Declaration: constructor(private route: ActivatedRoute) {}...
+
+  Method: openTaskCallback (Line 45)
+     Type: Arrow Function
+     Declaration: openTaskCallback: (task: Task) => void...
+
+  Method: openTaskCallback (Line 70)
+     Type: Arrow Function
+     Declaration: openTaskCallback: (task: Task) => void...
+
+  Method: targetTask (Line 78)
+     Type: Arrow Function
+     Declaration: const targetTask = allTasks.find(task => task.id === taskId);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-subtask.service.ts
+--------------------------------------------------------------------------------
+  Method: createSubtaskGroup (Line 75)
+     Type: Arrow Function
+     Declaration: createSubtaskGroup: (title: string, completed: boolean) => FormGroup...
+
+  Method: createSubtaskGroup (Line 79)
+     Type: Method
+     Declaration: const newSubtaskGroup = createSubtaskGroup(trimmedTitle, false);...
+
+  Method: trim (Line 91)
+     Type: Method
+     Declaration: const trimmed = title.trim();...
+
+  Method: at (Line 131)
+     Type: Method
+     Declaration: const subtaskGroup = subtasksFormArray.at(index) as FormGroup;...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-task-management.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 34)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: filter (Line 231)
+     Type: Arrow Function
+     Declaration: updated.todoTasks = updated.todoTasks.filter(t => t.id !== task.id);...
+
+  Method: filter (Line 234)
+     Type: Arrow Function
+     Declaration: updated.inProgressTasks = updated.inProgressTasks.filter(t => t.id !==...
+
+  Method: filter (Line 237)
+     Type: Arrow Function
+     Declaration: updated.awaitingFeedbackTasks = updated.awaitingFeedbackTasks.filter(t...
+
+  Method: filter (Line 240)
+     Type: Arrow Function
+     Declaration: updated.doneTasks = updated.doneTasks.filter(t => t.id !== task.id);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-thumbnail-dom.service.ts
+--------------------------------------------------------------------------------
+  Method: requestAnimationFrame (Line 93)
+     Type: Arrow Function
+     Declaration: requestAnimationFrame(() => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-thumbnail-events.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 20)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: calculateNewScrollPosition (Line 105)
+     Type: Method
+     Declaration: const scrollPosition = this.calculationsService.calculateNewScrollPosi...
+
+  Method: return (Line 114)
+     Type: Arrow Function
+     Declaration: return (e: TouchEvent) => {...
+
+  Method: calculateNewScrollPosition (Line 120)
+     Type: Method
+     Declaration: const scrollPosition = this.calculationsService.calculateNewScrollPosi...
+
+  Method: return (Line 129)
+     Type: Arrow Function
+     Declaration: return () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-thumbnail.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 29)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: getScrollContainers (Line 83)
+     Type: Method
+     Declaration: const containers = this.domService.getScrollContainers();...
+
+  Method: getBoardScrollWrapper (Line 118)
+     Type: Method
+     Declaration: const container = this.domService.getBoardScrollWrapper();...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-touch-handler.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 17)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: initializeTouchDragState (Line 35)
+     Type: Method
+     Declaration: const touchContext = this.initializeTouchDragState(event, task);...
+
+  Method: return (Line 135)
+     Type: Arrow Function
+     Declaration: return (e: TouchEvent) => {...
+
+  Method: abs (Line 139)
+     Type: Method
+     Declaration: const deltaX = Math.abs(moveTouch.clientX - touchContext.startX);...
+
+  Method: querySelectorAll (Line 271)
+     Type: Method
+     Declaration: const taskCards = document.querySelectorAll('.task-card');...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\mobile-task-move.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 35)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: updateCallback (Line 142)
+     Type: Arrow Function
+     Declaration: updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: ...
+
+  Method: getCurrentTaskColumn (Line 145)
+     Type: Method
+     Declaration: const currentColumn = this.getCurrentTaskColumn(this.selectedTaskForMo...
+
+  Method: updateCallback (Line 164)
+     Type: Arrow Function
+     Declaration: updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: ...
+
+  Method: getCurrentTaskColumn (Line 167)
+     Type: Method
+     Declaration: const currentColumn = this.getCurrentTaskColumn(this.selectedTaskForMo...
+
+  Method: updateCallback (Line 185)
+     Type: Arrow Function
+     Declaration: updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: ...
+
+  Method: then (Line 190)
+     Type: Arrow Function
+     Declaration: .then(() => {...
+
+  Method: catch (Line 193)
+     Type: Arrow Function
+     Declaration: .catch((error) => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\task-edit-overlay.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 24)
+     Type: Constructor
+     Declaration: constructor(private formService: BoardFormService) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-contact-selection.service.ts
+--------------------------------------------------------------------------------
+  Method: unknown_method (Line 17)
+     Type: Private Method
+     Declaration: private documentClickListener?: (event: Event) => void;...
+
+  Method: unknown_method (Line 18)
+     Type: Private Method
+     Declaration: private assignedContactsClickListener?: (event: Event) => void;...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-contact.service.ts
+--------------------------------------------------------------------------------
+  Method: unknown_method (Line 19)
+     Type: Private Method
+     Declaration: private documentClickListener?: (event: Event) => void;...
+
+  Method: unknown_method (Line 20)
+     Type: Private Method
+     Declaration: private assignedContactsClickListener?: (event: Event) => void;...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-state.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 16)
+     Type: Constructor
+     Declaration: constructor(private fb: FormBuilder) {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-v2.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 20)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\task-details-overlay\task-details-overlay.component.ts
+--------------------------------------------------------------------------------
+  Method: style (Line 27)
+     Type: Method
+     Declaration: style({ transform: 'translateX(100%)', opacity: 0 }),...
+
+  Method: animate (Line 29)
+     Type: Method
+     Declaration: animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'transla...
+
+  Method: animate (Line 33)
+     Type: Method
+     Declaration: animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'transla...
+
+  Method: constructor (Line 47)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\task-edit-overlay\task-edit-overlay.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('TaskEditOverlayComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\task-edit-overlay\task-edit-overlay.component.ts
+--------------------------------------------------------------------------------
+  Method: getTargetElements (Line 96)
+     Type: Method
+     Declaration: const targetElements = this.getTargetElements(target);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\contacts-v2.component.ts
+--------------------------------------------------------------------------------
+  Method: transition (Line 25)
+     Type: Arrow Function
+     Declaration: transition('* => suppress', []),...
+
+  Method: style (Line 32)
+     Type: Method
+     Declaration: style({ transform: 'translateX(0)', opacity: 1 })...
+
+  Method: style (Line 39)
+     Type: Method
+     Declaration: style({ transform: 'translateX(100%)', opacity: 0 })...
+
+  Method: contacts (Line 94)
+     Type: Getter
+     Declaration: get contacts(): Contact[] { return this.contactsService.allContacts; }...
+
+  Method: groupedContacts (Line 96)
+     Type: Getter
+     Declaration: get groupedContacts(): { [key: string]: Contact[] } { return this.cont...
+
+  Method: selectedContact (Line 98)
+     Type: Getter
+     Declaration: get selectedContact(): Contact | null { return this.contactsService.cu...
+
+  Method: addContactForm (Line 100)
+     Type: Getter
+     Declaration: get addContactForm(): FormGroup { return this.contactsService.getConta...
+
+  Method: showAddContactOverlay (Line 102)
+     Type: Getter
+     Declaration: get showAddContactOverlay(): boolean { return this.contactsService.sho...
+
+  Method: showEditContactOverlay (Line 104)
+     Type: Getter
+     Declaration: get showEditContactOverlay(): boolean { return this.contactsService.sh...
+
+  Method: showMobileMoreMenu (Line 106)
+     Type: Getter
+     Declaration: get showMobileMoreMenu(): boolean { return this.contactsService.showMo...
+
+  Method: contactSuccessMessageOverlay (Line 108)
+     Type: Getter
+     Declaration: get contactSuccessMessageOverlay(): boolean { return this.contactsServ...
+
+  Method: isMobileView (Line 110)
+     Type: Getter
+     Declaration: get isMobileView(): boolean { return this.contactsService.isMobileView...
+
+  Method: showMobileSingleContact (Line 112)
+     Type: Getter
+     Declaration: get showMobileSingleContact(): boolean { return this.contactsService.s...
+
+  Method: suppressAnimation (Line 114)
+     Type: Getter
+     Declaration: get suppressAnimation(): boolean { return this.contactsService.suppres...
+
+  Method: contactSuccessMessageText (Line 116)
+     Type: Getter
+     Declaration: get contactSuccessMessageText(): string { return this.contactsService....
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\contacts.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('ContactsComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\contacts.component.ts
+--------------------------------------------------------------------------------
+  Method: transition (Line 25)
+     Type: Arrow Function
+     Declaration: transition('* => suppress', []),...
+
+  Method: style (Line 32)
+     Type: Method
+     Declaration: style({ transform: 'translateX(0)', opacity: 1 })...
+
+  Method: style (Line 39)
+     Type: Method
+     Declaration: style({ transform: 'translateX(100%)', opacity: 0 })...
+
+  Method: contacts (Line 94)
+     Type: Getter
+     Declaration: get contacts(): Contact[] { return this.contactsService.allContacts; }...
+
+  Method: groupedContacts (Line 96)
+     Type: Getter
+     Declaration: get groupedContacts(): { [key: string]: Contact[] } { return this.cont...
+
+  Method: selectedContact (Line 98)
+     Type: Getter
+     Declaration: get selectedContact(): Contact | null { return this.contactsService.cu...
+
+  Method: addContactForm (Line 100)
+     Type: Getter
+     Declaration: get addContactForm(): FormGroup { return this.contactsService.getConta...
+
+  Method: showAddContactOverlay (Line 102)
+     Type: Getter
+     Declaration: get showAddContactOverlay(): boolean { return this.contactsService.sho...
+
+  Method: showEditContactOverlay (Line 104)
+     Type: Getter
+     Declaration: get showEditContactOverlay(): boolean { return this.contactsService.sh...
+
+  Method: showMobileMoreMenu (Line 106)
+     Type: Getter
+     Declaration: get showMobileMoreMenu(): boolean { return this.contactsService.showMo...
+
+  Method: contactSuccessMessageOverlay (Line 108)
+     Type: Getter
+     Declaration: get contactSuccessMessageOverlay(): boolean { return this.contactsServ...
+
+  Method: isMobileView (Line 110)
+     Type: Getter
+     Declaration: get isMobileView(): boolean { return this.contactsService.isMobileView...
+
+  Method: showMobileSingleContact (Line 112)
+     Type: Getter
+     Declaration: get showMobileSingleContact(): boolean { return this.contactsService.s...
+
+  Method: suppressAnimation (Line 114)
+     Type: Getter
+     Declaration: get suppressAnimation(): boolean { return this.contactsService.suppres...
+
+  Method: contactSuccessMessageText (Line 116)
+     Type: Getter
+     Declaration: get contactSuccessMessageText(): string { return this.contactsService....
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contact-data.service.ts
+--------------------------------------------------------------------------------
+  Method: addDoc (Line 51)
+     Type: Method
+     Declaration: const docRef = await addDoc(collection(this.firestore, 'contacts'), {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contact-organization.service.ts
+--------------------------------------------------------------------------------
+  Method: extractFirstLetter (Line 36)
+     Type: Method
+     Declaration: const firstLetter = this.extractFirstLetter(contact.name);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contact-ui.service.ts
+--------------------------------------------------------------------------------
+  Method: isMobileView (Line 126)
+     Type: Method
+     Declaration: const newMobileState = this.isMobileView();...
+
+  Method: setTimeout (Line 166)
+     Type: Arrow Function
+     Declaration: setTimeout(() => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-crud.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 15)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: createContact (Line 508)
+     Type: Method
+     Declaration: const newContact = await this.createContact(contactData);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-display.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 15)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-form.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 15)
+     Type: Constructor
+     Declaration: constructor(private fb: FormBuilder) {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-state.service.ts
+--------------------------------------------------------------------------------
+  Method: showAddContactOverlay (Line 29)
+     Type: Getter
+     Declaration: get showAddContactOverlay(): boolean { return this.showAddContactOverl...
+
+  Method: showEditContactOverlay (Line 31)
+     Type: Getter
+     Declaration: get showEditContactOverlay(): boolean { return this.showEditContactOve...
+
+  Method: showMobileMoreMenu (Line 33)
+     Type: Getter
+     Declaration: get showMobileMoreMenu(): boolean { return this.showMobileMoreMenuSubj...
+
+  Method: contactSuccessMessageOverlay (Line 35)
+     Type: Getter
+     Declaration: get contactSuccessMessageOverlay(): boolean { return this.contactSucce...
+
+  Method: isMobileView (Line 37)
+     Type: Getter
+     Declaration: get isMobileView(): boolean { return this.isMobileViewSubject.value; }...
+
+  Method: showMobileSingleContact (Line 39)
+     Type: Getter
+     Declaration: get showMobileSingleContact(): boolean { return this.showMobileSingleC...
+
+  Method: suppressAnimation (Line 41)
+     Type: Getter
+     Declaration: get suppressAnimation(): boolean { return this.suppressAnimationSubjec...
+
+  Method: contactSuccessMessageText (Line 43)
+     Type: Getter
+     Declaration: get contactSuccessMessageText(): string { return this.contactSuccessMe...
+
+  Method: return (Line 205)
+     Type: Arrow Function
+     Declaration: return () => window.removeEventListener('resize', handleResize);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts.service.ts
+--------------------------------------------------------------------------------
+  Method: unknown_method (Line 26)
+     Type: Private Method
+     Declaration: private resizeCleanup?: () => void;...
+
+  Method: constructor (Line 27)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: unknown_method (Line 37)
+     Type: Getter
+     Declaration: get showAddContactOverlay$(): Observable<boolean> { return this.stateS...
+
+  Method: unknown_method (Line 39)
+     Type: Getter
+     Declaration: get showEditContactOverlay$(): Observable<boolean> { return this.state...
+
+  Method: unknown_method (Line 41)
+     Type: Getter
+     Declaration: get showMobileMoreMenu$(): Observable<boolean> { return this.stateServ...
+
+  Method: unknown_method (Line 43)
+     Type: Getter
+     Declaration: get contactSuccessMessageOverlay$(): Observable<boolean> { return this...
+
+  Method: unknown_method (Line 45)
+     Type: Getter
+     Declaration: get isMobileView$(): Observable<boolean> { return this.stateService.is...
+
+  Method: unknown_method (Line 47)
+     Type: Getter
+     Declaration: get showMobileSingleContact$(): Observable<boolean> { return this.stat...
+
+  Method: unknown_method (Line 49)
+     Type: Getter
+     Declaration: get suppressAnimation$(): Observable<boolean> { return this.stateServi...
+
+  Method: unknown_method (Line 51)
+     Type: Getter
+     Declaration: get contactSuccessMessageText$(): Observable<string> { return this.sta...
+
+  Method: showAddContactOverlay (Line 53)
+     Type: Getter
+     Declaration: get showAddContactOverlay(): boolean { return this.stateService.showAd...
+
+  Method: showEditContactOverlay (Line 55)
+     Type: Getter
+     Declaration: get showEditContactOverlay(): boolean { return this.stateService.showE...
+
+  Method: showMobileMoreMenu (Line 57)
+     Type: Getter
+     Declaration: get showMobileMoreMenu(): boolean { return this.stateService.showMobil...
+
+  Method: contactSuccessMessageOverlay (Line 59)
+     Type: Getter
+     Declaration: get contactSuccessMessageOverlay(): boolean { return this.stateService...
+
+  Method: isMobileView (Line 61)
+     Type: Getter
+     Declaration: get isMobileView(): boolean { return this.stateService.isMobileView; }...
+
+  Method: showMobileSingleContact (Line 63)
+     Type: Getter
+     Declaration: get showMobileSingleContact(): boolean { return this.stateService.show...
+
+  Method: suppressAnimation (Line 65)
+     Type: Getter
+     Declaration: get suppressAnimation(): boolean { return this.stateService.suppressAn...
+
+  Method: contactSuccessMessageText (Line 67)
+     Type: Getter
+     Declaration: get contactSuccessMessageText(): string { return this.stateService.con...
+
+  Method: allContacts (Line 69)
+     Type: Getter
+     Declaration: get allContacts(): Contact[] { return this.contacts; }...
+
+  Method: contactGroups (Line 71)
+     Type: Getter
+     Declaration: get contactGroups(): { [key: string]: Contact[] } { return this.groupe...
+
+  Method: currentContact (Line 73)
+     Type: Getter
+     Declaration: get currentContact(): Contact | null { return this.selectedContact; }...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\directives\flatpickr.directive.ts
+--------------------------------------------------------------------------------
+  Method: forwardRef (Line 14)
+     Type: Arrow Function
+     Declaration: useExisting: forwardRef(() => FlatpickrDirective),...
+
+  Method: onChange (Line 24)
+     Type: Private Method
+     Declaration: private onChange = (value: any) => {};...
+
+  Method: onTouched (Line 26)
+     Type: Private Method
+     Declaration: private onTouched = () => {};...
+
+  Method: constructor (Line 28)
+     Type: Constructor
+     Declaration: constructor(private elementRef: ElementRef) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\guards\auth.guard.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 15)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\header\header.component.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 13)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\help\help.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('HelpComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('LegalNoticeComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 29)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-test\onboarding-test.component.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 58)
+     Type: Constructor
+     Declaration: constructor(private onboardingService: OnboardingService) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\privacy-policy\privacy-policy.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('PrivacyPolicyComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 32)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\delete-confirmation.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 23)
+     Type: Constructor
+     Declaration: constructor(private taskService: TaskService) {}...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\onboarding.service.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 69)
+     Type: Constructor
+     Declaration: constructor(...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\task.service.ts
+--------------------------------------------------------------------------------
+  Method: taskIndex (Line 152)
+     Type: Arrow Function
+     Declaration: const taskIndex = this.tasks[column].findIndex(task => task.id === tas...
+
+  Method: task (Line 234)
+     Type: Arrow Function
+     Declaration: const task = this.tasks[column].find(task => task.id === taskId);...
+
+  Method: createNewSubtask (Line 236)
+     Type: Method
+     Declaration: const newSubtask: Subtask = this.createNewSubtask(subtaskTitle);...
+
+  Method: task (Line 282)
+     Type: Arrow Function
+     Declaration: const task = this.tasks[column].find(task => task.id === taskId);...
+
+  Method: subtask (Line 284)
+     Type: Arrow Function
+     Declaration: const subtask = task.subtasks.find(st => st.id === subtaskId);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth\auth-session.service.ts
+--------------------------------------------------------------------------------
+  Method: setInterval (Line 23)
+     Type: Arrow Function
+     Declaration: this.sessionCheckInterval = setInterval(() => {...
+
+  Method: parse (Line 48)
+     Type: Method
+     Declaration: const user = JSON.parse(userData);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth\auth.service.ts
+--------------------------------------------------------------------------------
+  Method: computed (Line 22)
+     Type: Arrow Function
+     Declaration: readonly currentUser = computed(() => this.authState.currentUser);...
+
+  Method: computed (Line 23)
+     Type: Arrow Function
+     Declaration: readonly isAuthenticated = computed(() => this.authState.isAuthenticat...
+
+  Method: computed (Line 24)
+     Type: Arrow Function
+     Declaration: readonly isGuest = computed(() => this.authState.isGuest);...
+
+  Method: computed (Line 25)
+     Type: Arrow Function
+     Declaration: readonly sessionTimeRemaining = computed(() => this.authState.getRemai...
+
+  Method: computed (Line 26)
+     Type: Arrow Function
+     Declaration: readonly sessionTimeRemainingFormatted = computed(() =>...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.component.spec.ts
+--------------------------------------------------------------------------------
+  Method: describe (Line 3)
+     Type: Arrow Function
+     Declaration: describe('SummaryComponent', () => {...
+
+  Method: beforeEach (Line 6)
+     Type: Arrow Function
+     Declaration: beforeEach(async () => {...
+
+  Method: it (Line 16)
+     Type: Arrow Function
+     Declaration: it('should create', () => {...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.component.ts
+--------------------------------------------------------------------------------
+  Method: constructor (Line 29)
+     Type: Constructor
+     Declaration: constructor(...
+
+  Method: Date (Line 338)
+     Type: Method
+     Declaration: const today = new Date();...
+
+  Method: reduce (Line 352)
+     Type: Arrow Function
+     Declaration: return urgentTasks.reduce((nearest, current) => {...
+
+  Method: parseDueDate (Line 354)
+     Type: Method
+     Declaration: const nearestDate = this.parseDueDate(nearest.dueDate!);...
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\spa-fallback.js
+--------------------------------------------------------------------------------
+  Method: includes (Line 12)
+     Type: Method
+     Declaration: var is404 = pageContent.includes('Not Found') ||...
+
+================================================================================
+=== MISSING JSDOC BY METHOD TYPE ===
+================================================================================
+Arrow Function: 95 methods missing JSDoc
+  - provideFirebaseApp in main.ts
+  - describe in app.component.spec.ts
+  - it in app.component.spec.ts
+  ... and 92 more
+
+Constructor: 37 methods missing JSDoc
+  - constructor in inline-svg.directive.ts
+  - constructor in svg-loader.service.ts
+  - constructor in add-task-form.service.ts
+  ... and 34 more
+
+Getter: 75 methods missing JSDoc
+  - noSearchResults in board.component.ts
+  - showMobileMoveOverlay in board.component.ts
+  - overlayPosition in board.component.ts
+  ... and 72 more
+
+Method: 71 methods missing JSDoc
+  - provideZoneChangeDetection in app.config.ts
+  - style in board.component.ts
+  - animate in board.component.ts
+  ... and 68 more
+
+Private Method: 9 methods missing JSDoc
+  - unknown_method in board-form-contact-selection.service.ts
+  - unknown_method in board-form-contact-selection.service.ts
+  - unknown_method in board-form-contact-selection.service.ts
+  ... and 6 more
+
+Setter: 2 methods missing JSDoc
+  - isDropdownOpen in board-form.service.ts
+  - showAssignedContactsDropdown in board-form.service.ts
+
+================================================================================
+=== TOP 10 FILES WITH MOST MISSING JSDOC ===
+================================================================================
+ 1. board.component.ts (35 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.ts
+    Methods: style, animate, animate, tasks, tasks ... and 30 more
+
+ 2. contacts.service.ts (21 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts.service.ts
+    Methods: unknown_method, constructor, unknown_method, unknown_method, unknown_method ... and 16 more
+
+ 3. contacts-v2.component.ts (15 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\contacts-v2.component.ts
+    Methods: transition, style, style, contacts, groupedContacts ... and 10 more
+
+ 4. contacts.component.ts (15 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\contacts.component.ts
+    Methods: transition, style, style, contacts, groupedContacts ... and 10 more
+
+ 5. board-form.service.ts (14 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
+    Methods: constructor, selectedContacts, isDropdownOpen, isDropdownOpen, showAssignedContactsDropdown ... and 9 more
+
+ 6. board-drag-drop.service.ts (11 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop.service.ts
+    Methods: constructor, draggedTask, isDraggingTask, dragOverColumn, dragPlaceholderVisible ... and 6 more
+
+ 7. board-drag-drop-v2.service.ts (10 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-v2.service.ts
+    Methods: constructor, draggedTask, isDraggingTask, dragOverColumn, dragPlaceholderVisible ... and 5 more
+
+ 8. contacts-state.service.ts (9 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-state.service.ts
+    Methods: showAddContactOverlay, showEditContactOverlay, showMobileMoreMenu, contactSuccessMessageOverlay, isMobileView ... and 4 more
+
+ 9. board-drag-drop-refactored.service.ts (8 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
+    Methods: constructor, initializeMouseDragState, setTimeout, return, abs ... and 3 more
+
+10. mobile-task-move.service.ts (8 missing)
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\mobile-task-move.service.ts
+    Methods: constructor, updateCallback, getCurrentTaskColumn, updateCallback, getCurrentTaskColumn ... and 3 more
+
+=== OVERALL SUMMARY ===
+Files analyzed: 108
+Files with missing JSDoc: 69
+Total methods missing JSDoc: 289
+Estimated JSDoc coverage: 73.2%
+
+=== RECOMMENDATIONS ===
+• Add JSDoc comments to all public methods and functions
+• Private methods should have at least a brief description
+• Include @param and @returns tags for complex methods
+• Document any thrown exceptions with @throws
+• Use @deprecated for methods planned for removal
