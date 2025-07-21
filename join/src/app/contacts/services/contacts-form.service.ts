@@ -321,21 +321,64 @@ export class ContactsFormService {
     errors: string[];
   } {
     const errors: string[] = [];
+    this.validateFormNameField(formData, errors);
+    this.validateFormEmailField(formData, errors);
+    this.validateFormNameLength(formData, errors);
+    return this.buildFormDataValidationResult(errors);
+  }
+
+  /**
+   * Validates the name field in form data.
+   * 
+   * @param formData - Form data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateFormNameField(formData: Partial<Contact>, errors: string[]): void {
     if (!formData.name?.trim()) {
       errors.push('Name is required');
     }
+  }
+
+  /**
+   * Validates the email field in form data.
+   * 
+   * @param formData - Form data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateFormEmailField(formData: Partial<Contact>, errors: string[]): void {
     if (!formData.email?.trim()) {
       errors.push('Email is required');
-    }
-    if (formData.email) {
+    } else if (formData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
         errors.push('Invalid email format');
       }
     }
+  }
+
+  /**
+   * Validates the name field length in form data.
+   * 
+   * @param formData - Form data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateFormNameLength(formData: Partial<Contact>, errors: string[]): void {
     if (formData.name && formData.name.length < 2) {
       errors.push('Name must be at least 2 characters long');
     }
+  }
+
+  /**
+   * Builds the form data validation result object.
+   * 
+   * @param errors - Array of validation errors
+   * @returns Validation result object
+   * @private
+   */
+  private buildFormDataValidationResult(errors: string[]): { isValid: boolean; errors: string[] } {
     return {
       isValid: errors.length === 0,
       errors

@@ -53,15 +53,44 @@ export class ContactUiService {
     errors: string[];
   } {
     const errors: string[] = [];
+    this.validateNameField(contact, errors);
+    this.validateEmailFieldForForm(contact, errors);
+    return this.buildFormValidationResult(errors);
+  }
+
+  /**
+   * Validates the name field for form submission.
+   * @param contact - Contact data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateNameField(contact: Partial<Contact>, errors: string[]): void {
     if (!contact.name?.trim()) {
       errors.push('Name is required');
     }
+  }
+
+  /**
+   * Validates the email field for form submission.
+   * @param contact - Contact data to validate
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateEmailFieldForForm(contact: Partial<Contact>, errors: string[]): void {
     if (!contact.email?.trim()) {
       errors.push('Email is required');
     } else if (!this.validateEmailFormat(contact.email)) {
-
       errors.push('Email format is invalid');
     }
+  }
+
+  /**
+   * Builds the form validation result object.
+   * @param errors - Array of validation errors
+   * @returns Validation result object
+   * @private
+   */
+  private buildFormValidationResult(errors: string[]): { isValid: boolean; errors: string[] } {
     return {
       isValid: errors.length === 0,
       errors
