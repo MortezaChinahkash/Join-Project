@@ -49,6 +49,7 @@ export class TaskService {
       throw error;
     }
   }
+
   /**
    * Prepares task data for Firebase storage.
    * @param task - Task data without ID
@@ -158,6 +159,7 @@ export class TaskService {
     }
     return false;
   }
+
   /**
    * Moves a task between columns.
    * @param taskId - ID of the task to move
@@ -237,6 +239,7 @@ export class TaskService {
     }
     return false;
   }
+  
   /**
    * Creates a new subtask object.
    * @param title - Title for the subtask
