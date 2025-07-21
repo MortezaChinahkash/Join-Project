@@ -191,7 +191,27 @@ export class BoardFormService {
    */
   editTask(contacts: Contact[]): void {
     if (!this.selectedTask) return;
+    this.initializeEditMode();
+    this.populateFormWithTaskData();
+    this.setupTaskContacts(contacts);
+  }
+
+  /**
+   * Initializes the edit mode state.
+   * 
+   * @private
+   */
+  private initializeEditMode(): void {
     this.overlayService.startEditingTask();
+  }
+
+  /**
+   * Populates the form with current task data.
+   * 
+   * @private
+   */
+  private populateFormWithTaskData(): void {
+    if (!this.selectedTask) return;
     this.formState.patchFormWithTaskData({
       title: this.selectedTask.title,
       description: this.selectedTask.description,
@@ -200,12 +220,32 @@ export class BoardFormService {
       category: this.selectedTask.category,
       subtasks: this.selectedTask.subtasks || []
     });
-    if (this.selectedTask.assignedTo && this.selectedTask.assignedTo.length > 0) {
-      const taskContacts = contacts.filter(contact => 
-        this.selectedTask!.assignedTo!.includes(contact.name)
-      );
-      this.contactService.setSelectedContacts(taskContacts);
-    }
+  }
+
+  /**
+   * Sets up task contacts in the contact service.
+   * 
+   * @param contacts - Available contacts list
+   * @private
+   */
+  private setupTaskContacts(contacts: Contact[]): void {
+    if (!this.selectedTask?.assignedTo?.length) return;
+    const taskContacts = this.findTaskContacts(contacts);
+    this.contactService.setSelectedContacts(taskContacts);
+  }
+
+  /**
+   * Finds contacts that are assigned to the current task.
+   * 
+   * @param contacts - Available contacts list
+   * @returns Array of assigned contacts
+   * @private
+   */
+  private findTaskContacts(contacts: Contact[]): Contact[] {
+    if (!this.selectedTask?.assignedTo) return [];
+    return contacts.filter(contact => 
+      this.selectedTask!.assignedTo!.includes(contact.name)
+    );
   }
 
   /**
