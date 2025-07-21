@@ -1,20 +1,5 @@
 
 
-File: board\services\form\board-form-validation.service.ts
-------------------------------
-Method: getFieldErrorMessage
-Lines: 18
-Line Number: 47
-Content Preview:
-
-  getFieldErrorMessage(form: FormGroup, fieldName: string): string {
-    const field = form.get(fieldName);
-    if (!field || !field.errors) return '';
-    const errors = field.errors;
-    if (errors......
-
-==================================================
-
 File: board\task-edit-overlay\task-edit-overlay.component.ts
 ------------------------------
 Method: setupDropdownClickListener

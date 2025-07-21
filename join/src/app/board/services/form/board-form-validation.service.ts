@@ -48,20 +48,76 @@ export class BoardFormValidationService {
   getFieldErrorMessage(form: FormGroup, fieldName: string): string {
     const field = form.get(fieldName);
     if (!field || !field.errors) return '';
-    const errors = field.errors;
+    return this.buildErrorMessage(field.errors, fieldName);
+  }
+
+  /**
+   * Builds appropriate error message based on error type.
+   * 
+   * @param errors - Field errors object
+   * @param fieldName - Name of the field
+   * @returns Error message string
+   * @private
+   */
+  private buildErrorMessage(errors: any, fieldName: string): string {
     if (errors['required']) {
-      return `${this.getFieldDisplayName(fieldName)} is required`;
+      return this.getRequiredErrorMessage(fieldName);
     }
     if (errors['minlength']) {
-      return `${this.getFieldDisplayName(fieldName)} must be at least ${errors['minlength'].requiredLength} characters`;
+      return this.getMinLengthErrorMessage(fieldName, errors['minlength'].requiredLength);
     }
     if (errors['maxlength']) {
-      return `${this.getFieldDisplayName(fieldName)} cannot exceed ${errors['maxlength'].requiredLength} characters`;
+      return this.getMaxLengthErrorMessage(fieldName, errors['maxlength'].requiredLength);
     }
     if (errors['email']) {
-      return 'Please enter a valid email address';
+      return this.getEmailErrorMessage();
     }
     return 'This field is invalid';
+  }
+
+  /**
+   * Gets required field error message.
+   * 
+   * @param fieldName - Name of the field
+   * @returns Required error message
+   * @private
+   */
+  private getRequiredErrorMessage(fieldName: string): string {
+    return `${this.getFieldDisplayName(fieldName)} is required`;
+  }
+
+  /**
+   * Gets minimum length error message.
+   * 
+   * @param fieldName - Name of the field
+   * @param requiredLength - Required minimum length
+   * @returns Min length error message
+   * @private
+   */
+  private getMinLengthErrorMessage(fieldName: string, requiredLength: number): string {
+    return `${this.getFieldDisplayName(fieldName)} must be at least ${requiredLength} characters`;
+  }
+
+  /**
+   * Gets maximum length error message.
+   * 
+   * @param fieldName - Name of the field
+   * @param requiredLength - Required maximum length
+   * @returns Max length error message
+   * @private
+   */
+  private getMaxLengthErrorMessage(fieldName: string, requiredLength: number): string {
+    return `${this.getFieldDisplayName(fieldName)} cannot exceed ${requiredLength} characters`;
+  }
+
+  /**
+   * Gets email validation error message.
+   * 
+   * @returns Email error message
+   * @private
+   */
+  private getEmailErrorMessage(): string {
+    return 'Please enter a valid email address';
   }
 
   /**
