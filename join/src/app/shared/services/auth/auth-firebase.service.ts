@@ -41,7 +41,7 @@ export class AuthFirebaseService {
     return new Promise((resolve) => {
       runInInjectionContext(this.injector, () => {
         const unsubscribe = onAuthStateChanged(this.auth, (firebaseUser) => {
-          unsubscribe(); // Stop listening after first emission
+          unsubscribe();
           if (firebaseUser) {
             const user = this.mapFirebaseUserToUser(firebaseUser);
             resolve(user);
@@ -86,18 +86,14 @@ export class AuthFirebaseService {
       const userCredential = await runInInjectionContext(this.injector, () => 
         createUserWithEmailAndPassword(this.auth, email, password)
       );
-      // Update the user's display name
       await runInInjectionContext(this.injector, () => 
         updateProfile(userCredential.user, {
           displayName: name.trim()
         })
       );
       const user = this.mapFirebaseUserToUser(userCredential.user);
-      // Update the user object with the correct name
       user.name = name.trim();
-      // Set current login timestamp
       user.loginTimestamp = Date.now();
-      // Mark that this is a new user for onboarding
       localStorage.setItem('join_new_user', 'true');
       return user;
     } catch (error: any) {
@@ -174,7 +170,7 @@ export class AuthFirebaseService {
       name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
       email: firebaseUser.email || '',
       isGuest: firebaseUser.isAnonymous,
-      loginTimestamp: Date.now() // Current timestamp
+      loginTimestamp: Date.now()
     };
   }
 

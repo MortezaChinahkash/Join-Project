@@ -23,14 +23,12 @@ export class BoardFormService {
     private overlayService: BoardFormOverlayService,
     private contactService: BoardFormContactService
   ) {}
-  // Expose services for components that need direct access
   get form() { return this.formState; }
 
   get overlay() { return this.overlayService; }
 
   get contacts() { return this.contactService; }
 
-  // Backward compatibility getters
   get taskForm() { return this.formState.taskForm; }
 
   get showAddTaskOverlay() { return this.overlayService.showAddTaskOverlay; }
@@ -194,7 +192,6 @@ export class BoardFormService {
   editTask(contacts: Contact[]): void {
     if (!this.selectedTask) return;
     this.overlayService.startEditingTask();
-    // Populate form with task data
     this.formState.patchFormWithTaskData({
       title: this.selectedTask.title,
       description: this.selectedTask.description,
@@ -203,7 +200,6 @@ export class BoardFormService {
       category: this.selectedTask.category,
       subtasks: this.selectedTask.subtasks || []
     });
-    // Set selected contacts
     if (this.selectedTask.assignedTo && this.selectedTask.assignedTo.length > 0) {
       const taskContacts = contacts.filter(contact => 
         this.selectedTask!.assignedTo!.includes(contact.name)
@@ -244,12 +240,10 @@ export class BoardFormService {
       column: this.overlayService.isEditingTask ? this.selectedTask?.column : this.overlayService.currentColumn
     };
     if (this.overlayService.isEditingTask && this.selectedTask) {
-      // Update existing task
       await this.taskService.updateTask(this.selectedTask.id!, { ...this.selectedTask, ...taskData });
     } else {
-      // Create new task
       const newTask: Task = {
-        id: Date.now().toString(), // Temporary ID generation
+        id: Date.now().toString(),
         ...taskData
       } as Task;
       const taskDataForFirebase = { ...taskData } as Omit<Task, 'id'>;

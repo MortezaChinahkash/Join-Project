@@ -60,13 +60,11 @@ export class BoardMobileService {
     const viewportHeight = window.innerHeight;
     const scrollY = window.pageYOffset || document.documentElement.scrollTop;
     const adjustedPosition = { ...position };
-    // Adjust horizontal position
     adjustedPosition.right = this.adjustHorizontalPosition(
       adjustedPosition.right, 
       viewportWidth, 
       overlayWidth
     );
-    // Adjust vertical position  
     adjustedPosition.top = this.adjustVerticalPosition(
       adjustedPosition.top, 
       viewportHeight, 
@@ -89,7 +87,7 @@ export class BoardMobileService {
     overlayWidth: number
   ): number {
     if (rightPosition > viewportWidth - overlayWidth - 10) {
-      return 10; // 10px margin from left edge
+      return 10;
     }
     return rightPosition;
   }

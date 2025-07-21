@@ -53,7 +53,7 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
       allowInput: true,
       minDate: 'today',
       locale: {
-        firstDayOfWeek: 0 // Sunday as first day for American standard
+        firstDayOfWeek: 0
       },
       onChange: (selectedDates: Date[]) => {
         const date = selectedDates.length > 0 ? selectedDates[0] : null;

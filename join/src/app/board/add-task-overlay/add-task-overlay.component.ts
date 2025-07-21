@@ -61,7 +61,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
     public subtaskService: BoardSubtaskService,
     public contactHelperService: ContactHelperService
   ) {
-    // No need for local dropdown listener - using the service listener instead
   }
 
   /**
@@ -104,12 +103,10 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Handles form submission
    */
   onFormSubmit(): void {
-    // Mark all fields as touched to show validation errors
     Object.keys(this.formService.taskForm.controls).forEach(key => {
       this.formService.taskForm.get(key)?.markAsTouched();
     });
     
-    // Only emit if form is valid
     if (this.formService.taskForm.valid && !this.formService.isDateInvalid('dueDate')) {
       this.onSubmit.emit();
     }
@@ -126,7 +123,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     
-    // Close category dropdown if clicking outside
     if (this.formService.isCategoryDropdownOpen) {
       const categoryDropdown = target.closest('.category-select-wrapper');
       if (!categoryDropdown) {
@@ -134,11 +130,9 @@ export class AddTaskOverlayComponent implements OnDestroy {
       }
     }
     
-    // Close contacts dropdown if clicking outside
     if (this.formService.isDropdownOpen) {
       const contactsDropdown = target.closest('.custom-select-wrapper:not(.category-select-wrapper)');
       if (!contactsDropdown) {
-        // This would need to be implemented in the service as well
       }
     }
   }
@@ -161,6 +155,5 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Cleanup when component is destroyed
    */
   ngOnDestroy(): void {
-    // Service handles its own cleanup
   }
 }

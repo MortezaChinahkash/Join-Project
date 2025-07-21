@@ -16,7 +16,7 @@ export class WelcomeOverlayService {
    */
   shouldShow(): boolean {
     const should = this.shouldShowOverlay;
-    this.shouldShowOverlay = false; // Reset after checking
+    this.shouldShowOverlay = false;
     return should;
   }
 

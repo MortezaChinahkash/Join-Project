@@ -49,7 +49,6 @@ export class BoardUtilsService {
       case 'low':
         return './assets/img/icon_priority_low.svg';
       default:
-        // Fallback: Always show medium priority icon if no priority is set
         return './assets/img/icon_priority_medium.svg';
     }
   }
@@ -65,7 +64,6 @@ export class BoardUtilsService {
     const sortedTasks = tasks.sort((a, b) => {
       const priorityA = priorityOrder[a.priority as keyof typeof priorityOrder] || 0;
       const priorityB = priorityOrder[b.priority as keyof typeof priorityOrder] || 0;
-      // HÃ¶here PrioritÃ¤t (hÃ¶here Zahl) kommt zuerst
       return priorityB - priorityA;
     });
 
@@ -113,7 +111,6 @@ export class BoardUtilsService {
       && this.getFilteredTasks(awaitingFeedbackTasks, searchTerm).length === 0
       && this.getFilteredTasks(doneTasks, searchTerm).length === 0;
   }
-  // Contact display utility methods
   /**
    * Gets the first 4 contacts for display (avatar limit).
    * 
@@ -166,7 +163,6 @@ export class BoardUtilsService {
     return assignedTo ? assignedTo.length : 0;
   }
 
-  // Subtask progress methods for task details
   /**
    * Gets the subtask completion progress for the selected task.
    * 

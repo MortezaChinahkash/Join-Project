@@ -114,7 +114,7 @@ export class BoardInitializationService {
               inline: 'nearest'
             });
           }
-        }, 500); // Wait for data to load
+        }, 500);
       }
     });
   }

@@ -46,7 +46,6 @@ import { AuthService, User } from '../shared/services/auth.service';
   ],
 })
 export class ContactsComponent implements OnInit, OnDestroy {
-  // UI State properties
   contactSuccessMessageOverlay: boolean = false;
   contactSuccessMessageText: string = 'Contact successfully created!';
   showAddContactOverlay: boolean = false;
@@ -55,12 +54,10 @@ export class ContactsComponent implements OnInit, OnDestroy {
   isMobileView: boolean = false;
   showMobileSingleContact: boolean = false;
   suppressAnimation: boolean = false;
-  // Data properties
   contacts: Contact[] = [];
   groupedContacts: { [key: string]: Contact[] } = {};
   selectedContact: Contact | null = null;
   addContactForm: FormGroup;
-  // Subscriptions
   private contactsSubscription?: Subscription;
   private resizeListener?: () => void;
   /**
@@ -285,7 +282,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
       return;
     }
     try {
-      // Check if this is the current user
       if (this.selectedContact.isCurrentUser) {
         await this.updateCurrentUserProfile(contactData);
       } else {
@@ -307,12 +303,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
     if (!currentUser) {
       throw new Error('No current user found');
     }
-    // Update Firebase Auth profile if name changed
     if (contactData.name && contactData.name !== currentUser.name) {
       await this.authService.updateUserProfile(contactData.name);
     }
-    // Note: Phone is not stored in Firebase Auth, only in the temporary contact object
-    // This is fine since the current user contact is recreated each time
   }
 
   /**
@@ -334,12 +327,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
   private handleContactUpdated(updatedData: Partial<Contact>): void {
     if (this.selectedContact) {
       if (this.selectedContact.isCurrentUser) {
-        // For current user, update the temporary object and refresh the contact list
         Object.assign(this.selectedContact, updatedData);
-        // Refresh the contacts list to get the updated current user at the top
         this.groupContacts();
       } else {
-        // For regular contacts, update normally
         Object.assign(this.selectedContact, updatedData);
         this.contacts = this.organizationService.updateContactInArray(
           this.contacts, 
@@ -586,12 +576,11 @@ export class ContactsComponent implements OnInit, OnDestroy {
   selectCurrentUser(): void {
     const user = this.getCurrentUser();
     if (user) {
-      // Create a temporary contact object for the current user
       const currentUserContact: Contact = {
         id: 'current-user',
         name: user.name || user.email || 'Current User',
         email: user.email || '',
-        phone: '', // Phone will be empty for current user initially
+        phone: '',
         isCurrentUser: true
       };
       this.selectedContact = currentUserContact;

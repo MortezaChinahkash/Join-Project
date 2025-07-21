@@ -25,11 +25,9 @@ export class ContactsCrudService {
    * @returns Promise with created contact
    */
   async createContact(contactData: Partial<Contact>, existingContacts: Contact[] = []): Promise<Contact> {
-    // Validate required fields
     if (!contactData.name || !contactData.email) {
       throw new Error('Name and email are required for contact creation');
     }
-    // Check for duplicate email
     const existingContact = this.findContactByEmail(contactData.email, existingContacts);
     if (existingContact) {
       throw new Error('A contact with this email already exists');
@@ -60,7 +58,6 @@ export class ContactsCrudService {
       throw new Error('Contact ID is required for update');
     }
     try {
-      // Handle current user updates differently
       const contact = await this.getContactById(contactId);
       if (contact?.isCurrentUser) {
         await this.updateCurrentUserProfile(contactData);
@@ -86,7 +83,6 @@ export class ContactsCrudService {
     if (!contactId) {
       throw new Error('Contact ID is required for deletion');
     }
-    // Prevent deletion of current user
     const contact = await this.getContactById(contactId);
     if (contact?.isCurrentUser) {
       throw new Error('Cannot delete the current user');
@@ -108,12 +104,9 @@ export class ContactsCrudService {
    */
   async getContactById(contactId: string): Promise<Contact | null> {
     try {
-      // Handle current user special case
       if (contactId === 'current-user') {
         return this.getCurrentUserAsContact();
       }
-      // For regular contacts, we need to get from the current contacts list
-      // Since we don't have a direct method, we'll return null and let the component handle it
       return null;
     } catch (error) {
 
@@ -204,12 +197,9 @@ export class ContactsCrudService {
     if (!currentUser) {
       throw new Error('No current user found');
     }
-    // Update Firebase Auth profile if name changed
     if (contactData.name && contactData.name !== currentUser.name) {
       await this.authService.updateUserProfile(contactData.name);
     }
-    // Note: Phone is not stored in Firebase Auth, only in the temporary contact object
-    // This is handled in the component level for display purposes
   }
 
   /**
@@ -226,7 +216,7 @@ export class ContactsCrudService {
       id: 'current-user',
       name: user.name || user.email || 'Current User',
       email: user.email || '',
-      phone: '', // Phone will be empty for current user initially
+      phone: '',
       isCurrentUser: true
     };
   }
@@ -242,25 +232,21 @@ export class ContactsCrudService {
     errors: string[];
   } {
     const errors: string[] = [];
-    // Required field validation
     if (!contactData.name?.trim()) {
       errors.push('Name is required');
     }
     if (!contactData.email?.trim()) {
       errors.push('Email is required');
     }
-    // Email format validation
     if (contactData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(contactData.email)) {
         errors.push('Invalid email format');
       }
     }
-    // Name length validation
     if (contactData.name && contactData.name.length < 2) {
       errors.push('Name must be at least 2 characters long');
     }
-    // Phone validation (if provided)
     if (contactData.phone && contactData.phone !== 'N/A') {
       const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
       const cleanPhone = contactData.phone.replace(/[\s\-\(\)]/g, '');
@@ -366,6 +352,5 @@ export class ContactsCrudService {
    * Cleanup method for service destruction.
    */
   cleanup(): void {
-    // No cleanup needed for this service
   }
 }

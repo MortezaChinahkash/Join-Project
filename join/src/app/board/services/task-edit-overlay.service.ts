@@ -53,7 +53,6 @@ export class TaskEditOverlayService {
   async saveTaskChanges(onTaskUpdate: () => void): Promise<void> {
     try {
       await this.formService.saveTaskChanges(onTaskUpdate);
-      // Note: The overlay will be closed by the form service after successful save
     } catch (error) {
 
       console.error('âŒ Error saving task changes:', error);

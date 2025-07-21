@@ -21,14 +21,11 @@ export class BoardFormService {
   isEditingTask = false;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
   currentColumn: TaskColumn = 'todo';
-  // Contact selection
   isDropdownOpen = false;
   selectedContacts: Contact[] = [];
   showAssignedContactsDropdown = false;
-  private preventDropdownClose = false; // Flag to prevent dropdown from closing
-  // Category selection
+  private preventDropdownClose = false;
   isCategoryDropdownOpen = false;
-  // Click outside listener cleanup
   private documentClickListener?: (event: Event) => void;
   private assignedContactsClickListener?: (event: Event) => void;
   constructor(
@@ -49,7 +46,7 @@ export class BoardFormService {
       title: ['', Validators.required],
       description: [''],
       dueDate: ['', Validators.required],
-      priority: [''], // Priority ist optional, wird Ã¼ber Buttons gesetzt
+      priority: [''],
       assignedTo: [''],
       category: ['', Validators.required],
       subtasks: this.fb.array([])
@@ -87,7 +84,6 @@ export class BoardFormService {
     this.selectedPriority = priority;
     this.taskForm.patchValue({ priority: priority });
 
-    // Mark priority field as touched to trigger validation
     this.taskForm.get('priority')?.markAsTouched();
   }
 
@@ -97,9 +93,7 @@ export class BoardFormService {
    * @param event - Optional change event
    */
   onCategoryChange(event?: Event) {
-    // Mark category field as touched when changed
     this.taskForm.get('category')?.markAsTouched();
-    // Force update validation status
     this.taskForm.get('category')?.updateValueAndValidity();
   }
 
@@ -109,23 +103,20 @@ export class BoardFormService {
   resetForm() {
     this.taskForm.reset();
     this.selectedPriority = '';
-    this.selectedContacts = []; // Reset selected contacts
+    this.selectedContacts = [];
     this.isDropdownOpen = false;
     this.isCategoryDropdownOpen = false;
     this.showAssignedContactsDropdown = false;
     this.removeDocumentClickListener();
     this.removeAssignedContactsClickListener();
-    // Clear all subtasks
     while (this.subtasksFormArray.length !== 0) {
       this.subtasksFormArray.removeAt(0);
     }
-    // Set today's date as default for due date and medium priority as default
     const today = this.getTodayDateString();
     this.taskForm.patchValue({
       dueDate: today,
       priority: 'medium'
     });
-    // Set medium as default selected priority
     this.selectedPriority = 'medium';
   }
 
@@ -151,13 +142,9 @@ export class BoardFormService {
    * @returns Promise<void>
    */
   async onSubmit(onTaskUpdate: () => void): Promise<void> {
-    // Schritt 1: Alle Felder als berÃ¼hrt markieren
     this.markFormGroupTouched();
-    // Schritt 2: PrÃ¼fen ob das Formular gÃ¼ltig ist
     if (this.taskForm.valid) {
       try {
-        // Schritt 3: Task-Daten vorbereiten
-        // Filter out empty subtasks - only save subtasks with non-empty titles
         const allSubtasks = this.taskForm.value.subtasks || [];
         const validSubtasks = allSubtasks.filter((subtask: any) => 
           subtask && subtask.title && subtask.title.trim() !== ''
@@ -172,22 +159,17 @@ export class BoardFormService {
           subtasks: validSubtasks,
           column: this.currentColumn
         };
-        // Schritt 4: Task zu Firebase hinzufÃ¼gen
         const firebaseId = await this.taskService.addTaskToFirebase({
           ...taskData,
           createdAt: new Date()
         }, this.currentColumn);
-        // Schritt 5: Task zu lokalem Service hinzufÃ¼gen
         const newTask: Task = {
           ...taskData,
           id: firebaseId,
           createdAt: new Date()
         };
-        // Schritt 6: Task zum lokalen Array hinzufÃ¼gen
         this.taskService.addTaskDirectly(newTask, this.currentColumn);
-        // Schritt 7: Callback aufrufen um lokale Arrays zu aktualisieren
         onTaskUpdate();
-        // Schritt 8: Overlay schlieÃŸen
         this.closeAddTaskOverlay();
       } catch (error) {
 
@@ -205,7 +187,6 @@ export class BoardFormService {
     Object.keys(this.taskForm.controls).forEach(key => {
       const control = this.taskForm.get(key);
       control?.markAsTouched();
-      // For FormArray controls (like subtasks), mark them as touched but don't validate
       if (control instanceof FormArray) {
         control.controls.forEach(arrayControl => {
           arrayControl.markAsTouched();
@@ -234,14 +215,13 @@ export class BoardFormService {
   public isDateInvalid(fieldName: string, form?: FormGroup): boolean {
     const targetForm = form || this.taskForm;
     const field = targetForm.get(fieldName);
-    // If no field or no value, return false (not our concern)
     if (!field?.value) {
       return false;
     }
     const selectedDate = new Date(field.value);
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to compare only dates
-    return selectedDate < today; // True if date is in the past
+    today.setHours(0, 0, 0, 0);
+    return selectedDate < today;
   }
 
   /**
@@ -265,11 +245,9 @@ export class BoardFormService {
     this.isCategoryDropdownOpen = !this.isCategoryDropdownOpen;
     if (this.isCategoryDropdownOpen) {
       this.addDocumentClickListener();
-      // Mark field as touched when dropdown is opened
       this.taskForm.get('category')?.markAsTouched();
     } else {
       this.removeDocumentClickListener();
-      // Trigger validation when dropdown closes
       this.onCategoryChange();
     }
   }
@@ -278,12 +256,10 @@ export class BoardFormService {
    * Adds document click listener for closing dropdown when clicking outside
    */
   private addDocumentClickListener(): void {
-    // Remove existing listener first to avoid duplicates
     this.removeDocumentClickListener();
     this.documentClickListener = (event: Event) => {
-      // Check if we should prevent closing
       if (this.preventDropdownClose) {
-        this.preventDropdownClose = false; // Reset the flag
+        this.preventDropdownClose = false;
         return;
       }
       const target = event.target as HTMLElement;
@@ -292,16 +268,13 @@ export class BoardFormService {
       const dropdownOption = target.closest('.dropdown-option');
       const contactOption = target.closest('.contact-option');
       const categoryWrapper = target.closest('.category-select-wrapper');
-      // Don't close if clicking on dropdown options or contact options
       if (dropdownOption || contactOption) {
         return;
       }
-      // Close contact dropdown if click is outside contact dropdown structures
       if (!dropdownWrapper && !contactsDropdown && this.isDropdownOpen) {
         this.isDropdownOpen = false;
         this.removeDocumentClickListener();
       }
-      // Close category dropdown if click is outside category dropdown
       if (!categoryWrapper && this.isCategoryDropdownOpen) {
         this.isCategoryDropdownOpen = false;
         this.taskForm.get('category')?.markAsTouched();
@@ -330,15 +303,12 @@ export class BoardFormService {
    * @param event - The click event (to stop propagation)
    */
   toggleContactSelection(contact: Contact, event: Event) {
-    // Set flag to prevent dropdown from closing
     this.preventDropdownClose = true;
     event.stopPropagation();
     const index = this.selectedContacts.findIndex(c => c.id === contact.id);
     if (index === -1) {
-      // Kontakt hinzufÃ¼gen
       this.selectedContacts.push(contact);
     } else {
-      // Kontakt entfernen
       this.selectedContacts.splice(index, 1);
     }
   }
@@ -402,7 +372,6 @@ export class BoardFormService {
   getSelectedContact(): Contact | null {
     const selectedId = this.taskForm.get('assignedTo')?.value;
     if (!selectedId) return null;
-    // Note: This would need access to contacts array, consider injecting or passing as parameter
     return null;
   }
 
@@ -422,7 +391,6 @@ export class BoardFormService {
       return `${this.selectedContacts[0].name} +${this.selectedContacts.length - 1} more`;
     }
   }
-  // Subtask management
   get subtasksFormArray(): FormArray {
     const formArray = this.taskForm.get('subtasks') as FormArray;
     return formArray;
@@ -432,9 +400,8 @@ export class BoardFormService {
    * Adds a new empty subtask to the form array.
    */
   addSubtask() {
-    // Don't use required validator to avoid validation errors for empty subtasks
     const subtaskGroup = this.fb.group({
-      title: [''], // No validators - empty subtasks will be filtered out on submit
+      title: [''],
       completed: [false]
     });
     this.subtasksFormArray.push(subtaskGroup);
@@ -449,7 +416,6 @@ export class BoardFormService {
     this.subtasksFormArray.removeAt(index);
   }
 
-  // Task details and editing
   /**
    * Opens the task details overlay for a specific task.
    * 
@@ -483,14 +449,11 @@ export class BoardFormService {
    */
   editTask(contacts: Contact[]) {
     if (!this.selectedTask) return;
-    // Close task details overlay and open edit overlay
     this.showTaskDetailsOverlay = false;
     this.isEditingTask = true;
-    // Clear existing subtasks
     while (this.subtasksFormArray.length !== 0) {
       this.subtasksFormArray.removeAt(0);
     }
-    // Populate form with selected task data
     this.taskForm.patchValue({
       title: this.selectedTask.title,
       description: this.selectedTask.description,
@@ -499,10 +462,8 @@ export class BoardFormService {
       category: this.selectedTask.category
     });
     this.selectedPriority = this.selectedTask.priority || '';
-    // Set selected contacts
     this.selectedContacts = this.selectedTask.assignedTo ? 
       contacts.filter(contact => this.selectedTask!.assignedTo!.includes(contact.name)) : [];
-    // Load subtasks
     if (this.selectedTask.subtasks) {
       this.selectedTask.subtasks.forEach(subtask => {
         const subtaskGroup = this.fb.group({
@@ -543,11 +504,10 @@ export class BoardFormService {
         subtasks: this.taskForm.value.subtasks || []
       };
       await this.taskService.updateTaskInFirebase(updatedTask);
-      // Call the update callback to refresh local arrays
       onTaskUpdate();
       this.selectedTask = updatedTask;
       this.isEditingTask = false;
-      this.showTaskDetailsOverlay = true; // Return to task details overlay
+      this.showTaskDetailsOverlay = true;
     } catch (error) {
 
       console.error('âŒ Error updating task:', error);
@@ -563,11 +523,9 @@ export class BoardFormService {
   async toggleSubtask(subtaskIndex: number, onTaskUpdate: () => void) {
     if (!this.selectedTask?.subtasks) return;
     this.selectedTask.subtasks[subtaskIndex].completed = !this.selectedTask.subtasks[subtaskIndex].completed;
-    // Auto-save subtask changes
     await this.saveTaskChanges(onTaskUpdate);
   }
 
-  // Assigned contacts dropdown methods for task details
   /**
    * Toggles assignedcontactsdropdown state.
    */
@@ -584,14 +542,11 @@ export class BoardFormService {
    * Adds document click listener for closing assigned contacts dropdown when clicking outside
    */
   private addAssignedContactsClickListener(): void {
-    // Remove existing listener first to avoid duplicates
     this.removeAssignedContactsClickListener();
-    // Use a slight delay to avoid immediate closure from the same click that opened it
     setTimeout(() => {
       this.assignedContactsClickListener = (event: Event) => {
         const target = event.target as HTMLElement;
         const dropdownContainer = target.closest('.more-contacts-dropdown');
-        // Close dropdown if click is outside the dropdown container
         if (!dropdownContainer && this.showAssignedContactsDropdown) {
           this.showAssignedContactsDropdown = false;
           this.removeAssignedContactsClickListener();

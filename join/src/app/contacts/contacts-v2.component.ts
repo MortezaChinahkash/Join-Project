@@ -44,7 +44,6 @@ import { ContactsService } from './services/contacts.service';
   ],
 })
 export class ContactsComponent implements OnInit, OnDestroy {
-  // Service observables - initialized after constructor
   showAddContactOverlay$!: any;
   showEditContactOverlay$!: any;
   showMobileMoreMenu$!: any;
@@ -53,7 +52,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
   showMobileSingleContact$!: any;
   suppressAnimation$!: any;
   contactSuccessMessageText$!: any;
-  // Local properties for template binding
   private subscriptions: Subscription[] = [];
   /**
    * Initializes the contacts component with the main contacts service.
@@ -61,7 +59,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @param contactsService - Main contacts orchestrator service
    */
   constructor(private contactsService: ContactsService) {
-    // Initialize observables after service injection
     this.initializeObservables();
   }
 
@@ -94,7 +91,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  // Expose service properties for template
   get contacts(): Contact[] { return this.contactsService.allContacts; }
 
   get groupedContacts(): { [key: string]: Contact[] } { return this.contactsService.contactGroups; }
@@ -119,7 +115,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
 
   get contactSuccessMessageText(): string { return this.contactsService.contactSuccessMessageText; }
 
-  // UI Event Handlers
   /**
    * Opens the add contact overlay.
    */
@@ -222,7 +217,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.contactsService.updateMobileViewStatus();
   }
 
-  // Display Methods
   /**
    * Gets contact initials for display.
    * 
@@ -291,7 +285,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     return this.contactsService.getCurrentUserDisplayName();
   }
 
-  // Form Validation Methods
   /**
    * Checks if a specific field has errors.
    * 
@@ -312,7 +305,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
     return this.contactsService.getFieldError(fieldName);
   }
 
-  // Static Methods for External Use
   /**
    * Static method for getting contact initials (for external use).
    * 

@@ -29,7 +29,6 @@ import { BoardMobileService } from './board-mobile.service';
   providedIn: 'root'
 })
 export class MobileTaskMoveService {
-  // Mobile move overlay state
   showMobileMoveOverlay: boolean = false;
   selectedTaskForMove: Task | null = null;
   overlayPosition = { top: 0, right: 0 };
@@ -86,7 +85,6 @@ export class MobileTaskMoveService {
   onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void {
     event.preventDefault();
     event.stopPropagation();
-    // On touch devices, directly trigger the move action
     const button = event.currentTarget as HTMLElement;
     this.overlayPosition = this.mobileService.calculateOverlayPosition(button);
     this.selectedTaskForMove = task;
@@ -186,9 +184,7 @@ export class MobileTaskMoveService {
     fromColumn: TaskColumn | null,
     updateCallback: (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => void
   ): void {
-    // Update task column
     task.column = targetColumn;
-    // Update in Firebase if task has an ID - using same method as drag & drop
     if (task.id) {
       this.taskService.updateTaskInFirebase(task)
         .then(() => {
@@ -196,15 +192,12 @@ export class MobileTaskMoveService {
 
         .catch((error) => {
           console.error('Mobile task move: Error updating task in Firebase:', error);
-          // Revert the column change on Firebase error
           if (fromColumn) {
             task.column = fromColumn;
           }
         });
     }
-    // Notify parent component to update arrays
     updateCallback(task, fromColumn, targetColumn);
-    // Close overlay
     this.showMobileMoveOverlay = false;
     this.selectedTaskForMove = null;
   }

@@ -94,12 +94,10 @@ export class BoardArrayManagementService {
     awaitingFeedbackTasks: Task[];
     doneTasks: Task[];
   } {
-    // Remove from current column if exists
     let updatedColumns = currentColumns;
     if (fromColumn) {
       updatedColumns = this.taskManagementService.removeTaskFromColumn(task, fromColumn, updatedColumns);
     }
-    // Add to target column
     updatedColumns = this.taskManagementService.addTaskToColumn(task, toColumn, updatedColumns);
     return updatedColumns;
   }

@@ -71,7 +71,6 @@ export class OnboardingService {
     private authService: AuthService
   ) {
     this.initializeOnboarding();
-    // Add global function for testing
     (window as any).startOnboarding = () => this.manualStartOnboarding();
   }
 
@@ -90,16 +89,13 @@ export class OnboardingService {
    * Checks if onboarding should be shown and starts it if needed.
    */
   private checkAndStartOnboarding(): void {
-    // Only show onboarding for authenticated users
     if (!this.authService.isAuthenticated) {
       return;
     }
     const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
     const isNewUser = localStorage.getItem('join_new_user');
     if (!isCompleted && isNewUser) {
-      // Clear the new user flag
       localStorage.removeItem('join_new_user');
-      // Wait a bit for the navigation to be ready
       setTimeout(() => {
         this.startOnboarding();
       }, 1000);
@@ -110,13 +106,11 @@ export class OnboardingService {
    * Starts the onboarding tour.
    */
   public startOnboarding(): void {
-    // Only allow onboarding for authenticated users
     if (!this.authService.isAuthenticated) {
       return;
     }
     this.currentStepSubject.next(0);
     this.showOnboardingSubject.next(true);
-    // Navigate to first step
     const firstStep = this.onboardingSteps[0];
     this.router.navigate([firstStep.route]);
   }
@@ -129,7 +123,6 @@ export class OnboardingService {
     if (currentStep < this.onboardingSteps.length - 1) {
       const nextStepIndex = currentStep + 1;
       this.currentStepSubject.next(nextStepIndex);
-      // Navigate to next step route
       const nextStep = this.onboardingSteps[nextStepIndex];
       this.router.navigate([nextStep.route]);
     } else {
@@ -145,7 +138,6 @@ export class OnboardingService {
     if (currentStep > 0) {
       const prevStepIndex = currentStep - 1;
       this.currentStepSubject.next(prevStepIndex);
-      // Navigate to previous step route
       const prevStep = this.onboardingSteps[prevStepIndex];
       this.router.navigate([prevStep.route]);
     }

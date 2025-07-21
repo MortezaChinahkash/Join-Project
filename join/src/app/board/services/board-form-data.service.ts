@@ -11,14 +11,12 @@ import { Contact } from '../../contacts/services/contact-data.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardFormDataService {
-  // Data state
   private currentTask: Task | null = null;
   private originalTask: Task | null = null;
   private isEditMode = false;
-  // Auto-save configuration
   private autoSaveEnabled = false;
   private autoSaveTimeout: any = null;
-  private autoSaveDelay = 1000; // 1 second
+  private autoSaveDelay = 1000;
   /**
    * Creates a new task object with default values.
    * 
@@ -332,8 +330,6 @@ export class BoardFormDataService {
    */
   private performAutoSave(): void {
     if (this.currentTask && this.hasChanges()) {
-      // Auto-save logic would go here
-      // For now, just update the saved state
       this.saveChanges();
     }
   }

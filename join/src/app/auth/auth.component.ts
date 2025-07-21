@@ -223,7 +223,6 @@ export class AuthComponent implements OnInit {
         return `${this.getFieldDisplayName(fieldName)} must be at least ${requiredLength} characters`;
       }
     }
-    // Check for password mismatch
     if (fieldName === 'confirmPassword' && form.errors?.['passwordMismatch']) {
       return 'Passwords do not match';
     }

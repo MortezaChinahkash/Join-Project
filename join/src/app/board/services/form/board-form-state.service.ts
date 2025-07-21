@@ -27,7 +27,7 @@ export class BoardFormStateService {
       title: ['', Validators.required],
       description: [''],
       dueDate: ['', Validators.required],
-      priority: [''], // Priority is optional, set via buttons
+      priority: [''],
       assignedTo: [''],
       category: ['', Validators.required],
       subtasks: this.fb.array([])
@@ -52,7 +52,6 @@ export class BoardFormStateService {
     this.selectedPriority = priority;
     this.taskForm.patchValue({ priority: priority });
 
-    // Mark priority field as touched to trigger validation
     this.taskForm.get('priority')?.markAsTouched();
   }
 
@@ -62,9 +61,7 @@ export class BoardFormStateService {
    * @param event - Optional change event
    */
   onCategoryChange(event?: Event): void {
-    // Mark category field as touched when changed
     this.taskForm.get('category')?.markAsTouched();
-    // Force update validation status
     this.taskForm.get('category')?.updateValueAndValidity();
   }
 
@@ -74,17 +71,14 @@ export class BoardFormStateService {
   resetForm(): void {
     this.taskForm.reset();
     this.selectedPriority = '';
-    // Clear all subtasks
     while (this.subtasksFormArray.length !== 0) {
       this.subtasksFormArray.removeAt(0);
     }
-    // Set today's date as default for due date and medium priority as default
     const today = this.getTodayDateString();
     this.taskForm.patchValue({
       dueDate: today,
       priority: 'medium'
     });
-    // Set medium as default selected priority
     this.selectedPriority = 'medium';
   }
 
@@ -111,8 +105,8 @@ export class BoardFormStateService {
     if (!dateString) return false;
     const selectedDate = new Date(dateString);
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to compare only dates
-    return selectedDate < today; // True if date is in the past
+    today.setHours(0, 0, 0, 0);
+    return selectedDate < today;
   }
 
   /**
@@ -191,13 +185,10 @@ export class BoardFormStateService {
    */
   patchFormWithTaskData(taskData: any): void {
     this.taskForm.patchValue(taskData);
-    // Handle subtasks if they exist
     if (taskData.subtasks && Array.isArray(taskData.subtasks)) {
-      // Clear existing subtasks
       while (this.subtasksFormArray.length !== 0) {
         this.subtasksFormArray.removeAt(0);
       }
-      // Add subtasks from task data
       /**
        * Handles forEach functionality.
        * @param (subtask - (subtask parameter
@@ -207,7 +198,6 @@ export class BoardFormStateService {
         this.subtasksFormArray.push(subtaskGroup);
       });
     }
-    // Set priority
     if (taskData.priority) {
       this.selectedPriority = taskData.priority;
     }

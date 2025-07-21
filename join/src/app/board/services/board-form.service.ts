@@ -17,7 +17,6 @@ import { TaskService } from '../../shared/services/task.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardFormService {
-  // Form state
   taskForm: FormGroup;
   private _isCategoryDropdownOpen: boolean = false;
   
@@ -94,10 +93,8 @@ export class BoardFormService {
    * @param task - Task data to populate
    */
   private populateFormWithTask(task: Task): void {
-    // Format the date if it exists
     let formattedDate = task.dueDate;
     if (task.dueDate) {
-      // If the date is in a different format, convert it to MM/dd/yyyy
       const date = new Date(task.dueDate);
       if (!isNaN(date.getTime())) {
         formattedDate = this.formatDateToAmerican(date);
@@ -112,7 +109,6 @@ export class BoardFormService {
       category: task.category
     });
     
-    // Populate subtasks
     this.populateSubtasks(task.subtasks || []);
   }
 
@@ -124,12 +120,10 @@ export class BoardFormService {
   private populateSubtasks(subtasks: any[]): void {
     const subtasksFormArray = this.subtasksFormArray;
     
-    // Clear existing subtasks
     while (subtasksFormArray.length !== 0) {
       subtasksFormArray.removeAt(0);
     }
     
-    // Add each subtask to the FormArray
     subtasks.forEach(subtask => {
       const subtaskGroup = this.fb.group({
         title: [subtask.title || ''],
@@ -154,10 +148,8 @@ export class BoardFormService {
       const task = this.buildTaskFromForm();
       
       if (this.dataService.getIsEditMode()) {
-        // Update existing task
         await this.updateTask(task);
       } else {
-        // Create new task
         await this.createTask(task);
       }
       
@@ -180,10 +172,8 @@ export class BoardFormService {
     const formValue = this.taskForm.value;
     let currentTask = this.dataService.getCurrentTask();
     
-    // If no current task exists (e.g., when creating new task), create a basic task structure
     if (!currentTask) {
-      // Determine the column - if we're in edit mode, use 'todo' as default, otherwise get from overlay service
-      const targetColumn = this.dataService.getIsEditMode() ? 'todo' : 'todo'; // Will enhance this later
+      const targetColumn = this.dataService.getIsEditMode() ? 'todo' : 'todo';
       
       currentTask = {
         id: this.generateTaskId(),
@@ -199,10 +189,8 @@ export class BoardFormService {
       };
     }
     
-    // Extract subtasks from FormArray
     const subtasks = formValue.subtasks || [];
     
-    // Get selected contact names for assignedTo field
     const selectedContactNames = this.contactSelectionService.selectedContacts.map(contact => contact.name);
     
     return {
@@ -263,14 +251,11 @@ export class BoardFormService {
    * @returns True if form is valid
    */
   validateForm(): boolean {
-    // Mark all fields as touched to show validation errors
     this.taskForm.markAllAsTouched();
     
-    // Pass the FormGroup itself, not the value
     const validation = this.validationService.validateForm(this.taskForm);
     
     if (!validation.isValid) {
-      // Handle validation errors - could display them in UI
       console.warn('❌ Form validation errors:', validation.errors);
       return false;
     }
@@ -283,7 +268,6 @@ export class BoardFormService {
    * @returns Array of validation error messages
    */
   getValidationErrors(): string[] {
-    // Pass the FormGroup itself, not the value
     const validation = this.validationService.validateForm(this.taskForm);
     return validation.errors;
   }
@@ -301,7 +285,6 @@ export class BoardFormService {
       dueDate: todayFormatted
     });
     
-    // Clear subtasks FormArray
     this.clearSubtasks();
     
     this.contactSelectionService.clearSelectedContacts();
@@ -341,10 +324,6 @@ export class BoardFormService {
     }
   }
 
-  // ============================================================================
-  // DELEGATED METHODS TO SPECIALIZED SERVICES
-  // ============================================================================
-  // Validation Service Delegates
   /**
    * Checks if fieldinvalid.
    * @param fieldName - Fieldname parameter
@@ -373,7 +352,6 @@ export class BoardFormService {
     return this.validationService.getFieldErrorMessage(this.taskForm, fieldName);
   }
 
-  // Contact Selection Service Delegates
   get selectedContacts(): Contact[] {
     return this.contactSelectionService.selectedContacts;
   }
@@ -475,7 +453,6 @@ export class BoardFormService {
     return this.contactSelectionService.getRemainingAssignedContacts();
   }
 
-  // Overlay Service Delegates
   get showAddTaskOverlay(): boolean {
     return this.overlayService.showAddTaskOverlay;
   }
@@ -551,7 +528,6 @@ export class BoardFormService {
     }
   }
 
-  // Data Service Delegates - Basic placeholder implementations
   get selectedPriority(): string {
     return this.taskForm.get('priority')?.value || 'medium';
   }
@@ -687,7 +663,6 @@ export class BoardFormService {
     }
   }
 
-  // Delegation methods for overlay management
   /**
    * Opens the task form overlay.
    * 
@@ -731,7 +706,6 @@ export class BoardFormService {
     return null;
   }
 
-  // Delegation methods for contact selection
   /**
    * Toggles contact selection.
    * 
@@ -773,7 +747,6 @@ export class BoardFormService {
     return this.contactSelectionService.isDropdownOpen;
   }
 
-  // Delegation methods for data management
   /**
    * Gets current task being edited.
    * 
@@ -820,7 +793,6 @@ export class BoardFormService {
     return this.dataService.getSubtasks();
   }
 
-  // Delegation methods for validation
   /**
    * Gets basic form validation status.
    * 

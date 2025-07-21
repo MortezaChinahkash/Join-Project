@@ -74,7 +74,6 @@ export class ContactsDisplayService {
     if (email.length <= maxLength) {
       return email;
     }
-    // Try to keep the domain visible if possible
     const atIndex = email.lastIndexOf('@');
     if (atIndex > 0) {
       const localPart = email.substring(0, atIndex);
@@ -97,7 +96,6 @@ export class ContactsDisplayService {
     if (!phone || phone.trim() === '' || phone === 'N/A') {
       return 'N/A';
     }
-    // Basic phone formatting - can be enhanced
     const cleaned = phone.replace(/\D/g, '');
     if (cleaned.length === 10) {
       return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
@@ -105,7 +103,7 @@ export class ContactsDisplayService {
 
       return `+1 (${cleaned.slice(1, 4)}) ${cleaned.slice(4, 7)}-${cleaned.slice(7)}`;
     }
-    return phone; // Return original if can't format
+    return phone;
   }
 
   /**
@@ -162,7 +160,7 @@ export class ContactsDisplayService {
       id: 'current-user',
       name: user.name || user.email || 'Current User',
       email: user.email || '',
-      phone: '', // Phone will be empty for current user initially
+      phone: '',
       isCurrentUser: true
     };
   }
@@ -335,6 +333,5 @@ export class ContactsDisplayService {
    * Cleanup method for service destruction.
    */
   cleanup(): void {
-    // No cleanup needed for this service
   }
 }

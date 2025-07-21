@@ -10,7 +10,6 @@ import { Task, TaskColumn } from '../../interfaces/task.interface';
 @Injectable({ providedIn: 'root' })
 
 export class BoardDragStateService {
-  // Task drag and drop state properties
   draggedTask: Task | null = null;
   dragStartPosition = { x: 0, y: 0 };
   isDraggingTask = false;
@@ -19,17 +18,14 @@ export class BoardDragStateService {
   dragPlaceholderHeight = 0;
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
-  // Mouse interaction state
   isMousePressed = false;
   mouseDownTime = 0;
-  dragThreshold = 5; // pixels to move before considering it a drag
-  dragDelay = 150; // milliseconds before drag starts
+  dragThreshold = 5;
+  dragDelay = 150;
   dragDelayTimeout: any = null;
   initialMousePosition = { x: 0, y: 0 };
-  // Touch interaction state
   touchStartTime = 0;
   longPressTimeout: any = null;
-  // Board scroll wrapper overflow management
   private boardScrollWrapper: HTMLElement | null = null;
   private originalOverflowX: string = '';
   /**
@@ -44,7 +40,7 @@ export class BoardDragStateService {
     this.dragElement = null;
     this.isMousePressed = false;
     this.clearTimeouts();
-    this.restoreBoardScrollWrapper(); // Restore overflow when drag ends
+    this.restoreBoardScrollWrapper();
   }
   
   /**
@@ -53,9 +49,7 @@ export class BoardDragStateService {
   setBoardScrollWrapperForDrag(): void {
     this.boardScrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
     if (this.boardScrollWrapper) {
-      // Store original overflow-x value
       this.originalOverflowX = window.getComputedStyle(this.boardScrollWrapper).overflowX;
-      // Set overflow-x to visible
       this.boardScrollWrapper.style.overflowX = 'visible';
     }
   }
@@ -65,7 +59,6 @@ export class BoardDragStateService {
    */
   restoreBoardScrollWrapper(): void {
     if (this.boardScrollWrapper && this.originalOverflowX) {
-      // Restore original overflow-x value
       this.boardScrollWrapper.style.overflowX = this.originalOverflowX;
       this.boardScrollWrapper = null;
       this.originalOverflowX = '';
@@ -107,7 +100,7 @@ export class BoardDragStateService {
     this.draggedTask = task;
     this.isDraggingTask = true;
     this.dragStartPosition = { x, y };
-    this.setBoardScrollWrapperForDrag(); // Set overflow to visible when drag starts
+    this.setBoardScrollWrapperForDrag();
   }
 
   /**

@@ -190,6 +190,6 @@ export class ContactOrganizationService {
    */
   private calculateColorIndex(name: string): number {
     const letter = name.trim()[0].toUpperCase();
-    return letter.charCodeAt(0) - 65; // A=0, B=1, etc.
+    return letter.charCodeAt(0) - 65;
   }
 }

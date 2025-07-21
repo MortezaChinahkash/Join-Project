@@ -20,14 +20,12 @@ export class BoardDragDetectionService {
    * @returns TaskColumn at position or null if none found
    */
   getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
-    // Primary method: Check which column we're over using elementFromPoint
     const elements = document.elementsFromPoint(clientX, clientY);
     let targetColumn: TaskColumn | null = null;
     for (const element of elements) {
       targetColumn = this.checkElementForColumn(element);
       if (targetColumn) break;
     }
-    // Fallback method: Use geometric bounds detection if primary method fails
     if (!targetColumn) {
       targetColumn = this.getColumnByGeometricBounds(clientX, clientY);
     }
@@ -42,12 +40,10 @@ export class BoardDragDetectionService {
    * @private
    */
   private checkElementForColumn(element: Element): TaskColumn | null {
-    // Check for board-column element (main column container)
     const columnElement = element.closest('.board-column') as HTMLElement;
     if (columnElement) {
       return columnElement.getAttribute('data-column') as TaskColumn;
     }
-    // Check for task-list element as fallback
     const taskListElement = element.closest('.task-list') as HTMLElement;
     if (taskListElement) {
       const parentColumn = taskListElement.closest('.board-column') as HTMLElement;
@@ -55,7 +51,6 @@ export class BoardDragDetectionService {
         return parentColumn.getAttribute('data-column') as TaskColumn;
       }
     }
-    // Check for column-header as additional fallback
     const headerElement = element.closest('.column-header') as HTMLElement;
     if (headerElement) {
       const parentColumn = headerElement.closest('.board-column') as HTMLElement;
@@ -76,11 +71,9 @@ export class BoardDragDetectionService {
    * @private
    */
   private getColumnByGeometricBounds(clientX: number, clientY: number): TaskColumn | null {
-    // Get all board columns
     const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
     for (const column of columns) {
       const rect = column.getBoundingClientRect();
-      // Check if the cursor is within the column bounds
       if (clientX >= rect.left && 
           clientX <= rect.right && 
           clientY >= rect.top && 

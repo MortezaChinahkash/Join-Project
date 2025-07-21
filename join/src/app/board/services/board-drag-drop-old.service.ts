@@ -12,7 +12,6 @@ import { BoardThumbnailService } from './board-thumbnail.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardDragDropService {
-  // Task drag and drop properties
   draggedTask: Task | null = null;
   dragStartPosition = { x: 0, y: 0 };
   isDraggingTask = false;
@@ -23,19 +22,17 @@ export class BoardDragDropService {
   longPressTimeout: any = null;
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
-  // New properties for click detection
   isMousePressed = false;
   mouseDownTime = 0;
-  dragThreshold = 5; // pixels to move before considering it a drag
-  dragDelay = 150; // milliseconds before drag starts
+  dragThreshold = 5;
+  dragDelay = 150;
   dragDelayTimeout: any = null;
   initialMousePosition = { x: 0, y: 0 };
-  // Auto-scroll properties
-  autoScrollZone = 200; // pixels from top/bottom where auto-scroll activates (larger for mobile)
-  autoScrollSpeed = 8; // pixels per scroll step (slower for smoother experience)
+  autoScrollZone = 200;
+  autoScrollSpeed = 8;
   autoScrollInterval: any = null;
   isAutoScrolling = false;
-  currentCursorY = 0; // Track current cursor position for auto-scroll
+  currentCursorY = 0;
   constructor(private taskService: TaskService, private boardThumbnailService: BoardThumbnailService) {}
 
   /**
@@ -50,16 +47,12 @@ export class BoardDragDropService {
    */
   onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
     return new Promise((resolve) => {
-      // Prevent default but don't prevent the click event from firing
-      // event.preventDefault();
-      // Only handle left mouse button
       if (event.button !== 0) { resolve(false); return; }
       this.isMousePressed = true;
       this.mouseDownTime = Date.now();
       this.initialMousePosition = { x: event.clientX, y: event.clientY };
       let hasMoved = false;
       let dragStarted = false;
-      // Start delay timer for drag
       this.dragDelayTimeout = setTimeout(() => {
         if (this.isMousePressed && !hasMoved) {
           this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
@@ -73,7 +66,6 @@ export class BoardDragDropService {
         const deltaY = Math.abs(e.clientY - this.initialMousePosition.y);
         if (deltaX > this.dragThreshold || deltaY > this.dragThreshold) {
           hasMoved = true;
-          // Start drag immediately if threshold is exceeded
           if (!dragStarted && !this.isDraggingTask) {
             if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
             this.startTaskDrag(e.clientX, e.clientY, task, event.target as HTMLElement);
@@ -81,7 +73,6 @@ export class BoardDragDropService {
           }
         }
         if (this.isDraggingTask) {
-          // Try emergency auto-scroll first
           this.emergencyAutoScroll(e);
           this.updateTaskDrag(e.clientX, e.clientY);
         }
@@ -92,9 +83,9 @@ export class BoardDragDropService {
         if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
         if (this.isDraggingTask) {
           this.endTaskDrag(onTaskUpdate);
-          resolve(true); // Was a drag
+          resolve(true);
         } else {
-          resolve(false); // Was a click
+          resolve(false);
         }
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
@@ -120,21 +111,18 @@ export class BoardDragDropService {
       this.touchStartTime = Date.now();
       const touch = event.touches[0];
       let dragStarted = false;
-      // Start long press timer for mobile
       this.longPressTimeout = setTimeout(() => {
         this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
         dragStarted = true;
-      }, 500); // 500ms long press
+      }, 500);
 
       const handleTouchMove = (e: TouchEvent) => {
         const touch = e.touches[0];
         if (this.isDraggingTask) {
           e.preventDefault();
-          // Try emergency auto-scroll first
           this.emergencyAutoScroll(e);
           this.updateTaskDrag(touch.clientX, touch.clientY);
         } else {
-          // Cancel long press if user moves finger before drag starts
           if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
         }
       };
@@ -143,9 +131,9 @@ export class BoardDragDropService {
         if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
         if (this.isDraggingTask) {
           this.endTaskDrag(onTaskUpdate);
-          resolve(true); // Was a drag
+          resolve(true);
         } else {
-          resolve(false); // Was a tap
+          resolve(false);
         }
         document.removeEventListener('touchmove', handleTouchMove);
         document.removeEventListener('touchend', handleTouchEnd);
@@ -171,12 +159,9 @@ export class BoardDragDropService {
     this.draggedTask = task;
     this.isDraggingTask = true;
     this.dragStartPosition = { x: clientX, y: clientY };
-    // Enable overflow-x: visible for drag operations
     this.enableDragOverflow();
-    // Find the task card element
     const taskCard = element.closest('.task-card') as HTMLElement;
     if (taskCard) {
-      // Clone the element for dragging
       this.dragElement = taskCard.cloneNode(true) as HTMLElement;
       this.dragElement.style.position = 'fixed';
       this.dragElement.style.pointerEvents = 'none';
@@ -186,24 +171,19 @@ export class BoardDragDropService {
       this.dragElement.style.width = taskCard.offsetWidth + 'px';
       this.dragElement.style.height = taskCard.offsetHeight + 'px';
       this.dragElement.classList.add('task-dragging');
-      // Calculate offset from mouse/touch to element CENTER for better cursor alignment
       const rect = taskCard.getBoundingClientRect();
       this.dragOffset = {
-        x: rect.width / 2,  // Center horizontally
-        y: rect.height / 2  // Center vertically
+        x: rect.width / 2,
+        y: rect.height / 2
       };
-      // Position the drag element centered on cursor
       this.dragElement.style.left = (clientX - this.dragOffset.x) + 'px';
       this.dragElement.style.top = (clientY - this.dragOffset.y) + 'px';
-      // Ensure the drag element has a fixed size and doesn't inherit problematic styles
       this.dragElement.style.maxWidth = 'none';
       this.dragElement.style.maxHeight = 'none';
       this.dragElement.style.margin = '0';
       this.dragElement.style.padding = taskCard.style.padding || '16px';
       document.body.appendChild(this.dragElement);
-      // Add dragging class to original element
       taskCard.classList.add('task-dragging-original');
-      // Store placeholder height
       this.dragPlaceholderHeight = taskCard.offsetHeight;
     }
   }
@@ -220,36 +200,28 @@ export class BoardDragDropService {
    */
   private updateTaskDrag(clientX: number, clientY: number) {
     if (!this.isDraggingTask || !this.dragElement) return;
-    // Handle auto-scrolling - MUST be called first
     this.handleAutoScroll(clientY);
-    // Also try simple auto-scroll as immediate fallback
     this.simpleAutoScroll(clientY);
-    // Update drag element position with requestAnimationFrame for smoother movement
     requestAnimationFrame(() => {
       if (this.dragElement) {
-        // Ensure the element stays centered on cursor
         const left = Math.max(0, Math.min(window.innerWidth - this.dragElement.offsetWidth, clientX - this.dragOffset.x));
         const top = Math.max(0, Math.min(window.innerHeight - this.dragElement.offsetHeight, clientY - this.dragOffset.y));
         this.dragElement.style.left = left + 'px';
         this.dragElement.style.top = top + 'px';
-        // Ensure the element maintains its styles during drag
         this.dragElement.style.position = 'fixed';
         this.dragElement.style.zIndex = '9999';
         this.dragElement.style.pointerEvents = 'none';
       }
     });
 
-    // Primary method: Check which column we're over using elementFromPoint
     const elements = document.elementsFromPoint(clientX, clientY);
     let targetColumn: TaskColumn | null = null;
     for (const element of elements) {
-      // Check for board-column element (main column container)
       const columnElement = element.closest('.board-column') as HTMLElement;
       if (columnElement) {
         targetColumn = columnElement.getAttribute('data-column') as TaskColumn;
         break;
       }
-      // Also check for task-list element as fallback
       const taskListElement = element.closest('.task-list') as HTMLElement;
       if (taskListElement) {
         const parentColumn = taskListElement.closest('.board-column') as HTMLElement;
@@ -258,7 +230,6 @@ export class BoardDragDropService {
           break;
         }
       }
-      // Check for column-header as additional fallback
       const headerElement = element.closest('.column-header') as HTMLElement;
       if (headerElement) {
         const parentColumn = headerElement.closest('.board-column') as HTMLElement;
@@ -268,11 +239,9 @@ export class BoardDragDropService {
         }
       }
     }
-    // Fallback method: Use geometric bounds detection if primary method fails
     if (!targetColumn) {
       targetColumn = this.getColumnAtPosition(clientX, clientY);
     }
-    // Update drag over column and show/hide placeholder
     if (targetColumn && targetColumn !== this.draggedTask?.column) {
       this.dragOverColumn = targetColumn;
       this.dragPlaceholderVisible = true;
@@ -292,11 +261,9 @@ export class BoardDragDropService {
    * @private
    */
   private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
-    // Get all board columns
     const columns = document.querySelectorAll('.board-column') as NodeListOf<HTMLElement>;
     for (const column of columns) {
       const rect = column.getBoundingClientRect();
-      // Check if the cursor is within the column bounds
       if (clientX >= rect.left && clientX <= rect.right && clientY >= rect.top && clientY <= rect.bottom) {
         return column.getAttribute('data-column') as TaskColumn;
       }
@@ -313,7 +280,6 @@ export class BoardDragDropService {
    * @private
    */
   private handleAutoScroll(clientY: number) {
-    // Update current cursor position with bounds checking
     this.currentCursorY = Math.max(0, Math.min(clientY, window.innerHeight));
     const viewportHeight = window.innerHeight;
     const scrollableContainer = this.findScrollableContainer();
@@ -323,51 +289,38 @@ export class BoardDragDropService {
     const containerScrollTop = scrollableContainer.scrollTop;
     const containerScrollHeight = scrollableContainer.scrollHeight;
     const containerClientHeight = scrollableContainer.clientHeight;
-    // Use normalized cursor position for zone detection
     const normalizedY = this.currentCursorY;
-    // Check if we're in the top auto-scroll zone
     const inTopZone = normalizedY < this.autoScrollZone && containerScrollTop > 0;
-    // Check if we're in the bottom auto-scroll zone  
     const canScrollDown = (containerScrollTop + containerClientHeight) < containerScrollHeight;
     const inBottomZone = normalizedY > (viewportHeight - this.autoScrollZone) && canScrollDown;
-    // Stop auto-scrolling if we're not in any zone
     if (!inTopZone && !inBottomZone) {
       this.stopAutoScroll();
       return;
     }
-    // Start auto-scrolling if not already active
     if (!this.isAutoScrolling) {
       this.isAutoScrolling = true;
       this.autoScrollInterval = setInterval(() => {
         const currentContainerScrollTop = scrollableContainer.scrollTop;
         const currentContainerScrollHeight = scrollableContainer.scrollHeight;
         const currentContainerClientHeight = scrollableContainer.clientHeight;
-        // Recalculate zones based on current cursor position
         const currentInTopZone = this.currentCursorY < this.autoScrollZone && currentContainerScrollTop > 0;
         const currentCanScrollDown = (currentContainerScrollTop + currentContainerClientHeight) < currentContainerScrollHeight;
         const currentInBottomZone = this.currentCursorY > (window.innerHeight - this.autoScrollZone) && currentCanScrollDown;
         if (currentInTopZone) {
-          // Speed increases as we get closer to the top
           const distanceFromTop = this.currentCursorY;
           const speed = this.getAdaptiveScrollSpeed(distanceFromTop);
-          // Scroll up in container
           scrollableContainer.scrollBy(0, -speed);
-          // Update board overview viewport after scrolling
           this.boardThumbnailService.updateScrollPosition();
         } else if (currentInBottomZone) {
 
-          // Speed increases as we get closer to the bottom
           const distanceFromBottom = window.innerHeight - this.currentCursorY;
           const speed = this.getAdaptiveScrollSpeed(distanceFromBottom);
-          // Scroll down in container
           scrollableContainer.scrollBy(0, speed);
-          // Update board overview viewport after scrolling
           this.boardThumbnailService.updateScrollPosition();
         } else {
-          // Stop if we've moved out of the zones or reached limits
           this.stopAutoScroll();
         }
-      }, 8); // Even higher frequency for ultra-smooth scrolling
+      }, 8);
     }
   }
 
@@ -382,9 +335,7 @@ export class BoardDragDropService {
     const scrollZone = 150;
     const scrollSpeed = 10;
     const viewportHeight = window.innerHeight;
-    // Ensure clientY is within reasonable bounds
     const normalizedY = Math.max(0, Math.min(clientY, viewportHeight));
-    // Find scrollable container
     const scrollableContainer = this.findScrollableContainer();
     if (!scrollableContainer) {
       return;
@@ -392,12 +343,10 @@ export class BoardDragDropService {
     const containerScrollTop = scrollableContainer.scrollTop;
     const containerScrollHeight = scrollableContainer.scrollHeight;
     const containerClientHeight = scrollableContainer.clientHeight;
-    // Top zone - use normalized Y to prevent negative values
     if (normalizedY < scrollZone && containerScrollTop > 0) {
       scrollableContainer.scrollBy(0, -scrollSpeed);
       return;
     }
-    // Bottom zone - check if we can scroll down
     const canScrollDown = (containerScrollTop + containerClientHeight) < containerScrollHeight;
     if (normalizedY > (viewportHeight - scrollZone) && canScrollDown) {
       scrollableContainer.scrollBy(0, scrollSpeed);
@@ -439,32 +388,25 @@ export class BoardDragDropService {
    */
   private async endTaskDrag(onTaskUpdate: () => void) {
     if (!this.isDraggingTask || !this.draggedTask) return;
-    // Stop auto-scrolling
     this.stopAutoScroll();
-    // Remove drag element
     if (this.dragElement) { document.body.removeChild(this.dragElement); this.dragElement = null; }
-    // Remove dragging classes
     const originalElement = document.querySelector('.task-dragging-original');
     if (originalElement) { originalElement.classList.remove('task-dragging-original'); }
-    // If dropped on a different column, move the task
     if (this.dragOverColumn && this.dragOverColumn !== this.draggedTask.column) {
       try {
         const updatedTask: Task = { ...this.draggedTask, column: this.dragOverColumn };
         await this.taskService.updateTaskInFirebase(updatedTask);
-        // Call the update callback to refresh local arrays
         onTaskUpdate();
       } catch (error) {
 
         console.error('âŒ Error moving task:', error);
       }
     }
-    // Reset drag state
     this.isDraggingTask = false;
     this.draggedTask = null;
     this.dragOverColumn = null;
     this.dragPlaceholderVisible = false;
     this.dragPlaceholderHeight = 0;
-    // Disable overflow-x: visible after drag operations
     this.disableDragOverflow();
     if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
   }
@@ -491,7 +433,6 @@ export class BoardDragDropService {
    * @param event - The drag leave event from the column
    */
   onColumnDragLeave(event: DragEvent) {
-    // Only hide placeholder if we're actually leaving the column area
     const relatedTarget = event.relatedTarget as HTMLElement;
     const currentTarget = event.currentTarget as HTMLElement;
     if (!relatedTarget || !currentTarget.contains(relatedTarget)) {
@@ -509,8 +450,6 @@ export class BoardDragDropService {
    */
   onColumnDrop(event: DragEvent, column: TaskColumn) {
     event.preventDefault();
-    // The actual drop logic is handled in endTaskDrag()
-    // This just ensures proper event handling
   }
 
   /**
@@ -524,9 +463,7 @@ export class BoardDragDropService {
     this.dragPlaceholderVisible = false;
     this.dragPlaceholderHeight = 0;
     this.currentCursorY = 0;
-    // Disable overflow-x: visible after drag operations
     this.disableDragOverflow();
-    // Stop auto-scrolling
     this.stopAutoScroll();
     if (this.longPressTimeout) { clearTimeout(this.longPressTimeout); this.longPressTimeout = null; }
     if (this.dragDelayTimeout) { clearTimeout(this.dragDelayTimeout); this.dragDelayTimeout = null; }
@@ -556,7 +493,6 @@ export class BoardDragDropService {
       clientX = event.touches[0].clientX;
       clientY = event.touches[0].clientY;
     }
-    // Find the main scrollable container (likely the board or main content area)
     const scrollableContainer = this.findScrollableContainer();
     if (!scrollableContainer) {
       return false;
@@ -571,7 +507,6 @@ export class BoardDragDropService {
     const maxScrollTop = containerScrollHeight - containerClientHeight;
     const maxScrollLeft = containerScrollWidth - containerClientWidth;
     let scrolled = false;
-    // Vertical scrolling
     if (clientY < scrollZone && containerScrollTop > 0) {
       scrollableContainer.scrollBy(0, -scrollSpeed);
       scrolled = true;
@@ -580,7 +515,6 @@ export class BoardDragDropService {
       scrollableContainer.scrollBy(0, scrollSpeed);
       scrolled = true;
     }
-    // Horizontal scrolling
     if (clientX < scrollZone && containerScrollLeft > 0) {
       scrollableContainer.scrollBy(-scrollSpeed, 0);
       scrolled = true;
@@ -600,7 +534,6 @@ export class BoardDragDropService {
    * @private
    */
   private findScrollableContainer(): HTMLElement | null {
-    // Common selectors for scrollable containers in Angular apps
     const selectors = [
       '.board-container',
       '.main-content',
@@ -619,7 +552,6 @@ export class BoardDragDropService {
         return element;
       }
     }
-    // Fallback: Find any element with overflow scroll/auto
     const allElements = document.querySelectorAll('*') as NodeListOf<HTMLElement>;
     for (const element of allElements) {
       if (this.isScrollable(element) && element.scrollHeight > element.clientHeight) {

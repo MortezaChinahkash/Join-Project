@@ -77,7 +77,6 @@ export class HeaderComponent {
     const target = event.target as HTMLElement;
     const userElement = document.querySelector('.user');
     const overlayElement = document.querySelector('.mini-overlay');
-    // Close overlay if clicking outside of user icon and overlay
     if (userElement && overlayElement && 
         !userElement.contains(target) && 
         !overlayElement.contains(target)) {

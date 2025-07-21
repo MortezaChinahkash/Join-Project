@@ -10,16 +10,13 @@ import { Task, TaskColumn } from '../../../interfaces/task.interface';
 @Injectable({ providedIn: 'root' })
 
 export class BoardFormOverlayService {
-  // Overlay states
   showAddTaskOverlay = false;
   showTaskDetailsOverlay = false;
   showTaskEditOverlay = false;
   showDeleteConfirmationOverlay = false;
-  // Task states
   selectedTask: Task | null = null;
   isEditingTask = false;
   currentColumn: TaskColumn = 'todo';
-  // Animation states
   private overlayAnimationTimeout?: any;
   /**
    * Opens the add task overlay for a specific column.

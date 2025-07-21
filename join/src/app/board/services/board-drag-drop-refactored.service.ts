@@ -23,7 +23,6 @@ export class BoardDragDropService {
     private autoScroll: BoardDragAutoScrollService,
     private dragDetection: BoardDragDetectionService
   ) {}
-  // Expose state properties through getters for backward compatibility
   get draggedTask() { return this.dragState.draggedTask; }
 
   get isDraggingTask() { return this.dragState.isDraggingTask; }
@@ -45,7 +44,6 @@ export class BoardDragDropService {
    */
   onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
     return new Promise((resolve) => {
-      // Only handle left mouse button
       if (event.button !== 0) {
         resolve(false);
         return;
@@ -55,7 +53,6 @@ export class BoardDragDropService {
       this.dragState.initialMousePosition = { x: event.clientX, y: event.clientY };
       let hasMoved = false;
       let dragStarted = false;
-      // Start delay timer for drag
       this.dragState.dragDelayTimeout = setTimeout(() => {
         if (this.dragState.isMousePressed && !hasMoved) {
           this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
@@ -69,7 +66,6 @@ export class BoardDragDropService {
         const deltaY = Math.abs(e.clientY - this.dragState.initialMousePosition.y);
         if (deltaX > this.dragState.dragThreshold || deltaY > this.dragState.dragThreshold) {
           hasMoved = true;
-          // Start drag immediately if threshold is exceeded
           if (!dragStarted && !this.dragState.isDraggingTask) {
             if (this.dragState.dragDelayTimeout) {
               clearTimeout(this.dragState.dragDelayTimeout);
@@ -93,9 +89,9 @@ export class BoardDragDropService {
         }
         if (this.dragState.isDraggingTask) {
           this.endTaskDrag(onTaskUpdate);
-          resolve(true); // Was a drag
+          resolve(true);
         } else {
-          resolve(false); // Was a click
+          resolve(false);
         }
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
@@ -120,11 +116,10 @@ export class BoardDragDropService {
       event.preventDefault();
       const touch = event.touches[0];
       let dragStarted = false;
-      // Start long press timer for mobile
       this.dragState.longPressTimeout = setTimeout(() => {
         this.startTaskDrag(touch.clientX, touch.clientY, task, event.target as HTMLElement);
         dragStarted = true;
-      }, 500); // 500ms long press
+      }, 500);
 
       const handleTouchMove = (e: TouchEvent) => {
         const touch = e.touches[0];
@@ -133,7 +128,6 @@ export class BoardDragDropService {
           this.autoScroll.emergencyAutoScroll(e);
           this.updateTaskDrag(touch.clientX, touch.clientY);
         } else {
-          // Cancel long press if user moves finger before drag starts
           if (this.dragState.longPressTimeout) {
             clearTimeout(this.dragState.longPressTimeout);
             this.dragState.longPressTimeout = null;
@@ -148,9 +142,9 @@ export class BoardDragDropService {
         }
         if (this.dragState.isDraggingTask) {
           this.endTaskDrag(onTaskUpdate);
-          resolve(true); // Was a drag
+          resolve(true);
         } else {
-          resolve(false); // Was a tap
+          resolve(false);
         }
         document.removeEventListener('touchmove', handleTouchMove);
         document.removeEventListener('touchend', handleTouchEnd);
@@ -175,12 +169,9 @@ export class BoardDragDropService {
     this.dragState.draggedTask = task;
     this.dragState.isDraggingTask = true;
     this.dragState.dragStartPosition = { x: clientX, y: clientY };
-    // Enable overflow-x: visible for drag operations
     this.enableDragOverflow();
-    // Find the task card element
     const taskCard = element.closest('.task-card') as HTMLElement;
     if (taskCard) {
-      // Clone the element for dragging
       this.dragState.dragElement = taskCard.cloneNode(true) as HTMLElement;
       this.dragState.dragElement.style.position = 'fixed';
       this.dragState.dragElement.style.pointerEvents = 'none';
@@ -190,18 +181,14 @@ export class BoardDragDropService {
       this.dragState.dragElement.style.width = taskCard.offsetWidth + 'px';
       this.dragState.dragElement.style.height = taskCard.offsetHeight + 'px';
       this.dragState.dragElement.classList.add('task-dragging');
-      // Calculate offset from mouse/touch to element
       const rect = taskCard.getBoundingClientRect();
       this.dragState.dragOffset = {
         x: clientX - rect.left,
         y: clientY - rect.top
       };
-      // Position the drag element
       this.dragState.updateDragElementPosition(clientX, clientY);
       document.body.appendChild(this.dragState.dragElement);
-      // Add dragging class to original element
       taskCard.classList.add('task-dragging-original');
-      // Store placeholder height
       this.dragState.dragPlaceholderHeight = taskCard.offsetHeight;
     }
   }
@@ -215,13 +202,9 @@ export class BoardDragDropService {
    */
   private updateTaskDrag(clientX: number, clientY: number): void {
     if (!this.dragState.isDraggingTask || !this.dragState.dragElement) return;
-    // Handle auto-scrolling
     this.autoScroll.handleAutoScroll(clientY);
-    // Update drag element position
     this.dragState.updateDragElementPosition(clientX, clientY);
-    // Detect target column
     const targetColumn = this.dragDetection.getColumnAtPosition(clientX, clientY);
-    // Update drag over column and show/hide placeholder
     this.dragState.updateDragOverColumn(targetColumn);
   }
 
@@ -259,7 +242,6 @@ export class BoardDragDropService {
    */
   onColumnDrop(event: DragEvent, column: TaskColumn): void {
     event.preventDefault();
-    // The actual drop logic is handled in endTaskDrag()
   }
 
   /**
@@ -270,13 +252,11 @@ export class BoardDragDropService {
    */
   private endTaskDrag(onTaskUpdate: () => void): void {
     if (!this.dragState.draggedTask) return;
-    // Move task to new column if dropped on different column
     if (this.dragState.dragOverColumn && this.dragState.dragOverColumn !== this.dragState.draggedTask.column) {
       this.dragState.draggedTask.column = this.dragState.dragOverColumn;
       this.taskService.updateTask(this.dragState.draggedTask.id!, this.dragState.draggedTask);
       onTaskUpdate();
     }
-    // Clean up drag state
     this.cleanup();
   }
 
@@ -294,14 +274,11 @@ export class BoardDragDropService {
    * @private
    */
   private cleanup(): void {
-    // Remove drag element
     if (this.dragState.dragElement) {
       document.body.removeChild(this.dragState.dragElement);
     }
-    // Remove dragging classes
     const draggingElements = document.querySelectorAll('.task-dragging-original');
     draggingElements.forEach(el => el.classList.remove('task-dragging-original'));
-    // Reset state
     this.resetDragState();
   }
 

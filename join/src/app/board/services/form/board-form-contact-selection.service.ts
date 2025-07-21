@@ -10,11 +10,9 @@ import { Contact } from '../../../contacts/services/contact-data.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardFormContactSelectionService {
-  // Contact selection state
   selectedContacts: Contact[] = [];
   isDropdownOpen = false;
   showAssignedContactsDropdown = false;
-  // Dropdown management
   private preventDropdownClose = false;
   private documentClickListener?: (event: Event) => void;
   private assignedContactsClickListener?: (event: Event) => void;
@@ -110,7 +108,7 @@ export class BoardFormContactSelectionService {
    * Adds document click listener to close dropdown when clicking outside.
    */
   private addDocumentClickListener(): void {
-    this.removeDocumentClickListener(); // Remove any existing listener
+    this.removeDocumentClickListener();
     this.documentClickListener = (event: Event) => {
       const target = event.target as HTMLElement;
       const dropdown = target.closest('.contact-dropdown');
@@ -120,7 +118,6 @@ export class BoardFormContactSelectionService {
       }
     };
 
-    // Add with a small delay to prevent immediate closure
     setTimeout(() => {
       document.addEventListener('click', this.documentClickListener!);
     }, 100);

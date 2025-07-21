@@ -38,9 +38,8 @@ export class ContactsFormService {
   private phoneValidator(control: AbstractControl): { [key: string]: any } | null {
     const value = control.value;
     if (!value || value.trim() === '' || value === 'N/A') {
-      return null; // Phone is optional
+      return null;
     }
-    // Basic phone validation - allow various formats
     const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
     const cleanPhone = value.replace(/[\s\-\(\)]/g, '');
     if (!phoneRegex.test(cleanPhone)) {
@@ -266,21 +265,18 @@ export class ContactsFormService {
     errors: string[];
   } {
     const errors: string[] = [];
-    // Check required fields
     if (!formData.name?.trim()) {
       errors.push('Name is required');
     }
     if (!formData.email?.trim()) {
       errors.push('Email is required');
     }
-    // Validate email format
     if (formData.email) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(formData.email)) {
         errors.push('Invalid email format');
       }
     }
-    // Validate name length
     if (formData.name && formData.name.length < 2) {
       errors.push('Name must be at least 2 characters long');
     }

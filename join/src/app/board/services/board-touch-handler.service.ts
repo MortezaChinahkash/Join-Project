@@ -12,8 +12,8 @@ import { BoardAutoScrollService } from './board-auto-scroll.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardTouchHandlerService {
-  private readonly LONG_PRESS_DURATION = 500; // milliseconds
-  private readonly TOUCH_MOVE_THRESHOLD = 10; // pixels
+  private readonly LONG_PRESS_DURATION = 500;
+  private readonly TOUCH_MOVE_THRESHOLD = 10;
   constructor(
     private dragState: BoardDragStateService,
     private autoScroll: BoardAutoScrollService
@@ -36,12 +36,10 @@ export class BoardTouchHandlerService {
       const startY = touch.clientY;
       let hasMoved = false;
       let dragStarted = false;
-      // Set up long press timeout
       this.dragState.longPressTimeout = setTimeout(() => {
         if (!hasMoved && !this.dragState.isDraggingTask) {
           this.startTouchDrag(startX, startY, task, event.target as HTMLElement);
           dragStarted = true;
-          // Add haptic feedback if available
           if (navigator.vibrate) {
             navigator.vibrate(50);
           }
@@ -96,14 +94,11 @@ export class BoardTouchHandlerService {
    */
   private startTouchDrag(clientX: number, clientY: number, task: Task, targetElement: HTMLElement): void {
     this.dragState.startDrag(task, clientX, clientY);
-    // Create visual drag element
     this.createTouchDragElement(task, targetElement, clientX, clientY);
-    // Hide original task
     const taskElement = targetElement.closest('.task-card') as HTMLElement;
     if (taskElement) {
       taskElement.style.opacity = '0.5';
     }
-    // Initialize placeholder state
     this.dragState.setPlaceholder(false, 0);
   }
 
@@ -116,16 +111,12 @@ export class BoardTouchHandlerService {
   private updateTouchDrag(clientX: number, clientY: number): void {
     this.dragState.updateDragPosition(clientX, clientY);
     this.autoScroll.handleAutoScroll(clientX, clientY);
-    // Update drag over column with placeholder logic
     const column = this.getColumnAtPosition(clientX, clientY);
     const previousColumn = this.dragState.dragOverColumn;
     if (column !== previousColumn) {
-      // Update placeholder visibility and height
-      // Only show placeholder if we're over a different column than the original one
       if (column && this.dragState.draggedTask && column !== this.dragState.draggedTask.column) {
-        // Get height from dragged task element
         const taskElement = document.querySelector('.task-card[style*="opacity: 0.5"]') as HTMLElement;
-        const placeholderHeight = taskElement ? taskElement.offsetHeight : 80; // Same height as task card
+        const placeholderHeight = taskElement ? taskElement.offsetHeight : 80;
         this.dragState.setPlaceholder(true, placeholderHeight);
       } else {
         this.dragState.setPlaceholder(false, 0);
@@ -144,7 +135,6 @@ export class BoardTouchHandlerService {
   private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
     const elements = document.elementsFromPoint(clientX, clientY);
     for (const element of elements) {
-      // Check for board-column class and data-column attribute
       if (element.classList.contains('board-column') || element.classList.contains('task-list')) {
         const columnId = element.getAttribute('data-column') || 
                         element.closest('[data-column]')?.getAttribute('data-column');
@@ -165,22 +155,17 @@ export class BoardTouchHandlerService {
    * @param onTaskUpdate - Callback for task updates
    */
   private finishTouchDrag(onTaskUpdate: () => void): void {
-    // Remove drag element
     if (this.dragState.dragElement) {
       this.dragState.dragElement.remove();
     }
-    // Restore original task visibility
     const taskCards = document.querySelectorAll('.task-card');
     taskCards.forEach(card => {
       (card as HTMLElement).style.opacity = '';
     });
-    // Handle drop logic
     if (this.dragState.dragOverColumn && this.dragState.draggedTask) {
       this.handleTaskDrop(onTaskUpdate);
     }
-    // Hide placeholder
     this.dragState.setPlaceholder(false, 0);
-    // Cleanup
     this.dragState.resetDragState();
     this.autoScroll.stopAutoScroll();
   }
@@ -216,9 +201,7 @@ export class BoardTouchHandlerService {
    */
   private handleTaskDrop(onTaskUpdate: () => void): void {
     if (!this.dragState.draggedTask || !this.dragState.dragOverColumn) return;
-    // Update task column
     this.dragState.draggedTask.column = this.dragState.dragOverColumn;
-    // Trigger update callback
     onTaskUpdate();
   }
 
@@ -239,16 +222,13 @@ export class BoardTouchHandlerService {
    * Cancels ongoing touch drag operation.
    */
   private cancelTouchDrag(): void {
-    // Remove drag element
     if (this.dragState.dragElement) {
       this.dragState.dragElement.remove();
     }
-    // Restore original task visibility
     const taskCards = document.querySelectorAll('.task-card');
     taskCards.forEach(card => {
       (card as HTMLElement).style.opacity = '';
     });
-    // Cleanup state
     this.dragState.resetDragState();
     this.autoScroll.stopAutoScroll();
   }

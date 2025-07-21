@@ -11,8 +11,8 @@ import { TaskColumn } from '../../../interfaces/task.interface';
   providedIn: 'root'
 })
 export class BoardDragAutoScrollService {
-  private autoScrollZone = 200; // pixels from top/bottom where auto-scroll activates
-  private autoScrollSpeed = 8; // pixels per scroll step
+  private autoScrollZone = 200;
+  private autoScrollSpeed = 8;
   private autoScrollInterval: any = null;
   private horizontalScrollInterval: any = null;
   private isAutoScrolling = false;
@@ -25,7 +25,6 @@ export class BoardDragAutoScrollService {
    * @param clientY - Current Y position of cursor/touch (for vertical scrolling)
    */
   handleAutoScroll(clientX: number, clientY?: number): void {
-    // Support both old signature (clientY only) and new signature (clientX, clientY)
     const actualClientY = clientY !== undefined ? clientY : clientX;
     const actualClientX = clientY !== undefined ? clientX : 0;
     
@@ -68,7 +67,6 @@ export class BoardDragAutoScrollService {
   private handleVerticalScroll(clientY: number): void {
     const viewportHeight = window.innerHeight;
     const scrollZone = this.autoScrollZone;
-    // Check if we're in the auto-scroll zone
     const isInTopZone = clientY < scrollZone;
     const isInBottomZone = clientY > (viewportHeight - scrollZone);
     if (isInTopZone || isInBottomZone) {
@@ -96,7 +94,7 @@ export class BoardDragAutoScrollService {
       const scrollSpeed = this.getAdaptiveScrollSpeed(distance);
       const scrollDirection = isUpward ? -scrollSpeed : scrollSpeed;
       window.scrollBy(0, scrollDirection);
-    }, 16); // ~60fps
+    }, 16);
   }
 
   /**
@@ -125,14 +123,13 @@ export class BoardDragAutoScrollService {
       const scrollAmount = isScrollingLeft ? -this.autoScrollSpeed : this.autoScrollSpeed;
       container.scrollLeft += scrollAmount;
       
-      // Stop if we've reached the edge
       if (isScrollingLeft && container.scrollLeft <= 0) {
         this.stopHorizontalAutoScroll();
       } else if (!isScrollingLeft && container.scrollLeft >= container.scrollWidth - container.clientWidth) {
 
         this.stopHorizontalAutoScroll();
       }
-    }, 16); // ~60fps
+    }, 16);
   }
 
   /**
@@ -154,7 +151,6 @@ export class BoardDragAutoScrollService {
    * @private
    */
   private getAdaptiveScrollSpeed(distance: number): number {
-    // Increase speed as cursor gets closer to edge
     const speedMultiplier = Math.max(1, Math.min(3, distance / 50));
     return this.autoScrollSpeed * speedMultiplier;
   }
@@ -176,10 +172,8 @@ export class BoardDragAutoScrollService {
       const touch = event.touches[0];
       clientY = touch ? touch.clientY : 0;
     }
-    // Find scrollable container
     const scrollContainer = this.findScrollableContainer();
     if (!scrollContainer) return;
-    // Auto-scroll logic
     if (clientY < scrollZone) {
       scrollContainer.scrollTop -= scrollSpeed;
     } else if (clientY > viewportHeight - scrollZone) {
@@ -195,17 +189,14 @@ export class BoardDragAutoScrollService {
    * @private
    */
   private findScrollableContainer(): HTMLElement | null {
-    // Try main content area first
     let container = document.querySelector('.main-content') as HTMLElement;
     if (container && this.isScrollable(container)) {
       return container;
     }
-    // Try body as fallback
     container = document.querySelector('body') as HTMLElement;
     if (container && this.isScrollable(container)) {
       return container;
     }
-    // Try document element
     return document.documentElement;
   }
 

@@ -16,7 +16,6 @@ import { Contact } from '../../../contacts/services/contact-data.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardFormService {
-  // Form state
   taskForm: FormGroup;
   constructor(
     private fb: FormBuilder,
@@ -94,10 +93,8 @@ export class BoardFormService {
     try {
       const task = this.buildTaskFromForm();
       if (this.dataService.getIsEditMode()) {
-        // Update existing task
         await this.updateTask(task);
       } else {
-        // Create new task
         await this.createTask(task);
       }
       this.dataService.saveChanges();
@@ -138,7 +135,6 @@ export class BoardFormService {
    * @param task - Task to create
    */
   private async createTask(task: Task): Promise<void> {
-    // Implementation would depend on your backend service
     console.log('Creating task:', task);
   }
 
@@ -148,7 +144,6 @@ export class BoardFormService {
    * @param task - Task to update
    */
   private async updateTask(task: Task): Promise<void> {
-    // Implementation would depend on your backend service
     console.log('Updating task:', task);
   }
 
@@ -161,7 +156,6 @@ export class BoardFormService {
     const formValue = this.taskForm.value;
     const validation = this.validationService.validateForm(formValue);
     if (!validation.isValid) {
-      // Handle validation errors - could display them in UI
       console.warn('Form validation errors:', validation.errors);
       return false;
     }
@@ -215,7 +209,6 @@ export class BoardFormService {
     }
   }
 
-  // Delegation methods for overlay management
   /**
    * Opens the task form overlay.
    * 
@@ -259,7 +252,6 @@ export class BoardFormService {
     return null;
   }
 
-  // Delegation methods for contact selection
   /**
    * Toggles contact selection.
    * 
@@ -301,7 +293,6 @@ export class BoardFormService {
     return this.contactSelectionService.isDropdownOpen;
   }
 
-  // Delegation methods for data management
   /**
    * Gets current task being edited.
    * 
@@ -347,7 +338,6 @@ export class BoardFormService {
     return this.dataService.getSubtasks();
   }
 
-  // Delegation methods for validation
   /**
    * Gets basic form validation status.
    * 

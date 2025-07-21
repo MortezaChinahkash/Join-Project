@@ -7,7 +7,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // Use hash routing only in production, normal routing in development
     isDevMode() 
       ? provideRouter(routes) 
       : provideRouter(routes, withHashLocation()),

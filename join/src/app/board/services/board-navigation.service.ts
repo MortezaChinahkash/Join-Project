@@ -46,10 +46,9 @@ export class BoardNavigationService {
   ): void {
     this.route.queryParams.subscribe(params => {
       if (params['selectedTask']) {
-        // Wait for tasks to load before trying to open the selected task
         setTimeout(() => {
           this.openTaskById(params['selectedTask'], taskArrays, openTaskCallback);
-        }, 100); // Wait for data to load
+        }, 100);
       }
     });
   }
@@ -70,7 +69,6 @@ export class BoardNavigationService {
     },
     openTaskCallback: (task: Task) => void
   ): void {
-    // Find the task in all columns
     const allTasks = [
       ...taskArrays.todoTasks,
       ...taskArrays.inProgressTasks,
@@ -79,7 +77,6 @@ export class BoardNavigationService {
     ];
     const targetTask = allTasks.find(task => task.id === taskId);
     if (targetTask) {
-      // Open the task details overlay
       openTaskCallback(targetTask);
     }
   }
@@ -99,7 +96,7 @@ export class BoardNavigationService {
               inline: 'nearest'
             });
           }
-        }, 500); // Wait for data to load
+        }, 500);
       }
     });
   }

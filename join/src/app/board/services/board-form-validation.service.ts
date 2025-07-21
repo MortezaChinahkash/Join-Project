@@ -95,7 +95,6 @@ export class BoardFormValidationService {
   } {
     const errors: string[] = [];
     const fieldErrors: { [key: string]: string } = {};
-    // Mark all fields as touched to show validation errors
     Object.keys(form.controls).forEach(key => {
       const control = form.get(key);
       if (control) {
@@ -108,7 +107,6 @@ export class BoardFormValidationService {
       }
     });
 
-    // Check for date-specific validation
     if (this.isDateInvalid(form)) {
       const dateError = 'Due date cannot be in the past';
       errors.push(dateError);

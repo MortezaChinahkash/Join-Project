@@ -10,19 +10,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 
 export class ContactsStateService {
-  // Overlay state subjects
   private showAddContactOverlaySubject = new BehaviorSubject<boolean>(false);
   private showEditContactOverlaySubject = new BehaviorSubject<boolean>(false);
   private showMobileMoreMenuSubject = new BehaviorSubject<boolean>(false);
   private contactSuccessMessageOverlaySubject = new BehaviorSubject<boolean>(false);
-  // Mobile state subjects
   private isMobileViewSubject = new BehaviorSubject<boolean>(false);
   private showMobileSingleContactSubject = new BehaviorSubject<boolean>(false);
-  // Animation state subjects
   private suppressAnimationSubject = new BehaviorSubject<boolean>(false);
-  // Success message state
   private contactSuccessMessageTextSubject = new BehaviorSubject<string>('Contact successfully created!');
-  // Public observables
   showAddContactOverlay$ = this.showAddContactOverlaySubject.asObservable();
   showEditContactOverlay$ = this.showEditContactOverlaySubject.asObservable();
   showMobileMoreMenu$ = this.showMobileMoreMenuSubject.asObservable();
@@ -31,7 +26,6 @@ export class ContactsStateService {
   showMobileSingleContact$ = this.showMobileSingleContactSubject.asObservable();
   suppressAnimation$ = this.suppressAnimationSubject.asObservable();
   contactSuccessMessageText$ = this.contactSuccessMessageTextSubject.asObservable();
-  // Getters for current values
   get showAddContactOverlay(): boolean { return this.showAddContactOverlaySubject.value; }
 
   get showEditContactOverlay(): boolean { return this.showEditContactOverlaySubject.value; }
@@ -115,7 +109,6 @@ export class ContactsStateService {
   updateMobileViewStatus(windowWidth: number = window.innerWidth): void {
     const isMobile = windowWidth <= 768;
     this.isMobileViewSubject.next(isMobile);
-    // Reset mobile single contact view if switching to desktop
     if (!isMobile && this.showMobileSingleContact) {
       this.showMobileSingleContactSubject.next(false);
     }
@@ -208,9 +201,7 @@ export class ContactsStateService {
   setupResizeListener(): () => void {
     const handleResize = () => this.updateMobileViewStatus();
     window.addEventListener('resize', handleResize);
-    // Initial check
     this.updateMobileViewStatus();
-    // Return cleanup function
     return () => window.removeEventListener('resize', handleResize);
   }
 

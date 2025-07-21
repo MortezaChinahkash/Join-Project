@@ -11,14 +11,11 @@ import { Contact } from '../../../contacts/services/contact-data.service';
   providedIn: 'root'
 })
 export class BoardFormContactService {
-  // Contact selection state
   isDropdownOpen = false;
   selectedContacts: Contact[] = [];
   showAssignedContactsDropdown = false;
   private preventDropdownClose = false;
-  // Category selection state
   isCategoryDropdownOpen = false;
-  // Click outside listener cleanup
   private documentClickListener?: (event: Event) => void;
   private assignedContactsClickListener?: (event: Event) => void;
   /**
@@ -58,13 +55,10 @@ export class BoardFormContactService {
     this.preventDropdownClose = true;
     const existingIndex = this.selectedContacts.findIndex(c => c.id === contact.id);
     if (existingIndex > -1) {
-      // Remove contact if already selected
       this.selectedContacts.splice(existingIndex, 1);
     } else {
-      // Add contact if not selected
       this.selectedContacts.push(contact);
     }
-    // Reset flag after a short delay
     setTimeout(() => {
       this.preventDropdownClose = false;
     }, 100);
@@ -165,7 +159,7 @@ export class BoardFormContactService {
    * @private
    */
   private addDocumentClickListener(): void {
-    this.removeDocumentClickListener(); // Remove existing listener first
+    this.removeDocumentClickListener();
     this.documentClickListener = (event: Event) => {
       if (this.preventDropdownClose) return;
       const target = event.target as HTMLElement;

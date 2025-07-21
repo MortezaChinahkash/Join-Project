@@ -50,7 +50,6 @@ export class DeleteConfirmationService {
     if (!this.taskToDelete || !this.taskToDelete.id) return;
     try {
       await this.taskService.deleteTaskFromFirebase(this.taskToDelete.id);
-      // Call the update callback to refresh local arrays
       onTaskUpdate();
       this.closeDeleteConfirmation();
     } catch (error) {

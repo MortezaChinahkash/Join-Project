@@ -5,7 +5,7 @@ export interface User {
   name: string;
   email: string;
   isGuest: boolean;
-  loginTimestamp: number; // Timestamp when user logged in
+  loginTimestamp: number;
 }
 
 /**
@@ -22,7 +22,7 @@ export class AuthStateService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private readonly STORAGE_KEY = 'join_user';
-  private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  private readonly SESSION_DURATION = 24 * 60 * 60 * 1000;
   /**
    * Gets the current user value.
    */
@@ -66,14 +66,11 @@ export class AuthStateService {
       const userData = localStorage.getItem(this.STORAGE_KEY);
       if (userData) {
         const user: User = JSON.parse(userData);
-        // Check if session is still valid
         const sessionAge = Date.now() - user.loginTimestamp;
         if (sessionAge > this.SESSION_DURATION) {
-          // Session expired, clear storage
           localStorage.removeItem(this.STORAGE_KEY);
           return;
         }
-        // Update current user if no user is set
         if (!this.currentUserSubject.value) {
           this.currentUserSubject.next(user);
         }

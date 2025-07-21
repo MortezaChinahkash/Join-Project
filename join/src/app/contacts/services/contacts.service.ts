@@ -19,11 +19,9 @@ import { AuthService } from '../../shared/services/auth.service';
 @Injectable({ providedIn: 'root' })
 
 export class ContactsService implements OnDestroy {
-  // Data state
   private contacts: Contact[] = [];
   private groupedContacts: { [key: string]: Contact[] } = {};
   private selectedContact: Contact | null = null;
-  // Subscriptions
   private contactsSubscription?: Subscription;
   private resizeCleanup?: () => void;
   constructor(
@@ -36,7 +34,6 @@ export class ContactsService implements OnDestroy {
     private displayService: ContactsDisplayService,
     private authService: AuthService
   ) {}
-  // Expose state observables
   get showAddContactOverlay$(): Observable<boolean> { return this.stateService.showAddContactOverlay$; }
 
   get showEditContactOverlay$(): Observable<boolean> { return this.stateService.showEditContactOverlay$; }
@@ -53,7 +50,6 @@ export class ContactsService implements OnDestroy {
 
   get contactSuccessMessageText$(): Observable<string> { return this.stateService.contactSuccessMessageText$; }
 
-  // Expose state properties
   get showAddContactOverlay(): boolean { return this.stateService.showAddContactOverlay; }
 
   get showEditContactOverlay(): boolean { return this.stateService.showEditContactOverlay; }
@@ -70,7 +66,6 @@ export class ContactsService implements OnDestroy {
 
   get contactSuccessMessageText(): string { return this.stateService.contactSuccessMessageText; }
 
-  // Expose data properties
   get allContacts(): Contact[] { return this.contacts; }
 
   get contactGroups(): { [key: string]: Contact[] } { return this.groupedContacts; }
@@ -130,7 +125,6 @@ export class ContactsService implements OnDestroy {
     this.resizeCleanup = this.stateService.setupResizeListener();
   }
 
-  // Form Management Methods
   /**
    * Gets the contact form instance.
    * 
@@ -173,7 +167,6 @@ export class ContactsService implements OnDestroy {
     this.stateService.closeEditContactOverlay();
   }
 
-  // CRUD Operations
   /**
    * Handles add contact form submission.
    */
@@ -319,7 +312,6 @@ export class ContactsService implements OnDestroy {
       this.stateService.enableAnimations();
     }, 0);
   }
-  // UI and Display Methods
   /**
    * Selects a contact and handles mobile view.
    * 
@@ -395,7 +387,6 @@ export class ContactsService implements OnDestroy {
     this.stateService.updateMobileViewStatus();
   }
 
-  // Display Delegation Methods
   /**
    * Gets contact initials for display.
    * 
@@ -464,7 +455,6 @@ export class ContactsService implements OnDestroy {
     return this.displayService.getCurrentUserDisplayName();
   }
 
-  // Form Validation Methods
   /**
    * Checks if a specific field has errors.
    * 
@@ -485,7 +475,6 @@ export class ContactsService implements OnDestroy {
     return this.formService.getFieldError(fieldName);
   }
 
-  // Static Methods for External Use
   /**
    * Static method for getting contact initials (for external use).
    * 
@@ -506,7 +495,6 @@ export class ContactsService implements OnDestroy {
     return ContactsDisplayService.getInitialsColor(name);
   }
 
-  // Lifecycle Methods
   /**
    * Angular lifecycle hook - component cleanup.
    */

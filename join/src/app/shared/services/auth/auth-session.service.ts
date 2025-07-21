@@ -11,15 +11,15 @@
 })
 export class AuthSessionService {
   private sessionCheckInterval: any;
-  private readonly SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-  private readonly CHECK_INTERVAL = 5 * 60 * 1000; // Check every 5 minutes
+  private readonly SESSION_DURATION = 24 * 60 * 60 * 1000;
+  private readonly CHECK_INTERVAL = 5 * 60 * 1000;
   /**
    * Starts periodic session checking.
    * 
    * @param onSessionExpired - Callback to execute when session expires
    */
   startSessionCheck(onSessionExpired: () => void): void {
-    this.stopSessionCheck(); // Clear any existing interval
+    this.stopSessionCheck();
     this.sessionCheckInterval = setInterval(() => {
       this.checkSession(onSessionExpired);
     }, this.CHECK_INTERVAL);
@@ -73,7 +73,7 @@ export class AuthSessionService {
    * @returns Warning time in milliseconds
    */
   getSessionWarningTime(): number {
-    return 15 * 60 * 1000; // 15 minutes
+    return 15 * 60 * 1000;
   }
 
   /**

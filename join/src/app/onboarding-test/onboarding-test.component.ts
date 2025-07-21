@@ -1,5 +1,4 @@
-﻿// Development helper component for testing onboarding
-// This component should be removed in production
+﻿
 import { Component } from '@angular/core';
 import { OnboardingService } from '../shared/services/onboarding.service';
 import { CommonModule } from '@angular/common';
@@ -55,7 +54,6 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class OnboardingTestComponent {
-  // Show controls only in development
   showControls = !window.location.hostname.includes('production');
   constructor(private onboardingService: OnboardingService) {}
 

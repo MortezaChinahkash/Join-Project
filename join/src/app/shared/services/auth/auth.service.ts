@@ -18,12 +18,10 @@ export class AuthService {
   private readonly authSession = inject(AuthSessionService);
   private readonly authFirebase = inject(AuthFirebaseService);
   private readonly router = inject(Router);
-  // Public state exposure
   readonly currentUser$ = this.authState.currentUser$;
   readonly currentUser = computed(() => this.authState.currentUser);
   readonly isAuthenticated = computed(() => this.authState.isAuthenticated);
   readonly isGuest = computed(() => this.authState.isGuest);
-  // Session-related exposures
   readonly sessionTimeRemaining = computed(() => this.authState.getRemainingSessionTime());
   readonly sessionTimeRemainingFormatted = computed(() => 
     this.authState.formatSessionDuration(this.authState.getRemainingSessionTime())
@@ -46,11 +44,8 @@ export class AuthService {
   async login(email: string, password: string): Promise<void> {
     try {
       const user = await this.authFirebase.login(email, password);
-      // Set user in state
       this.authState.setCurrentUser(user);
-      // Start session monitoring
       this.startSessionMonitoring();
-      // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
 
@@ -70,11 +65,8 @@ export class AuthService {
   async register(name: string, email: string, password: string): Promise<void> {
     try {
       const user = await this.authFirebase.register(name, email, password);
-      // Set user in state
       this.authState.setCurrentUser(user);
-      // Start session monitoring
       this.startSessionMonitoring();
-      // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
 
@@ -91,11 +83,8 @@ export class AuthService {
   async loginAsGuest(): Promise<void> {
     try {
       const user = await this.authFirebase.loginAsGuest();
-      // Set user in state
       this.authState.setCurrentUser(user);
-      // Start session monitoring
       this.startSessionMonitoring();
-      // Navigate to summary page
       await this.router.navigate(['/summary']);
     } catch (error: any) {
 
@@ -112,13 +101,9 @@ export class AuthService {
   async logout(): Promise<void> {
     try {
       await this.authFirebase.logout();
-      // Stop session monitoring
       this.authSession.stopSessionCheck();
-      // Clear user state
       this.authState.clearUserState();
-      // Clear any cached data
       this.clearUserCache();
-      // Navigate to login page
       await this.router.navigate(['/login']);
     } catch (error: any) {
 
@@ -187,7 +172,6 @@ export class AuthService {
     }
     try {
       await this.authFirebase.updateUserProfile(updates);
-      // Update our user state
       const currentUser = this.getCurrentUser();
       if (currentUser && updates.displayName) {
         const updatedUser = { ...currentUser, name: updates.displayName };
@@ -208,9 +192,7 @@ export class AuthService {
    */
   private async initializeAuth(): Promise<void> {
     try {
-      // Load user from storage first
       this.authState.loadUserFromStorage();
-      // Initialize Firebase auth listener
       this.authFirebase.initializeAuthListener((user) => {
         if (user) {
           this.authState.setCurrentUser(user);
@@ -221,7 +203,6 @@ export class AuthService {
         }
       });
 
-      // Wait for initial auth state
       const user = await this.authFirebase.waitForAuthReady();
       if (user) {
         this.authState.setCurrentUser(user);
@@ -280,8 +261,6 @@ export class AuthService {
    * @private
    */
   private clearUserCache(): void {
-    // Clear any cached data that should be removed on logout
     localStorage.removeItem('join_new_user');
-    // Add other cache clearing logic as needed
   }
 }

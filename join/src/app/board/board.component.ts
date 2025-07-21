@@ -59,13 +59,11 @@ export class BoardComponent implements OnInit, OnDestroy {
   contacts: Contact[] = [];
   searchTerm: string = '';
   maxTitleLength: number = 40;
-  // Task arrays for different columns
   todoTasks: Task[] = [];
   inProgressTasks: Task[] = [];
   awaitingFeedbackTasks: Task[] = [];
   doneTasks: Task[] = [];
   tasks: Task[] = [];
-  // Board columns configuration
   boardColumns = [
     {
       id: 'todo' as TaskColumn,
@@ -146,7 +144,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.distributeTasksToColumns();
       },
 
-      () => {} // Empty callback since we handle query params in distributeTasksToColumns
+      () => {}
 
     );
   }
@@ -159,7 +157,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
     const assigned = this.arrayManagementService.assignTasksToColumns(distributed);
     this.assignTasksToColumns(assigned);
-    // Handle query parameters after tasks are distributed to arrays
     setTimeout(() => this.handleQueryParams(), 50);
   }
 
@@ -198,7 +195,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       () => this.distributeTasksToColumns()
     );
   }
-  // Task Management Service delegates
   /**
    * Opens the add task overlay for the specified column.
    * @param column - Target column for the new task
@@ -310,11 +306,8 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Handles searchchange events.
    */
   onSearchChange(): void {
-    // Search filtering is handled by the template via getFilteredTasks
-    // This method is called when the search input value changes
   }
 
-  // Interaction Service delegates
   /**
    * Handles taskmousedown events.
    * @param event - Event parameter
@@ -353,7 +346,6 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   onViewportClick(event: MouseEvent): void { this.interactionService.handleViewportClick(event); }
 
-  // Display Service delegates
   getTaskProgress(task: Task): number { return this.displayService.getTaskProgress(task); }
 
   getCompletedSubtasks(task: Task): number { return this.displayService.getCompletedSubtasks(task); }
@@ -366,7 +358,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     return this.displayService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
   }
 
-  // Mobile Task Move Service delegates
   onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveTask(event, task); }
 
   closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobileMoveOverlay(); }
@@ -456,7 +447,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.assignTasksToColumns(updatedColumns);
   }
 
-  // Contact Helper Service delegates
   getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts); }
 
   hasRemainingContacts(assignedContacts: string[]): boolean { return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts); }
@@ -486,7 +476,6 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Angular lifecycle hook that runs when component is destroyed.
    */
   ngOnDestroy(): void {
-    // Emergency cleanup to ensure board scroll wrapper overflow is restored
     this.dragDropService.emergencyCleanup();
   }
   

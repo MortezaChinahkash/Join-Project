@@ -11,7 +11,6 @@ import { Task, TaskColumn } from '../../../interfaces/task.interface';
   providedIn: 'root'
 })
 export class BoardDragStateService {
-  // Task drag and drop properties
   draggedTask: Task | null = null;
   dragStartPosition = { x: 0, y: 0 };
   isDraggingTask = false;
@@ -22,19 +21,17 @@ export class BoardDragStateService {
   longPressTimeout: any = null;
   dragOffset = { x: 0, y: 0 };
   dragElement: HTMLElement | null = null;
-  // Click detection properties
   isMousePressed = false;
   mouseDownTime = 0;
-  dragThreshold = 5; // pixels to move before considering it a drag
-  dragDelay = 150; // milliseconds before drag starts
+  dragThreshold = 5;
+  dragDelay = 150;
   dragDelayTimeout: any = null;
   initialMousePosition = { x: 0, y: 0 };
-  // Auto-scroll properties
-  autoScrollZone = 200; // pixels from top/bottom where auto-scroll activates
-  autoScrollSpeed = 8; // pixels per scroll step
+  autoScrollZone = 200;
+  autoScrollSpeed = 8;
   autoScrollInterval: any = null;
   isAutoScrolling = false;
-  currentCursorY = 0; // Track current cursor position for auto-scroll
+  currentCursorY = 0;
   /**
    * Resets all drag & drop state variables to their initial values.
    * Useful for cleanup when component is destroyed or when resetting the board state.
@@ -49,7 +46,6 @@ export class BoardDragStateService {
     this.isMousePressed = false;
     this.mouseDownTime = 0;
     this.initialMousePosition = { x: 0, y: 0 };
-    // Clear timeouts
     if (this.longPressTimeout) {
       clearTimeout(this.longPressTimeout);
       this.longPressTimeout = null;
@@ -62,7 +58,6 @@ export class BoardDragStateService {
       clearInterval(this.autoScrollInterval);
       this.autoScrollInterval = null;
     }
-    // Remove drag element from DOM
     if (this.dragElement) {
       document.body.removeChild(this.dragElement);
       this.dragElement = null;
