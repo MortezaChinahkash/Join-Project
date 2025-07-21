@@ -47,18 +47,51 @@ export class BoardThumbnailService {
    * @param event - The mouse click event on the thumbnail
    */
   onThumbnailClick(event: MouseEvent) {
-    if (this.isDragging || this.isViewportDragging) return;
+    if (this.shouldIgnoreThumbnailClick()) return;
+    
     event.stopPropagation();
+    const clickData = this.extractClickData(event);
+    const scrollPercentage = this.calculateClickScrollPercentage(clickData);
+    this.scrollToClickPosition(scrollPercentage);
+  }
+
+  /**
+   * Checks if thumbnail click should be ignored.
+   */
+  private shouldIgnoreThumbnailClick(): boolean {
+    return this.isDragging || this.isViewportDragging;
+  }
+
+  /**
+   * Extracts click data from mouse event.
+   */
+  private extractClickData(event: MouseEvent): { clickX: number; thumbnailWidth: number } {
     const thumbnail = event.currentTarget as HTMLElement;
     const thumbnailContent = thumbnail.querySelector('.thumbnail-content') as HTMLElement;
     const rect = thumbnailContent.getBoundingClientRect();
     const clickX = event.clientX - rect.left - 4;
     const thumbnailWidth = rect.width - 8;
+    
+    return { clickX, thumbnailWidth };
+  }
+
+  /**
+   * Calculates scroll percentage based on click position.
+   */
+  private calculateClickScrollPercentage(clickData: { clickX: number; thumbnailWidth: number }): number {
+    const { clickX, thumbnailWidth } = clickData;
     const viewportWidth = this.thumbnailViewport.width;
     const availableClickWidth = thumbnailWidth - viewportWidth;
     const adjustedClickX = Math.max(0, Math.min(availableClickWidth, clickX - (viewportWidth / 2)));
-    const percentage = availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
-    const container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    
+    return availableClickWidth > 0 ? (adjustedClickX / availableClickWidth) * 100 : 0;
+  }
+
+  /**
+   * Scrolls to position based on click percentage.
+   */
+  private scrollToClickPosition(percentage: number): void {
+    const container = this.getBoardScrollWrapper();
     if (container) {
       const scrollPosition = (percentage / 100) * this.maxScrollPosition;
       container.scrollTo({ left: scrollPosition, behavior: 'smooth' });
