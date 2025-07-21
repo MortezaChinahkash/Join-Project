@@ -241,7 +241,11 @@ export class AuthService implements OnDestroy {
       localStorage.removeItem(this.STORAGE_KEY);
     }
   }
-  
+
+  /**
+   * Validates and loads user session if still valid.
+   * @param user - User data from storage
+   */
   private validateAndLoadSession(user: any): void {
     if (!this.isSessionValid(user)) {
       this.clearExpiredSession();
@@ -252,12 +256,20 @@ export class AuthService implements OnDestroy {
     }
   }
 
+  /**
+   * Checks if the user session is still valid based on timestamp.
+   * @param user - User data to validate
+   * @returns True if session is still valid
+   */
   private isSessionValid(user: any): boolean {
     const currentTime = Date.now();
     const sessionAge = currentTime - (user.loginTimestamp || 0);
     return sessionAge <= this.SESSION_DURATION;
   }
 
+  /**
+   * Clears expired session data from local storage.
+   */
   private clearExpiredSession(): void {
     localStorage.removeItem(this.STORAGE_KEY);
   }
