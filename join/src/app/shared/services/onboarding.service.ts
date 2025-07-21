@@ -103,6 +103,7 @@ export class OnboardingService {
       }, 1000);
     }
   }
+  
   /**
    * Starts the onboarding tour.
    */
