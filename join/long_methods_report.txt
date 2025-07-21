@@ -1,32 +1,5 @@
 
 
-File: board\services\board-form-refactored.service.ts
-------------------------------
-Method: editTask
-Lines: 18
-Line Number: 191
-Content Preview:
-
-  editTask(contacts: Contact[]): void {
-    if (!this.selectedTask) return;
-    this.overlayService.startEditingTask();
-    this.formState.patchFormWithTaskData({
-      title: this.selectedTask.title......
-
-==================================================
-
-Method: saveTask
-Lines: 29
-Line Number: 224
-Content Preview:
-
-  async saveTask(): Promise<void> {
-    const validation = this.formState.validateForm();
-    if (!validation.isValid) {
-      throw new Error(`Form validation failed: ${validation.errors.join(', ')}......
-
-==================================================
-
 File: board\services\board-form-validation.service.ts
 ------------------------------
 Method: getFieldErrorMessage
