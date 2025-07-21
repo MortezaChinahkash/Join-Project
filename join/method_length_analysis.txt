@@ -1,0 +1,79 @@
+METHOD LENGTH ANALYSIS REPORT
+Generated: 22.07.2025 00:58
+================================================================================
+Analyzing 100 TypeScript files for methods > 14 lines...
+
+File: src\app\board\services\form\board-form-data.service.ts
+--------------------------------------------------------------------------------
+  Method: validateTaskData (Line 285-309)
+     Code lines: 18 | Total lines: 25
+     Declaration: validateTaskData(): { isValid: boolean; errors: string[] } {...
+
+File: src\app\board\services\form\board-form-validation.service.ts
+--------------------------------------------------------------------------------
+  Method: validateForm (Line 147-176)
+     Code lines: 25 | Total lines: 30
+     Declaration: validateForm(form: FormGroup): {...
+
+File: src\app\contacts\services\contacts-display.service.ts
+--------------------------------------------------------------------------------
+  Method: buildContactDisplayObject (Line 227-249)
+     Code lines: 22 | Total lines: 23
+     Declaration: private buildContactDisplayObject(contact: Contact): {...
+
+File: src\app\onboarding-overlay\onboarding-overlay.component.ts
+--------------------------------------------------------------------------------
+  Method: getRightPosition (Line 259-276)
+     Code lines: 15 | Total lines: 18
+     Declaration: private getRightPosition(rect: DOMRect, dimensions: any): { [key: stri...
+
+  Method: getLeftPosition (Line 281-298)
+     Code lines: 15 | Total lines: 18
+     Declaration: private getLeftPosition(rect: DOMRect, dimensions: any): { [key: strin...
+
+  Method: getTopPosition (Line 303-320)
+     Code lines: 15 | Total lines: 18
+     Declaration: private getTopPosition(rect: DOMRect, dimensions: any): { [key: string...
+
+  Method: getBottomPosition (Line 325-342)
+     Code lines: 15 | Total lines: 18
+     Declaration: private getBottomPosition(rect: DOMRect, dimensions: any): { [key: str...
+
+================================================================================
+=== TOP 10 LONGEST METHODS ===
+================================================================================
+ 1. validateForm (25 lines)
+    File: src\app\board\services\form\board-form-validation.service.ts
+    Line: 147-176
+
+ 2. buildContactDisplayObject (22 lines)
+    File: src\app\contacts\services\contacts-display.service.ts
+    Line: 227-249
+
+ 3. validateTaskData (18 lines)
+    File: src\app\board\services\form\board-form-data.service.ts
+    Line: 285-309
+
+ 4. getRightPosition (15 lines)
+    File: src\app\onboarding-overlay\onboarding-overlay.component.ts
+    Line: 259-276
+
+ 5. getLeftPosition (15 lines)
+    File: src\app\onboarding-overlay\onboarding-overlay.component.ts
+    Line: 281-298
+
+ 6. getTopPosition (15 lines)
+    File: src\app\onboarding-overlay\onboarding-overlay.component.ts
+    Line: 303-320
+
+ 7. getBottomPosition (15 lines)
+    File: src\app\onboarding-overlay\onboarding-overlay.component.ts
+    Line: 325-342
+
+=== SUMMARY ===
+Files analyzed: 100
+Files with long methods: 4
+Total methods > 14 lines: 7
+Average length: 17.9 lines
+Longest method: validateForm (25 lines)
+Consider refactoring methods longer than 20-25 lines

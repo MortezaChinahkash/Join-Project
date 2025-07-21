@@ -151,6 +151,22 @@ export class BoardFormValidationService {
   } {
     const errors: string[] = [];
     const fieldErrors: { [key: string]: string } = {};
+    
+    this.validateFormControls(form, errors, fieldErrors);
+    this.validateDateConstraints(form, errors, fieldErrors);
+    
+    return this.buildValidationResult(form, errors, fieldErrors);
+  }
+
+  /**
+   * Validates all form controls and collects errors.
+   * 
+   * @param form - The form group to validate
+   * @param errors - Array to collect error messages
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private validateFormControls(form: FormGroup, errors: string[], fieldErrors: { [key: string]: string }): void {
     Object.keys(form.controls).forEach(key => {
       const control = form.get(key);
       if (control) {
@@ -162,12 +178,38 @@ export class BoardFormValidationService {
         }
       }
     });
+  }
 
+  /**
+   * Validates date constraints and adds date-specific errors.
+   * 
+   * @param form - The form group to validate
+   * @param errors - Array to collect error messages
+   * @param fieldErrors - Object to collect field-specific errors
+   * @private
+   */
+  private validateDateConstraints(form: FormGroup, errors: string[], fieldErrors: { [key: string]: string }): void {
     if (this.isDateInvalid(form)) {
       const dateError = 'Due date cannot be in the past';
       errors.push(dateError);
       fieldErrors['dueDate'] = dateError;
     }
+  }
+
+  /**
+   * Builds the final validation result object.
+   * 
+   * @param form - The form group
+   * @param errors - Array of error messages
+   * @param fieldErrors - Object of field-specific errors
+   * @returns Validation result object
+   * @private
+   */
+  private buildValidationResult(form: FormGroup, errors: string[], fieldErrors: { [key: string]: string }): {
+    isValid: boolean;
+    errors: string[];
+    fieldErrors: { [key: string]: string };
+  } {
     return {
       isValid: form.valid && !this.isDateInvalid(form),
       errors,

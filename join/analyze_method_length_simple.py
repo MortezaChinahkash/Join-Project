@@ -165,6 +165,14 @@ def scan_all_ts_files():
     pattern = os.path.join("src", "app", "**", "*.ts")
     files = glob.glob(pattern, recursive=True)
     
+    # Prepare output content
+    output_lines = []
+    output_lines.append(f"METHOD LENGTH ANALYSIS REPORT")
+    output_lines.append(f"Generated: {os.popen('date /t').read().strip()} {os.popen('time /t').read().strip()}")
+    output_lines.append("=" * 80)
+    output_lines.append(f"Analyzing {len(files)} TypeScript files for methods > 14 lines...")
+    output_lines.append("")
+    
     print(f"Analyzing {len(files)} TypeScript files for methods > 14 lines...")
     print("")
     
@@ -177,40 +185,100 @@ def scan_all_ts_files():
             files_with_long_methods += 1
             all_long_methods.extend(long_methods)
             
-            print(f"File: {file_path}")
-            print("-" * 80)
+            file_output = f"File: {file_path}"
+            separator = "-" * 80
+            
+            print(file_output)
+            print(separator)
+            output_lines.append(file_output)
+            output_lines.append(separator)
+            
             for method in long_methods:
-                print(f"  Method: {method['method_name']} (Line {method['start_line']}-{method['end_line']})")
-                print(f"     Code lines: {method['code_lines']} | Total lines: {method['total_lines']}")
-                print(f"     Declaration: {method['declaration'][:70]}...")
+                method_info = f"  Method: {method['method_name']} (Line {method['start_line']}-{method['end_line']})"
+                details = f"     Code lines: {method['code_lines']} | Total lines: {method['total_lines']}"
+                declaration = f"     Declaration: {method['declaration'][:70]}..."
+                
+                print(method_info)
+                print(details)
+                print(declaration)
                 print("")
+                
+                output_lines.append(method_info)
+                output_lines.append(details)
+                output_lines.append(declaration)
+                output_lines.append("")
     
     # Sort by code lines (longest first)
     all_long_methods.sort(key=lambda x: x['code_lines'], reverse=True)
     
-    print("=" * 80)
-    print("=== TOP 10 LONGEST METHODS ===")
-    print("=" * 80)
+    top_section = "=" * 80
+    top_header = "=== TOP 10 LONGEST METHODS ==="
+    
+    print(top_section)
+    print(top_header)
+    print(top_section)
+    
+    output_lines.append(top_section)
+    output_lines.append(top_header)
+    output_lines.append(top_section)
     
     for i, method in enumerate(all_long_methods[:10]):
-        print(f"{i+1:2d}. {method['method_name']} ({method['code_lines']} lines)")
-        print(f"    File: {method['file']}")
-        print(f"    Line: {method['start_line']}-{method['end_line']}")
+        method_line = f"{i+1:2d}. {method['method_name']} ({method['code_lines']} lines)"
+        file_line = f"    File: {method['file']}"
+        line_line = f"    Line: {method['start_line']}-{method['end_line']}"
+        
+        print(method_line)
+        print(file_line)
+        print(line_line)
         print("")
+        
+        output_lines.append(method_line)
+        output_lines.append(file_line)
+        output_lines.append(line_line)
+        output_lines.append("")
     
-    print("=== SUMMARY ===")
-    print(f"Files analyzed: {len(files)}")
-    print(f"Files with long methods: {files_with_long_methods}")
-    print(f"Total methods > 14 lines: {len(all_long_methods)}")
+    summary_header = "=== SUMMARY ==="
+    files_analyzed = f"Files analyzed: {len(files)}"
+    files_with_long = f"Files with long methods: {files_with_long_methods}"
+    total_methods = f"Total methods > 14 lines: {len(all_long_methods)}"
+    
+    print(summary_header)
+    print(files_analyzed)
+    print(files_with_long)
+    print(total_methods)
+    
+    output_lines.append(summary_header)
+    output_lines.append(files_analyzed)
+    output_lines.append(files_with_long)
+    output_lines.append(total_methods)
     
     if len(all_long_methods) == 0:
-        print("No methods longer than 14 lines found!")
+        no_methods_msg = "No methods longer than 14 lines found!"
+        print(no_methods_msg)
+        output_lines.append(no_methods_msg)
     else:
         avg_length = sum(m['code_lines'] for m in all_long_methods) / len(all_long_methods)
         longest = max(all_long_methods, key=lambda x: x['code_lines'])
-        print(f"Average length: {avg_length:.1f} lines")
-        print(f"Longest method: {longest['method_name']} ({longest['code_lines']} lines)")
-        print(f"Consider refactoring methods longer than 20-25 lines")
+        avg_msg = f"Average length: {avg_length:.1f} lines"
+        longest_msg = f"Longest method: {longest['method_name']} ({longest['code_lines']} lines)"
+        recommendation = f"Consider refactoring methods longer than 20-25 lines"
+        
+        print(avg_msg)
+        print(longest_msg)
+        print(recommendation)
+        
+        output_lines.append(avg_msg)
+        output_lines.append(longest_msg)
+        output_lines.append(recommendation)
+    
+    # Write to file
+    output_file = "method_length_analysis.txt"
+    try:
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(output_lines))
+        print(f"\nResults saved to: {output_file}")
+    except Exception as e:
+        print(f"\nError saving to file: {e}")
 
 if __name__ == "__main__":
     scan_all_ts_files()
