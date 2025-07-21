@@ -40,10 +40,39 @@ export class BoardDragDetectionService {
    * @private
    */
   private checkElementForColumn(element: Element): TaskColumn | null {
+    const directColumn = this.checkDirectColumn(element);
+    if (directColumn) return directColumn;
+    
+    const taskListColumn = this.checkTaskListColumn(element);
+    if (taskListColumn) return taskListColumn;
+    
+    const headerColumn = this.checkHeaderColumn(element);
+    return headerColumn;
+  }
+
+  /**
+   * Checks if element is directly a board column.
+   * 
+   * @param element - Element to check
+   * @returns TaskColumn if found, null otherwise
+   * @private
+   */
+  private checkDirectColumn(element: Element): TaskColumn | null {
     const columnElement = element.closest('.board-column') as HTMLElement;
     if (columnElement) {
       return columnElement.getAttribute('data-column') as TaskColumn;
     }
+    return null;
+  }
+
+  /**
+   * Checks if element is within a task list and finds its parent column.
+   * 
+   * @param element - Element to check
+   * @returns TaskColumn if found, null otherwise
+   * @private
+   */
+  private checkTaskListColumn(element: Element): TaskColumn | null {
     const taskListElement = element.closest('.task-list') as HTMLElement;
     if (taskListElement) {
       const parentColumn = taskListElement.closest('.board-column') as HTMLElement;
@@ -51,6 +80,17 @@ export class BoardDragDetectionService {
         return parentColumn.getAttribute('data-column') as TaskColumn;
       }
     }
+    return null;
+  }
+
+  /**
+   * Checks if element is within a column header and finds its parent column.
+   * 
+   * @param element - Element to check
+   * @returns TaskColumn if found, null otherwise
+   * @private
+   */
+  private checkHeaderColumn(element: Element): TaskColumn | null {
     const headerElement = element.closest('.column-header') as HTMLElement;
     if (headerElement) {
       const parentColumn = headerElement.closest('.board-column') as HTMLElement;
@@ -116,22 +156,61 @@ export class BoardDragDetectionService {
    */
   findClosestColumn(clientX: number, clientY: number): TaskColumn | null {
     const columns = this.getAllBoardColumns();
+    const closestColumn = this.findColumnWithMinDistance(columns, clientX, clientY);
+    return this.extractColumnFromElement(closestColumn);
+  }
+
+  /**
+   * Finds the column element with minimum distance to the given coordinates.
+   * 
+   * @param columns - Array of column elements
+   * @param clientX - X coordinate
+   * @param clientY - Y coordinate
+   * @returns Closest column element or null
+   * @private
+   */
+  private findColumnWithMinDistance(columns: HTMLElement[], clientX: number, clientY: number): HTMLElement | null {
     let closestColumn: HTMLElement | null = null;
     let minDistance = Infinity;
+    
     columns.forEach(column => {
-      const rect = column.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distance = Math.sqrt(
-        Math.pow(clientX - centerX, 2) + Math.pow(clientY - centerY, 2)
-      );
+      const distance = this.calculateDistanceToColumn(column, clientX, clientY);
       if (distance < minDistance) {
         minDistance = distance;
         closestColumn = column;
       }
     });
-    if (closestColumn) {
-      const element = closestColumn as HTMLElement;
+    
+    return closestColumn;
+  }
+
+  /**
+   * Calculates the distance from coordinates to column center.
+   * 
+   * @param column - Column element
+   * @param clientX - X coordinate
+   * @param clientY - Y coordinate
+   * @returns Distance to column center
+   * @private
+   */
+  private calculateDistanceToColumn(column: HTMLElement, clientX: number, clientY: number): number {
+    const rect = column.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    return Math.sqrt(
+      Math.pow(clientX - centerX, 2) + Math.pow(clientY - centerY, 2)
+    );
+  }
+
+  /**
+   * Extracts the TaskColumn from an HTML element.
+   * 
+   * @param element - Column element or null
+   * @returns TaskColumn or null
+   * @private
+   */
+  private extractColumnFromElement(element: HTMLElement | null): TaskColumn | null {
+    if (element) {
       return element.getAttribute('data-column') as TaskColumn;
     }
     return null;
