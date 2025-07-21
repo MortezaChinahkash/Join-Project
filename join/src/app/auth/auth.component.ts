@@ -18,6 +18,7 @@ import { WelcomeOverlayService } from '../shared/services/welcome-overlay.servic
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss'
 })
+
 export class AuthComponent implements OnInit {
   @ViewChild('containerElement', { static: false }) containerElement!: ElementRef;
 

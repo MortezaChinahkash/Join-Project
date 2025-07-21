@@ -31,27 +31,33 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
+
 export class AddTaskOverlayComponent implements OnDestroy {
   /**
    * Controls the visibility of the add task overlay
    */
   @Input() isVisible: boolean = false;
+
   /**
    * Array of contacts for assignment
    */
   @Input() contacts: Contact[] = [];
+
   /**
    * Maximum length for task title
    */
   @Input() maxTitleLength: number = 50;
+
   /**
    * Current subtask title for adding new subtasks
    */
   newSubtaskTitle: string = '';
+
   /**
    * Emitted when the overlay should be closed
    */
   @Output() onClose = new EventEmitter<void>();
+
   /**
    * Emitted when a new task should be created
    */
@@ -61,7 +67,8 @@ export class AddTaskOverlayComponent implements OnDestroy {
     public subtaskService: BoardSubtaskService,
     public contactHelperService: ContactHelperService
   ) {
-    // No need for local dropdown listener - using the service listener instead
+
+    
   }
 
   /**
@@ -108,8 +115,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
     Object.keys(this.formService.taskForm.controls).forEach(key => {
       this.formService.taskForm.get(key)?.markAsTouched();
     });
-    
-    // Only emit if form is valid
     if (this.formService.taskForm.valid && !this.formService.isDateInvalid('dueDate')) {
       this.onSubmit.emit();
     }
@@ -122,7 +127,6 @@ export class AddTaskOverlayComponent implements OnDestroy {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     
-    // Close category dropdown if clicking outside
     if (this.formService.isCategoryDropdownOpen) {
       const categoryDropdown = target.closest('.category-select-wrapper');
       if (!categoryDropdown) {
@@ -130,11 +134,10 @@ export class AddTaskOverlayComponent implements OnDestroy {
       }
     }
     
-    // Close contacts dropdown if clicking outside
     if (this.formService.isDropdownOpen) {
       const contactsDropdown = target.closest('.custom-select-wrapper:not(.category-select-wrapper)');
       if (!contactsDropdown) {
-        // This would need to be implemented in the service as well
+        this.formService.closeContactsDropdown();
       }
     }
   }
@@ -157,6 +160,5 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Cleanup when component is destroyed
    */
   ngOnDestroy(): void {
-    // Service handles its own cleanup
   }
 }
