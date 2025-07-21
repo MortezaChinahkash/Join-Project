@@ -192,25 +192,48 @@ export class AuthService {
    */
   private async initializeAuth(): Promise<void> {
     try {
-      this.authState.loadUserFromStorage();
-      this.authFirebase.initializeAuthListener((user) => {
-        if (user) {
-          this.authState.setCurrentUser(user);
-          this.startSessionMonitoring();
-        } else {
-          this.authState.clearUserState();
-          this.authSession.stopSessionCheck();
-        }
-      });
-
-      const user = await this.authFirebase.waitForAuthReady();
-      if (user) {
-        this.authState.setCurrentUser(user);
-        this.startSessionMonitoring();
-      }
+      this.loadUserAndSetupListener();
+      await this.waitForAuthAndSetUser();
     } catch (error: any) {
-
       console.error('Error initializing auth:', error);
+    }
+  }
+
+  /**
+   * Loads user from storage and sets up the authentication listener.
+   * @private
+   */
+  private loadUserAndSetupListener(): void {
+    this.authState.loadUserFromStorage();
+    this.authFirebase.initializeAuthListener((user) => {
+      this.handleAuthStateChange(user);
+    });
+  }
+
+  /**
+   * Handles authentication state changes from the listener.
+   * @param user - The authenticated user or null
+   * @private
+   */
+  private handleAuthStateChange(user: any): void {
+    if (user) {
+      this.authState.setCurrentUser(user);
+      this.startSessionMonitoring();
+    } else {
+      this.authState.clearUserState();
+      this.authSession.stopSessionCheck();
+    }
+  }
+
+  /**
+   * Waits for authentication to be ready and sets the current user.
+   * @private
+   */
+  private async waitForAuthAndSetUser(): Promise<void> {
+    const user = await this.authFirebase.waitForAuthReady();
+    if (user) {
+      this.authState.setCurrentUser(user);
+      this.startSessionMonitoring();
     }
   }
 
