@@ -52,15 +52,12 @@ export class AuthService implements OnDestroy {
           const user = this.mapFirebaseUserToUser(firebaseUser);
           this.currentUserSubject.next(user);
           this.saveUserToStorage(user);
-
           this.startSessionCheck();
         } else {
-
           if (this.currentUserSubject.value) {
             this.currentUserSubject.next(null);
             localStorage.removeItem(this.STORAGE_KEY);
           }
-
           this.stopSessionCheck();
         }
       });
@@ -164,6 +161,15 @@ export class AuthService implements OnDestroy {
       user.loginTimestamp = Date.now();
 
       localStorage.setItem('join_new_user', 'true');
+      console.log('AuthService: New user flag set in localStorage');
+      
+      this.setCurrentUser(user);
+      
+      setTimeout(() => {
+        console.log('AuthService: Dispatching user-registered event');
+        window.dispatchEvent(new CustomEvent('user-registered'));
+      }, 500);
+      
       return user;
     } catch (error: any) {
 

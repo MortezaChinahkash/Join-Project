@@ -117,97 +117,155 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
     if (!this.currentStep) return {};
     const targetElement = document.querySelector(this.currentStep.targetElementSelector);
     if (!targetElement) return {};
+
     const rect = targetElement.getBoundingClientRect();
-    const tooltipOffset = 20;
-    const tooltipWidth = 400;
-    const tooltipHeight = 300;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    if (viewportWidth < 1000) {
+    const dimensions = this.getTooltipDimensions();
+    
+    if (dimensions.viewportWidth < 1000) {
+      return this.getCenterPosition();
+    }
+
+    let position = this.calculatePositionByDirection(rect, dimensions);
+    return this.adjustPositionForViewport(position);
+  }
+
+  /**
+   * Gets tooltip dimensions and viewport information.
+   */
+  private getTooltipDimensions() {
+    return {
+      tooltipOffset: 20,
+      tooltipWidth: 400,
+      tooltipHeight: 300,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight
+    };
+  }
+
+  /**
+   * Returns centered position for mobile devices.
+   */
+  private getCenterPosition(): { [key: string]: string } {
+    return {
+      'top': '50%',
+      'left': '50%',
+      'transform': 'translate(-50%, -50%)',
+      'position': 'fixed'
+    };
+  }
+
+  /**
+   * Calculates position based on tooltip direction.
+   */
+  private calculatePositionByDirection(rect: DOMRect, dimensions: any): { [key: string]: string } {
+    switch (this.currentStep!.position) {
+      case 'right':
+        return this.getRightPosition(rect, dimensions);
+      case 'left':
+        return this.getLeftPosition(rect, dimensions);
+      case 'top':
+        return this.getTopPosition(rect, dimensions);
+      case 'bottom':
+        return this.getBottomPosition(rect, dimensions);
+      case 'center':
+        return this.getCenterPosition();
+      default:
+        return this.getCenterPosition();
+    }
+  }
+
+  /**
+   * Calculates right position for tooltip.
+   */
+  private getRightPosition(rect: DOMRect, dimensions: any): { [key: string]: string } {
+    const { tooltipOffset, tooltipWidth, viewportWidth } = dimensions;
+    const centerY = rect.top + (rect.height / 2);
+    
+    if (rect.right + tooltipOffset + tooltipWidth > viewportWidth) {
       return {
-        'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)', 'position': 'fixed'
+        'top': `${centerY}px`,
+        'right': `${viewportWidth - rect.left + tooltipOffset}px`,
+        'transform': 'translateY(-50%)'
+      };
+    } else {
+      return {
+        'top': `${centerY}px`,
+        'left': `${rect.right + tooltipOffset}px`,
+        'transform': 'translateY(-50%)'
       };
     }
-    let position: { [key: string]: string } = {};
-    switch (this.currentStep.position) {
-      case 'right':
-        if (rect.right + tooltipOffset + tooltipWidth > viewportWidth) {
-          position = {
-            'top': `${rect.top + (rect.height / 2)}px`,
+  }
 
-            'right': `${viewportWidth - rect.left + tooltipOffset}px`,
-            'transform': 'translateY(-50%)'
-          };
-        } else {
-          position = {
-            'top': `${rect.top + (rect.height / 2)}px`,
-
-            'left': `${rect.right + tooltipOffset}px`,
-            'transform': 'translateY(-50%)'
-          };
-        }
-        break;
-      case 'left':
-        if (rect.left - tooltipOffset - tooltipWidth < 0) {
-          position = {
-            'top': `${rect.top + (rect.height / 2)}px`,
-
-            'left': `${rect.right + tooltipOffset}px`,
-            'transform': 'translateY(-50%)'
-          };
-        } else {
-          position = {
-            'top': `${rect.top + (rect.height / 2)}px`,
-
-            'right': `${viewportWidth - rect.left + tooltipOffset}px`,
-            'transform': 'translateY(-50%)'
-          };
-        }
-        break;
-      case 'top':
-        if (rect.top - tooltipOffset - tooltipHeight < 0) {
-          position = {
-            'top': `${rect.bottom + tooltipOffset}px`,
-            'left': `${Math.min(rect.left + (rect.width / 2), viewportWidth - tooltipWidth/2)}px`,
-
-            'transform': 'translateX(-50%)'
-          };
-        } else {
-          position = {
-            'bottom': `${viewportHeight - rect.top + tooltipOffset}px`,
-            'left': `${Math.min(rect.left + (rect.width / 2), viewportWidth - tooltipWidth/2)}px`,
-
-            'transform': 'translateX(-50%)'
-          };
-        }
-        break;
-      case 'bottom':
-        if (rect.bottom + tooltipOffset + tooltipHeight > viewportHeight) {
-          position = {
-            'bottom': `${viewportHeight - rect.top + tooltipOffset}px`,
-            'left': `${Math.min(rect.left + (rect.width / 2), viewportWidth - tooltipWidth/2)}px`,
-
-            'transform': 'translateX(-50%)'
-          };
-        } else {
-          position = {
-            'top': `${rect.bottom + tooltipOffset}px`,
-            'left': `${Math.min(rect.left + (rect.width / 2), viewportWidth - tooltipWidth/2)}px`,
-
-            'transform': 'translateX(-50%)'
-          };
-        }
-        break;
-      case 'center':
-        position = {
-          'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)'
-        };
-        break;
-      default:
-        position = {
-          'top': '50%', 'left': '50%', 'transform': 'translate(-50%, -50%)'
-        };
+  /**
+   * Calculates left position for tooltip.
+   */
+  private getLeftPosition(rect: DOMRect, dimensions: any): { [key: string]: string } {
+    const { tooltipOffset, tooltipWidth, viewportWidth } = dimensions;
+    const centerY = rect.top + (rect.height / 2);
+    
+    if (rect.left - tooltipOffset - tooltipWidth < 0) {
+      return {
+        'top': `${centerY}px`,
+        'left': `${rect.right + tooltipOffset}px`,
+        'transform': 'translateY(-50%)'
+      };
+    } else {
+      return {
+        'top': `${centerY}px`,
+        'right': `${viewportWidth - rect.left + tooltipOffset}px`,
+        'transform': 'translateY(-50%)'
+      };
     }
+  }
+
+  /**
+   * Calculates top position for tooltip.
+   */
+  private getTopPosition(rect: DOMRect, dimensions: any): { [key: string]: string } {
+    const { tooltipOffset, tooltipHeight, tooltipWidth, viewportWidth, viewportHeight } = dimensions;
+    const centerX = Math.min(rect.left + (rect.width / 2), viewportWidth - tooltipWidth/2);
+    
+    if (rect.top - tooltipOffset - tooltipHeight < 0) {
+      return {
+        'top': `${rect.bottom + tooltipOffset}px`,
+        'left': `${centerX}px`,
+        'transform': 'translateX(-50%)'
+      };
+    } else {
+      return {
+        'bottom': `${viewportHeight - rect.top + tooltipOffset}px`,
+        'left': `${centerX}px`,
+        'transform': 'translateX(-50%)'
+      };
+    }
+  }
+
+  /**
+   * Calculates bottom position for tooltip.
+   */
+  private getBottomPosition(rect: DOMRect, dimensions: any): { [key: string]: string } {
+    const { tooltipOffset, tooltipHeight, tooltipWidth, viewportWidth, viewportHeight } = dimensions;
+    const centerX = Math.min(rect.left + (rect.width / 2), viewportWidth - tooltipWidth/2);
+    
+    if (rect.bottom + tooltipOffset + tooltipHeight > viewportHeight) {
+      return {
+        'bottom': `${viewportHeight - rect.top + tooltipOffset}px`,
+        'left': `${centerX}px`,
+        'transform': 'translateX(-50%)'
+      };
+    } else {
+      return {
+        'top': `${rect.bottom + tooltipOffset}px`,
+        'left': `${centerX}px`,
+        'transform': 'translateX(-50%)'
+      };
+    }
+  }
+
+  /**
+   * Adjusts position to ensure tooltip stays within viewport bounds.
+   */
+  private adjustPositionForViewport(position: { [key: string]: string }): { [key: string]: string } {
     if (position['top'] && parseInt(position['top']) < 20) {
       position['top'] = '20px';
     }
