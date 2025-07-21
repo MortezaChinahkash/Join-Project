@@ -25,22 +25,55 @@ export class ContactsCrudService {
    * @returns Promise with created contact
    */
   async createContact(contactData: Partial<Contact>, existingContacts: Contact[] = []): Promise<Contact> {
+    this.validateContactCreationData(contactData);
+    this.checkForDuplicateEmail(contactData.email!, existingContacts);
+    return await this.saveNewContact(contactData);
+  }
+
+  /**
+   * Validates required data for contact creation.
+   * 
+   * @param contactData - Contact data to validate
+   * @throws Error if validation fails
+   * @private
+   */
+  private validateContactCreationData(contactData: Partial<Contact>): void {
     if (!contactData.name || !contactData.email) {
       throw new Error('Name and email are required for contact creation');
     }
-    const existingContact = this.findContactByEmail(contactData.email, existingContacts);
+  }
+
+  /**
+   * Checks for duplicate email addresses.
+   * 
+   * @param email - Email to check
+   * @param existingContacts - Contacts to check against
+   * @throws Error if duplicate found
+   * @private
+   */
+  private checkForDuplicateEmail(email: string, existingContacts: Contact[]): void {
+    const existingContact = this.findContactByEmail(email, existingContacts);
     if (existingContact) {
       throw new Error('A contact with this email already exists');
     }
+  }
+
+  /**
+   * Saves the new contact to Firestore.
+   * 
+   * @param contactData - Contact data to save
+   * @returns Promise with created contact
+   * @throws Error if save fails
+   * @private
+   */
+  private async saveNewContact(contactData: Partial<Contact>): Promise<Contact> {
     try {
-      const newContact = await this.dataService.addContactToFirestore({
-        name: contactData.name,
-        email: contactData.email,
+      return await this.dataService.addContactToFirestore({
+        name: contactData.name!,
+        email: contactData.email!,
         phone: contactData.phone || 'N/A'
       });
-      return newContact;
     } catch (error) {
-
       console.error('Error creating contact:', error);
       throw new Error('Failed to create contact');
     }
@@ -54,23 +87,81 @@ export class ContactsCrudService {
    * @returns Promise with updated contact
    */
   async updateContact(contactId: string, contactData: Partial<Contact>): Promise<Contact> {
+    this.validateContactIdForUpdate(contactId);
+    try {
+      return await this.performContactUpdate(contactId, contactData);
+    } catch (error) {
+      return this.handleUpdateError(error);
+    }
+  }
+
+  /**
+   * Validates contact ID for update operation.
+   * 
+   * @param contactId - Contact ID to validate
+   * @throws Error if ID is invalid
+   * @private
+   */
+  private validateContactIdForUpdate(contactId: string): void {
     if (!contactId) {
       throw new Error('Contact ID is required for update');
     }
-    try {
-      const contact = await this.getContactById(contactId);
-      if (contact?.isCurrentUser) {
-        await this.updateCurrentUserProfile(contactData);
-        return { ...contact, ...contactData };
-      } else {
-        await this.dataService.updateContactInFirestore(contactId, contactData);
-        return { ...contact, ...contactData } as Contact;
-      }
-    } catch (error) {
+  }
 
-      console.error('Error updating contact:', error);
-      throw new Error('Failed to update contact');
+  /**
+   * Performs the actual contact update operation.
+   * 
+   * @param contactId - Contact ID
+   * @param contactData - Updated contact data
+   * @returns Promise with updated contact
+   * @private
+   */
+  private async performContactUpdate(contactId: string, contactData: Partial<Contact>): Promise<Contact> {
+    const contact = await this.getContactById(contactId);
+    if (contact?.isCurrentUser) {
+      return await this.updateCurrentUserContact(contact, contactData);
+    } else {
+      return await this.updateRegularContact(contactId, contact, contactData);
     }
+  }
+
+  /**
+   * Updates current user contact.
+   * 
+   * @param contact - Current user contact
+   * @param contactData - Updated contact data
+   * @returns Updated contact
+   * @private
+   */
+  private async updateCurrentUserContact(contact: Contact, contactData: Partial<Contact>): Promise<Contact> {
+    await this.updateCurrentUserProfile(contactData);
+    return { ...contact, ...contactData };
+  }
+
+  /**
+   * Updates regular (non-current user) contact.
+   * 
+   * @param contactId - Contact ID
+   * @param contact - Original contact
+   * @param contactData - Updated contact data
+   * @returns Updated contact
+   * @private
+   */
+  private async updateRegularContact(contactId: string, contact: Contact | null, contactData: Partial<Contact>): Promise<Contact> {
+    await this.dataService.updateContactInFirestore(contactId, contactData);
+    return { ...contact, ...contactData } as Contact;
+  }
+
+  /**
+   * Handles update operation errors.
+   * 
+   * @param error - Error that occurred
+   * @throws Error with update failure message
+   * @private
+   */
+  private handleUpdateError(error: any): never {
+    console.error('Error updating contact:', error);
+    throw new Error('Failed to update contact');
   }
 
   /**
