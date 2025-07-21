@@ -342,9 +342,25 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
    * Handles clicking outside the tooltip (on the overlay).
    */
   onOverlayClick(event: MouseEvent): void {
-    if (event.target === event.currentTarget) {
-      return;
+    if (this.isClickOnOverlayBackground(event)) {
+      this.handleOverlayBackgroundClick();
     }
+  }
+
+  /**
+   * Checks if the click was on the overlay background (not on tooltip content).
+   */
+  private isClickOnOverlayBackground(event: MouseEvent): boolean {
+    return event.target === event.currentTarget;
+  }
+
+  /**
+   * Handles clicks on the overlay background.
+   */
+  private handleOverlayBackgroundClick(): void {
+    // Currently no action taken when clicking overlay background
+    // Could be extended to close onboarding or perform other actions
+    return;
   }
 
   /**
