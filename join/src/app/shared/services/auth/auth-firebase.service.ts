@@ -83,23 +83,54 @@ export class AuthFirebaseService {
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      const userCredential = await runInInjectionContext(this.injector, () => 
-        createUserWithEmailAndPassword(this.auth, email, password)
-      );
-      await runInInjectionContext(this.injector, () => 
-        updateProfile(userCredential.user, {
-          displayName: name.trim()
-        })
-      );
-      const user = this.mapFirebaseUserToUser(userCredential.user);
-      user.name = name.trim();
-      user.loginTimestamp = Date.now();
-      localStorage.setItem('join_new_user', 'true');
-      return user;
+      const userCredential = await this.createFirebaseUser(email, password);
+      await this.setUserDisplayName(userCredential.user, name);
+      return this.createRegisteredUser(userCredential.user, name);
     } catch (error: any) {
-
       throw this.handleAuthError(error);
     }
+  }
+
+  /**
+   * Creates a new Firebase user with email and password.
+   * @param email - User's email address
+   * @param password - User's password
+   * @returns Firebase user credential
+   * @private
+   */
+  private async createFirebaseUser(email: string, password: string): Promise<any> {
+    return await runInInjectionContext(this.injector, () => 
+      createUserWithEmailAndPassword(this.auth, email, password)
+    );
+  }
+
+  /**
+   * Sets the display name for a Firebase user during registration.
+   * @param firebaseUser - Firebase user object
+   * @param name - User's display name
+   * @private
+   */
+  private async setUserDisplayName(firebaseUser: any, name: string): Promise<void> {
+    await runInInjectionContext(this.injector, () => 
+      updateProfile(firebaseUser, {
+        displayName: name.trim()
+      })
+    );
+  }
+
+  /**
+   * Creates a registered user object from Firebase user.
+   * @param firebaseUser - Firebase user object
+   * @param name - User's display name
+   * @returns Registered user object
+   * @private
+   */
+  private createRegisteredUser(firebaseUser: any, name: string): User {
+    const user = this.mapFirebaseUserToUser(firebaseUser);
+    user.name = name.trim();
+    user.loginTimestamp = Date.now();
+    localStorage.setItem('join_new_user', 'true');
+    return user;
   }
 
   /**
@@ -182,38 +213,72 @@ export class AuthFirebaseService {
    * @private
    */
   private handleAuthError(error: any): Error {
-    let message = 'An unexpected error occurred. Please try again.';
-    switch (error.code) {
-      case 'auth/user-not-found':
-      case 'auth/wrong-password':
-        message = 'Invalid email or password. Please check your credentials and try again.';
-        break;
-      case 'auth/invalid-email':
-        message = 'The email address is not valid. Please enter a valid email address.';
-        break;
-      case 'auth/user-disabled':
-        message = 'This account has been disabled. Please contact support for assistance.';
-        break;
-      case 'auth/too-many-requests':
-        message = 'Too many unsuccessful attempts. Please try again later.';
-        break;
-      case 'auth/email-already-in-use':
-        message = 'An account with this email already exists. Please use a different email or try logging in.';
-        break;
-      case 'auth/weak-password':
-        message = 'The password is too weak. Please use a stronger password with at least 6 characters.';
-        break;
-      case 'auth/network-request-failed':
-        message = 'Network error. Please check your internet connection and try again.';
-        break;
-      case 'auth/invalid-credential':
-        message = 'The provided credentials are invalid. Please check your email and password.';
-        break;
-      default:
-        console.error('Firebase Auth Error:', error);
-        message = error.message || message;
-    }
+    const message = this.getErrorMessage(error.code) || this.getDefaultErrorMessage(error);
     return new Error(message);
+  }
+
+  /**
+   * Gets user-friendly error message for Firebase auth error codes.
+   * @param errorCode - Firebase error code
+   * @returns User-friendly error message or null if not found
+   * @private
+   */
+  private getErrorMessage(errorCode: string): string | null {
+    const authErrors = this.getAuthErrorMap();
+    const networkErrors = this.getNetworkErrorMap();
+    const credentialErrors = this.getCredentialErrorMap();
+    
+    return authErrors[errorCode] || networkErrors[errorCode] || credentialErrors[errorCode] || null;
+  }
+
+  /**
+   * Gets authentication-related error messages.
+   * @returns Object mapping error codes to messages
+   * @private
+   */
+  private getAuthErrorMap(): { [key: string]: string } {
+    return {
+      'auth/user-not-found': 'Invalid email or password. Please check your credentials and try again.',
+      'auth/wrong-password': 'Invalid email or password. Please check your credentials and try again.',
+      'auth/invalid-email': 'The email address is not valid. Please enter a valid email address.',
+      'auth/user-disabled': 'This account has been disabled. Please contact support for assistance.',
+      'auth/too-many-requests': 'Too many unsuccessful attempts. Please try again later.',
+    };
+  }
+
+  /**
+   * Gets network and registration-related error messages.
+   * @returns Object mapping error codes to messages
+   * @private
+   */
+  private getNetworkErrorMap(): { [key: string]: string } {
+    return {
+      'auth/email-already-in-use': 'An account with this email already exists. Please use a different email or try logging in.',
+      'auth/weak-password': 'The password is too weak. Please use a stronger password with at least 6 characters.',
+      'auth/network-request-failed': 'Network error. Please check your internet connection and try again.',
+    };
+  }
+
+  /**
+   * Gets credential-related error messages.
+   * @returns Object mapping error codes to messages
+   * @private
+   */
+  private getCredentialErrorMap(): { [key: string]: string } {
+    return {
+      'auth/invalid-credential': 'The provided credentials are invalid. Please check your email and password.',
+    };
+  }
+
+  /**
+   * Gets default error message when specific error code is not handled.
+   * @param error - Original error object
+   * @returns Default error message
+   * @private
+   */
+  private getDefaultErrorMessage(error: any): string {
+    console.error('Firebase Auth Error:', error);
+    return error.message || 'An unexpected error occurred. Please try again.';
   }
 
   /**

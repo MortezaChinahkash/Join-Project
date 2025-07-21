@@ -63,23 +63,51 @@ export class AuthStateService {
    */
   loadUserFromStorage(): void {
     try {
-      const userData = localStorage.getItem(this.STORAGE_KEY);
+      const userData = this.getUserDataFromStorage();
       if (userData) {
-        const user: User = JSON.parse(userData);
-        const sessionAge = Date.now() - user.loginTimestamp;
-        if (sessionAge > this.SESSION_DURATION) {
-          localStorage.removeItem(this.STORAGE_KEY);
-          return;
-        }
-        if (!this.currentUserSubject.value) {
-          this.currentUserSubject.next(user);
-        }
+        this.processStoredUserData(userData);
       }
     } catch (error) {
-
       console.error('Error loading user from storage:', error);
       localStorage.removeItem(this.STORAGE_KEY);
     }
+  }
+
+  /**
+   * Retrieves user data from localStorage.
+   * @returns Parsed user data or null if not found
+   * @private
+   */
+  private getUserDataFromStorage(): User | null {
+    const userData = localStorage.getItem(this.STORAGE_KEY);
+    return userData ? JSON.parse(userData) : null;
+  }
+
+  /**
+   * Processes stored user data and validates session.
+   * @param user - The user data from storage
+   * @private
+   */
+  private processStoredUserData(user: User): void {
+    if (this.checkSessionExpiry(user)) {
+      localStorage.removeItem(this.STORAGE_KEY);
+      return;
+    }
+    
+    if (!this.currentUserSubject.value) {
+      this.currentUserSubject.next(user);
+    }
+  }
+
+  /**
+   * Checks if the stored user session has expired.
+   * @param user - The user data to check
+   * @returns True if session is expired
+   * @private
+   */
+  private checkSessionExpiry(user: User): boolean {
+    const sessionAge = Date.now() - user.loginTimestamp;
+    return sessionAge > this.SESSION_DURATION;
   }
 
   /**
