@@ -51,23 +51,77 @@ export class BoardTouchHandlerService {
    */
   private initializeTouchDragState(event: TouchEvent, task: Task): { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean } {
     const touch = event.touches[0];
+    this.recordTouchStartTime();
+    const touchContext = this.createTouchContext(touch);
+    this.setupLongPressTimeout(touchContext, task, event);
+    return touchContext;
+  }
+
+  /**
+   * Records the touch start time for duration tracking.
+   * 
+   * @private
+   */
+  private recordTouchStartTime(): void {
     this.dragState.touchStartTime = Date.now();
-    const touchContext = { 
+  }
+
+  /**
+   * Creates the initial touch context object.
+   * 
+   * @param touch - The touch object from the event
+   * @returns Touch context with initial values
+   * @private
+   */
+  private createTouchContext(touch: Touch): { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean } {
+    return { 
       startX: touch.clientX, 
       startY: touch.clientY, 
       hasMoved: false, 
       dragStarted: false 
     };
-    
+  }
+
+  /**
+   * Sets up the long press timeout for drag initiation.
+   * 
+   * @param touchContext - The touch context object
+   * @param task - The task object being dragged
+   * @param event - The original touch event
+   * @private
+   */
+  private setupLongPressTimeout(touchContext: { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean }, task: Task, event: TouchEvent): void {
     this.dragState.longPressTimeout = setTimeout(() => {
-      if (!touchContext.hasMoved && !this.dragState.isDraggingTask) {
-        this.startTouchDrag(touchContext.startX, touchContext.startY, task, event.target as HTMLElement);
-        touchContext.dragStarted = true;
-        this.tryVibrate();
-      }
+      this.handleLongPressActivation(touchContext, task, event);
     }, this.LONG_PRESS_DURATION);
-    
-    return touchContext;
+  }
+
+  /**
+   * Handles the activation of long press for drag start.
+   * 
+   * @param touchContext - The touch context object
+   * @param task - The task object being dragged
+   * @param event - The original touch event
+   * @private
+   */
+  private handleLongPressActivation(touchContext: { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean }, task: Task, event: TouchEvent): void {
+    if (!touchContext.hasMoved && !this.dragState.isDraggingTask) {
+      this.initiateTouchDrag(touchContext, task, event);
+    }
+  }
+
+  /**
+   * Initiates the touch drag operation.
+   * 
+   * @param touchContext - The touch context object
+   * @param task - The task object being dragged
+   * @param event - The original touch event
+   * @private
+   */
+  private initiateTouchDrag(touchContext: { startX: number; startY: number; dragStarted: boolean }, task: Task, event: TouchEvent): void {
+    this.startTouchDrag(touchContext.startX, touchContext.startY, task, event.target as HTMLElement);
+    touchContext.dragStarted = true;
+    this.tryVibrate();
   }
 
   /**
