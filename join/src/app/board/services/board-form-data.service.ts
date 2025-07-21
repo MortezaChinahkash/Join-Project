@@ -284,28 +284,106 @@ export class BoardFormDataService {
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-    if (!this.currentTask) {
-      errors.push('No task data available');
+    
+    if (!this.validateTaskExists(errors)) {
       return { isValid: false, errors };
     }
-    if (!this.currentTask.title?.trim()) {
+    
+    this.validateRequiredFields(errors);
+    this.validateDueDate(errors);
+    
+    return { isValid: errors.length === 0, errors };
+  }
+
+  /**
+   * Validates that a current task exists.
+   * 
+   * @param errors - Array to collect validation errors
+   * @returns True if task exists, false otherwise
+   * @private
+   */
+  private validateTaskExists(errors: string[]): boolean {
+    if (!this.currentTask) {
+      errors.push('No task data available');
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Validates required task fields.
+   * 
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateRequiredFields(errors: string[]): void {
+    this.validateTitle(errors);
+    this.validateDescription(errors);
+    this.validateCategory(errors);
+  }
+
+  /**
+   * Validates task title field.
+   * 
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateTitle(errors: string[]): void {
+    if (!this.currentTask!.title?.trim()) {
       errors.push('Title is required');
     }
-    if (!this.currentTask.description?.trim()) {
+  }
+
+  /**
+   * Validates task description field.
+   * 
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateDescription(errors: string[]): void {
+    if (!this.currentTask!.description?.trim()) {
       errors.push('Description is required');
     }
-    if (!this.currentTask.category?.trim()) {
+  }
+
+  /**
+   * Validates task category field.
+   * 
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateCategory(errors: string[]): void {
+    if (!this.currentTask!.category?.trim()) {
       errors.push('Category is required');
     }
-    if (this.currentTask.dueDate) {
-      const dueDate = new Date(this.currentTask.dueDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+  }
+
+  /**
+   * Validates task due date field.
+   * 
+   * @param errors - Array to collect validation errors
+   * @private
+   */
+  private validateDueDate(errors: string[]): void {
+    if (this.currentTask!.dueDate) {
+      const dueDate = new Date(this.currentTask!.dueDate);
+      const today = this.getTodayDate();
       if (dueDate < today) {
         errors.push('Due date cannot be in the past');
       }
     }
-    return { isValid: errors.length === 0, errors };
+  }
+
+  /**
+   * Gets today's date with time set to midnight.
+   * 
+   * @returns Today's date at 00:00:00
+   * @private
+   */
+  private getTodayDate(): Date {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today;
   }
 
   /**
