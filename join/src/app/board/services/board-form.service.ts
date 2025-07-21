@@ -345,14 +345,30 @@ export class BoardFormService {
   // DELEGATED METHODS TO SPECIALIZED SERVICES
   // ============================================================================
   // Validation Service Delegates
+  /**
+   * Checks if fieldinvalid.
+   * @param fieldName - Fieldname parameter
+   * @returns Boolean result
+   */
   isFieldInvalid(fieldName: string): boolean {
     return this.validationService.isFieldInvalid(this.taskForm, fieldName);
   }
 
+  /**
+   * Checks if dateinvalid.
+   * @param fieldName - Fieldname parameter
+   * @param form? - Form? parameter
+   * @returns Boolean result
+   */
   isDateInvalid(fieldName: string, form?: any): boolean {
     return this.validationService.isDateInvalid(form || this.taskForm, fieldName);
   }
 
+  /**
+   * Gets fielderrormessage value.
+   * @param fieldName - Fieldname parameter
+   * @returns String result
+   */
   getFieldErrorMessage(fieldName: string): string {
     return this.validationService.getFieldErrorMessage(this.taskForm, fieldName);
   }
@@ -362,18 +378,37 @@ export class BoardFormService {
     return this.contactSelectionService.selectedContacts;
   }
 
+  /**
+   * Gets selectedcontactstext value.
+   * @returns String result
+   */
   getSelectedContactsText(): string {
     return this.contactSelectionService.getSelectedContactsText();
   }
 
+  /**
+   * Checks if contactselected.
+   * @param contact - Contact parameter
+   * @returns Boolean result
+   */
   isContactSelected(contact: Contact): boolean {
     return this.contactSelectionService.isContactSelected(contact);
   }
 
+  /**
+   * Toggles contactselection state.
+   * @param contact - Contact parameter
+   * @param event? - Event? parameter
+   */
   toggleContactSelection(contact: Contact, event?: Event): void {
     this.contactSelectionService.toggleContact(contact);
   }
 
+  /**
+   * Sets selectedcontactsbynames value.
+   * @param contactNames - Contactnames parameter
+   * @param allContacts - Allcontacts parameter
+   */
   setSelectedContactsByNames(contactNames: string[], allContacts: Contact[]): void {
     this.contactSelectionService.setSelectedContactsByNames(contactNames, allContacts);
   }
@@ -386,14 +421,25 @@ export class BoardFormService {
     this.contactSelectionService.isDropdownOpen = value;
   }
 
+  /**
+   * Toggles dropdown state.
+   */
   toggleDropdown(): void {
     this.contactSelectionService.toggleDropdown();
   }
 
+  /**
+   * Gets displayedassignedcontacts value.
+   * @returns String result
+   */
   getDisplayedAssignedContacts(): string[] {
     return this.contactSelectionService.getDisplayedAssignedContacts();
   }
 
+  /**
+   * Checks if smoreassignedcontacts.
+   * @returns Boolean result
+   */
   hasMoreAssignedContacts(): boolean {
     return this.contactSelectionService.hasMoreAssignedContacts();
   }
@@ -406,14 +452,25 @@ export class BoardFormService {
     this.contactSelectionService.showAssignedContactsDropdown = value;
   }
 
+  /**
+   * Toggles assignedcontactsdropdown state.
+   */
   toggleAssignedContactsDropdown(): void {
     this.contactSelectionService.toggleAssignedContactsDropdown();
   }
 
+  /**
+   * Gets remainingassignedcontactscount value.
+   * @returns Numeric result
+   */
   getRemainingAssignedContactsCount(): number {
     return this.contactSelectionService.getRemainingAssignedContactsCount();
   }
 
+  /**
+   * Gets remainingassignedcontacts value.
+   * @returns String result
+   */
   getRemainingAssignedContacts(): string[] {
     return this.contactSelectionService.getRemainingAssignedContacts();
   }
@@ -435,32 +492,58 @@ export class BoardFormService {
     return this.overlayService.isEditingTask;
   }
 
+  /**
+   * Handles openAddTaskOverlay functionality.
+   * @param column? - Column? parameter
+   */
   openAddTaskOverlay(column?: any): void {
     this.overlayService.openAddTaskOverlay(column);
   }
 
+  /**
+   * Handles closeAddTaskOverlay functionality.
+   */
   closeAddTaskOverlay(): void {
     this.overlayService.closeAllOverlays();
   }
 
+  /**
+   * Handles openTaskDetails functionality.
+   * @param task - Task parameter
+   */
   openTaskDetails(task: Task): void {
     this.overlayService.openTaskDetailsOverlay(task);
   }
 
+  /**
+   * Handles closeTaskDetailsOverlay functionality.
+   */
   closeTaskDetailsOverlay(): void {
     this.overlayService.closeAllOverlays();
   }
 
+  /**
+   * Handles editTask functionality.
+   * @param contacts - Contacts parameter
+   */
   editTask(contacts: Contact[]): void {
     if (this.selectedTask) {
       this.initializeEditTask(this.selectedTask, contacts);
     }
   }
 
+  /**
+   * Handles cancelEditTask functionality.
+   */
   cancelEditTask(): void {
     this.cancelEdit();
   }
 
+  /**
+   * Handles saveTaskChanges functionality.
+   * @param onTaskUpdate? - Ontaskupdate? parameter
+   * @returns Promise that resolves when operation completes
+   */
   async saveTaskChanges(onTaskUpdate?: () => void): Promise<void> {
     const success = await this.saveTask();
     if (success && onTaskUpdate) {
@@ -473,9 +556,17 @@ export class BoardFormService {
     return this.taskForm.get('priority')?.value || 'medium';
   }
 
+  /**
+   * Handles selectPriority functionality.
+   * @param priority - Priority parameter
+   */
   selectPriority(priority: string): void {
     this.taskForm.patchValue({ priority });
   }
+  /**
+   * Handles selectCategory functionality.
+   * @param category - Category parameter
+   */
   selectCategory(category: string): void {
     this.taskForm.patchValue({ category });
 
@@ -486,14 +577,25 @@ export class BoardFormService {
     return this._isCategoryDropdownOpen;
   }
 
+  /**
+   * Toggles categorydropdown state.
+   */
   toggleCategoryDropdown(): void {
     this._isCategoryDropdownOpen = !this._isCategoryDropdownOpen;
   }
 
+  /**
+   * Handles closeCategoryDropdown functionality.
+   */
   closeCategoryDropdown(): void {
     this._isCategoryDropdownOpen = false;
   }
 
+  /**
+   * Gets categorydisplaytext value.
+   * @param form - Form parameter
+   * @returns String result
+   */
   getCategoryDisplayText(form: any): string {
     const category = form?.get('category')?.value;
     return category === 'technical' ? 'Technical Task' : 
@@ -504,6 +606,12 @@ export class BoardFormService {
     return this.taskForm.get('subtasks');
   }
 
+  /**
+   * Creates subtaskgroup.
+   * @param title - Title parameter
+   * @param completed - Completed parameter
+   * @returns FormGroup
+   */
   createSubtaskGroup(title: string = '', completed: boolean = false): FormGroup {
     return this.fb.group({
       title: [title],
@@ -533,6 +641,10 @@ export class BoardFormService {
     this.subtasksFormArray.removeAt(index);
   }
 
+  /**
+   * Gets subtaskprogress value.
+   * @returns Numeric result
+   */
   getSubtaskProgress(): number {
     const subtasks = this.selectedTask?.subtasks || [];
     if (subtasks.length === 0) return 0;
@@ -540,10 +652,19 @@ export class BoardFormService {
     return Math.round((completed / subtasks.length) * 100);
   }
 
+  /**
+   * Gets completedsubtaskscount value.
+   * @returns Numeric result
+   */
   getCompletedSubtasksCount(): number {
     return this.selectedTask?.subtasks?.filter(s => s.completed).length || 0;
   }
 
+  /**
+   * Handles submit events.
+   * @param updateCallback? - Updatecallback? parameter
+   * @returns Promise that resolves when operation completes
+   */
   async onSubmit(updateCallback?: () => void): Promise<void> {
     const success = await this.saveTask();
     if (success && updateCallback) {
@@ -551,6 +672,12 @@ export class BoardFormService {
     }
   }
 
+  /**
+   * Toggles subtask state.
+   * @param subtaskIndex - Subtaskindex parameter
+   * @param updateCallback? - Updatecallback? parameter
+   * @returns Promise that resolves when operation completes
+   */
   async toggleSubtask(subtaskIndex: number, updateCallback?: () => void): Promise<void> {
     if (this.selectedTask && this.selectedTask.subtasks[subtaskIndex]) {
       this.selectedTask.subtasks[subtaskIndex].completed = !this.selectedTask.subtasks[subtaskIndex].completed;

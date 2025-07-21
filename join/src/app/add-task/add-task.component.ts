@@ -311,6 +311,10 @@ export class AddTaskComponent implements OnInit, OnDestroy {
    * Handles document clicks.
    */
   @HostListener('document:click', ['$event'])
+  /**
+   * Handles documentclick events.
+   * @param event - Event parameter
+   */
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     

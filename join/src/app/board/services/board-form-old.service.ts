@@ -568,6 +568,9 @@ export class BoardFormService {
   }
 
   // Assigned contacts dropdown methods for task details
+  /**
+   * Toggles assignedcontactsdropdown state.
+   */
   toggleAssignedContactsDropdown(): void {
     this.showAssignedContactsDropdown = !this.showAssignedContactsDropdown;
     if (this.showAssignedContactsDropdown) {
@@ -669,6 +672,11 @@ export class BoardFormService {
     return this.selectedTask.subtasks.filter(subtask => subtask.completed).length;
   }
 
+/**
+ * Creates subtaskgroup.
+ * @param title - Title parameter
+ * @param completed - Completed parameter
+ */
 public createSubtaskGroup(title: string = '', completed: boolean = false) {
   return this.fb.group({
     title: [title],

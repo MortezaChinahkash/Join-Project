@@ -33,6 +33,9 @@ export class AuthComponent implements OnInit {
     private router: Router,
     private welcomeOverlayService: WelcomeOverlayService
   ) {}
+  /**
+   * Angular lifecycle hook - component initialization.
+   */
   ngOnInit(): void {
     this.initializeForms();
     this.removeAnimClass();

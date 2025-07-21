@@ -55,6 +55,10 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
    * Handles window resize events to update highlight position.
    */
   @HostListener('window:resize', ['$event'])
+  /**
+   * Handles resize events.
+   * @param event - Event parameter
+   */
   onResize(event: any): void {
     if (this.showOnboarding) {
       setTimeout(() => this.updateHighlightPosition(), 100);

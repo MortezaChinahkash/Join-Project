@@ -59,10 +59,16 @@ export class OnboardingTestComponent {
   showControls = !window.location.hostname.includes('production');
   constructor(private onboardingService: OnboardingService) {}
 
+  /**
+   * Handles startOnboarding functionality.
+   */
   startOnboarding(): void {
     this.onboardingService.manualStartOnboarding();
   }
 
+  /**
+   * Handles resetOnboarding functionality.
+   */
   resetOnboarding(): void {
     this.onboardingService.resetOnboarding();
   }
