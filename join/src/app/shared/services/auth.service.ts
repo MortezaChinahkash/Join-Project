@@ -241,6 +241,7 @@ export class AuthService implements OnDestroy {
       localStorage.removeItem(this.STORAGE_KEY);
     }
   }
+  
   private validateAndLoadSession(user: any): void {
     if (!this.isSessionValid(user)) {
       this.clearExpiredSession();
