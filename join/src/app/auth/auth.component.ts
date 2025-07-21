@@ -104,21 +104,27 @@ export class AuthComponent implements OnInit {
    */
   async onLogin(): Promise<void> {
     if (this.loginForm.valid && !this.isLoading) {
-      this.isLoading = true;
-      this.errorMessage = '';
-      try {
-        const { email, password } = this.loginForm.value;
-        await this.authService.login(email, password);
-        this.welcomeOverlayService.markShouldShow();
-        this.router.navigate(['/summary']);
-      } catch (error: any) {
-
-        this.errorMessage = this.getErrorMessage(error);
-      } finally {
-        this.isLoading = false;
-      }
+      await this.performLogin();
     } else {
       this.markFormGroupTouched(this.loginForm);
+    }
+  }
+
+  /**
+   * Performs the actual login process with error handling.
+   */
+  private async performLogin(): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+    try {
+      const { email, password } = this.loginForm.value;
+      await this.authService.login(email, password);
+      this.welcomeOverlayService.markShouldShow();
+      this.router.navigate(['/summary']);
+    } catch (error: any) {
+      this.errorMessage = this.getErrorMessage(error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
@@ -127,21 +133,27 @@ export class AuthComponent implements OnInit {
    */
   async onRegister(): Promise<void> {
     if (this.registerForm.valid && !this.isLoading) {
-      this.isLoading = true;
-      this.errorMessage = '';
-      try {
-        const { name, email, password } = this.registerForm.value;
-        await this.authService.register(name, email, password);
-        this.welcomeOverlayService.markShouldShow();
-        this.router.navigate(['/summary']);
-      } catch (error: any) {
-
-        this.errorMessage = this.getErrorMessage(error);
-      } finally {
-        this.isLoading = false;
-      }
+      await this.performRegistration();
     } else {
       this.markFormGroupTouched(this.registerForm);
+    }
+  }
+
+  /**
+   * Performs the actual registration process with error handling.
+   */
+  private async performRegistration(): Promise<void> {
+    this.isLoading = true;
+    this.errorMessage = '';
+    try {
+      const { name, email, password } = this.registerForm.value;
+      await this.authService.register(name, email, password);
+      this.welcomeOverlayService.markShouldShow();
+      this.router.navigate(['/summary']);
+    } catch (error: any) {
+      this.errorMessage = this.getErrorMessage(error);
+    } finally {
+      this.isLoading = false;
     }
   }
 
@@ -180,22 +192,23 @@ export class AuthComponent implements OnInit {
    */
   private getErrorMessage(error: any): string {
     if (error?.code) {
-      switch (error.code) {
-        case 'auth/user-not-found':
-          return 'No account found with this email address.';
-        case 'auth/wrong-password':
-          return 'Incorrect password. Please try again.';
-        case 'auth/email-already-in-use':
-          return 'An account with this email already exists.';
-        case 'auth/weak-password':
-          return 'Password should be at least 6 characters.';
-        case 'auth/invalid-email':
-          return 'Please enter a valid email address.';
-        default:
-          return 'An error occurred. Please try again.';
-      }
+      return this.getAuthErrorMessage(error.code);
     }
     return error?.message || 'An unexpected error occurred.';
+  }
+
+  /**
+   * Maps Firebase auth error codes to user-friendly messages.
+   */
+  private getAuthErrorMessage(errorCode: string): string {
+    const errorMessages: { [key: string]: string } = {
+      'auth/user-not-found': 'No account found with this email address.',
+      'auth/wrong-password': 'Incorrect password. Please try again.',
+      'auth/email-already-in-use': 'An account with this email already exists.',
+      'auth/weak-password': 'Password should be at least 6 characters.',
+      'auth/invalid-email': 'Please enter a valid email address.'
+    };
+    return errorMessages[errorCode] || 'An error occurred. Please try again.';
   }
 
   /**

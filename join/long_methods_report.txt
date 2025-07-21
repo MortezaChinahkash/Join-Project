@@ -1,0 +1,1133 @@
+
+
+
+Method: findVerticalScrollableParent
+Lines: 16
+Line Number: 295
+Content Preview:
+
+  private findVerticalScrollableParent(element: HTMLElement): HTMLElement | null {
+    let parent = element.parentElement;
+    while (parent) {
+      if (this.canScrollVertically(parent)) {
+        r......
+
+==================================================
+
+Method: findHorizontalScrollableContainer
+Lines: 26
+Line Number: 333
+Content Preview:
+
+  private findHorizontalScrollableContainer(): HTMLElement | null {
+    let container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (container && this.canScrollHorizontally......
+
+==================================================
+
+File: board\services\board-display.service.ts
+------------------------------
+Method: hasNoSearchResults
+Lines: 15
+Line Number: 61
+Content Preview:
+
+  hasNoSearchResults(
+    searchTerm: string,
+    todoTasks: Task[],
+    inProgressTasks: Task[],
+    awaitingFeedbackTasks: Task[],
+    doneTasks: Task[]
+  ): boolean {
+    return this.utilsService.......
+
+==================================================
+
+File: board\services\board-drag-drop-refactored.service.ts
+------------------------------
+Method: startTaskDrag
+Lines: 27
+Line Number: 224
+Content Preview:
+
+  private startTaskDrag(clientX: number, clientY: number, task: Task, element: HTMLElement): void {
+    this.dragState.draggedTask = task;
+    this.dragState.isDraggingTask = true;
+    this.dragState......
+
+==================================================
+
+File: board\services\board-drag-drop-v2.service.ts
+------------------------------
+Method: createDragElement
+Lines: 15
+Line Number: 160
+Content Preview:
+
+  private createDragElement(task: Task, originalElement: HTMLElement, clientX: number, clientY: number): void {
+    const taskElement = originalElement.closest('.task-card') as HTMLElement;
+    if (!......
+
+==================================================
+
+Method: getColumnAtPosition
+Lines: 15
+Line Number: 183
+Content Preview:
+
+  private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
+    const elements = document.elementsFromPoint(clientX, clientY);
+    for (const element of elements) {
+      if ......
+
+==================================================
+
+Method: handleMouseMove
+Lines: 15
+Line Number: 58
+Content Preview:
+handleMouseMove = (e: MouseEvent) => {
+        if (!this.dragState.isMousePressed) return;
+        if (this.dragState.exceedsDragThreshold(e.clientX, e.clientY)) {
+          hasMoved = true;
+         ......
+
+==================================================
+
+File: board\services\board-drag-drop.service.ts
+------------------------------
+Method: getColumnAtPosition
+Lines: 16
+Line Number: 287
+Content Preview:
+
+  private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
+    const elements = document.elementsFromPoint(clientX, clientY);
+    for (const element of elements) {
+      if ......
+
+==================================================
+
+Method: handleMouseMove
+Lines: 15
+Line Number: 69
+Content Preview:
+handleMouseMove = (e: MouseEvent) => {
+        if (!this.dragState.isMousePressed) return;
+        if (this.dragState.exceedsDragThreshold(e.clientX, e.clientY)) {
+          hasMoved = true;
+         ......
+
+==================================================
+
+File: board\services\board-form-data.service.ts
+------------------------------
+Method: createNewTask
+Lines: 18
+Line Number: 25
+Content Preview:
+
+  createNewTask(status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'): Task {
+    const newTask: Task = {
+      id: this.generateTaskId(),
+      title: '',
+      description: '',
+      assign......
+
+==================================================
+
+Method: addSubtask
+Lines: 15
+Line Number: 169
+Content Preview:
+
+  addSubtask(title: string): Subtask {
+    if (!this.currentTask) {
+      throw new Error('No current task to add subtask to');
+    }
+    const subtask: Subtask = {
+      id: this.generateSubtaskId()......
+
+==================================================
+
+File: board\services\board-form-refactored.service.ts
+------------------------------
+Method: editTask
+Lines: 18
+Line Number: 191
+Content Preview:
+
+  editTask(contacts: Contact[]): void {
+    if (!this.selectedTask) return;
+    this.overlayService.startEditingTask();
+    this.formState.patchFormWithTaskData({
+      title: this.selectedTask.title......
+
+==================================================
+
+Method: saveTask
+Lines: 29
+Line Number: 224
+Content Preview:
+
+  async saveTask(): Promise<void> {
+    const validation = this.formState.validateForm();
+    if (!validation.isValid) {
+      throw new Error(`Form validation failed: ${validation.errors.join(', ')}......
+
+==================================================
+
+File: board\services\board-form-validation.service.ts
+------------------------------
+Method: getFieldErrorMessage
+Lines: 18
+Line Number: 47
+Content Preview:
+
+  getFieldErrorMessage(form: FormGroup, fieldName: string): string {
+    const field = form.get(fieldName);
+    if (!field || !field.errors) return '';
+    const errors = field.errors;
+    if (errors......
+
+==================================================
+
+File: board\services\board-form.service.ts
+------------------------------
+Method: populateFormWithTask
+Lines: 17
+Line Number: 94
+Content Preview:
+
+  private populateFormWithTask(task: Task): void {
+    let formattedDate = task.dueDate;
+    if (task.dueDate) {
+      const date = new Date(task.dueDate);
+      if (!isNaN(date.getTime())) {
+       ......
+
+==================================================
+
+Method: saveTask
+Lines: 19
+Line Number: 141
+Content Preview:
+
+  async saveTask(): Promise<boolean> {
+    if (!this.validateForm()) {
+      return false;
+    }
+    
+    try {
+      const task = this.buildTaskFromForm();
+      
+      if (this.dataService.getIsEdi......
+
+==================================================
+
+Method: buildTaskFromForm
+Lines: 31
+Line Number: 170
+Content Preview:
+
+  private buildTaskFromForm(): Task {
+    const formValue = this.taskForm.value;
+    let currentTask = this.dataService.getCurrentTask();
+    
+    if (!currentTask) {
+      const targetColumn = this.......
+
+==================================================
+
+File: board\services\board-initialization.service.ts
+------------------------------
+Method: handleFragmentNavigation
+Lines: 16
+Line Number: 104
+Content Preview:
+
+  private handleFragmentNavigation(): void {
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        setTimeout(() => {
+          const targetElement = document.getElementById(f......
+
+==================================================
+
+Method: handleFragmentNavigation
+Lines: 16
+Line Number: 105
+Content Preview:
+handleFragmentNavigation(): void {
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        setTimeout(() => {
+          const targetElement = document.getElementById(fragment);
+ ......
+
+==================================================
+
+File: board\services\board-navigation.service.ts
+------------------------------
+Method: handleFragmentNavigation
+Lines: 16
+Line Number: 86
+Content Preview:
+
+  handleFragmentNavigation(): void {
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        setTimeout(() => {
+          const targetElement = document.getElementById(fragment)......
+
+==================================================
+
+Method: handleFragmentNavigation
+Lines: 16
+Line Number: 87
+Content Preview:
+handleFragmentNavigation(): void {
+    this.route.fragment.subscribe(fragment => {
+      if (fragment) {
+        setTimeout(() => {
+          const targetElement = document.getElementById(fragment);
+ ......
+
+==================================================
+
+File: board\services\board-touch-handler.service.ts
+------------------------------
+Method: updateTouchDrag
+Lines: 16
+Line Number: 166
+Content Preview:
+
+  private updateTouchDrag(clientX: number, clientY: number): void {
+    this.dragState.updateDragPosition(clientX, clientY);
+    this.autoScroll.handleAutoScroll(clientX, clientY);
+    const column =......
+
+==================================================
+
+Method: getColumnAtPosition
+Lines: 16
+Line Number: 190
+Content Preview:
+
+  private getColumnAtPosition(clientX: number, clientY: number): TaskColumn | null {
+    const elements = document.elementsFromPoint(clientX, clientY);
+    for (const element of elements) {
+      if ......
+
+==================================================
+
+Method: createTouchDragElement
+Lines: 15
+Line Number: 236
+Content Preview:
+
+  private createTouchDragElement(task: Task, originalElement: HTMLElement, clientX: number, clientY: number): void {
+    const taskElement = originalElement.closest('.task-card') as HTMLElement;
+    ......
+
+==================================================
+
+File: board\services\drag-drop\board-drag-auto-scroll.service.ts
+------------------------------
+Method: handleHorizontalScroll
+Lines: 15
+Line Number: 41
+Content Preview:
+
+  private handleHorizontalScroll(clientX: number): void {
+    const boardScrollWrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (!boardScrollWrapper) return;
+    
+    ......
+
+==================================================
+
+Method: emergencyAutoScroll
+Lines: 19
+Line Number: 163
+Content Preview:
+
+  emergencyAutoScroll(event: MouseEvent | TouchEvent): void {
+    const scrollSpeed = 15;
+    const scrollZone = 100;
+    const viewportHeight = window.innerHeight;
+    let clientY: number;
+    if (e......
+
+==================================================
+
+File: board\services\drag-drop\board-drag-detection.service.ts
+------------------------------
+Method: checkElementForColumn
+Lines: 21
+Line Number: 41
+Content Preview:
+
+  private checkElementForColumn(element: Element): TaskColumn | null {
+    const columnElement = element.closest('.board-column') as HTMLElement;
+    if (columnElement) {
+      return columnElement.g......
+
+==================================================
+
+Method: findClosestColumn
+Lines: 22
+Line Number: 116
+Content Preview:
+
+  findClosestColumn(clientX: number, clientY: number): TaskColumn | null {
+    const columns = this.getAllBoardColumns();
+    let closestColumn: HTMLElement | null = null;
+    let minDistance = Infin......
+
+==================================================
+
+File: board\services\drag-drop\board-drag-state.service.ts
+------------------------------
+Method: resetDragState
+Lines: 28
+Line Number: 38
+Content Preview:
+
+  resetDragState(): void {
+    this.isDraggingTask = false;
+    this.draggedTask = null;
+    this.dragOverColumn = null;
+    this.dragPlaceholderVisible = false;
+    this.dragPlaceholderHeight = 0;
+ ......
+
+==================================================
+
+Method: resetDragState
+Lines: 28
+Line Number: 39
+Content Preview:
+resetDragState(): void {
+    this.isDraggingTask = false;
+    this.draggedTask = null;
+    this.dragOverColumn = null;
+    this.dragPlaceholderVisible = false;
+    this.dragPlaceholderHeight = 0;
+    ......
+
+==================================================
+
+File: board\services\form\board-form-contact.service.ts
+------------------------------
+Method: addDocumentClickListener
+Lines: 16
+Line Number: 160
+Content Preview:
+
+  private addDocumentClickListener(): void {
+    this.removeDocumentClickListener();
+    this.documentClickListener = (event: Event) => {
+      if (this.preventDropdownClose) return;
+      const targ......
+
+==================================================
+
+Method: addDocumentClickListener
+Lines: 16
+Line Number: 161
+Content Preview:
+addDocumentClickListener(): void {
+    this.removeDocumentClickListener();
+    this.documentClickListener = (event: Event) => {
+      if (this.preventDropdownClose) return;
+      const target = event.......
+
+==================================================
+
+File: board\services\form\board-form-data.service.ts
+------------------------------
+Method: createNewTask
+Lines: 18
+Line Number: 25
+Content Preview:
+
+  createNewTask(status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'): Task {
+    const newTask: Task = {
+      id: this.generateTaskId(),
+      title: '',
+      description: '',
+      assign......
+
+==================================================
+
+Method: addSubtask
+Lines: 15
+Line Number: 169
+Content Preview:
+
+  addSubtask(title: string): Subtask {
+    if (!this.currentTask) {
+      throw new Error('No current task to add subtask to');
+    }
+    const subtask: Subtask = {
+      id: this.generateSubtaskId()......
+
+==================================================
+
+File: board\services\form\board-form-state.service.ts
+------------------------------
+Method: patchFormWithTaskData
+Lines: 15
+Line Number: 185
+Content Preview:
+
+  patchFormWithTaskData(taskData: any): void {
+    this.taskForm.patchValue(taskData);
+    if (taskData.subtasks && Array.isArray(taskData.subtasks)) {
+      while (this.subtasksFormArray.length !== ......
+
+==================================================
+
+File: board\services\form\board-form-v2.service.ts
+------------------------------
+Method: saveTask
+Lines: 19
+Line Number: 88
+Content Preview:
+
+  async saveTask(): Promise<boolean> {
+    if (!this.validateForm()) {
+      return false;
+    }
+    try {
+      const task = this.buildTaskFromForm();
+      if (this.dataService.getIsEditMode()) {
+ ......
+
+==================================================
+
+Method: buildTaskFromForm
+Lines: 16
+Line Number: 114
+Content Preview:
+
+  private buildTaskFromForm(): Task {
+    const formValue = this.taskForm.value;
+    const currentTask = this.dataService.getCurrentTask();
+    if (!currentTask) {
+      throw new Error('No current t......
+
+==================================================
+
+File: board\services\form\board-form-validation.service.ts
+------------------------------
+Method: getFieldErrorMessage
+Lines: 18
+Line Number: 47
+Content Preview:
+
+  getFieldErrorMessage(form: FormGroup, fieldName: string): string {
+    const field = form.get(fieldName);
+    if (!field || !field.errors) return '';
+    const errors = field.errors;
+    if (errors......
+
+==================================================
+
+File: board\task-edit-overlay\task-edit-overlay.component.ts
+------------------------------
+Method: setupDropdownClickListener
+Lines: 20
+Line Number: 80
+Content Preview:
+
+  private setupDropdownClickListener(): void {
+    this.removeDropdownClickListener();
+    this.dropdownClickListener = (event: Event) => {
+      const target = event.target as HTMLElement;
+      con......
+
+==================================================
+
+Method: dropdownClickListener
+Lines: 16
+Line Number: 83
+Content Preview:
+dropdownClickListener = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const dropdownContainer = target.closest('.contacts-dropdown');
+      const dropdownTrigger = target......
+
+==================================================
+
+Method: setupDropdownClickListener
+Lines: 20
+Line Number: 81
+Content Preview:
+setupDropdownClickListener(): void {
+    this.removeDropdownClickListener();
+    this.dropdownClickListener = (event: Event) => {
+      const target = event.target as HTMLElement;
+      const dropdown......
+
+==================================================
+
+File: contacts\contacts-old.component.ts
+------------------------------
+Method: performAddContact
+Lines: 16
+Line Number: 256
+Content Preview:
+
+  private async performAddContact(contactData: Partial<Contact>): Promise<void> {
+    if (!contactData.name || !contactData.email) {
+      console.error('Missing required contact data');
+      return......
+
+==================================================
+
+Method: performUpdateContact
+Lines: 16
+Line Number: 278
+Content Preview:
+
+  private async performUpdateContact(contactData: Partial<Contact>): Promise<void> {
+    if (!this.selectedContact?.id) {
+      console.error('No contact ID for update');
+      return;
+    }
+    try ......
+
+==================================================
+
+Method: handleContactUpdated
+Lines: 17
+Line Number: 326
+Content Preview:
+
+  private handleContactUpdated(updatedData: Partial<Contact>): void {
+    if (this.selectedContact) {
+      if (this.selectedContact.isCurrentUser) {
+        Object.assign(this.selectedContact, updat......
+
+==================================================
+
+Method: selectCurrentUser
+Lines: 16
+Line Number: 575
+Content Preview:
+
+  selectCurrentUser(): void {
+    const user = this.getCurrentUser();
+    if (user) {
+      const currentUserContact: Contact = {
+        id: 'current-user',
+        name: user.name || user.email || ......
+
+==================================================
+
+Method: selectCurrentUser
+Lines: 16
+Line Number: 576
+Content Preview:
+selectCurrentUser(): void {
+    const user = this.getCurrentUser();
+    if (user) {
+      const currentUserContact: Contact = {
+        id: 'current-user',
+        name: user.name || user.email || 'Cu......
+
+==================================================
+
+File: contacts\services\contact-helper.service.ts
+------------------------------
+Method: getInitialsColor
+Lines: 15
+Line Number: 75
+Content Preview:
+
+  getInitialsColor(name: string): string {
+    if (!name?.trim()) return '#888';
+    const colors = [
+      '#FFB900', '#D83B01', '#B50E0E', '#E81123',
+      '#B4009E', '#5C2D91', '#0078D7', '#00B4FF......
+
+==================================================
+
+File: contacts\services\contact-ui.service.ts
+------------------------------
+Method: handleKeyboardNavigation
+Lines: 16
+Line Number: 168
+Content Preview:
+
+  handleKeyboardNavigation(
+    event: KeyboardEvent, 
+    contacts: Contact[], 
+    currentIndex: number
+  ): number {
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault()......
+
+==================================================
+
+File: contacts\services\contacts-crud.service.ts
+------------------------------
+Method: createContact
+Lines: 20
+Line Number: 26
+Content Preview:
+
+  async createContact(contactData: Partial<Contact>, existingContacts: Contact[] = []): Promise<Contact> {
+    if (!contactData.name || !contactData.email) {
+      throw new Error('Name and email are......
+
+==================================================
+
+Method: updateContact
+Lines: 18
+Line Number: 55
+Content Preview:
+
+  async updateContact(contactId: string, contactData: Partial<Contact>): Promise<Contact> {
+    if (!contactId) {
+      throw new Error('Contact ID is required for update');
+    }
+    try {
+      con......
+
+==================================================
+
+Method: deleteContact
+Lines: 15
+Line Number: 81
+Content Preview:
+
+  async deleteContact(contactId: string): Promise<void> {
+    if (!contactId) {
+      throw new Error('Contact ID is required for deletion');
+    }
+    const contact = await this.getContactById(conta......
+
+==================================================
+
+File: contacts\services\contacts-display.service.ts
+------------------------------
+Method: truncateEmail
+Lines: 16
+Line Number: 71
+Content Preview:
+
+  truncateEmail(email: string, maxLength: number = 23): string {
+    if (!email) return '';
+    if (email.length <= maxLength) {
+      return email;
+    }
+    const atIndex = email.lastIndexOf('@');
+......
+
+==================================================
+
+File: contacts\services\contacts-form.service.ts
+------------------------------
+Method: getFieldError
+Lines: 21
+Line Number: 137
+Content Preview:
+
+  getFieldError(fieldName: string): string {
+    const field = this.contactForm.get(fieldName);
+    if (!field || !field.errors || !field.touched) {
+      return '';
+    }
+    const errors = field.er......
+
+==================================================
+
+File: directives\flatpickr.directive.ts
+------------------------------
+Method: initializeFlatpickr
+Lines: 20
+Line Number: 49
+Content Preview:
+
+  private initializeFlatpickr(): void {
+    const defaultOptions = {
+      dateFormat: 'm/d/Y',
+      allowInput: true,
+      minDate: 'today',
+      locale: {
+        firstDayOfWeek: 0
+      },
+    ......
+
+==================================================
+
+Method: setupIconClick
+Lines: 15
+Line Number: 86
+Content Preview:
+
+  private setupIconClick(): void {
+    setTimeout(() => {
+      const wrapper = this.elementRef.nativeElement.parentElement;
+      if (wrapper) {
+        const calendarIcon = wrapper.querySelector('.......
+
+==================================================
+
+Method: initializeFlatpickr
+Lines: 20
+Line Number: 50
+Content Preview:
+initializeFlatpickr(): void {
+    const defaultOptions = {
+      dateFormat: 'm/d/Y',
+      allowInput: true,
+      minDate: 'today',
+      locale: {
+        firstDayOfWeek: 0
+      },
+      onChange:......
+
+==================================================
+
+Method: setupIconClick
+Lines: 15
+Line Number: 87
+Content Preview:
+setupIconClick(): void {
+    setTimeout(() => {
+      const wrapper = this.elementRef.nativeElement.parentElement;
+      if (wrapper) {
+        const calendarIcon = wrapper.querySelector('.date-icon')......
+
+==================================================
+
+File: onboarding-overlay\onboarding-overlay.component.ts
+------------------------------
+Method: subscribeToOnboarding
+Lines: 17
+Line Number: 70
+Content Preview:
+
+  private subscribeToOnboarding(): void {
+    const showSub = this.onboardingService.showOnboarding$.subscribe(show => {
+      this.showOnboarding = show;
+      if (show) {
+        setTimeout(() => t......
+
+==================================================
+
+Method: updateHighlightPosition
+Lines: 18
+Line Number: 92
+Content Preview:
+
+  private updateHighlightPosition(): void {
+    if (!this.currentStep || !this.showOnboarding) return;
+    const targetElement = document.querySelector(this.currentStep.targetElementSelector);
+    if......
+
+==================================================
+
+Method: subscribeToOnboarding
+Lines: 17
+Line Number: 71
+Content Preview:
+subscribeToOnboarding(): void {
+    const showSub = this.onboardingService.showOnboarding$.subscribe(show => {
+      this.showOnboarding = show;
+      if (show) {
+        setTimeout(() => this.updateH......
+
+==================================================
+
+Method: updateHighlightPosition
+Lines: 18
+Line Number: 93
+Content Preview:
+updateHighlightPosition(): void {
+    if (!this.currentStep || !this.showOnboarding) return;
+    const targetElement = document.querySelector(this.currentStep.targetElementSelector);
+    if (targetEle......
+
+==================================================
+
+File: shared\services\auth.service.ts
+------------------------------
+Method: initializeAuthListener
+Lines: 18
+Line Number: 47
+Content Preview:
+
+  private initializeAuthListener(): void {
+    runInInjectionContext(this.injector, () => {
+      onAuthStateChanged(this.auth, (firebaseUser) => {
+        if (firebaseUser) {
+          const user = ......
+
+==================================================
+
+Method: waitForAuthReady
+Lines: 17
+Line Number: 69
+Content Preview:
+
+  async waitForAuthReady(): Promise<User | null> {
+    return new Promise((resolve) => {
+      runInInjectionContext(this.injector, () => {
+        const unsubscribe = onAuthStateChanged(this.auth, (......
+
+==================================================
+
+Method: register
+Lines: 25
+Line Number: 145
+Content Preview:
+
+  async register(name: string, email: string, password: string): Promise<User> {
+    try {
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        createUserWithEmailAn......
+
+==================================================
+
+Method: handleAuthError
+Lines: 20
+Line Number: 324
+Content Preview:
+
+  private handleAuthError(error: any): Error {
+    console.error('Auth error:', error);
+
+    switch (error.code) {
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+        return n......
+
+==================================================
+
+Method: updateUserProfile
+Lines: 21
+Line Number: 387
+Content Preview:
+
+  async updateUserProfile(name: string): Promise<void> {
+    if (!this.auth.currentUser) {
+      throw new Error('No authenticated user found');
+    }
+    try {
+      await runInInjectionContext(this......
+
+==================================================
+
+Method: initializeAuthListener
+Lines: 18
+Line Number: 48
+Content Preview:
+initializeAuthListener(): void {
+    runInInjectionContext(this.injector, () => {
+      onAuthStateChanged(this.auth, (firebaseUser) => {
+        if (firebaseUser) {
+          const user = this.mapFir......
+
+==================================================
+
+File: shared\services\onboarding.service.ts
+------------------------------
+Method: checkAndStartOnboarding
+Lines: 19
+Line Number: 95
+Content Preview:
+
+  private checkAndStartOnboarding(): void {
+    console.log('OnboardingService: checkAndStartOnboarding called, isAuthenticated:', this.authService.isAuthenticated);
+    if (!this.authService.isAuthe......
+
+==================================================
+
+Method: checkAndStartOnboarding
+Lines: 19
+Line Number: 96
+Content Preview:
+checkAndStartOnboarding(): void {
+    console.log('OnboardingService: checkAndStartOnboarding called, isAuthenticated:', this.authService.isAuthenticated);
+    if (!this.authService.isAuthenticated) {......
+
+==================================================
+
+File: shared\services\task.service.ts
+------------------------------
+Method: updateTaskInColumn
+Lines: 15
+Line Number: 146
+Content Preview:
+
+  private updateTaskInColumn(
+    column: TaskColumn, 
+    taskId: string, 
+    updatedTask: Partial<Task>
+  ): boolean {
+    const taskIndex = this.tasks[column].findIndex(task => task.id === taskId......
+
+==================================================
+
+Method: toggleSubtaskInColumn
+Lines: 15
+Line Number: 276
+Content Preview:
+
+  private toggleSubtaskInColumn(
+    column: TaskColumn, 
+    taskId: string, 
+    subtaskId: string
+  ): boolean {
+    const task = this.tasks[column].find(task => task.id === taskId);
+    if (task)......
+
+==================================================
+
+File: shared\services\touch-detection.service.ts
+------------------------------
+Method: isPrimaryTouchDevice
+Lines: 15
+Line Number: 69
+Content Preview:
+
+  isPrimaryTouchDevice(): boolean {
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    const isTouchCapable = this.isTouchDevice();
+    if (!isTouchCapable) {......
+
+==================================================
+
+File: shared\services\auth\auth-firebase.service.ts
+------------------------------
+Method: waitForAuthReady
+Lines: 15
+Line Number: 39
+Content Preview:
+
+  async waitForAuthReady(): Promise<User | null> {
+    return new Promise((resolve) => {
+      runInInjectionContext(this.injector, () => {
+        const unsubscribe = onAuthStateChanged(this.auth, (......
+
+==================================================
+
+Method: register
+Lines: 19
+Line Number: 83
+Content Preview:
+
+  async register(name: string, email: string, password: string): Promise<User> {
+    try {
+      const userCredential = await runInInjectionContext(this.injector, () => 
+        createUserWithEmailAn......
+
+==================================================
+
+Method: handleAuthError
+Lines: 34
+Line Number: 183
+Content Preview:
+
+  private handleAuthError(error: any): Error {
+    let message = 'An unexpected error occurred. Please try again.';
+    switch (error.code) {
+      case 'auth/user-not-found':
+      case 'auth/wrong-......
+
+==================================================
+
+File: shared\services\auth\auth-state.service.ts
+------------------------------
+Method: loadUserFromStorage
+Lines: 19
+Line Number: 63
+Content Preview:
+
+  loadUserFromStorage(): void {
+    try {
+      const userData = localStorage.getItem(this.STORAGE_KEY);
+      if (userData) {
+        const user: User = JSON.parse(userData);
+        const sessionAg......
+
+==================================================
+
+Method: loadUserFromStorage
+Lines: 19
+Line Number: 64
+Content Preview:
+loadUserFromStorage(): void {
+    try {
+      const userData = localStorage.getItem(this.STORAGE_KEY);
+      if (userData) {
+        const user: User = JSON.parse(userData);
+        const sessionAge =......
+
+==================================================
+
+File: shared\services\auth\auth.service.ts
+------------------------------
+Method: initializeAuth
+Lines: 21
+Line Number: 192
+Content Preview:
+
+  private async initializeAuth(): Promise<void> {
+    try {
+      this.authState.loadUserFromStorage();
+      this.authFirebase.initializeAuthListener((user) => {
+        if (user) {
+          this.a......
+
+==================================================
+
+File: summary\summary.component.ts
+------------------------------
+Method: getUrgentTasksDueToday
+Lines: 15
+Line Number: 299
+Content Preview:
+
+  getUrgentTasksDueToday(): number {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return this.tasks.filter(task => {
+      if (task.priority !== 'urgent') {
+        return false;......
+
+==================================================
+
+Method: navigateToNearestUrgentTask
+Lines: 24
+Line Number: 465
+Content Preview:
+
+  navigateToNearestUrgentTask(): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const urgentTasksWithDueDate = this.tasks.filter(task => 
+      task.priority === 'urgent' &&......
+
+==================================================
+
+Method: navigateToNearestUrgentTask
+Lines: 24
+Line Number: 466
+Content Preview:
+navigateToNearestUrgentTask(): void {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const urgentTasksWithDueDate = this.tasks.filter(task => 
+      task.priority === 'urgent' && 
+ ......
+
+==================================================
+

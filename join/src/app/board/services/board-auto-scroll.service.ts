@@ -41,31 +41,45 @@ export class BoardAutoScrollService {
     const container = this.findScrollableContainer();
     if (!container) return;
     
+    if (this.canScrollVertically(container)) {
+      this.handleContainerVerticalScroll(container, cursorY);
+    } else {
+      this.handleParentVerticalScroll(container, cursorY);
+    }
+  }
+
+  /**
+   * Handles vertical scroll for the main container.
+   */
+  private handleContainerVerticalScroll(container: HTMLElement, cursorY: number): void {
     const containerRect = container.getBoundingClientRect();
     const distanceFromTop = cursorY - containerRect.top;
     const distanceFromBottom = containerRect.bottom - cursorY;
     
-    if (this.canScrollVertically(container)) {
-      if (distanceFromTop < this.autoScrollZone || distanceFromBottom < this.autoScrollZone) {
-        this.startVerticalAutoScroll(container, distanceFromTop, distanceFromBottom);
+    if (distanceFromTop < this.autoScrollZone || distanceFromBottom < this.autoScrollZone) {
+      this.startVerticalAutoScroll(container, distanceFromTop, distanceFromBottom);
+    } else {
+      this.stopVerticalAutoScroll();
+    }
+  }
+
+  /**
+   * Handles vertical scroll for parent containers.
+   */
+  private handleParentVerticalScroll(container: HTMLElement, cursorY: number): void {
+    const parentContainer = this.findVerticalScrollableParent(container);
+    if (parentContainer) {
+      const parentRect = parentContainer.getBoundingClientRect();
+      const parentDistanceFromTop = cursorY - parentRect.top;
+      const parentDistanceFromBottom = parentRect.bottom - cursorY;
+      
+      if (parentDistanceFromTop < this.autoScrollZone || parentDistanceFromBottom < this.autoScrollZone) {
+        this.startVerticalAutoScroll(parentContainer, parentDistanceFromTop, parentDistanceFromBottom);
       } else {
         this.stopVerticalAutoScroll();
       }
     } else {
-      const parentContainer = this.findVerticalScrollableParent(container);
-      if (parentContainer) {
-        const parentRect = parentContainer.getBoundingClientRect();
-        const parentDistanceFromTop = cursorY - parentRect.top;
-        const parentDistanceFromBottom = parentRect.bottom - cursorY;
-        
-        if (parentDistanceFromTop < this.autoScrollZone || parentDistanceFromBottom < this.autoScrollZone) {
-          this.startVerticalAutoScroll(parentContainer, parentDistanceFromTop, parentDistanceFromBottom);
-        } else {
-          this.stopVerticalAutoScroll();
-        }
-      } else {
-        this.stopVerticalAutoScroll();
-      }
+      this.stopVerticalAutoScroll();
     }
   }
   
@@ -102,16 +116,36 @@ export class BoardAutoScrollService {
     const clientY = 'clientY' in event ? event.clientY : event.touches[0].clientY;
     const container = this.findScrollableContainer();
     if (!container) return;
+    
+    const scrollData = this.calculateEmergencyScrollData(container, clientY);
+    this.performEmergencyScroll(container, scrollData);
+  }
+
+  /**
+   * Calculates scroll zones and relative position for emergency scroll.
+   */
+  private calculateEmergencyScrollData(container: HTMLElement, clientY: number) {
     const containerRect = container.getBoundingClientRect();
     const relativeY = clientY - containerRect.top;
     const containerHeight = containerRect.height;
-    const scrollUpZone = containerHeight * 0.15;
-    const scrollDownZone = containerHeight * 0.85;
+    
+    return {
+      relativeY,
+      scrollUpZone: containerHeight * 0.15,
+      scrollDownZone: containerHeight * 0.85
+    };
+  }
+
+  /**
+   * Performs the emergency scroll action based on calculated data.
+   */
+  private performEmergencyScroll(container: HTMLElement, scrollData: any): void {
+    const { relativeY, scrollUpZone, scrollDownZone } = scrollData;
+    
     if (relativeY < scrollUpZone && container.scrollTop > 0) {
       const scrollSpeed = this.getAdaptiveScrollSpeed(scrollUpZone - relativeY);
       container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
     } else if (relativeY > scrollDownZone) {
-
       const maxScroll = container.scrollHeight - container.clientHeight;
       if (container.scrollTop < maxScroll) {
         const scrollSpeed = this.getAdaptiveScrollSpeed(relativeY - scrollDownZone);
@@ -131,20 +165,26 @@ export class BoardAutoScrollService {
     if (this.isAutoScrolling) return;
     this.isAutoScrolling = true;
     this.autoScrollInterval = setInterval(() => {
-      if (distanceFromTop < this.autoScrollZone && container.scrollTop > 0) {
-        const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromTop);
-        container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
-      } else if (distanceFromBottom < this.autoScrollZone) {
-
-        const maxScroll = container.scrollHeight - container.clientHeight;
-        if (container.scrollTop < maxScroll) {
-          const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromBottom);
-          container.scrollTop = Math.min(maxScroll, container.scrollTop + scrollSpeed);
-        }
-      } else {
-        this.stopVerticalAutoScroll();
-      }
+      this.executeVerticalScroll(container, distanceFromTop, distanceFromBottom);
     }, 16);
+  }
+
+  /**
+   * Executes the vertical scroll action within the interval.
+   */
+  private executeVerticalScroll(container: HTMLElement, distanceFromTop: number, distanceFromBottom: number): void {
+    if (distanceFromTop < this.autoScrollZone && container.scrollTop > 0) {
+      const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromTop);
+      container.scrollTop = Math.max(0, container.scrollTop - scrollSpeed);
+    } else if (distanceFromBottom < this.autoScrollZone) {
+      const maxScroll = container.scrollHeight - container.clientHeight;
+      if (container.scrollTop < maxScroll) {
+        const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromBottom);
+        container.scrollTop = Math.min(maxScroll, container.scrollTop + scrollSpeed);
+      }
+    } else {
+      this.stopVerticalAutoScroll();
+    }
   }
   
   /**
@@ -158,20 +198,26 @@ export class BoardAutoScrollService {
     if (this.isHorizontalScrolling) return;
     this.isHorizontalScrolling = true;
     this.horizontalScrollInterval = setInterval(() => {
-      if (distanceFromLeft < this.autoScrollZone && container.scrollLeft > 0) {
-        const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromLeft);
-        container.scrollLeft = Math.max(0, container.scrollLeft - scrollSpeed);
-      } else if (distanceFromRight < this.autoScrollZone) {
-
-        const maxScroll = container.scrollWidth - container.clientWidth;
-        if (container.scrollLeft < maxScroll) {
-          const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromRight);
-          container.scrollLeft = Math.min(maxScroll, container.scrollLeft + scrollSpeed);
-        }
-      } else {
-        this.stopHorizontalAutoScroll();
-      }
+      this.executeHorizontalScroll(container, distanceFromLeft, distanceFromRight);
     }, 16);
+  }
+
+  /**
+   * Executes the horizontal scroll action within the interval.
+   */
+  private executeHorizontalScroll(container: HTMLElement, distanceFromLeft: number, distanceFromRight: number): void {
+    if (distanceFromLeft < this.autoScrollZone && container.scrollLeft > 0) {
+      const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromLeft);
+      container.scrollLeft = Math.max(0, container.scrollLeft - scrollSpeed);
+    } else if (distanceFromRight < this.autoScrollZone) {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      if (container.scrollLeft < maxScroll) {
+        const scrollSpeed = this.getAdaptiveScrollSpeed(this.autoScrollZone - distanceFromRight);
+        container.scrollLeft = Math.min(maxScroll, container.scrollLeft + scrollSpeed);
+      }
+    } else {
+      this.stopHorizontalAutoScroll();
+    }
   }
 
   /**
@@ -223,39 +269,47 @@ export class BoardAutoScrollService {
    * @returns Scrollable container or null
    */
   private findScrollableContainer(): HTMLElement | null {
-    let container = document.querySelector('.main') as HTMLElement;
+    const containerSelectors = [
+      '.main', '.main-content', '.board-container', 
+      '.content', '.page'
+    ];
+    
+    for (const selector of containerSelectors) {
+      const container = this.findContainerBySelector(selector);
+      if (container) return container;
+    }
+    
+    return this.findFallbackContainer();
+  }
+
+  /**
+   * Finds container by CSS selector with scroll validation.
+   */
+  private findContainerBySelector(selector: string): HTMLElement | null {
+    const container = document.querySelector(selector) as HTMLElement;
     if (container && this.canScrollVertically(container)) {
       return container;
     }
     
-    container = document.querySelector('.main-content') as HTMLElement;
-    if (container && this.canScrollVertically(container)) {
+    // Special case for board-scroll-wrapper (always return if exists)
+    if (selector === '.board-scroll-wrapper' && container) {
       return container;
     }
     
-    container = document.querySelector('.board-container') as HTMLElement;
-    if (container && this.canScrollVertically(container)) {
-      return container;
-    }
+    return null;
+  }
+
+  /**
+   * Finds fallback container when no specific container is found.
+   */
+  private findFallbackContainer(): HTMLElement | null {
+    // Check board-scroll-wrapper separately
+    const wrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
+    if (wrapper) return wrapper;
     
-    container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
-    if (container) {
-      return container;
-    }
-    
-    container = document.querySelector('.content') as HTMLElement;
-    if (container && this.canScrollVertically(container)) {
-      return container;
-    }
-    
-    container = document.querySelector('.page') as HTMLElement;
-    if (container && this.canScrollVertically(container)) {
-      return container;
-    }
-    
-    container = document.body;
-    if (this.canScrollVertically(container)) {
-      return container;
+    // Check body and documentElement
+    if (this.canScrollVertically(document.body)) {
+      return document.body;
     }
     
     return document.documentElement;
@@ -294,6 +348,16 @@ export class BoardAutoScrollService {
    * @returns Vertically scrollable parent or null
    */
   private findVerticalScrollableParent(element: HTMLElement): HTMLElement | null {
+    const scrollableParent = this.traverseParentsForScroll(element);
+    if (scrollableParent) return scrollableParent;
+    
+    return this.getDocumentScrollFallback();
+  }
+
+  /**
+   * Traverses parent elements to find one that can scroll vertically.
+   */
+  private traverseParentsForScroll(element: HTMLElement): HTMLElement | null {
     let parent = element.parentElement;
     while (parent) {
       if (this.canScrollVertically(parent)) {
@@ -301,7 +365,13 @@ export class BoardAutoScrollService {
       }
       parent = parent.parentElement;
     }
-    
+    return null;
+  }
+
+  /**
+   * Gets document-level scroll fallback options.
+   */
+  private getDocumentScrollFallback(): HTMLElement | null {
     if (this.canScrollVertically(document.body)) {
       return document.body;
     }
