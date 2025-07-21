@@ -1,43 +1,5 @@
 
 
-File: board\task-edit-overlay\task-edit-overlay.component.ts
-------------------------------
-Method: setupDropdownClickListener
-Lines: 20
-Line Number: 80
-Content Preview:
-
-  private setupDropdownClickListener(): void {
-    this.removeDropdownClickListener();
-    this.dropdownClickListener = (event: Event) => {
-      const target = event.target as HTMLElement;
-      con......
-
-==================================================
-
-Method: dropdownClickListener
-Lines: 16
-Line Number: 83
-Content Preview:
-dropdownClickListener = (event: Event) => {
-      const target = event.target as HTMLElement;
-      const dropdownContainer = target.closest('.contacts-dropdown');
-      const dropdownTrigger = target......
-
-==================================================
-
-Method: setupDropdownClickListener
-Lines: 20
-Line Number: 81
-Content Preview:
-setupDropdownClickListener(): void {
-    this.removeDropdownClickListener();
-    this.dropdownClickListener = (event: Event) => {
-      const target = event.target as HTMLElement;
-      const dropdown......
-
-==================================================
-
 File: contacts\contacts-old.component.ts
 ------------------------------
 Method: performAddContact
