@@ -189,7 +189,9 @@ export class BoardTaskManagementService {
    * @param updateCallback - Callback to update task arrays
    */
   async submitTaskForm(updateCallback: () => void): Promise<void> {
+    console.log('📋 TaskManagement submitTaskForm called');
     await this.formService.onSubmit(updateCallback);
+    console.log('✅ TaskManagement submitTaskForm completed');
   }
 
   /**

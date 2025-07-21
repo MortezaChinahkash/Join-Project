@@ -55,7 +55,7 @@ export class BoardFormService {
     
     return this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(10)]],
+      description: [''],
       dueDate: [todayFormatted, Validators.required],
       priority: ['medium', Validators.required],
       category: ['', Validators.required],
@@ -140,21 +140,31 @@ export class BoardFormService {
    * @returns Promise<boolean> - Success status
    */
   async saveTask(): Promise<boolean> {
+    console.log('🔄 saveTask called');
     if (!this.validateForm()) {
+      console.log('❌ Form validation failed');
       return false;
     }
     
+    console.log('✅ Form validation passed');
+    
     try {
       const task = this.buildTaskFromForm();
+      console.log('📝 Task built from form:', task);
       
       if (this.dataService.getIsEditMode()) {
+        console.log('🔧 Updating existing task');
         await this.updateTask(task);
       } else {
+        console.log('➕ Creating new task');
         await this.createTask(task);
       }
       
+      console.log('💾 Saving changes to data service');
       this.dataService.saveChanges();
+      console.log('🚪 Closing form');
       this.closeForm();
+      console.log('✅ Task saved successfully');
       return true;
     } catch (error) {
 
@@ -569,11 +579,12 @@ export class BoardFormService {
 
   /**
    * Gets categorydisplaytext value.
-   * @param form - Form parameter
+   * @param categoryValue - Category value or form parameter
    * @returns String result
    */
-  getCategoryDisplayText(form: any): string {
-    const category = form?.get('category')?.value;
+  getCategoryDisplayText(categoryValue: any): string {
+    // Handle both form object and direct value
+    const category = (typeof categoryValue === 'string') ? categoryValue : categoryValue?.get?.('category')?.value;
     return category === 'technical' ? 'Technical Task' : 
            category === 'user-story' ? 'User Story' : 'Select Category';
   }
@@ -642,10 +653,14 @@ export class BoardFormService {
    * @returns Promise that resolves when operation completes
    */
   async onSubmit(updateCallback?: () => void): Promise<void> {
+    console.log('📝 FormService onSubmit called');
     const success = await this.saveTask();
+    console.log('💾 SaveTask result:', success);
     if (success && updateCallback) {
+      console.log('🔄 Calling updateCallback');
       updateCallback();
     }
+    console.log('✅ FormService onSubmit completed');
   }
 
   /**

@@ -214,9 +214,12 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Submits the task form and updates local arrays.
    */
   async onSubmit(): Promise<void> {
+    console.log('🎯 Board onSubmit called');
     await this.taskManagementService.submitTaskForm(() => {
+      console.log('🔄 Reinitializing local arrays');
       this.initializeLocalArrays();
     });
+    console.log('✅ Board onSubmit completed');
   }
 
   /**

@@ -103,12 +103,21 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Handles form submission
    */
   onFormSubmit(): void {
+    console.log('🚀 AddTaskOverlay onFormSubmit called');
+    console.log('📋 Form valid:', this.formService.taskForm.valid);
+    console.log('📅 Date invalid:', this.formService.isDateInvalid('dueDate'));
+    console.log('📝 Form value:', this.formService.taskForm.value);
+    
     Object.keys(this.formService.taskForm.controls).forEach(key => {
       this.formService.taskForm.get(key)?.markAsTouched();
     });
     
     if (this.formService.taskForm.valid && !this.formService.isDateInvalid('dueDate')) {
+      console.log('✅ Form is valid, emitting onSubmit event');
       this.onSubmit.emit();
+    } else {
+      console.log('❌ Form is invalid or date is invalid');
+      console.log('Form errors:', this.formService.getValidationErrors());
     }
   }
 
