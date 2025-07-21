@@ -402,29 +402,38 @@ export class BoardAutoScrollService {
    * @returns Horizontal scrollable container or null
    */
   private findHorizontalScrollableContainer(): HTMLElement | null {
-    let container = document.querySelector('.board-scroll-wrapper') as HTMLElement;
-    if (container && this.canScrollHorizontally(container)) {
-      return container;
+    // Try specific board containers first
+    const boardContainer = this.findHorizontalBoardContainer();
+    if (boardContainer) return boardContainer;
+    
+    // Fallback to document-level containers
+    return this.findHorizontalDocumentContainer();
+  }
+
+  /**
+   * Finds horizontal scrollable container among board-specific elements.
+   * 
+   * @returns Board container or null
+   */
+  private findHorizontalBoardContainer(): HTMLElement | null {
+    const selectors = ['.board-scroll-wrapper', '.board-container', '.main', '.content'];
+    
+    for (const selector of selectors) {
+      const container = this.findHorizontalContainerBySelector(selector);
+      if (container) return container;
     }
     
-    container = document.querySelector('.board-container') as HTMLElement;
-    if (container && this.canScrollHorizontally(container)) {
-      return container;
-    }
-    
-    container = document.querySelector('.main') as HTMLElement;
-    if (container && this.canScrollHorizontally(container)) {
-      return container;
-    }
-    
-    container = document.querySelector('.content') as HTMLElement;
-    if (container && this.canScrollHorizontally(container)) {
-      return container;
-    }
-    
-    container = document.body;
-    if (this.canScrollHorizontally(container)) {
-      return container;
+    return null;
+  }
+
+  /**
+   * Finds horizontal scrollable container at document level.
+   * 
+   * @returns Document container or null
+   */
+  private findHorizontalDocumentContainer(): HTMLElement | null {
+    if (this.canScrollHorizontally(document.body)) {
+      return document.body;
     }
     
     if (this.canScrollHorizontally(document.documentElement)) {
@@ -432,6 +441,17 @@ export class BoardAutoScrollService {
     }
     
     return null;
+  }
+
+  /**
+   * Finds horizontal container by CSS selector with scroll validation.
+   * 
+   * @param selector - CSS selector to search for
+   * @returns Container element or null
+   */
+  private findHorizontalContainerBySelector(selector: string): HTMLElement | null {
+    const container = document.querySelector(selector) as HTMLElement;
+    return (container && this.canScrollHorizontally(container)) ? container : null;
   }
 
   /**
