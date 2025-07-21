@@ -1,21 +1,5 @@
 
 
-File: contacts\services\contacts-form.service.ts
-------------------------------
-Method: getFieldError
-Lines: 21
-Line Number: 137
-Content Preview:
-
-  getFieldError(fieldName: string): string {
-    const field = this.contactForm.get(fieldName);
-    if (!field || !field.errors || !field.touched) {
-      return '';
-    }
-    const errors = field.er......
-
-==================================================
-
 File: directives\flatpickr.directive.ts
 ------------------------------
 Method: initializeFlatpickr

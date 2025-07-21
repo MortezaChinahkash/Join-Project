@@ -48,24 +48,74 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
    * Initializes the flatpickr instance with default and custom options.
    */
   private initializeFlatpickr(): void {
-    const defaultOptions = {
+    const defaultOptions = this.createDefaultOptions();
+    const mergedOptions = this.mergeOptionsWithDefaults(defaultOptions);
+    this.createFlatpickrInstance(mergedOptions);
+  }
+
+  /**
+   * Creates default options for flatpickr configuration.
+   * 
+   * @returns Default options object
+   * @private
+   */
+  private createDefaultOptions(): any {
+    return {
       dateFormat: 'm/d/Y',
       allowInput: true,
       minDate: 'today',
       locale: {
         firstDayOfWeek: 0
       },
-      onChange: (selectedDates: Date[]) => {
-        const date = selectedDates.length > 0 ? selectedDates[0] : null;
-        this.onChange(date ? this.formatDate(date) : '');
-        this.dateChange.emit(date);
-      },
-
-      onClose: () => {
-        this.onTouched();
-      }
+      onChange: this.createOnChangeHandler(),
+      onClose: this.createOnCloseHandler()
     };
-    const mergedOptions = { ...defaultOptions, ...this.options };
+  }
+
+  /**
+   * Creates the onChange event handler for flatpickr.
+   * 
+   * @returns onChange handler function
+   * @private
+   */
+  private createOnChangeHandler(): (selectedDates: Date[]) => void {
+    return (selectedDates: Date[]) => {
+      const date = selectedDates.length > 0 ? selectedDates[0] : null;
+      this.onChange(date ? this.formatDate(date) : '');
+      this.dateChange.emit(date);
+    };
+  }
+
+  /**
+   * Creates the onClose event handler for flatpickr.
+   * 
+   * @returns onClose handler function
+   * @private
+   */
+  private createOnCloseHandler(): () => void {
+    return () => {
+      this.onTouched();
+    };
+  }
+
+  /**
+   * Merges custom options with default options.
+   * 
+   * @param defaultOptions - Default flatpickr options
+   * @returns Merged options object
+   * @private
+   */
+  private mergeOptionsWithDefaults(defaultOptions: any): any {
+    return { ...defaultOptions, ...this.options };
+  }
+
+  /**
+   * Creates the flatpickr instance with merged options.
+   * 
+   * @param mergedOptions - Final options for flatpickr
+   * @private
+   */
+  private createFlatpickrInstance(mergedOptions: any): void {
     this.flatpickrInstance = flatpickr(this.elementRef.nativeElement, mergedOptions);
   }
 
