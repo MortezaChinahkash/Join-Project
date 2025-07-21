@@ -137,23 +137,79 @@ export class ContactsFormService {
    */
   getFieldError(fieldName: string): string {
     const field = this.contactForm.get(fieldName);
-    if (!field || !field.errors || !field.touched) {
+    if (!this.shouldShowFieldError(field)) {
       return '';
     }
-    const errors = field.errors;
+    return this.getErrorMessageByField(fieldName, field!.errors!);
+  }
+
+  /**
+   * Determines if field error should be shown.
+   * 
+   * @param field - Form control to check
+   * @returns True if error should be displayed
+   * @private
+   */
+  private shouldShowFieldError(field: AbstractControl | null): boolean {
+    return !!(field && field.errors && field.touched);
+  }
+
+  /**
+   * Gets appropriate error message based on field name and errors.
+   * 
+   * @param fieldName - Name of the field
+   * @param errors - Field errors object
+   * @returns Error message string
+   * @private
+   */
+  private getErrorMessageByField(fieldName: string, errors: any): string {
     switch (fieldName) {
       case 'name':
-        if (errors['required']) return 'Name is required';
-        if (errors['minlength']) return 'Name must be at least 2 characters';
-        break;
+        return this.getNameFieldError(errors);
       case 'email':
-        if (errors['required']) return 'Email is required';
-        if (errors['email']) return 'Please enter a valid email address';
-        break;
+        return this.getEmailFieldError(errors);
       case 'phone':
-        if (errors['invalidPhone']) return 'Please enter a valid phone number';
-        break;
+        return this.getPhoneFieldError(errors);
+      default:
+        return '';
     }
+  }
+
+  /**
+   * Gets error message for name field.
+   * 
+   * @param errors - Field errors object
+   * @returns Name field error message
+   * @private
+   */
+  private getNameFieldError(errors: any): string {
+    if (errors['required']) return 'Name is required';
+    if (errors['minlength']) return 'Name must be at least 2 characters';
+    return '';
+  }
+
+  /**
+   * Gets error message for email field.
+   * 
+   * @param errors - Field errors object
+   * @returns Email field error message
+   * @private
+   */
+  private getEmailFieldError(errors: any): string {
+    if (errors['required']) return 'Email is required';
+    if (errors['email']) return 'Please enter a valid email address';
+    return '';
+  }
+
+  /**
+   * Gets error message for phone field.
+   * 
+   * @param errors - Field errors object
+   * @returns Phone field error message
+   * @private
+   */
+  private getPhoneFieldError(errors: any): string {
+    if (errors['invalidPhone']) return 'Please enter a valid phone number';
     return '';
   }
 
