@@ -93,14 +93,35 @@ export class BoardFormService {
    * @param task - Task data to populate
    */
   private populateFormWithTask(task: Task): void {
-    let formattedDate = task.dueDate;
-    if (task.dueDate) {
-      const date = new Date(task.dueDate);
-      if (!isNaN(date.getTime())) {
-        formattedDate = this.formatDateToAmerican(date);
-      }
-    }
+    const formattedDate = this.processTaskDate(task.dueDate);
+    this.patchFormWithTaskData(task, formattedDate);
+    this.populateSubtasks(task.subtasks || []);
+  }
 
+  /**
+   * Processes and formats the task due date.
+   * 
+   * @param dueDate - Original due date string
+   * @returns Formatted date string
+   * @private
+   */
+  private processTaskDate(dueDate: string): string {
+    if (!dueDate) return dueDate;
+    
+    const date = new Date(dueDate);
+    if (isNaN(date.getTime())) return dueDate;
+    
+    return this.formatDateToAmerican(date);
+  }
+
+  /**
+   * Patches the form with task data and formatted date.
+   * 
+   * @param task - Task data
+   * @param formattedDate - Formatted due date
+   * @private
+   */
+  private patchFormWithTaskData(task: Task, formattedDate: string): void {
     this.taskForm.patchValue({
       title: task.title,
       description: task.description,
@@ -108,8 +129,6 @@ export class BoardFormService {
       priority: task.priority,
       category: task.category
     });
-    
-    this.populateSubtasks(task.subtasks || []);
   }
 
   /**
@@ -140,35 +159,20 @@ export class BoardFormService {
    * @returns Promise<boolean> - Success status
    */
   async saveTask(): Promise<boolean> {
-    console.log('🔄 saveTask called');
     if (!this.validateForm()) {
-      console.log('❌ Form validation failed');
       return false;
     }
-    
-    console.log('✅ Form validation passed');
-    
     try {
       const task = this.buildTaskFromForm();
-      console.log('📝 Task built from form:', task);
-      
       if (this.dataService.getIsEditMode()) {
-        console.log('🔧 Updating existing task');
         await this.updateTask(task);
       } else {
-        console.log('➕ Creating new task');
         await this.createTask(task);
       }
-      
-      console.log('💾 Saving changes to data service');
       this.dataService.saveChanges();
-      console.log('🚪 Closing form');
       this.closeForm();
-      console.log('✅ Task saved successfully');
       return true;
     } catch (error) {
-
-      console.error('❌ Error saving task:', error);
       return false;
     }
   }
@@ -180,30 +184,71 @@ export class BoardFormService {
    */
   private buildTaskFromForm(): Task {
     const formValue = this.taskForm.value;
+    const currentTask = this.getOrCreateCurrentTask();
+    const selectedContactNames = this.extractSelectedContactNames();
+    
+    return this.mergeTaskWithFormData(currentTask, formValue, selectedContactNames);
+  }
+
+  /**
+   * Gets existing task or creates a new one if none exists.
+   * 
+   * @returns Current or newly created task
+   * @private
+   */
+  private getOrCreateCurrentTask(): Task {
     let currentTask = this.dataService.getCurrentTask();
     
     if (!currentTask) {
-      // Use the current column from overlay service or default to 'todo'
-      const targetColumn = this.overlayService.getCurrentColumn();
-      
-      currentTask = {
-        id: this.generateTaskId(),
-        title: '',
-        description: '',
-        assignedTo: [],
-        dueDate: '',
-        priority: 'medium',
-        column: targetColumn,
-        subtasks: [],
-        category: '',
-        createdAt: new Date()
-      };
+      currentTask = this.createNewTaskTemplate();
     }
     
-    const subtasks = formValue.subtasks || [];
+    return currentTask;
+  }
+
+  /**
+   * Creates a new task template with default values.
+   * 
+   * @returns New task template
+   * @private
+   */
+  private createNewTaskTemplate(): Task {
+    const targetColumn = this.overlayService.getCurrentColumn();
     
-    const selectedContactNames = this.contactSelectionService.selectedContacts.map(contact => contact.name);
-    
+    return {
+      id: this.generateTaskId(),
+      title: '',
+      description: '',
+      assignedTo: [],
+      dueDate: '',
+      priority: 'medium',
+      column: targetColumn,
+      subtasks: [],
+      category: '',
+      createdAt: new Date()
+    };
+  }
+
+  /**
+   * Extracts selected contact names from contact selection service.
+   * 
+   * @returns Array of selected contact names
+   * @private
+   */
+  private extractSelectedContactNames(): string[] {
+    return this.contactSelectionService.selectedContacts.map(contact => contact.name);
+  }
+
+  /**
+   * Merges current task with form data and contact names.
+   * 
+   * @param currentTask - Current task object
+   * @param formValue - Form values
+   * @param contactNames - Selected contact names
+   * @returns Merged task object
+   * @private
+   */
+  private mergeTaskWithFormData(currentTask: Task, formValue: any, contactNames: string[]): Task {
     return {
       ...currentTask,
       title: formValue.title,
@@ -211,8 +256,8 @@ export class BoardFormService {
       dueDate: formValue.dueDate,
       priority: formValue.priority,
       category: formValue.category,
-      assignedTo: selectedContactNames,
-      subtasks: subtasks
+      assignedTo: contactNames,
+      subtasks: formValue.subtasks || []
     };
   }
 
