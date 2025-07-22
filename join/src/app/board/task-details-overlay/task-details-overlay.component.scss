@@ -117,7 +117,6 @@
   }
 }
 
-// Priority icon colors in task details overlay - parent container needs data-priority attribute
 .task-priority[data-priority="urgent"] .priority-icon {
   filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
 }
@@ -343,19 +342,16 @@
   margin-bottom: 24px;
 }
 
-// Fixed Header Container (1st & 2nd Container)
 .task-details-header-fixed {
   flex-shrink: 0;
   padding: 32px 40px 16px 40px;
 }
 
-// Scrollable Content Container (3rd Container)
 .task-details-scrollable-content {
   flex: 1;
   overflow-y: auto;
   padding: 0 40px 16px 40px;
   
-  /* Custom scrollbar styling */
   scrollbar-width: thin;
   scrollbar-color: #d1d1d1 transparent;
   
@@ -377,13 +373,11 @@
   }
 }
 
-// Fixed Footer Container (4th Container)
 .task-details-actions-fixed {
   flex-shrink: 0;
   padding: 16px 40px 32px 40px;
 }
 
-// Actions buttons
 .task-details-actions-fixed {
   display: flex;
   justify-content: flex-end;
@@ -429,14 +423,12 @@
   }
 }
 
-// No content placeholder styling
 .no-content-placeholder {
   color: #999;
   font-style: italic;
   font-size: 16px;
 }
 
-// Responsive design
 @media (max-width: 768px) {
   .taskDetailsOverlay-content {
     width: 95%;

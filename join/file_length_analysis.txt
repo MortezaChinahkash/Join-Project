@@ -1,5 +1,5 @@
 FILE LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 01:27
+Generated: 22.07.2025 10:32
 ================================================================================
 Analyzing 171 files for length > 400 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
@@ -46,8 +46,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.compon
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-auto-scroll.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 463
-  Non-empty: 409 | Comments: 145 | Code: 264
+  Type: TypeScript | Total lines: 460
+  Non-empty: 404 | Comments: 140 | Code: 264
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
 --------------------------------------------------------------------------------
@@ -61,18 +61,13 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\boa
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-data.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 478
-  Non-empty: 438 | Comments: 207 | Code: 231
+  Type: TypeScript | Total lines: 491
+  Non-empty: 452 | Comments: 207 | Code: 245
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 --------------------------------------------------------------------------------
   Type: TypeScript | Total lines: 883
-  Non-empty: 783 | Comments: 342 | Code: 441
-
-File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-data.service.ts
---------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 403
-  Non-empty: 370 | Comments: 164 | Code: 206
+  Non-empty: 782 | Comments: 341 | Code: 441
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-v2.service.ts
 --------------------------------------------------------------------------------
@@ -96,8 +91,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 451
-  Non-empty: 408 | Comments: 139 | Code: 269
+  Type: TypeScript | Total lines: 450
+  Non-empty: 406 | Comments: 137 | Code: 269
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth.service.ts
 --------------------------------------------------------------------------------
@@ -148,7 +143,7 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.co
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
 
-10. board-form-data.service.ts (478 lines)
+10. board-form-data.service.ts (491 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-data.service.ts
 
@@ -158,12 +153,12 @@ CSS: 0 files > 400 lines
 SCSS: 4 files > 400 lines (avg: 443.0, max: 472)
 SASS: 0 files > 400 lines
 JavaScript: 0 files > 400 lines
-TypeScript: 14 files > 400 lines (avg: 523.3, max: 883)
+TypeScript: 13 files > 400 lines (avg: 533.2, max: 883)
 
 === OVERALL SUMMARY ===
 Files analyzed: 171
-Files over 400 lines: 20
-Average length of large files: 507.4 lines
+Files over 400 lines: 19
+Average length of large files: 513.4 lines
 Largest file: board-form.service.ts (883 lines)
 
 === RECOMMENDATIONS ===
