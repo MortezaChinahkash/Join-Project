@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Task, Subtask } from '../../interfaces/task.interface';
 import { Contact } from '../../contacts/services/contact-data.service';
+import { BoardFormUtilityService } from './board-form-utility.service';
 /**
  * Service for managing board form data operations.
  * Handles task creation, updates, data persistence, and state management.
@@ -16,6 +17,8 @@ export class BoardFormDataService {
   private autoSaveEnabled = false;
   private autoSaveTimeout: any = null;
   private autoSaveDelay = 1000;
+
+  constructor(private utilityService: BoardFormUtilityService) {}
   /**
    * Creates a new task object with default values.
    *
@@ -25,33 +28,9 @@ export class BoardFormDataService {
   createNewTask(
     status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'
   ): Task {
-    const newTask = this.buildTaskWithDefaults(status);
+    const newTask = this.utilityService.buildTaskWithDefaults(status);
     this.initializeTaskState(newTask);
     return newTask;
-  }
-
-  /**
-   * Builds a new task object with default values.
-   *
-   * @param status - Initial task status
-   * @returns New task object with defaults
-   * @private
-   */
-  private buildTaskWithDefaults(
-    status: 'todo' | 'inprogress' | 'awaiting' | 'done'
-  ): Task {
-    return {
-      id: this.generateTaskId(),
-      title: '',
-      description: '',
-      assignedTo: [],
-      dueDate: '',
-      priority: 'medium',
-      column: status,
-      subtasks: [],
-      category: '',
-      createdAt: new Date(),
-    };
   }
 
   /**
@@ -72,8 +51,8 @@ export class BoardFormDataService {
    * @param task - Task to edit
    */
   initializeForEdit(task: Task): void {
-    this.currentTask = this.deepCloneTask(task);
-    this.originalTask = this.deepCloneTask(task);
+    this.currentTask = this.utilityService.deepCloneTask(task);
+    this.originalTask = this.utilityService.deepCloneTask(task);
     this.isEditMode = true;
   }
 
@@ -198,7 +177,7 @@ export class BoardFormDataService {
       throw new Error('No current task to add subtask to');
     }
     const subtask: Subtask = {
-      id: this.generateSubtaskId(),
+      id: this.utilityService.generateSubtaskId(),
       title: title,
       completed: false,
     };
@@ -265,9 +244,7 @@ export class BoardFormDataService {
    */
   hasChanges(): boolean {
     if (!this.currentTask || !this.originalTask) return false;
-    return (
-      JSON.stringify(this.currentTask) !== JSON.stringify(this.originalTask)
-    );
+    return !this.utilityService.areTasksEqual(this.currentTask, this.originalTask);
   }
 
   /**
@@ -275,7 +252,7 @@ export class BoardFormDataService {
    */
   revertChanges(): void {
     if (this.originalTask) {
-      this.currentTask = this.deepCloneTask(this.originalTask);
+      this.currentTask = this.utilityService.deepCloneTask(this.originalTask);
     }
   }
 
@@ -284,7 +261,7 @@ export class BoardFormDataService {
    */
   saveChanges(): void {
     if (this.currentTask) {
-      this.originalTask = this.deepCloneTask(this.currentTask);
+      this.originalTask = this.utilityService.deepCloneTask(this.currentTask);
     }
   }
 
@@ -294,104 +271,7 @@ export class BoardFormDataService {
    * @returns Validation result with errors
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
-    if (!this.validateTaskExists(errors)) {
-      return { isValid: false, errors };
-    }
-    this.validateRequiredFields(errors);
-    this.validateDueDate(errors);
-    return { isValid: errors.length === 0, errors };
-  }
-
-  /**
-   * Validates that a current task exists.
-   *
-   * @param errors - Array to collect validation errors
-   * @returns True if task exists, false otherwise
-   * @private
-   */
-  private validateTaskExists(errors: string[]): boolean {
-    if (!this.currentTask) {
-      errors.push('No task data available');
-      return false;
-    }
-    return true;
-  }
-
-  /**
-   * Validates required task fields.
-   *
-   * @param errors - Array to collect validation errors
-   * @private
-   */
-  private validateRequiredFields(errors: string[]): void {
-    this.validateTitle(errors);
-    this.validateDescription(errors);
-    this.validateCategory(errors);
-  }
-
-  /**
-   * Validates task title field.
-   *
-   * @param errors - Array to collect validation errors
-   * @private
-   */
-  private validateTitle(errors: string[]): void {
-    if (!this.currentTask!.title?.trim()) {
-      errors.push('Title is required');
-    }
-  }
-
-  /**
-   * Validates task description field.
-   *
-   * @param errors - Array to collect validation errors
-   * @private
-   */
-  private validateDescription(errors: string[]): void {
-    if (!this.currentTask!.description?.trim()) {
-      errors.push('Description is required');
-    }
-  }
-
-  /**
-   * Validates task category field.
-   *
-   * @param errors - Array to collect validation errors
-   * @private
-   */
-  private validateCategory(errors: string[]): void {
-    if (!this.currentTask!.category?.trim()) {
-      errors.push('Category is required');
-    }
-  }
-
-  /**
-   * Validates task due date field.
-   *
-   * @param errors - Array to collect validation errors
-   * @private
-   */
-  private validateDueDate(errors: string[]): void {
-    if (this.currentTask!.dueDate) {
-      const dueDate = new Date(this.currentTask!.dueDate);
-      const today = this.getTodayDate();
-      if (dueDate < today) {
-        errors.push('Due date cannot be in the past');
-      }
-    }
-  }
-
-  /**
-   * Gets today's date with time set to midnight.
-   *
-   * @returns Today's date at 00:00:00
-   * @private
-   */
-  private getTodayDate(): Date {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today;
+    return this.utilityService.validateTaskData(this.currentTask);
   }
 
   /**
@@ -439,36 +319,6 @@ export class BoardFormDataService {
     if (this.currentTask && this.hasChanges()) {
       this.saveChanges();
     }
-  }
-
-  /**
-   * Generates a unique task ID.
-   *
-   * @returns Unique task ID
-   */
-  private generateTaskId(): string {
-    return 'task_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-  }
-
-  /**
-   * Generates a unique subtask ID.
-   *
-   * @returns Unique subtask ID
-   */
-  private generateSubtaskId(): string {
-    return (
-      'subtask_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-    );
-  }
-
-  /**
-   * Creates a deep clone of a task object.
-   *
-   * @param task - Task to clone
-   * @returns Cloned task
-   */
-  private deepCloneTask(task: Task): Task {
-    return JSON.parse(JSON.stringify(task));
   }
 
   /**
