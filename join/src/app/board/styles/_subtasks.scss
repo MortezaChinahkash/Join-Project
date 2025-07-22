@@ -1,0 +1,153 @@
+// Subtasks input wrapper
+.subtasks-input-wrapper {
+  position: relative; display: flex; align-items: center;
+  .subtask-input {
+    width: 100%; padding: 0.75rem 3rem 0.75rem 1rem;
+    border: 1px solid #d1d7db; border-radius: 10px; font-size: 1rem;
+    color: #2a3647; background-color: white;
+    &::placeholder {
+      color: #d1d7db;
+    }
+    &:focus {
+      outline: none; border-color: #29abe2;
+    }
+  }
+  .subtask-add-icon {
+    position: absolute; right: 0.75rem; width: 20px;
+    height: 20px; cursor: pointer;
+  }
+}
+
+// Subtasks container
+.subtasks-container {
+  display: flex; flex-direction: column-reverse; gap: 0.75rem;
+  
+  .subtask-item {
+    .subtask-input-group {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem; border-radius: 8px;
+      transition: background-color 0.2s ease; position: relative;
+      
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+        .subtask-hover-actions {
+          opacity: 1; visibility: visible;
+        }
+      }
+      
+      .form-input {
+        flex: 1; margin-right: auto; padding: 0.75rem 1rem;
+        transition: all 0.2s ease;
+        &.completed {
+          text-decoration: line-through; color: #999;
+          background-color: #f8f9fa; border-color: #e0e0e0;
+        }
+        &.grayed {
+          background: #f4f4f4 !important; color: #b0b0b0 !important;
+          border: 1px solid #e0e0e0 !important; cursor: not-allowed !important;
+        }
+      }
+      
+      .subtask-input-actions {
+        display: flex; gap: 8px; align-items: center;
+        .remove-subtask-btn,
+        .save-subtask-btn {
+          background: none; border: none; cursor: pointer;
+          padding: 4px; display: flex; align-items: center; justify-content: center;
+          transition: transform 0.2s ease;
+          &:hover {
+            transform: scale(1.1);
+          }
+          img {
+            width: 16px; height: 16px;
+          }
+        }
+        .subtask-divider {
+          width: 1px; height: 16px; background-color: #d1d7db;
+        }
+      }
+      
+      &.completed-subtask {
+        opacity: 0.7;
+        .form-input {
+          text-decoration: line-through; color: #999;
+          background-color: #f8f9fa; border-color: #e0e0e0;
+        }
+      }
+    }
+    
+    .subtask-hover-actions {
+      display: flex; gap: 16px; align-items: center;
+      opacity: 0; visibility: hidden; transition: all 0.2s ease;
+      position: relative;
+      
+      .edit-subtask-btn,
+      .remove-subtask-btn {
+        display: flex; align-items: center; justify-content: center;
+        width: 32px; height: 32px; border: none;
+        background: transparent; border-radius: 6px; cursor: pointer;
+        transition: transform 0.2s ease;
+        
+        img {
+          width: 18px; height: 18px; opacity: 0.6;
+          transition: opacity 0.15s ease;
+        }
+        &:hover {
+          transform: scale(1.1);
+          img {
+            opacity: 1;
+          }
+        }
+        &:active {
+          transform: scale(1.05);
+        }
+      }
+      
+      &::after {
+        content: ''; position: absolute; left: 50%; top: 50%;
+        transform: translate(-50%, -50%); width: 1px; height: 20px;
+        background-color: rgba(0, 0, 0, 0.2); z-index: 1;
+        pointer-events: none;
+      }
+    }
+  }
+  
+  .add-subtask-btn {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1rem; border: 1px solid #d1d7db; border-radius: 10px;
+    background-color: white; color: #2a3647; cursor: pointer;
+    font-size: 1rem; transition: all 0.2s ease; margin-top: 0.5rem;
+    &:hover {
+      background-color: #f8f9fa; border-color: #29abe2;
+    }
+    img {
+      width: 16px; height: 16px;
+      filter: brightness(0) saturate(100%) invert(25%) sepia(8%) saturate(1029%) hue-rotate(202deg) brightness(95%) contrast(85%);
+    }
+  }
+  
+  .add-subtask-input-wrapper {
+    position: relative; display: flex; align-items: center;
+    margin-top: 0.5rem;
+    .form-input {
+      flex: 1; padding: 0.75rem 3rem 0.75rem 1rem;
+      transition: all 0.2s ease;
+    }
+    .plus-btn {
+      position: absolute; right: 0.5rem; top: 50%;
+      transform: translateY(-50%); height: 28px; width: 28px;
+      border: none; background: none; display: flex;
+      align-items: center; justify-content: center; cursor: pointer;
+      padding: 0;
+      img {
+        width: 20px; height: 20px; opacity: 0.6;
+      }
+      &:disabled img {
+        opacity: 0.3;
+      }
+      &:focus {
+        border-color: #5ba4cf;
+      }
+    }
+  }
+}

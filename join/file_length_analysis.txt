@@ -1,12 +1,12 @@
 FILE LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 12:45
+Generated: 22.07.2025 13:05
 ================================================================================
-Analyzing 174 files for length > 400 lines...
+Analyzing 176 files for length > 400 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
 HTML files: 21
 SCSS files: 42
 JavaScript files: 1
-TypeScript files: 110
+TypeScript files: 112
 Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.html
@@ -66,8 +66,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\boa
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 628
-  Non-empty: 558 | Comments: 254 | Code: 304
+  Type: TypeScript | Total lines: 432
+  Non-empty: 387 | Comments: 165 | Code: 222
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-v2.service.ts
 --------------------------------------------------------------------------------
@@ -111,41 +111,41 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.co
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth.service.ts
 
- 2. board-form.service.ts (628 lines)
-    Type: TypeScript
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
-
- 3. privacy-policy.component.html (577 lines)
+ 2. privacy-policy.component.html (577 lines)
     Type: HTML
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\privacy-policy\privacy-policy.component.html
 
- 4. board-drag-drop.service.ts (571 lines)
+ 3. board-drag-drop.service.ts (571 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop.service.ts
 
- 5. contacts-crud.service.ts (561 lines)
+ 4. contacts-crud.service.ts (561 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-crud.service.ts
 
- 6. board.component.ts (551 lines)
+ 5. board.component.ts (551 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.ts
 
- 7. contacts.service.ts (537 lines)
+ 6. contacts.service.ts (537 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts.service.ts
 
- 8. summary.component.ts (529 lines)
+ 7. summary.component.ts (529 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.component.ts
 
- 9. board-drag-drop-refactored.service.ts (509 lines)
+ 8. board-drag-drop-refactored.service.ts (509 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
 
-10. board-form-data.service.ts (491 lines)
+ 9. board-form-data.service.ts (491 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-data.service.ts
+
+10. legal-notice.component.html (474 lines)
+    Type: HTML
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.html
 
 === SUMMARY BY FILE TYPE ===
 HTML: 2 files > 400 lines (avg: 525.5, max: 577)
@@ -153,12 +153,12 @@ CSS: 0 files > 400 lines
 SCSS: 4 files > 400 lines (avg: 441.0, max: 464)
 SASS: 0 files > 400 lines
 JavaScript: 0 files > 400 lines
-TypeScript: 13 files > 400 lines (avg: 519.9, max: 656)
+TypeScript: 13 files > 400 lines (avg: 504.8, max: 656)
 
 === OVERALL SUMMARY ===
-Files analyzed: 174
+Files analyzed: 176
 Files over 400 lines: 19
-Average length of large files: 503.9 lines
+Average length of large files: 493.6 lines
 Largest file: auth.service.ts (656 lines)
 
 === RECOMMENDATIONS ===
