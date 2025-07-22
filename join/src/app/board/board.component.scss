@@ -191,6 +191,11 @@
       .search-input {
         padding: 10px 45px 10px 15px;
         font-size: 14px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        height: 40px;
+        font-size: 16px;
+        box-sizing: border-box;
       }
       
       .search-icon {
@@ -200,12 +205,5 @@
       }
     }
   }
-}
-
-  border-radius: 8px;
-  border: 1px solid #e0e0e0;
-  height: 40px;
-  font-size: 16px;
-  box-sizing: border-box;
 }
 

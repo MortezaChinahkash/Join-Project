@@ -4,7 +4,6 @@ import { RouterOutlet } from '@angular/router';
 import { NavComponent } from "../nav/nav.component";
 import { HeaderComponent } from '../header/header.component';
 import { OnboardingOverlayComponent } from '../onboarding-overlay/onboarding-overlay.component';
-import { OnboardingTestComponent } from '../onboarding-test/onboarding-test.component';
 /**
  * Main content component that serves as the layout wrapper for the application
  * Contains the navigation, header, and main content area
@@ -12,7 +11,7 @@ import { OnboardingTestComponent } from '../onboarding-test/onboarding-test.comp
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, NavComponent, HeaderComponent, OnboardingOverlayComponent, OnboardingTestComponent],
+  imports: [CommonModule, RouterOutlet, NavComponent, HeaderComponent, OnboardingOverlayComponent],
   templateUrl: './main-content.component.html',
   styleUrl: './main-content.component.scss'
 })
