@@ -11,6 +11,7 @@ import { BoardColumnDetectionService } from './board-column-detection.service';
 import { BoardDragElementService } from './board-drag-element.service';
 import { BoardFirebaseUpdateService } from './board-firebase-update.service';
 import { BoardColumnEventService } from './board-column-event.service';
+import { BoardDragCleanupService } from './board-drag-cleanup.service';
 /**
  * Main service for handling drag & drop functionality in the board component.
  * Orchestrates task dragging, column detection, and visual feedback for both desktop and mobile.
@@ -33,7 +34,8 @@ export class BoardDragDropService {
     private columnDetection: BoardColumnDetectionService,
     private dragElement: BoardDragElementService,
     private firebaseUpdate: BoardFirebaseUpdateService,
-    private columnEvent: BoardColumnEventService
+    private columnEvent: BoardColumnEventService,
+    private dragCleanup: BoardDragCleanupService
   ) {}
   
   /** Gets currently dragged task */
@@ -339,19 +341,7 @@ export class BoardDragDropService {
    * @param onTaskUpdate - Callback for task updates
    */
   private finishTaskDrag(onTaskUpdate: () => void): void {
-    if (this.dragState.dragElement) {
-      this.dragState.dragElement.remove();
-    }
-    const taskCards = document.querySelectorAll('.task-card');
-    taskCards.forEach(card => {
-      (card as HTMLElement).style.opacity = '';
-    });
-    if (this.dragState.dragOverColumn && this.dragState.draggedTask) {
-      this.handleTaskDrop(onTaskUpdate);
-    }
-    this.dragState.setPlaceholder(false, 0);
-    this.dragState.resetDragState();
-    this.autoScroll.stopAutoScroll();
+    this.dragCleanup.finishTaskDragCleanup(onTaskUpdate, true, () => this.handleTaskDrop(onTaskUpdate));
   }
 
   /**
