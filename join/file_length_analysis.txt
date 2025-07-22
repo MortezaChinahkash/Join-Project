@@ -1,12 +1,12 @@
 FILE LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 15:24
+Generated: 22.07.2025 15:36
 ================================================================================
-Analyzing 220 files for length > 400 lines...
+Analyzing 221 files for length > 400 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
 HTML files: 21
 SCSS files: 59
 JavaScript files: 1
-TypeScript files: 139
+TypeScript files: 140
 Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.html
@@ -23,11 +23,6 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.compon
 --------------------------------------------------------------------------------
   Type: TypeScript | Total lines: 447
   Non-empty: 391 | Comments: 0 | JSDoc: 281 | Code: 110
-
-File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-auto-scroll.service.ts
---------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 460
-  Non-empty: 404 | Comments: 0 | JSDoc: 140 | Code: 264
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 --------------------------------------------------------------------------------
@@ -70,35 +65,31 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\services\s
     Type: HTML
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.html
 
- 3. board-auto-scroll.service.ts (460 lines)
-    Type: TypeScript
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-auto-scroll.service.ts
-
- 4. onboarding-overlay.component.ts (453 lines)
+ 3. onboarding-overlay.component.ts (453 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
 
- 5. board.component.ts (447 lines)
+ 4. board.component.ts (447 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.ts
 
- 6. board-form.service.ts (432 lines)
+ 5. board-form.service.ts (432 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 
- 7. board-form-v2.service.ts (409 lines)
+ 6. board-form-v2.service.ts (409 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-v2.service.ts
 
- 8. contacts-form.service.ts (404 lines)
+ 7. contacts-form.service.ts (404 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-form.service.ts
 
- 9. summary-statistics.service.ts (402 lines)
+ 8. summary-statistics.service.ts (402 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\services\summary-statistics.service.ts
 
-10. auth.service.ts (401 lines)
+ 9. auth.service.ts (401 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth.service.ts
 
@@ -108,12 +99,12 @@ CSS: 0 files > 400 lines
 SCSS: 0 files > 400 lines
 SASS: 0 files > 400 lines
 JavaScript: 0 files > 400 lines
-TypeScript: 8 files > 400 lines (avg: 426.0, max: 460)
+TypeScript: 7 files > 400 lines (avg: 421.1, max: 453)
 
 === OVERALL SUMMARY ===
-Files analyzed: 220
-Files over 400 lines: 10
-Average length of large files: 445.9 lines
+Files analyzed: 221
+Files over 400 lines: 9
+Average length of large files: 444.3 lines
 Largest file: privacy-policy.component.html (577 lines)
 
 === RECOMMENDATIONS ===
