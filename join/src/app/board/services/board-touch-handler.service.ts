@@ -294,6 +294,12 @@ export class BoardTouchHandlerService {
   private createTouchDragElement(task: Task, originalElement: HTMLElement, clientX: number, clientY: number): void {
     const taskElement = originalElement.closest('.task-card') as HTMLElement;
     if (!taskElement) return;
+    
+    // Calculate offset based on original element position BEFORE cloning
+    const rect = taskElement.getBoundingClientRect();
+    const offsetX = clientX - rect.left;
+    const offsetY = clientY - rect.top;
+    
     const dragElement = taskElement.cloneNode(true) as HTMLElement;
     dragElement.style.position = 'fixed';
     dragElement.style.pointerEvents = 'none';
@@ -303,7 +309,9 @@ export class BoardTouchHandlerService {
     dragElement.style.opacity = '0.9';
     dragElement.style.width = `${taskElement.offsetWidth}px`;
     document.body.appendChild(dragElement);
-    this.dragState.setDragElement(dragElement, clientX, clientY);
+    
+    // Use pre-calculated offset instead of getBoundingClientRect after DOM insertion
+    this.dragState.setDragElementWithOffset(dragElement, offsetX, offsetY);
     this.dragState.updateDragPosition(clientX, clientY);
   }
 
