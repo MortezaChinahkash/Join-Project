@@ -50,6 +50,19 @@ def analyze_jsdoc_coverage(file_path):
 
 def is_method_declaration(stripped, lines, i):
     """Check if this line is a method/function declaration"""
+    # Skip test methods (describe, it, beforeEach, etc.)
+    if (stripped.startswith('describe(') or 
+        stripped.startswith('it(') or 
+        stripped.startswith('beforeEach(') or 
+        stripped.startswith('afterEach(') or
+        stripped.startswith('beforeAll(') or
+        stripped.startswith('afterAll(')):
+        return False
+    
+    # Skip arrow functions - they typically don't need JSDoc
+    if '=>' in stripped:
+        return False
+    
     # Constructor
     if stripped.startswith('constructor'):
         return True
@@ -73,10 +86,6 @@ def is_method_declaration(stripped, lines, i):
         stripped.startswith('ngAfterContentInit') or
         stripped.startswith('ngAfterViewChecked') or
         stripped.startswith('ngAfterContentChecked')):
-        return True
-    
-    # Arrow functions assigned to variables
-    if '=>' in stripped and ('=' in stripped or 'const' in stripped):
         return True
     
     return False
@@ -196,18 +205,6 @@ def extract_method_name(method_line):
         if method_line.startswith(hook):
             return hook
     
-    # Arrow functions
-    if '=>' in method_line:
-        arrow_patterns = [
-            r'(const|let|var)\s+(\w+)\s*=',  # const methodName =
-            r'(\w+)\s*=\s*\(',  # methodName = (
-            r'(\w+)\s*:\s*\(',  # methodName: (
-        ]
-        for pattern in arrow_patterns:
-            match = re.search(pattern, method_line)
-            if match:
-                return match.group(2) if match.lastindex >= 2 else match.group(1)
-    
     # Regular methods/functions
     patterns = [
         r'function\s+(\w+)\s*\(',  # function methodName(
@@ -242,8 +239,6 @@ def determine_method_type(method_line):
         return 'Protected Method'
     elif method_line.startswith('static'):
         return 'Static Method'
-    elif '=>' in method_line:
-        return 'Arrow Function'
     elif method_line.startswith('function'):
         return 'Function'
     elif method_line.startswith('async'):
