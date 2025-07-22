@@ -147,24 +147,64 @@ export class ContactsService implements OnDestroy {
    */
   private handleOperationSuccess(contact: Contact, operation: 'add' | 'update'): void {
     if (operation === 'add') {
-      this.contacts = this.contactOperations.handleContactAdded(
-        this.contacts,
-        contact,
-        () => this.groupContacts(),
-        () => this.contactNavigation.closeAddContactOverlay(),
-        (message) => this.contactNavigation.showSuccessMessage(message, () => {}),
-        (contact) => this.selectContact(contact)
-      );
+      this.handleAddContactSuccess(contact);
     } else {
-      this.contacts = this.contactOperations.handleContactUpdated(
-        this.contacts,
-        this.selectedContact,
-        contact,
-        () => this.groupContacts(),
-        () => this.contactNavigation.closeEditContactOverlay(),
-        (message) => this.contactNavigation.showSuccessMessage(message, () => {})
-      );
+      this.handleUpdateContactSuccess(contact);
     }
+  }
+
+  /**
+   * Handles successful contact addition.
+   * 
+   * @param contact - The contact that was added
+   * @private
+   */
+  private handleAddContactSuccess(contact: Contact): void {
+    this.contacts = this.contactOperations.handleContactAdded(
+      this.contacts,
+      contact,
+      () => this.groupContacts(),
+      () => this.contactNavigation.closeAddContactOverlay(),
+      (message) => this.showAddSuccessMessage(message),
+      (contact) => this.selectContact(contact)
+    );
+  }
+
+  /**
+   * Handles successful contact update.
+   * 
+   * @param contact - The contact that was updated
+   * @private
+   */
+  private handleUpdateContactSuccess(contact: Contact): void {
+    this.contacts = this.contactOperations.handleContactUpdated(
+      this.contacts,
+      this.selectedContact,
+      contact,
+      () => this.groupContacts(),
+      () => this.contactNavigation.closeEditContactOverlay(),
+      (message) => this.showUpdateSuccessMessage(message)
+    );
+  }
+
+  /**
+   * Shows success message for contact addition.
+   * 
+   * @param message - Success message to display
+   * @private
+   */
+  private showAddSuccessMessage(message: string): void {
+    this.contactNavigation.showSuccessMessage(message, () => {});
+  }
+
+  /**
+   * Shows success message for contact update.
+   * 
+   * @param message - Success message to display
+   * @private
+   */
+  private showUpdateSuccessMessage(message: string): void {
+    this.contactNavigation.showSuccessMessage(message, () => {});
   }
 
   /**
