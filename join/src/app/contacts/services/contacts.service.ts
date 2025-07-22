@@ -1,14 +1,14 @@
 ﻿import { Injectable, OnDestroy } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Subscription, Observable } from 'rxjs';
 import { Contact, ContactDataService } from './contact-data.service';
 import { ContactOrganizationService } from './contact-organization.service';
-import { ContactUiService } from './contact-ui.service';
 import { ContactsStateService } from './contacts-state.service';
 import { ContactsFormService } from './contacts-form.service';
 import { ContactsCrudService } from './contacts-crud.service';
 import { ContactsDisplayService } from './contacts-display.service';
-import { AuthService } from '../../shared/services/auth.service';
+import { ContactOperationsService } from './contact-operations.service';
+import { ContactInitializationService } from './contact-initialization.service';
+import { ContactNavigationService } from './contact-navigation.service';
+
 /**
  * Main orchestrator service for contacts functionality.
  * Coordinates all specialized contact services and provides unified interface.
@@ -17,73 +17,23 @@ import { AuthService } from '../../shared/services/auth.service';
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
-
 export class ContactsService implements OnDestroy {
   private contacts: Contact[] = [];
   private groupedContacts: { [key: string]: Contact[] } = {};
   private selectedContact: Contact | null = null;
-  private contactsSubscription?: Subscription;
-  private resizeCleanup?: () => void;
-  /** Constructor initializes all contact services */
+  private initializationCleanup?: () => void;
+
   constructor(
-    private dataService: ContactDataService,
     private organizationService: ContactOrganizationService,
-    private uiService: ContactUiService,
     private stateService: ContactsStateService,
     private formService: ContactsFormService,
     private crudService: ContactsCrudService,
     private displayService: ContactsDisplayService,
-    private authService: AuthService
+    private contactOperations: ContactOperationsService,
+    private contactInitialization: ContactInitializationService,
+    private contactNavigation: ContactNavigationService
   ) {}
   
-  /** Observable for add contact overlay visibility */
-  get showAddContactOverlay$(): Observable<boolean> { return this.stateService.showAddContactOverlay$; }
-
-  /** Observable for edit contact overlay visibility */
-  get showEditContactOverlay$(): Observable<boolean> { return this.stateService.showEditContactOverlay$; }
-
-  /** Observable for mobile more menu visibility */
-  get showMobileMoreMenu$(): Observable<boolean> { return this.stateService.showMobileMoreMenu$; }
-
-  /** Observable for contact success message overlay visibility */
-  get contactSuccessMessageOverlay$(): Observable<boolean> { return this.stateService.contactSuccessMessageOverlay$; }
-
-  /** Observable for mobile view state */
-  get isMobileView$(): Observable<boolean> { return this.stateService.isMobileView$; }
-
-  /** Observable for mobile single contact view state */
-  get showMobileSingleContact$(): Observable<boolean> { return this.stateService.showMobileSingleContact$; }
-
-  /** Observable for animation suppression state */
-  get suppressAnimation$(): Observable<boolean> { return this.stateService.suppressAnimation$; }
-
-  /** Observable for contact success message text */
-  get contactSuccessMessageText$(): Observable<string> { return this.stateService.contactSuccessMessageText$; }
-
-  /** Current add contact overlay visibility state */
-  get showAddContactOverlay(): boolean { return this.stateService.showAddContactOverlay; }
-
-  /** Current edit contact overlay visibility state */
-  get showEditContactOverlay(): boolean { return this.stateService.showEditContactOverlay; }
-
-  /** Current mobile more menu visibility state */
-  get showMobileMoreMenu(): boolean { return this.stateService.showMobileMoreMenu; }
-
-  /** Current contact success message overlay visibility state */
-  get contactSuccessMessageOverlay(): boolean { return this.stateService.contactSuccessMessageOverlay; }
-
-  /** Current mobile view state */
-  get isMobileView(): boolean { return this.stateService.isMobileView; }
-
-  /** Current mobile single contact view state */
-  get showMobileSingleContact(): boolean { return this.stateService.showMobileSingleContact; }
-
-  /** Current animation suppression state */
-  get suppressAnimation(): boolean { return this.stateService.suppressAnimation; }
-
-  /** Current contact success message text */
-  get contactSuccessMessageText(): string { return this.stateService.contactSuccessMessageText; }
-
   /** Gets all contacts array */
   get allContacts(): Contact[] { return this.contacts; }
 
@@ -97,36 +47,29 @@ export class ContactsService implements OnDestroy {
    * Initializes the contacts service.
    */
   initialize(): void {
-    this.stateService.initializeState();
-    this.setupResizeListener();
-    this.loadContacts();
+    this.initializationCleanup = this.contactInitialization.initialize(
+      (contacts, groupedContacts) => this.handleContactsLoaded(contacts, groupedContacts),
+      (error) => this.handleLoadError(error)
+    );
   }
 
   /**
-   * Loads contacts from the data service.
-   */
-  private loadContacts(): void {
-    this.contactsSubscription = this.dataService.loadContactsFromFirestore()
-      .subscribe({
-        next: (contacts) => this.handleContactsLoaded(contacts),
-        error: (error) => this.handleLoadError(error)
-      });
-  }
-
-  /**
-   * Handles successful contact loading.
+   * Handles successful contact loading from initialization service.
    * 
-   * @param contacts - Loaded contacts array
+   * @param contacts - Loaded and processed contacts array
+   * @param groupedContacts - Pre-grouped contacts by letter
+   * @private
    */
-  private handleContactsLoaded(contacts: Contact[]): void {
-    this.contacts = this.crudService.getAllContactsWithCurrentUser(contacts);
-    this.groupContacts();
+  private handleContactsLoaded(contacts: Contact[], groupedContacts: { [key: string]: Contact[] }): void {
+    this.contacts = contacts;
+    this.groupedContacts = groupedContacts;
   }
 
   /**
-   * Handles contact loading errors.
+   * Handles contact loading errors from initialization service.
    * 
    * @param error - Error object
+   * @private
    */
   private handleLoadError(error: any): void {
     console.error('Error loading contacts:', error);
@@ -143,163 +86,101 @@ export class ContactsService implements OnDestroy {
    * Sets up window resize listener for responsive behavior.
    */
   private setupResizeListener(): void {
-    this.resizeCleanup = this.stateService.setupResizeListener();
-  }
-
-  /**
-   * Gets the contact form instance.
-   * 
-   * @returns FormGroup instance
-   */
-  getContactForm(): FormGroup {
-    return this.formService.getForm();
-  }
-
-  /**
-   * Opens the add contact overlay and resets form.
-   */
-  openAddContactOverlay(): void {
-    this.stateService.openAddContactOverlay();
-    this.formService.resetForm();
-  }
-
-  /**
-   * Closes the add contact overlay.
-   */
-  closeAddContactOverlay(): void {
-    this.stateService.closeAddContactOverlay();
-  }
-
-  /**
-   * Opens edit contact overlay for a specific contact.
-   * 
-   * @param contact - Contact to edit
-   */
-  openEditContactOverlay(contact: Contact): void {
-    this.stateService.openEditContactOverlay();
-    this.selectedContact = contact;
-    this.formService.populateForm(contact);
-  }
-
-  /**
-   * Closes the edit contact overlay.
-   */
-  closeEditContactOverlay(): void {
-    this.stateService.closeEditContactOverlay();
+    // Cleanup handling is now managed by ContactInitializationService
   }
 
   /**
    * Handles add contact form submission.
    */
   async onSubmitAddContact(): Promise<void> {
-    await this.processContactForm('add');
+    await this.contactOperations.processContactForm(
+      'add',
+      this.contacts,
+      this.selectedContact,
+      (contact, operation) => this.handleOperationSuccess(contact, operation),
+      (operation, error) => this.handleOperationError(operation, error)
+    );
   }
 
   /**
    * Handles update contact form submission.
    */
   async onSubmitUpdateContact(): Promise<void> {
-    await this.processContactForm('update');
-  }
-
-  /**
-   * Processes contact form submission for add or update operations.
-   * 
-   * @param operation - Type of operation ('add' or 'update')
-   */
-  private async processContactForm(operation: 'add' | 'update'): Promise<void> {
-    if (!this.formService.validateForm()) return;
-    const formData = this.formService.prepareFormData();
-    try {
-      if (operation === 'add') {
-        await this.performAddContact(formData);
-      } else {
-        await this.performUpdateContact(formData);
-      }
-    } catch (error) {
-
-      this.handleOperationError(operation, error);
-    }
-  }
-
-  /**
-   * Performs add contact operation.
-   * 
-   * @param contactData - Contact data to add
-   */
-  private async performAddContact(contactData: Partial<Contact>): Promise<void> {
-    const newContact = await this.crudService.createContact(contactData, this.contacts);
-    this.handleContactAdded(newContact);
-  }
-
-  /**
-   * Performs update contact operation.
-   * 
-   * @param contactData - Contact data to update
-   */
-  private async performUpdateContact(contactData: Partial<Contact>): Promise<void> {
-    if (!this.selectedContact?.id) {
-      throw new Error('No contact ID for update');
-    }
-    const updatedContact = await this.crudService.updateContact(this.selectedContact.id, contactData);
-    this.handleContactUpdated(updatedContact);
+    await this.contactOperations.processContactForm(
+      'update',
+      this.contacts,
+      this.selectedContact,
+      (contact, operation) => this.handleOperationSuccess(contact, operation),
+      (operation, error) => this.handleOperationError(operation, error)
+    );
   }
 
   /**
    * Deletes the currently selected contact.
    */
   async deleteContact(): Promise<void> {
-    if (!this.selectedContact?.id) return;
-    this.stateService.suppressAnimations();
-    try {
-      await this.crudService.deleteContact(this.selectedContact.id);
-      this.handleContactDeleted(this.selectedContact.id);
-    } catch (error) {
-
-      this.handleDeleteError(error);
-    }
+    await this.contactOperations.deleteContact(
+      this.selectedContact,
+      (contactId) => this.handleDeleteSuccess(contactId),
+      (error) => this.handleDeleteError(error)
+    );
   }
 
   /**
-   * Handles successful contact addition.
+   * Selects a contact and handles mobile view.
    * 
-   * @param newContact - Newly created contact
+   * @param contact - Contact to select
    */
-  private handleContactAdded(newContact: Contact): void {
-    this.contacts = this.crudService.addContactToArray(this.contacts, newContact);
-    this.groupContacts();
-    this.closeAddContactOverlay();
-    this.showSuccessMessage('Contact successfully created!');
-    this.selectContact(newContact);
+  selectContact(contact: Contact): void {
+    this.contactNavigation.selectContact(
+      contact,
+      (contact) => this.selectedContact = contact
+    );
   }
 
   /**
-   * Handles successful contact update.
+   * Handles successful contact operations.
    * 
-   * @param updatedContact - Updated contact
+   * @param contact - The contact that was processed
+   * @param operation - The operation that was performed
+   * @private
    */
-  private handleContactUpdated(updatedContact: Contact): void {
-    if (this.selectedContact) {
-      Object.assign(this.selectedContact, updatedContact);
-      if (!this.displayService.isCurrentUserContact(this.selectedContact)) {
-        this.contacts = this.crudService.updateContactInArray(this.contacts, this.selectedContact);
-      }
-      this.groupContacts();
+  private handleOperationSuccess(contact: Contact, operation: 'add' | 'update'): void {
+    if (operation === 'add') {
+      this.contacts = this.contactOperations.handleContactAdded(
+        this.contacts,
+        contact,
+        () => this.groupContacts(),
+        () => this.contactNavigation.closeAddContactOverlay(),
+        (message) => this.contactNavigation.showSuccessMessage(message, () => {}),
+        (contact) => this.selectContact(contact)
+      );
+    } else {
+      this.contacts = this.contactOperations.handleContactUpdated(
+        this.contacts,
+        this.selectedContact,
+        contact,
+        () => this.groupContacts(),
+        () => this.contactNavigation.closeEditContactOverlay(),
+        (message) => this.contactNavigation.showSuccessMessage(message, () => {})
+      );
     }
-    this.closeEditContactOverlay();
-    this.showSuccessMessage('Contact successfully updated!');
   }
 
   /**
    * Handles successful contact deletion.
    * 
-   * @param contactId - ID of deleted contact
+   * @param contactId - ID of the deleted contact
+   * @private
    */
-  private handleContactDeleted(contactId: string): void {
-    this.contacts = this.crudService.removeContactFromArray(this.contacts, contactId);
-    this.groupContacts();
-    this.showSuccessMessage('Contact successfully deleted!');
-    this.clearSelectedContactAsync();
+  private handleDeleteSuccess(contactId: string): void {
+    this.contacts = this.contactOperations.handleContactDeleted(
+      this.contacts,
+      contactId,
+      () => this.groupContacts(),
+      (message) => this.contactNavigation.showSuccessMessage(message, () => {}),
+      () => this.clearSelectedContactAsync()
+    );
   }
 
   /**
@@ -310,7 +191,6 @@ export class ContactsService implements OnDestroy {
    */
   private handleOperationError(operation: string, error: any): void {
     console.error(`Error ${operation} contact:`, error);
-
     this.stateService.enableAnimations();
   }
 
@@ -328,192 +208,9 @@ export class ContactsService implements OnDestroy {
    * Clears selected contact asynchronously.
    */
   private clearSelectedContactAsync(): void {
-    setTimeout(() => {
+    this.contactNavigation.clearSelectedContactAsync(() => {
       this.selectedContact = null;
-      this.stateService.enableAnimations();
-    }, 0);
-  }
-  /**
-   * Selects a contact and handles mobile view.
-   * 
-   * @param contact - Contact to select
-   */
-  selectContact(contact: Contact): void {
-    this.selectedContact = contact;
-    if (this.isMobileView) {
-      this.stateService.showMobileSingleContactView();
-    }
-  }
-
-  /**
-   * Selects the current user and creates a contact-like object for display.
-   */
-  selectCurrentUser(): void {
-    const currentUserContact = this.displayService.getCurrentUserAsContact();
-    if (currentUserContact) {
-      this.selectContact(currentUserContact);
-    }
-  }
-
-  /**
-   * Navigates back to contact list on mobile.
-   */
-  backToList(): void {
-    this.stateService.backToContactList();
-    this.selectedContact = null;
-  }
-
-  /**
-   * Handles FAB button click based on current state.
-   */
-  handleFabClick(): void {
-    const action = this.stateService.getFabAction();
-    if (action === 'more') {
-      this.openMoreMenu();
-    } else {
-      this.openAddContactOverlay();
-    }
-  }
-
-  /**
-   * Opens mobile more menu.
-   */
-  openMoreMenu(): void {
-    this.stateService.openMobileMoreMenu();
-  }
-
-  /**
-   * Closes mobile more menu.
-   */
-  closeMoreMenu(): void {
-    this.stateService.closeMobileMoreMenu();
-  }
-
-  /**
-   * Shows success message with automatic hiding.
-   * 
-   * @param message - Message to display
-   */
-  showSuccessMessage(message: string): void {
-    this.stateService.showSuccessMessage(message);
-    this.uiService.showSuccessMessage(message).then(() => {
-      this.stateService.hideSuccessMessage();
     });
-  }
-
-  /**
-   * Updates mobile view status and responsive state.
-   */
-  updateMobileViewStatus(): void {
-    this.stateService.updateMobileViewStatus();
-  }
-
-  /**
-   * Gets contact initials for display.
-   * 
-   * @param name - Contact name
-   * @returns Initials string
-   */
-  getInitials(name: string): string {
-    return this.displayService.getContactInitials(name);
-  }
-
-  /**
-   * Gets contact color for avatar.
-   * 
-   * @param name - Contact name
-   * @returns Hex color string
-   */
-  getInitialsColor(name: string): string {
-    return this.displayService.getContactColor(name);
-  }
-
-  /**
-   * Truncates contact name if longer than 25 characters.
-   * 
-   * @param name - Contact name
-   * @returns Truncated name with ellipsis or original name
-   */
-  getTruncatedName(name: string): string {
-    return this.displayService.getTruncatedName(name);
-  }
-
-  /**
-   * Checks if a contact name is considered long (>25 characters).
-   * 
-   * @param name - Contact name
-   * @returns True if name is longer than 25 characters
-   */
-  isLongName(name: string): boolean {
-    return this.displayService.isLongName(name);
-  }
-
-  /**
-   * Truncates email if longer than 23 characters with ellipsis ending.
-   * 
-   * @param email - Email to truncate
-   * @returns Truncated email or original if short enough
-   */
-  truncateEmail(email: string): string {
-    return this.displayService.truncateEmail(email);
-  }
-
-  /**
-   * Gets the current logged-in user.
-   * 
-   * @returns Current user or null
-   */
-  getCurrentUser() {
-    return this.displayService.getCurrentUser();
-  }
-
-  /**
-   * Gets the display name for the current user.
-   * 
-   * @returns Display name or email
-   */
-  getCurrentUserDisplayName(): string {
-    return this.displayService.getCurrentUserDisplayName();
-  }
-
-  /**
-   * Checks if a specific field has errors.
-   * 
-   * @param fieldName - Name of the field to check
-   * @returns True if field has errors and is touched
-   */
-  hasFieldError(fieldName: string): boolean {
-    return this.formService.hasFieldError(fieldName);
-  }
-
-  /**
-   * Gets error message for a specific field.
-   * 
-   * @param fieldName - Name of the field
-   * @returns Error message or empty string
-   */
-  getFieldError(fieldName: string): string {
-    return this.formService.getFieldError(fieldName);
-  }
-
-  /**
-   * Static method for getting contact initials (for external use).
-   * 
-   * @param name - Contact name
-   * @returns Contact initials
-   */
-  static getInitials(name: string): string {
-    return ContactsDisplayService.getInitials(name);
-  }
-
-  /**
-   * Static method for getting contact color (for external use).
-   * 
-   * @param name - Contact name
-   * @returns Hex color string
-   */
-  static getInitialsColor(name: string): string {
-    return ContactsDisplayService.getInitialsColor(name);
   }
 
   /**
@@ -527,8 +224,7 @@ export class ContactsService implements OnDestroy {
    * Cleanup method for service destruction.
    */
   cleanup(): void {
-    this.contactsSubscription?.unsubscribe();
-    this.resizeCleanup?.();
+    this.initializationCleanup?.();
     this.stateService.cleanup();
     this.formService.cleanup();
     this.displayService.cleanup();
