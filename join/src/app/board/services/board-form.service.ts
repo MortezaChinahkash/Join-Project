@@ -314,14 +314,14 @@ export class BoardFormService {
    * @returns Promise that resolves when operation completes
    */
   async onSubmit(updateCallback?: () => void): Promise<void> {
-    console.log('📝 FormService onSubmit called');
+
     const success = await this.saveTask();
-    console.log('💾 SaveTask result:', success);
+
     if (success && updateCallback) {
-      console.log('🔄 Calling updateCallback');
+
       updateCallback();
     }
-    console.log('✅ FormService onSubmit completed');
+
   }
 
   /**
