@@ -273,8 +273,8 @@ def scan_and_remove_console_logs():
     files_modified_count = f"Files modified: {files_modified}"
     files_errors = f"Files with errors: {files_with_errors}"
     total_logs = f"Total console.logs found: {total_original_logs}"
-    total_removed = f"Total console.logs removed: {total_removed_logs}"
-    total_remaining = f"Total console.logs remaining: {total_remaining_logs}"
+    total_removed_msg = f"Total console.logs removed: {total_removed_logs}"
+    total_remaining_msg = f"Total console.logs remaining: {total_remaining_logs}"
     
     print(summary_header)
     print(files_analyzed)
@@ -282,8 +282,8 @@ def scan_and_remove_console_logs():
     print(files_modified_count)
     print(files_errors)
     print(total_logs)
-    print(total_removed)
-    print(total_remaining)
+    print(total_removed_msg)
+    print(total_remaining_msg)
     
     output_lines.append(summary_header)
     output_lines.append(files_analyzed)
@@ -291,21 +291,21 @@ def scan_and_remove_console_logs():
     output_lines.append(files_modified_count)
     output_lines.append(files_errors)
     output_lines.append(total_logs)
-    output_lines.append(total_removed)
-    output_lines.append(total_remaining)
+    output_lines.append(total_removed_msg)
+    output_lines.append(total_remaining_msg)
     
-    if total_removed == 0:
+    if total_removed_logs == 0:
         no_logs_msg = "No console.log statements found to remove!"
         print(no_logs_msg)
         output_lines.append(no_logs_msg)
     else:
-        success_rate = (total_removed / total_original_logs) * 100 if total_original_logs > 0 else 0
+        success_rate = (total_removed_logs / total_original_logs) * 100 if total_original_logs > 0 else 0
         success_msg = f"Removal success rate: {success_rate:.1f}%"
         print(success_msg)
         output_lines.append(success_msg)
         
-        if total_remaining > 0:
-            manual_msg = f"Manual review needed for {len(files_with_remaining)} files with {total_remaining} remaining console.logs"
+        if total_remaining_logs > 0:
+            manual_msg = f"Manual review needed for {len(files_with_remaining)} files with {total_remaining_logs} remaining console.logs"
             print(manual_msg)
             output_lines.append(manual_msg)
         
