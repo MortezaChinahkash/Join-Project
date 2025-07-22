@@ -3,6 +3,9 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, User as FirebaseUser, signInAnonymously, updateProfile } from '@angular/fire/auth';
 import { WelcomeOverlayService } from './welcome-overlay.service';
+import { AuthUtilsService } from './auth-utils.service';
+import { AuthSessionManagerService } from './auth-session-manager.service';
+
 export interface User {
   id: string;
   name: string;
@@ -29,6 +32,8 @@ export class AuthService implements OnDestroy {
   private readonly SESSION_DURATION = 24 * 60 * 60 * 1000;
   private sessionCheckInterval: any;
   private injector = inject(Injector);
+  private authUtils = inject(AuthUtilsService);
+  private sessionManager = inject(AuthSessionManagerService);
   /**
    * Constructor initializes auth service with router, Firebase auth, and welcome overlay service
    */
@@ -37,7 +42,6 @@ export class AuthService implements OnDestroy {
     private auth: Auth,
     private welcomeOverlayService: WelcomeOverlayService
   ) {
-
     setTimeout(() => {
       this.initializeAuthListener();
       this.loadUserFromStorage();
@@ -58,7 +62,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Handles Firebase auth state changes.
-   * 
    * @param firebaseUser - Firebase user object or null
    * @private
    */
@@ -72,32 +75,29 @@ export class AuthService implements OnDestroy {
 
   /**
    * Handles authenticated user state.
-   * 
    * @param firebaseUser - Authenticated Firebase user
    * @private
    */
   private handleUserAuthenticated(firebaseUser: FirebaseUser): void {
-    const user = this.mapFirebaseUserToUser(firebaseUser);
+    const user = this.authUtils.mapFirebaseUserToUser(firebaseUser);
     this.currentUserSubject.next(user);
-    this.saveUserToStorage(user);
+    this.sessionManager.saveUserToStorage(user, this.STORAGE_KEY);
     this.startSessionCheck();
   }
 
   /**
    * Handles unauthenticated user state.
-   * 
    * @private
    */
   private handleUserUnauthenticated(): void {
     if (this.currentUserSubject.value) {
       this.clearCurrentUserSession();
     }
-    this.stopSessionCheck();
+    this.sessionManager.stopSessionCheck();
   }
 
   /**
    * Clears current user session data.
-   * 
    * @private
    */
   private clearCurrentUserSession(): void {
@@ -116,7 +116,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Sets up auth state listener for auth ready check.
-   * 
    * @param resolve - Promise resolve function
    * @private
    */
@@ -131,7 +130,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Resolves auth ready promise based on Firebase user state.
-   * 
    * @param firebaseUser - Firebase user or null
    * @param resolve - Promise resolve function
    * @private
@@ -146,29 +144,15 @@ export class AuthService implements OnDestroy {
 
   /**
    * Handles auth ready when user is authenticated.
-   * 
    * @param firebaseUser - Authenticated Firebase user
    * @param resolve - Promise resolve function
    * @private
    */
   private handleAuthReadyWithUser(firebaseUser: FirebaseUser, resolve: (value: User | null) => void): void {
-    const user = this.mapFirebaseUserToUser(firebaseUser);
+    const user = this.authUtils.mapFirebaseUserToUser(firebaseUser);
     this.currentUserSubject.next(user);
-    this.saveUserToStorage(user);
+    this.sessionManager.saveUserToStorage(user, this.STORAGE_KEY);
     resolve(user);
-  }
-
-  /**
-   * Maps Firebase user to our User interface.
-   */
-  private mapFirebaseUserToUser(firebaseUser: FirebaseUser): User {
-    return {
-      id: firebaseUser.uid,
-      name: firebaseUser.displayName || firebaseUser.email?.split('@')[0] || 'User',
-      email: firebaseUser.email || '',
-      isGuest: firebaseUser.isAnonymous,
-      loginTimestamp: Date.now()
-    };
   }
 
   /**
@@ -202,10 +186,9 @@ export class AuthService implements OnDestroy {
       const userCredential = await runInInjectionContext(this.injector, () => 
         signInWithEmailAndPassword(this.auth, email, password)
       );
-      const user = this.mapFirebaseUserToUser(userCredential.user);
+      const user = this.authUtils.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
-
       throw this.handleAuthError(error);
     }
   }
@@ -230,7 +213,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Creates a new Firebase user account.
-   * 
    * @param email - User's email address
    * @param password - User's password
    * @returns Firebase user credential
@@ -244,7 +226,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Updates Firebase user profile with display name.
-   * 
    * @param firebaseUser - Firebase user object
    * @param name - User's display name
    * @private
@@ -259,14 +240,13 @@ export class AuthService implements OnDestroy {
 
   /**
    * Prepares user object for registered user.
-   * 
    * @param firebaseUser - Firebase user object
    * @param name - User's display name
    * @returns Prepared user object
    * @private
    */
   private prepareRegisteredUser(firebaseUser: FirebaseUser, name: string): User {
-    const user = this.mapFirebaseUserToUser(firebaseUser);
+    const user = this.authUtils.mapFirebaseUserToUser(firebaseUser);
     user.name = name.trim();
     user.loginTimestamp = Date.now();
     return user;
@@ -274,7 +254,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Finalizes user registration with storage and event dispatch.
-   * 
    * @param user - Registered user object
    * @private
    */
@@ -286,7 +265,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Sets new user flag in localStorage.
-   * 
    * @private
    */
   private setNewUserFlag(): void {
@@ -296,7 +274,6 @@ export class AuthService implements OnDestroy {
 
   /**
    * Schedules user registration event dispatch.
-   * 
    * @private
    */
   private scheduleRegistrationEvent(): void {
@@ -314,10 +291,9 @@ export class AuthService implements OnDestroy {
       const userCredential = await runInInjectionContext(this.injector, () => 
         signInAnonymously(this.auth)
       );
-      const user = this.mapFirebaseUserToUser(userCredential.user);
+      const user = this.authUtils.mapFirebaseUserToUser(userCredential.user);
       return user;
     } catch (error: any) {
-
       throw this.handleAuthError(error);
     }
   }
@@ -327,15 +303,13 @@ export class AuthService implements OnDestroy {
    */
   async logout(): Promise<void> {
     try {
-      this.stopSessionCheck();
+      this.sessionManager.stopSessionCheck();
       this.welcomeOverlayService.clear();
       await runInInjectionContext(this.injector, () => 
         signOut(this.auth)
       );
-
       this.router.navigate(['/auth']);
     } catch (error) {
-
       console.error('Logout error:', error);
       throw new Error('Logout failed');
     }
@@ -357,23 +331,16 @@ export class AuthService implements OnDestroy {
    */
   private setCurrentUser(user: User): void {
     this.currentUserSubject.next(user);
-    this.saveUserToStorage(user);
+    this.sessionManager.saveUserToStorage(user, this.STORAGE_KEY);
   }
 
   /**
    * Loads user from local storage on app initialization.
    */
   private loadUserFromStorage(): void {
-    try {
-      const userData = localStorage.getItem(this.STORAGE_KEY);
-      if (userData) {
-        const user = JSON.parse(userData);
-        this.validateAndLoadSession(user);
-      }
-    } catch (error) {
-
-      console.error('Error loading user from storage:', error);
-      localStorage.removeItem(this.STORAGE_KEY);
+    const user = this.sessionManager.loadUserFromStorage(this.STORAGE_KEY);
+    if (user) {
+      this.validateAndLoadSession(user);
     }
   }
 
@@ -382,8 +349,8 @@ export class AuthService implements OnDestroy {
    * @param user - User data from storage
    */
   private validateAndLoadSession(user: any): void {
-    if (!this.isSessionValid(user)) {
-      this.clearExpiredSession();
+    if (!this.authUtils.isSessionValid(user, this.SESSION_DURATION)) {
+      this.sessionManager.clearExpiredSession(this.STORAGE_KEY);
       return;
     }
     if (!this.currentUserSubject.value) {
@@ -392,45 +359,10 @@ export class AuthService implements OnDestroy {
   }
 
   /**
-   * Checks if the user session is still valid based on timestamp.
-   * @param user - User data to validate
-   * @returns True if session is still valid
-   */
-  private isSessionValid(user: any): boolean {
-    const currentTime = Date.now();
-    const sessionAge = currentTime - (user.loginTimestamp || 0);
-    return sessionAge <= this.SESSION_DURATION;
-  }
-
-  /**
-   * Clears expired session data from local storage.
-   */
-  private clearExpiredSession(): void {
-    localStorage.removeItem(this.STORAGE_KEY);
-  }
-
-  /**
-   * Saves user to local storage.
-   */
-  private saveUserToStorage(user: User): void {
-    try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
-    } catch (error) {
-
-      console.error('Error saving user to storage:', error);
-    }
-  }
-
-  /**
    * Gets remaining session time in milliseconds.
    */
   getRemainingSessionTime(): number {
-    const currentUser = this.currentUser;
-    if (!currentUser) return 0;
-    const currentTime = Date.now();
-    const sessionAge = currentTime - currentUser.loginTimestamp;
-    const remainingTime = this.SESSION_DURATION - sessionAge;
-    return Math.max(0, remainingTime);
+    return this.authUtils.getRemainingSessionTime(this.currentUser, this.SESSION_DURATION);
   }
 
   /**
@@ -438,80 +370,14 @@ export class AuthService implements OnDestroy {
    */
   getRemainingSessionTimeFormatted(): string {
     const remainingMs = this.getRemainingSessionTime();
-    if (remainingMs === 0) return '0 hours';
-    const hours = Math.floor(remainingMs / (1000 * 60 * 60));
-    const minutes = Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60));
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
-    } else {
-      return `${minutes}m`;
-    }
+    return this.authUtils.getRemainingSessionTimeFormatted(remainingMs);
   }
 
   /**
    * Handles authentication errors and returns user-friendly messages.
    */
   private handleAuthError(error: any): Error {
-    console.error('Auth error:', error);
-    return this.createUserFriendlyError(error.code);
-  }
-
-  /**
-   * Creates user-friendly error message based on Firebase error code.
-   * 
-   * @param errorCode - Firebase error code
-   * @returns User-friendly error
-   * @private
-   */
-  private createUserFriendlyError(errorCode: string): Error {
-    const loginErrors = this.getLoginErrors();
-    const registrationErrors = this.getRegistrationErrors();
-    const securityErrors = this.getSecurityErrors();
-    
-    return loginErrors[errorCode] || 
-           registrationErrors[errorCode] || 
-           securityErrors[errorCode] || 
-           new Error('An error occurred during authentication');
-  }
-
-  /**
-   * Gets login-related error mappings.
-   * 
-   * @returns Object with login error mappings
-   * @private
-   */
-  private getLoginErrors(): { [key: string]: Error } {
-    return {
-      'auth/user-not-found': new Error('Invalid email or password'),
-      'auth/wrong-password': new Error('Invalid email or password'),
-      'auth/invalid-email': new Error('Please enter a valid email address')
-    };
-  }
-
-  /**
-   * Gets registration-related error mappings.
-   * 
-   * @returns Object with registration error mappings
-   * @private
-   */
-  private getRegistrationErrors(): { [key: string]: Error } {
-    return {
-      'auth/email-already-in-use': new Error('An account with this email already exists'),
-      'auth/weak-password': new Error('Password should be at least 6 characters'),
-      'auth/operation-not-allowed': new Error('This operation is not allowed')
-    };
-  }
-
-  /**
-   * Gets security-related error mappings.
-   * 
-   * @returns Object with security error mappings
-   * @private
-   */
-  private getSecurityErrors(): { [key: string]: Error } {
-    return {
-      'auth/too-many-requests': new Error('Too many failed attempts. Please try again later')
-    };
+    return this.authUtils.handleAuthError(error);
   }
 
   /**
@@ -525,30 +391,21 @@ export class AuthService implements OnDestroy {
    * Gets user display name for UI.
    */
   getUserDisplayName(): string {
-    if (!this.currentUser) return '';
-    if (this.currentUser.isGuest) {
-      return 'GU';
-    }
-
-    return this.currentUser.name
-      .split(' ')
-      .map(name => name.charAt(0).toUpperCase())
-      .join('')
-      .substring(0, 2);
+    return this.authUtils.getUserDisplayName(this.currentUser);
   }
 
   /**
    * Gets user's full name.
    */
   getUserFullName(): string {
-    return this.currentUser?.name || '';
+    return this.authUtils.getUserFullName(this.currentUser);
   }
 
   /**
    * Gets user's email.
    */
   getUserEmail(): string {
-    return this.currentUser?.email || '';
+    return this.authUtils.getUserEmail(this.currentUser);
   }
 
   /**
@@ -556,44 +413,17 @@ export class AuthService implements OnDestroy {
    * @param name - New display name
    */
   async updateUserProfile(name: string): Promise<void> {
-    this.validateCurrentUser();
+    this.authUtils.validateCurrentUser();
     try {
-      await this.updateFirebaseProfile(name);
+      await this.authUtils.updateFirebaseProfile(name);
       this.updateLocalUserProfile(name);
     } catch (error) {
-      this.handleProfileUpdateError(error);
+      this.authUtils.handleProfileUpdateError(error);
     }
-  }
-
-  /**
-   * Validates that a current user exists for profile update.
-   * 
-   * @throws Error if no authenticated user found
-   * @private
-   */
-  private validateCurrentUser(): void {
-    if (!this.auth.currentUser) {
-      throw new Error('No authenticated user found');
-    }
-  }
-
-  /**
-   * Updates Firebase user profile with new display name.
-   * 
-   * @param name - New display name
-   * @private
-   */
-  private async updateFirebaseProfile(name: string): Promise<void> {
-    await runInInjectionContext(this.injector, () => 
-      updateProfile(this.auth.currentUser!, {
-        displayName: name.trim()
-      })
-    );
   }
 
   /**
    * Updates local user profile and saves to storage.
-   * 
    * @param name - New display name
    * @private
    */
@@ -602,44 +432,22 @@ export class AuthService implements OnDestroy {
     if (currentUser) {
       currentUser.name = name.trim();
       this.currentUserSubject.next(currentUser);
-      this.saveUserToStorage(currentUser);
+      this.sessionManager.saveUserToStorage(currentUser, this.STORAGE_KEY);
     }
-  }
-
-  /**
-   * Handles profile update errors.
-   * 
-   * @param error - Error that occurred
-   * @throws Error with profile update failure message
-   * @private
-   */
-  private handleProfileUpdateError(error: any): never {
-    console.error('Error updating user profile:', error);
-    throw new Error('Failed to update user profile');
   }
 
   /**
    * Starts periodic session check to auto-logout after 24 hours.
    */
   private startSessionCheck(): void {
-
-    this.sessionCheckInterval = setInterval(() => {
-      this.checkSessionExpiry();
-    }, 5 * 60 * 1000);
-
-    this.checkSessionExpiry();
+    this.sessionManager.startSessionCheck(() => this.checkSessionExpiry());
   }
 
   /**
    * Checks if current session has expired and logs out if necessary.
    */
   private checkSessionExpiry(): void {
-    const currentUser = this.currentUser;
-    if (!currentUser) return;
-    const currentTime = Date.now();
-    const sessionAge = currentTime - currentUser.loginTimestamp;
-
-    if (sessionAge > this.SESSION_DURATION) {
+    if (this.sessionManager.isSessionExpired(this.currentUser, this.SESSION_DURATION)) {
       this.logout();
     }
   }
@@ -648,9 +456,6 @@ export class AuthService implements OnDestroy {
    * Stops the session check interval.
    */
   private stopSessionCheck(): void {
-    if (this.sessionCheckInterval) {
-      clearInterval(this.sessionCheckInterval);
-      this.sessionCheckInterval = null;
-    }
+    this.sessionManager.stopSessionCheck();
   }
 }
