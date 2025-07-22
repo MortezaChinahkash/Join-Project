@@ -136,8 +136,17 @@ export class BoardTouchHandlerService {
    */
   private createTouchMoveHandler(touchContext: { startX: number; startY: number; hasMoved: boolean; dragStarted: boolean }): (e: TouchEvent) => void {
     return (e: TouchEvent) => {
+      // Prevent any default scroll behavior during touch
+      e.preventDefault();
+      
       const moveTouch = e.touches[0];
-      if (!moveTouch) return;
+      if (!moveTouch) {
+        // If touch is lost, cancel the drag operation
+        if (this.dragState.isDraggingTask) {
+          this.cancelTouchDrag();
+        }
+        return;
+      }
       
       const deltaX = Math.abs(moveTouch.clientX - touchContext.startX);
       const deltaY = Math.abs(moveTouch.clientY - touchContext.startY);
@@ -147,7 +156,6 @@ export class BoardTouchHandlerService {
       }
       
       if (this.dragState.isDraggingTask) {
-        e.preventDefault();
         this.autoScroll.emergencyAutoScroll(e);
         this.updateTouchDrag(moveTouch.clientX, moveTouch.clientY);
       }
@@ -295,11 +303,9 @@ export class BoardTouchHandlerService {
     const taskElement = originalElement.closest('.task-card') as HTMLElement;
     if (!taskElement) return;    
     
-    const rect = taskElement.getBoundingClientRect();
-    const offsetX = clientX - rect.left;
-    const offsetY = clientY - rect.top;
-    
     const dragElement = taskElement.cloneNode(true) as HTMLElement;
+    
+    // Set initial positioning properties
     dragElement.style.position = 'fixed';
     dragElement.style.pointerEvents = 'none';
     dragElement.style.zIndex = '10000';
@@ -307,10 +313,19 @@ export class BoardTouchHandlerService {
     dragElement.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
     dragElement.style.opacity = '0.9';
     dragElement.style.width = `${taskElement.offsetWidth}px`;
+    dragElement.style.height = `${taskElement.offsetHeight}px`;
+    
+    // For touch devices, center the element under the finger for better UX
+    const centerOffsetX = taskElement.offsetWidth / 2;
+    const centerOffsetY = taskElement.offsetHeight / 2;
+    
+    // Position the element immediately at the correct location
+    dragElement.style.left = `${clientX - centerOffsetX}px`;
+    dragElement.style.top = `${clientY - centerOffsetY}px`;
+    
     document.body.appendChild(dragElement);    
     
-    this.dragState.setDragElementWithOffset(dragElement, offsetX, offsetY);
-    this.dragState.updateDragPosition(clientX, clientY);
+    this.dragState.setDragElementWithOffset(dragElement, centerOffsetX, centerOffsetY);
   }
 
   /**
