@@ -14,6 +14,14 @@ import { ContactsDisplayService } from './contacts-display.service';
 @Injectable({ providedIn: 'root' })
 export class ContactOperationsService {
 
+  /**
+   * Initializes the contact operations service with required dependencies.
+   * 
+   * @param formService - Service for form operations
+   * @param crudService - Service for CRUD operations
+   * @param stateService - Service for managing contact state
+   * @param displayService - Service for display operations
+   */
   constructor(
     private formService: ContactsFormService,
     private crudService: ContactsCrudService,

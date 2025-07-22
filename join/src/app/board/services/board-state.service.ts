@@ -14,6 +14,13 @@ import { BoardLifecycleService } from './board-lifecycle.service';
 })
 export class BoardStateService {
   
+  /**
+   * Initializes the board state service with required dependencies.
+   * 
+   * @param initializationService - Service for board initialization
+   * @param arrayManagementService - Service for managing task arrays
+   * @param lifecycleService - Service for component lifecycle management
+   */
   constructor(
     private initializationService: BoardInitializationService,
     private arrayManagementService: BoardArrayManagementService,

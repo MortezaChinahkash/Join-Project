@@ -13,6 +13,12 @@ import { ContactsFormService } from './contacts-form.service';
 @Injectable({ providedIn: 'root' })
 export class ContactUtilityService {
 
+  /**
+   * Initializes the contact utility service with required dependencies.
+   * 
+   * @param displayService - Service for display operations
+   * @param formService - Service for form operations
+   */
   constructor(
     private displayService: ContactsDisplayService,
     private formService: ContactsFormService

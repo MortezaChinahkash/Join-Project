@@ -13,6 +13,11 @@ import { ContactsStateService } from './contacts-state.service';
 @Injectable({ providedIn: 'root' })
 export class ContactStateProxyService {
 
+  /**
+   * Initializes the contact state proxy service with required dependencies.
+   * 
+   * @param stateService - Service for managing contact state
+   */
   constructor(
     private stateService: ContactsStateService
   ) {}

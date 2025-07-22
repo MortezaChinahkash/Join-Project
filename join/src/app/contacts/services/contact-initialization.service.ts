@@ -16,6 +16,14 @@ export class ContactInitializationService implements OnDestroy {
   private contactsSubscription?: Subscription;
   private resizeCleanup?: () => void;
 
+  /**
+   * Initializes the contact initialization service with required dependencies.
+   * 
+   * @param dataService - Service for contact data operations
+   * @param stateService - Service for managing contact state
+   * @param crudService - Service for CRUD operations
+   * @param organizationService - Service for organizing contacts
+   */
   constructor(
     private dataService: ContactDataService,
     private stateService: ContactsStateService,
