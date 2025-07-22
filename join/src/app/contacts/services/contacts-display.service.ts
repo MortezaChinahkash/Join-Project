@@ -12,7 +12,6 @@ import { AuthService, User } from '../../shared/services/auth.service';
 @Injectable({ providedIn: 'root' })
 
 export class ContactsDisplayService {
-  /** Constructor initializes display service with organization and auth services */
   constructor(
     private organizationService: ContactOrganizationService,
     private authService: AuthService

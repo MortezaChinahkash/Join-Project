@@ -10,9 +10,6 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   isOverlayVisible = false;
-  /**
-   * Constructor initializes header component with router and auth service
-   */
   constructor(
     private router: Router,
     private authService: AuthService

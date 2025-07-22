@@ -29,9 +29,6 @@ export class AuthService implements OnDestroy {
   private readonly SESSION_DURATION = 24 * 60 * 60 * 1000;
   private sessionCheckInterval: any;
   private injector = inject(Injector);
-  /**
-   * Constructor initializes auth service with router, Firebase auth, and welcome overlay service
-   */
   constructor(
     private router: Router,
     private auth: Auth,

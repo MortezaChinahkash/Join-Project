@@ -31,9 +31,6 @@ import { BoardTaskManagementService } from './board-task-management.service';
   providedIn: 'root'
 })
 export class BoardInitializationService {
-  /**
-   * Constructor initializes board initialization service with required dependencies
-   */
   constructor(
     private dataService: BoardDataService,
     private thumbnailService: BoardThumbnailService,

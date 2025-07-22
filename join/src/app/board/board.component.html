@@ -37,7 +37,6 @@
             </div>
             <div class="task-card" *ngFor="let task of getFilteredTasks(column.tasks())" (mousedown)="onTaskMouseDown($event, task)" (touchstart)="onTaskTouchStart($event, task)" [attr.data-priority]="task.priority" [class.task-dragging-original]="dragDropService.draggedTask?.id === task.id">
               <button class="mobile-move-btn" 
-                      *ngIf="touchDetectionService.shouldShowMobileControls()"
                       (click)="onMobileMoveTask($event, task)"
                       (touchstart)="onMobileMoveButtonTouchStart($event, task)"
                       (mousedown)="onMobileMoveButtonMouseDown($event)">
@@ -69,10 +68,8 @@
       </div>
       </div>
       
-      <!-- Board Thumbnail Component -->
       <app-board-thumbnail [boardColumns]="boardColumns"></app-board-thumbnail>
 
-      <!-- Add Task Overlay Component -->
       <app-add-task-overlay
         [isVisible]="formService.showAddTaskOverlay"
         [contacts]="contacts"
@@ -81,7 +78,6 @@
         (onSubmit)="onSubmit()">
       </app-add-task-overlay>
       
-      <!-- Task Details Overlay Component -->
       <app-task-details-overlay
         [isVisible]="formService.showTaskDetailsOverlay"
         [selectedTask]="formService.selectedTask"
@@ -92,7 +88,6 @@
         (onSubtaskToggle)="toggleSubtask($event)">
       </app-task-details-overlay>
       
-      <!-- Task Edit Overlay Component -->
       <app-task-edit-overlay 
         [isVisible]="taskEditOverlayService.getEditingState()"
         [selectedTask]="taskEditOverlayService.getSelectedTask()"

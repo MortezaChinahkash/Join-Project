@@ -12,7 +12,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class SvgLoaderService {
-  /** Constructor initializes service with HTTP client */
   constructor(private http: HttpClient) {}
 
   /**

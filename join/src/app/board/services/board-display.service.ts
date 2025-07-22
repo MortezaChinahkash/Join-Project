@@ -24,7 +24,6 @@ import { BoardUtilsService } from './board-utils.service';
   providedIn: 'root'
 })
 export class BoardDisplayService {
-  /** Constructor initializes display service with utils service */
   constructor(private utilsService: BoardUtilsService) {}
 
   /**

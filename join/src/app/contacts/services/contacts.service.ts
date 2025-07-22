@@ -24,7 +24,6 @@ export class ContactsService implements OnDestroy {
   private selectedContact: Contact | null = null;
   private contactsSubscription?: Subscription;
   private resizeCleanup?: () => void;
-  /** Constructor initializes all contact services */
   constructor(
     private dataService: ContactDataService,
     private organizationService: ContactOrganizationService,
@@ -35,62 +34,42 @@ export class ContactsService implements OnDestroy {
     private displayService: ContactsDisplayService,
     private authService: AuthService
   ) {}
-  
-  /** Observable for add contact overlay visibility */
   get showAddContactOverlay$(): Observable<boolean> { return this.stateService.showAddContactOverlay$; }
 
-  /** Observable for edit contact overlay visibility */
   get showEditContactOverlay$(): Observable<boolean> { return this.stateService.showEditContactOverlay$; }
 
-  /** Observable for mobile more menu visibility */
   get showMobileMoreMenu$(): Observable<boolean> { return this.stateService.showMobileMoreMenu$; }
 
-  /** Observable for contact success message overlay visibility */
   get contactSuccessMessageOverlay$(): Observable<boolean> { return this.stateService.contactSuccessMessageOverlay$; }
 
-  /** Observable for mobile view state */
   get isMobileView$(): Observable<boolean> { return this.stateService.isMobileView$; }
 
-  /** Observable for mobile single contact view state */
   get showMobileSingleContact$(): Observable<boolean> { return this.stateService.showMobileSingleContact$; }
 
-  /** Observable for animation suppression state */
   get suppressAnimation$(): Observable<boolean> { return this.stateService.suppressAnimation$; }
 
-  /** Observable for contact success message text */
   get contactSuccessMessageText$(): Observable<string> { return this.stateService.contactSuccessMessageText$; }
 
-  /** Current add contact overlay visibility state */
   get showAddContactOverlay(): boolean { return this.stateService.showAddContactOverlay; }
 
-  /** Current edit contact overlay visibility state */
   get showEditContactOverlay(): boolean { return this.stateService.showEditContactOverlay; }
 
-  /** Current mobile more menu visibility state */
   get showMobileMoreMenu(): boolean { return this.stateService.showMobileMoreMenu; }
 
-  /** Current contact success message overlay visibility state */
   get contactSuccessMessageOverlay(): boolean { return this.stateService.contactSuccessMessageOverlay; }
 
-  /** Current mobile view state */
   get isMobileView(): boolean { return this.stateService.isMobileView; }
 
-  /** Current mobile single contact view state */
   get showMobileSingleContact(): boolean { return this.stateService.showMobileSingleContact; }
 
-  /** Current animation suppression state */
   get suppressAnimation(): boolean { return this.stateService.suppressAnimation; }
 
-  /** Current contact success message text */
   get contactSuccessMessageText(): string { return this.stateService.contactSuccessMessageText; }
 
-  /** Gets all contacts array */
   get allContacts(): Contact[] { return this.contacts; }
 
-  /** Gets grouped contacts by first letter */
   get contactGroups(): { [key: string]: Contact[] } { return this.groupedContacts; }
 
-  /** Gets currently selected contact */
   get currentContact(): Contact | null { return this.selectedContact; }
 
   /**

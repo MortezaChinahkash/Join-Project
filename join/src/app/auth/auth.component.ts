@@ -26,7 +26,6 @@ export class AuthComponent implements OnInit {
   isLoginMode = true;
   isLoading = false;
   errorMessage = '';
-  /** Constructor initializes form builder and services */
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,

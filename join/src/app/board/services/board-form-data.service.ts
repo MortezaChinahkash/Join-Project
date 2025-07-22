@@ -4,11 +4,12 @@ import { Contact } from '../../contacts/services/contact-data.service';
 /**
  * Service for managing board form data operations.
  * Handles task creation, updates, data persistence, and state management.
- *
+ * 
  * @author Daniel Grabowski, Gary Angelone, Joshua Brunke, Morteza Chinahkash
  * @version 1.0.0
  */
 @Injectable({ providedIn: 'root' })
+
 export class BoardFormDataService {
   private currentTask: Task | null = null;
   private originalTask: Task | null = null;
@@ -18,13 +19,11 @@ export class BoardFormDataService {
   private autoSaveDelay = 1000;
   /**
    * Creates a new task object with default values.
-   *
+   * 
    * @param status - Initial task status
    * @returns New task object
    */
-  createNewTask(
-    status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'
-  ): Task {
+  createNewTask(status: 'todo' | 'inprogress' | 'awaiting' | 'done' = 'todo'): Task {
     const newTask = this.buildTaskWithDefaults(status);
     this.initializeTaskState(newTask);
     return newTask;
@@ -32,14 +31,12 @@ export class BoardFormDataService {
 
   /**
    * Builds a new task object with default values.
-   *
+   * 
    * @param status - Initial task status
    * @returns New task object with defaults
    * @private
    */
-  private buildTaskWithDefaults(
-    status: 'todo' | 'inprogress' | 'awaiting' | 'done'
-  ): Task {
+  private buildTaskWithDefaults(status: 'todo' | 'inprogress' | 'awaiting' | 'done'): Task {
     return {
       id: this.generateTaskId(),
       title: '',
@@ -50,13 +47,13 @@ export class BoardFormDataService {
       column: status,
       subtasks: [],
       category: '',
-      createdAt: new Date(),
+      createdAt: new Date()
     };
   }
 
   /**
    * Initializes the service state for a new task.
-   *
+   * 
    * @param task - The newly created task
    * @private
    */
@@ -68,7 +65,7 @@ export class BoardFormDataService {
 
   /**
    * Initializes form data for editing an existing task.
-   *
+   * 
    * @param task - Task to edit
    */
   initializeForEdit(task: Task): void {
@@ -79,7 +76,7 @@ export class BoardFormDataService {
 
   /**
    * Gets the current task being edited or created.
-   *
+   * 
    * @returns Current task or null
    */
   getCurrentTask(): Task | null {
@@ -88,7 +85,7 @@ export class BoardFormDataService {
 
   /**
    * Gets the original task (before editing).
-   *
+   * 
    * @returns Original task or null
    */
   getOriginalTask(): Task | null {
@@ -97,7 +94,7 @@ export class BoardFormDataService {
 
   /**
    * Checks if form is in edit mode.
-   *
+   * 
    * @returns True if editing existing task
    */
   getIsEditMode(): boolean {
@@ -106,7 +103,7 @@ export class BoardFormDataService {
 
   /**
    * Updates a field in the current task.
-   *
+   * 
    * @param field - Field name to update
    * @param value - New value
    */
@@ -120,7 +117,7 @@ export class BoardFormDataService {
 
   /**
    * Updates task title.
-   *
+   * 
    * @param title - New title
    */
   updateTitle(title: string): void {
@@ -129,7 +126,7 @@ export class BoardFormDataService {
 
   /**
    * Updates task description.
-   *
+   * 
    * @param description - New description
    */
   updateDescription(description: string): void {
@@ -138,7 +135,7 @@ export class BoardFormDataService {
 
   /**
    * Updates task due date.
-   *
+   * 
    * @param dueDate - New due date
    */
   updateDueDate(dueDate: string): void {
@@ -147,7 +144,7 @@ export class BoardFormDataService {
 
   /**
    * Updates task priority.
-   *
+   * 
    * @param priority - New priority
    */
   updatePriority(priority: 'low' | 'medium' | 'urgent'): void {
@@ -156,7 +153,7 @@ export class BoardFormDataService {
 
   /**
    * Updates task category.
-   *
+   * 
    * @param category - New category
    */
   updateCategory(category: string): void {
@@ -165,7 +162,7 @@ export class BoardFormDataService {
 
   /**
    * Updates task status.
-   *
+   * 
    * @param status - New status
    */
   updateStatus(status: 'todo' | 'inprogress' | 'awaiting' | 'done'): void {
@@ -174,14 +171,12 @@ export class BoardFormDataService {
 
   /**
    * Updates assigned contacts.
-   *
+   * 
    * @param contacts - Array of assigned contacts
    */
   updateAssignedContacts(contacts: Contact[]): void {
     if (!this.currentTask) return;
-    this.currentTask.assignedTo = contacts
-      .map((contact) => contact.id || '')
-      .filter((id) => id);
+    this.currentTask.assignedTo = contacts.map(contact => contact.id || '').filter(id => id);
     if (this.autoSaveEnabled) {
       this.scheduleAutoSave();
     }
@@ -189,7 +184,7 @@ export class BoardFormDataService {
 
   /**
    * Adds a subtask to the current task.
-   *
+   * 
    * @param title - Subtask title
    * @returns Created subtask
    */
@@ -200,7 +195,7 @@ export class BoardFormDataService {
     const subtask: Subtask = {
       id: this.generateSubtaskId(),
       title: title,
-      completed: false,
+      completed: false
     };
     this.currentTask.subtasks.push(subtask);
     if (this.autoSaveEnabled) {
@@ -211,19 +206,17 @@ export class BoardFormDataService {
 
   /**
    * Updates a subtask.
-   *
+   * 
    * @param subtaskId - ID of subtask to update
    * @param updates - Partial subtask updates
    */
   updateSubtask(subtaskId: string, updates: Partial<Subtask>): void {
     if (!this.currentTask) return;
-    const subtaskIndex = this.currentTask.subtasks.findIndex(
-      (st: Subtask) => st.id === subtaskId
-    );
+    const subtaskIndex = this.currentTask.subtasks.findIndex((st: Subtask) => st.id === subtaskId);
     if (subtaskIndex > -1) {
       this.currentTask.subtasks[subtaskIndex] = {
         ...this.currentTask.subtasks[subtaskIndex],
-        ...updates,
+        ...updates
       };
       if (this.autoSaveEnabled) {
         this.scheduleAutoSave();
@@ -233,14 +226,12 @@ export class BoardFormDataService {
 
   /**
    * Removes a subtask from the current task.
-   *
+   * 
    * @param subtaskId - ID of subtask to remove
    */
   removeSubtask(subtaskId: string): void {
     if (!this.currentTask) return;
-    const index = this.currentTask.subtasks.findIndex(
-      (st: Subtask) => st.id === subtaskId
-    );
+    const index = this.currentTask.subtasks.findIndex((st: Subtask) => st.id === subtaskId);
     if (index > -1) {
       this.currentTask.subtasks.splice(index, 1);
       if (this.autoSaveEnabled) {
@@ -251,7 +242,7 @@ export class BoardFormDataService {
 
   /**
    * Gets all subtasks for the current task.
-   *
+   * 
    * @returns Array of subtasks
    */
   getSubtasks(): Subtask[] {
@@ -260,14 +251,12 @@ export class BoardFormDataService {
 
   /**
    * Checks if the current task has been modified.
-   *
+   * 
    * @returns True if task has changes
    */
   hasChanges(): boolean {
     if (!this.currentTask || !this.originalTask) return false;
-    return (
-      JSON.stringify(this.currentTask) !== JSON.stringify(this.originalTask)
-    );
+    return JSON.stringify(this.currentTask) !== JSON.stringify(this.originalTask);
   }
 
   /**
@@ -290,7 +279,7 @@ export class BoardFormDataService {
 
   /**
    * Validates the current task data.
-   *
+   * 
    * @returns Validation result with errors
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
@@ -305,7 +294,7 @@ export class BoardFormDataService {
 
   /**
    * Validates that a current task exists.
-   *
+   * 
    * @param errors - Array to collect validation errors
    * @returns True if task exists, false otherwise
    * @private
@@ -320,7 +309,7 @@ export class BoardFormDataService {
 
   /**
    * Validates required task fields.
-   *
+   * 
    * @param errors - Array to collect validation errors
    * @private
    */
@@ -332,7 +321,7 @@ export class BoardFormDataService {
 
   /**
    * Validates task title field.
-   *
+   * 
    * @param errors - Array to collect validation errors
    * @private
    */
@@ -344,7 +333,7 @@ export class BoardFormDataService {
 
   /**
    * Validates task description field.
-   *
+   * 
    * @param errors - Array to collect validation errors
    * @private
    */
@@ -356,7 +345,7 @@ export class BoardFormDataService {
 
   /**
    * Validates task category field.
-   *
+   * 
    * @param errors - Array to collect validation errors
    * @private
    */
@@ -368,7 +357,7 @@ export class BoardFormDataService {
 
   /**
    * Validates task due date field.
-   *
+   * 
    * @param errors - Array to collect validation errors
    * @private
    */
@@ -384,7 +373,7 @@ export class BoardFormDataService {
 
   /**
    * Gets today's date with time set to midnight.
-   *
+   * 
    * @returns Today's date at 00:00:00
    * @private
    */
@@ -396,7 +385,7 @@ export class BoardFormDataService {
 
   /**
    * Enables auto-save functionality.
-   *
+   * 
    * @param delay - Auto-save delay in milliseconds
    */
   enableAutoSave(delay: number = 1000): void {
@@ -443,7 +432,7 @@ export class BoardFormDataService {
 
   /**
    * Generates a unique task ID.
-   *
+   * 
    * @returns Unique task ID
    */
   private generateTaskId(): string {
@@ -452,18 +441,16 @@ export class BoardFormDataService {
 
   /**
    * Generates a unique subtask ID.
-   *
+   * 
    * @returns Unique subtask ID
    */
   private generateSubtaskId(): string {
-    return (
-      'subtask_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9)
-    );
+    return 'subtask_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
   }
 
   /**
    * Creates a deep clone of a task object.
-   *
+   * 
    * @param task - Task to clone
    * @returns Cloned task
    */

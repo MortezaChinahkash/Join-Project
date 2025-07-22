@@ -27,9 +27,6 @@ import { BoardInteractionService } from './board-interaction.service';
   providedIn: 'root'
 })
 export class BoardLifecycleService {
-  /**
-   * Constructor initializes lifecycle service with data and navigation dependencies
-   */
   constructor(
     private dataService: BoardDataService,
     private navigationService: BoardNavigationService,

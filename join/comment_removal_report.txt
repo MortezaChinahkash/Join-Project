@@ -1,0 +1,276 @@
+COMMENT REMOVAL ANALYSIS REPORT
+Generated: 2025-07-22 10:03:04
+================================================================================
+Processing 171 files...
+Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
+Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\404.html
+  Original: 26 lines → Cleaned: 24 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 10:         // Redirect to index.html with the current path as a query parameter
+    Line 11:         // Adjusted for /Join/ subdirectory
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\index.html
+  Original: 40 lines → Cleaned: 38 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 23:   // Single Page Application support for GitHub Pages and similar hosting
+    Line 24:   // Adjusted for /Join/ subdirectory
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.html
+  Original: 146 lines → Cleaned: 141 lines
+  Removed: 5 comment lines
+  Removed content:
+    Line 40:                       *ngIf="touchDetectionService.shouldShowMobileControls()"
+    Line 72:       <!-- Board Thumbnail Component -->
+    Line 75:       <!-- Add Task Overlay Component -->
+    Line 84:       <!-- Task Details Overlay Component -->
+    Line 95:       <!-- Task Edit Overlay Component -->
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\add-task-overlay\add-task-overlay.component.html
+  Original: 189 lines → Cleaned: 188 lines
+  Removed: 1 comment lines
+  Removed content:
+    Line 1: <!-- Add Task Overlay Component -->
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board-thumbnail\board-thumbnail.component.html
+  Original: 34 lines → Cleaned: 32 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 11:            *ngFor="let column of boardColumns; let i = index"
+    Line 18:                *ngFor="let task of column.tasks().slice(0, 8)"
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\task-details-overlay\task-details-overlay.component.html
+  Original: 120 lines → Cleaned: 118 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 54:                  *ngIf="formService.showAssignedContactsDropdown"
+    Line 89:                  *ngFor="let subtask of selectedTask.subtasks; let i = index"
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\task-edit-overlay\task-edit-overlay.component.html
+  Original: 211 lines → Cleaned: 207 lines
+  Removed: 4 comment lines
+  Removed content:
+    Line 95:               *ngFor="let contact of contacts"
+    Line 99:                   *ngIf="formService.isContactSelected(contact)"
+    Line 103:                   *ngIf="!formService.isContactSelected(contact)"
+    Line 125:             *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index"
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.html
+  Original: 60 lines → Cleaned: 57 lines
+  Removed: 3 comment lines
+  Removed content:
+    Line 12:        *ngIf="currentStep">
+    Line 30:                 *ngFor="let step of [].constructor(totalSteps); let i = index"
+    Line 41:                   *ngIf="!isFirstStep()">
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\styles.scss
+  Original: 212 lines → Cleaned: 199 lines
+  Removed: 13 comment lines
+  Removed content:
+    Line 200: /* Global placeholder styles - ensure all placeholders remain gray */
+    Line 201: input::placeholder,
+    Line 202: textarea::placeholder,
+    Line 203: select::placeholder {
+    Line 204:   color: #d1d7db !important;
+    ... and 8 more lines
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.component.scss
+  Original: 347 lines → Cleaned: 211 lines
+  Removed: 136 comment lines
+  Removed content:
+    Line 1: // Board Component Main Styles
+    Line 2: // Import only styles needed by the board component itself
+    Line 10: // Task details actions (shared between overlays)
+    Line 56: // Removed duplicate taskEditOverlay styles - now in task-details-overlay component
+    Line 58: // Custom Flatpickr styling for Board overlays
+    ... and 131 more lines
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board-thumbnail\board-thumbnail.component.scss
+  Original: 168 lines → Cleaned: 166 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 1: // Board Thumbnail Component Styles
+    Line 156: // Mobile responsive for thumbnail
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\delete-confirmation\delete-confirmation.component.scss
+  Original: 194 lines → Cleaned: 193 lines
+  Removed: 1 comment lines
+  Removed content:
+    Line 169: // Mobile responsiveness
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\styles\_board-thumbnail.scss
+  Original: 172 lines → Cleaned: 170 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 1: // Board Thumbnail Styles
+    Line 160: // Mobile responsive for thumbnail
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\styles\_drag-and-drop.scss
+  Original: 93 lines → Cleaned: 91 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 28:   // Ensure the dragged element maintains its structure
+    Line 29:   * {
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\task-details-overlay\task-details-overlay.component.scss
+  Original: 472 lines → Cleaned: 353 lines
+  Removed: 119 comment lines
+  Removed content:
+    Line 1: // Task Details Overlay Styles
+    Line 120: // Priority icon colors in task details overlay - parent container needs data-priority attribute
+    Line 346: // Fixed Header Container (1st & 2nd Container)
+    Line 352: // Scrollable Content Container (3rd Container)
+    Line 358:   /* Custom scrollbar styling */
+    ... and 114 more lines
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\main-content\main-content.component.scss
+  Original: 40 lines → Cleaned: 27 lines
+  Removed: 13 comment lines
+  Removed content:
+    Line 28:     /* === RESPONSIVE === */
+    Line 29:     @media screen and (max-width: 1000px) {
+    Line 30:         .main{
+    Line 31:             height: calc(100vh - 8em);
+    Line 32:         }        .page{
+    ... and 8 more lines
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\nav\nav.component.scss
+  Original: 269 lines → Cleaned: 156 lines
+  Removed: 113 comment lines
+  Removed content:
+    Line 105:         // Login section styles
+    Line 108:             // padding: 75px 0px 50px 0px;
+    Line 159:  /* === RESPONSIVE === */
+    Line 160: @media screen and (max-width: 1000px) {
+    Line 161: 
+    ... and 108 more lines
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\spa-fallback.js
+  Original: 24 lines → Cleaned: 19 lines
+  Removed: 5 comment lines
+  Removed content:
+    Line 1: // JavaScript fallback for SPA routing when server doesn't support URL rewriting
+    Line 3:     // Check if we're not on the main page and got a 404
+    Line 8:         // Check if we can detect a 404 scenario
+    Line 11:         // Common 404 indicators
+    Line 19:             // Redirect to main page with hash routing
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-auto-scroll.service.ts
+  Original: 463 lines → Cleaned: 458 lines
+  Removed: 5 comment lines
+  Removed content:
+    Line 294:     // Special case for board-scroll-wrapper (always return if exists)
+    Line 306:     // Check board-scroll-wrapper separately
+    Line 310:     // Check body and documentElement
+    Line 405:     // Try specific board containers first
+    Line 409:     // Fallback to document-level containers
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
+  Original: 883 lines → Cleaned: 882 lines
+  Removed: 1 comment lines
+  Removed content:
+    Line 632:     // Handle both form object and direct value
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-thumbnail.service.ts
+  Original: 164 lines → Cleaned: 163 lines
+  Removed: 1 comment lines
+  Removed content:
+    Line 137:       // Initialize with multiple attempts
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
+  Original: 451 lines → Cleaned: 449 lines
+  Removed: 2 comment lines
+  Removed content:
+    Line 440:     // Currently no action taken when clicking overlay background
+    Line 441:     // Could be extended to close onboarding or perform other actions
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\environments\environment.example.ts
+  Original: 37 lines → Cleaned: 15 lines
+  Removed: 22 comment lines
+  Removed content:
+    Line 1: // Template for Firebase environment configuration
+    Line 2: // Copy this file to environment.ts and environment.prod.ts and replace with your actual Firebase config
+    Line 18: /*
+    Line 19: === SETUP INSTRUCTIONS ===
+    Line 20: 
+    ... and 17 more lines
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\environments\environment.prod.template.ts
+  Original: 19 lines → Cleaned: 14 lines
+  Removed: 5 comment lines
+  Removed content:
+    Line 1: // Template for production environment configuration - DO NOT COMMIT REAL VALUES
+    Line 16: // Instructions:
+    Line 17: // 1. Copy this file to environment.prod.ts
+    Line 18: // 2. Replace all "YOUR_*" values with your actual Firebase configuration
+    Line 19: // 3. Never commit the real environment.prod.ts file to version control
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\environments\environment.prod.ts
+  Original: 14 lines → Cleaned: 13 lines
+  Removed: 1 comment lines
+  Removed content:
+    Line 1: // Environment configuration for production
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\environments\environment.template.ts
+  Original: 19 lines → Cleaned: 14 lines
+  Removed: 5 comment lines
+  Removed content:
+    Line 1: // Template for environment configuration - DO NOT COMMIT REAL VALUES
+    Line 16: // Instructions:
+    Line 17: // 1. Copy this file to environment.ts
+    Line 18: // 2. Replace all "YOUR_*" values with your actual Firebase configuration
+    Line 19: // 3. Never commit the real environment.ts file to version control
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\environments\environment.ts
+  Original: 31 lines → Cleaned: 26 lines
+  Removed: 5 comment lines
+  Removed content:
+    Line 1: // Template for environment configuration - DO NOT COMMIT REAL VALUES
+    Line 28: // Instructions:
+    Line 29: // 1. Copy this file to environment.ts
+    Line 30: // 2. Replace all "YOUR_*" values with your actual Firebase configuration
+    Line 31: // 3. Never commit the real environment.ts file to version control
+
+File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\environments\firebase.config.ts
+  Original: 21 lines → Cleaned: 11 lines
+  Removed: 10 comment lines
+  Removed content:
+    Line 1: // This file contains the Firebase configuration for your application
+    Line 2: // You need to replace these values with your actual Firebase project configuration
+    Line 3: // You can find these values in your Firebase project settings under "Project settings" > "General" > "Your apps"
+    Line 15: // Instructions to get your Firebase config:
+    Line 16: // 1. Go to the Firebase Console (https://console.firebase.google.com/)
+    ... and 5 more lines
+
+================================================================================
+SUMMARY BY FILE TYPE
+================================================================================
+TypeScript: 10/107 files changed, 57 lines removed
+JavaScript: 1/1 files changed, 5 lines removed
+HTML: 8/21 files changed, 21 lines removed
+SCSS: 9/42 files changed, 401 lines removed
+CSS: No files processed
+SASS: No files processed
+
+================================================================================
+OVERALL SUMMARY
+================================================================================
+Files processed: 171
+Files with changes: 28
+Total comment lines removed: 484
+JSDoc comments preserved: YES
+Backup files created: NO
+
+PRESERVED COMMENT TYPES:
+• JSDoc comments (/** ... */)
+• @param, @returns, @fileoverview, etc.
+• Component and method documentation
+
+REMOVED COMMENT TYPES:
+• Single-line comments (//)
+• Multi-line comments (/* ... */) - non-JSDoc
+• HTML comments (<!-- ... -->)
+• SCSS/SASS comments (#)

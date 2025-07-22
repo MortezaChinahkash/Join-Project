@@ -92,15 +92,15 @@
           <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
             <div 
               class="contact-option" 
-              *ngFor="let contact of contacts" 
+              *ngFor="let contact of contacts"
               (click)="formService.toggleContactSelection(contact, $event)">
               <div class="contact-checkbox" [class.checked]="formService.isContactSelected(contact)">
                 <img 
-                  *ngIf="formService.isContactSelected(contact)" 
+                  *ngIf="formService.isContactSelected(contact)"
                   src="./assets/img/icon_checkbox_checked.svg" 
                   alt="Checked" />
                 <img 
-                  *ngIf="!formService.isContactSelected(contact)" 
+                  *ngIf="!formService.isContactSelected(contact)"
                   src="./assets/img/icon_checkbox_unchecked.svg" 
                   alt="Unchecked" />
               </div>
@@ -122,11 +122,11 @@
         <div class="subtasks-container" formArrayName="subtasks">
           <div 
             class="subtask-item" 
-            *ngFor="let subtask of formService.subtasksFormArray.controls; let i = index" 
+            *ngFor="let subtask of formService.getSubtasks(); let i = index"
             [formGroupName]="i">
             <div 
               class="subtask-input-group" 
-              [class.completed-subtask]="subtask.get('completed')?.value"
+              [class.completed-subtask]="subtask.completed"
               [class.touch-device]="isTouchDevice">
               <input
                 type="text"
@@ -135,7 +135,7 @@
                 [readonly]="editingSubtaskIndex !== i"
                 formControlName="title"
                 class="form-input"
-                [class.completed]="subtask.get('completed')?.value"
+                [class.completed]="subtask.completed"
                 [class.grayed]="editingSubtaskIndex !== i"
                 placeholder="Enter subtask title"
                 (focus)="onSubtaskInputFocus(i)"

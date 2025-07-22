@@ -16,9 +16,6 @@ import { BoardDragDetectionService } from './drag-drop/board-drag-detection.serv
   providedIn: 'root'
 })
 export class BoardDragDropService {
-  /**
-   * Constructor initializes drag and drop service with required dependencies
-   */
   constructor(
     private taskService: TaskService,
     private boardThumbnailService: BoardThumbnailService,

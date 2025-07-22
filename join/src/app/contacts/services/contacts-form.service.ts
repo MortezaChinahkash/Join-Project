@@ -12,7 +12,6 @@ import { Contact } from './contact-data.service';
 
 export class ContactsFormService {
   private contactForm: FormGroup;
-  /** Constructor initializes form service with form builder */
   constructor(private fb: FormBuilder) {
     this.contactForm = this.createContactForm();
   }

@@ -25,19 +25,19 @@ import { ContactsService } from './services/contacts.service';
       transition('* => suppress', []),
       transition('suppress => void', []),
       transition('* => *', [
-        /** Initial state for slide animation */
         style({ transform: 'translateX(100%)', opacity: 0 }),
-        /** Animation to slide element into view */
+
         animate(
           '350ms cubic-bezier(.35,0,.25,1)',
           style({ transform: 'translateX(0)', opacity: 1 })
+
         ),
       ]),
       transition(':leave', [
-        /** Animation to slide element out of view */
         animate(
           '200ms cubic-bezier(.35,0,.25,1)',
           style({ transform: 'translateX(100%)', opacity: 0 })
+
         ),
       ]),
     ]),
@@ -91,40 +91,28 @@ export class ContactsComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  /** Gets all contacts array */
   get contacts(): Contact[] { return this.contactsService.allContacts; }
 
-  /** Gets contacts grouped by first letter */
   get groupedContacts(): { [key: string]: Contact[] } { return this.contactsService.contactGroups; }
 
-  /** Gets currently selected contact */
   get selectedContact(): Contact | null { return this.contactsService.currentContact; }
 
-  /** Gets add contact form */
   get addContactForm(): FormGroup { return this.contactsService.getContactForm(); }
 
-  /** Gets add contact overlay visibility */
   get showAddContactOverlay(): boolean { return this.contactsService.showAddContactOverlay; }
 
-  /** Gets edit contact overlay visibility */
   get showEditContactOverlay(): boolean { return this.contactsService.showEditContactOverlay; }
 
-  /** Gets mobile more menu visibility */
   get showMobileMoreMenu(): boolean { return this.contactsService.showMobileMoreMenu; }
 
-  /** Gets contact success message overlay visibility */
   get contactSuccessMessageOverlay(): boolean { return this.contactsService.contactSuccessMessageOverlay; }
 
-  /** Gets mobile view state */
   get isMobileView(): boolean { return this.contactsService.isMobileView; }
 
-  /** Gets mobile single contact view state */
   get showMobileSingleContact(): boolean { return this.contactsService.showMobileSingleContact; }
 
-  /** Gets animation suppression state */
   get suppressAnimation(): boolean { return this.contactsService.suppressAnimation; }
 
-  /** Gets contact success message text */
   get contactSuccessMessageText(): string { return this.contactsService.contactSuccessMessageText; }
 
   /**

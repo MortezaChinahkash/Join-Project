@@ -31,7 +31,6 @@ import { Contact } from '../../contacts/services/contact-data.service';
   providedIn: 'root'
 })
 export class BoardTaskManagementService {
-  /** Constructor initializes task management service with all dependencies */
   constructor(
     private taskService: TaskService,
     private formService: BoardFormService,

@@ -13,9 +13,6 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 export class BoardFormStateService {
   taskForm: FormGroup;
   selectedPriority: 'urgent' | 'medium' | 'low' | '' = '';
-  /**
-   * Constructor initializes form state service with FormBuilder and creates task form
-   */
   constructor(private fb: FormBuilder) {
     this.taskForm = this.createTaskForm();
   }

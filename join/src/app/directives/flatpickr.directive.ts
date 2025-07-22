@@ -25,9 +25,6 @@ export class FlatpickrDirective implements OnInit, OnDestroy, ControlValueAccess
 
   private onTouched = () => {};
 
-  /**
-   * Constructor initializes Flatpickr directive with element reference
-   */
   constructor(private elementRef: ElementRef) {}
 
   /**

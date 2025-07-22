@@ -14,9 +14,6 @@ import { BoardAutoScrollService } from './board-auto-scroll.service';
 export class BoardTouchHandlerService {
   private readonly LONG_PRESS_DURATION = 500;
   private readonly TOUCH_MOVE_THRESHOLD = 10;
-  /**
-   * Constructor initializes touch handler service with drag state and auto scroll dependencies
-   */
   constructor(
     private dragState: BoardDragStateService,
     private autoScroll: BoardAutoScrollService

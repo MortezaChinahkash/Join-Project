@@ -24,14 +24,14 @@ import { ContactHelperService } from '../../contacts/services/contact-helper.ser
   animations: [
     trigger('slideInRight', [
       transition(':enter', [
-        /** Initial state for slide-in animation from right */
         style({ transform: 'translateX(100%)', opacity: 0 }),
-        /** Animation to slide element into view */
+
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
+
       ]),
       transition(':leave', [
-        /** Animation to slide element out of view to the right */
         animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
+
       ])
     ])
   ]
@@ -44,7 +44,6 @@ export class TaskDetailsOverlayComponent implements OnInit, OnDestroy {
   @Output() onEdit = new EventEmitter<void>();
   @Output() onDelete = new EventEmitter<void>();
   @Output() onSubtaskToggle = new EventEmitter<number>();
-  /** Constructor initializes services */
   constructor(
     public formService: BoardFormService,
     public utilsService: BoardUtilsService,

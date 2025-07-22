@@ -50,48 +50,6 @@ def analyze_jsdoc_coverage(file_path):
 
 def is_method_declaration(stripped, lines, i):
     """Check if this line is a method/function declaration"""
-    # Skip test methods (describe, it, beforeEach, etc.)
-    if (stripped.startswith('describe(') or 
-        stripped.startswith('it(') or 
-        stripped.startswith('beforeEach(') or 
-        stripped.startswith('afterEach(') or
-        stripped.startswith('beforeAll(') or
-        stripped.startswith('afterAll(')):
-        return False
-    
-    # Skip arrow functions - they typically don't need JSDoc
-    if '=>' in stripped:
-        return False
-    
-    # Skip variable declarations with method calls (const x = method(), let y = new Date(), etc.)
-    if (stripped.startswith('const ') or 
-        stripped.startswith('let ') or 
-        stripped.startswith('var ')) and '=' in stripped:
-        return False
-    
-    # Skip method calls that are part of variable assignments or return statements
-    if (stripped.startswith('return ') or 
-        stripped.startswith('const ') or 
-        stripped.startswith('let ') or 
-        stripped.startswith('var ') or
-        '= ' in stripped or
-        stripped.startswith('this.') or
-        'Math.' in stripped or
-        'console.' in stripped or
-        'document.' in stripped or
-        'window.' in stripped or
-        'localStorage.' in stripped or
-        'sessionStorage.' in stripped):
-        return False
-    
-    # Skip simple method calls (lines that only contain method invocations)
-    if ('(' in stripped and ')' in stripped and 
-        not stripped.endswith('{') and 
-        not stripped.endswith(':') and
-        not (i + 1 < len(lines) and lines[i + 1].strip() == '{')):
-        # This looks like a method call, not a declaration
-        return False
-    
     # Constructor
     if stripped.startswith('constructor'):
         return True
@@ -101,7 +59,10 @@ def is_method_declaration(stripped, lines, i):
         ((':' in stripped and ('{' in stripped or 
          (i + 1 < len(lines) and lines[i + 1].strip() == '{'))) or
          stripped.startswith('async ') or
-         stripped.startswith('function '))):
+         stripped.startswith('function ') or
+         stripped.startswith('const ') or
+         stripped.startswith('let ') or
+         stripped.startswith('var '))):
         return True
     
     # Angular lifecycle hooks
@@ -112,6 +73,10 @@ def is_method_declaration(stripped, lines, i):
         stripped.startswith('ngAfterContentInit') or
         stripped.startswith('ngAfterViewChecked') or
         stripped.startswith('ngAfterContentChecked')):
+        return True
+    
+    # Arrow functions assigned to variables
+    if '=>' in stripped and ('=' in stripped or 'const' in stripped):
         return True
     
     return False
@@ -231,6 +196,18 @@ def extract_method_name(method_line):
         if method_line.startswith(hook):
             return hook
     
+    # Arrow functions
+    if '=>' in method_line:
+        arrow_patterns = [
+            r'(const|let|var)\s+(\w+)\s*=',  # const methodName =
+            r'(\w+)\s*=\s*\(',  # methodName = (
+            r'(\w+)\s*:\s*\(',  # methodName: (
+        ]
+        for pattern in arrow_patterns:
+            match = re.search(pattern, method_line)
+            if match:
+                return match.group(2) if match.lastindex >= 2 else match.group(1)
+    
     # Regular methods/functions
     patterns = [
         r'function\s+(\w+)\s*\(',  # function methodName(
@@ -265,6 +242,8 @@ def determine_method_type(method_line):
         return 'Protected Method'
     elif method_line.startswith('static'):
         return 'Static Method'
+    elif '=>' in method_line:
+        return 'Arrow Function'
     elif method_line.startswith('function'):
         return 'Function'
     elif method_line.startswith('async'):

@@ -12,7 +12,6 @@ import { Contact } from '../../contacts/services/contact-data.service';
   providedIn: 'root'
 })
 export class AddTaskFormService {
-  /** Constructor initializes form builder service */
   constructor(private formBuilder: FormBuilder) {}
 
   /**

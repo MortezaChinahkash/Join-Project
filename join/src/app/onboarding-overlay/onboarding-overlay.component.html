@@ -8,10 +8,9 @@
   </div>
   <div class="onboarding-tooltip" 
        [ngStyle]="getTooltipPosition()"
-       [class]="getArrowClass()"
-       *ngIf="currentStep">
+       [class]="getArrowClass()">
     <div class="tooltip-header">
-      <h3 class="tooltip-title">{{ currentStep.title }}</h3>
+      <h3 class="tooltip-title">{{ currentStep?.title }}</h3>
       <button class="close-btn" (click)="onClose()" aria-label="Close onboarding">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -20,7 +19,7 @@
       </button>
     </div>
     <div class="tooltip-content">
-      <p class="tooltip-description">{{ currentStep.description }}</p>
+      <p class="tooltip-description">{{ currentStep?.description }}</p>
     </div>
     <div class="tooltip-footer">
       <div class="step-indicator">
@@ -37,8 +36,7 @@
         <div class="nav-buttons">
           <button class="btn btn-secondary" 
                   (click)="onPrevious()" 
-                  [disabled]="isFirstStep()"
-                  *ngIf="!isFirstStep()">
+                  [disabled]="isFirstStep()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="15,18 9,12 15,6"></polyline>
             </svg>

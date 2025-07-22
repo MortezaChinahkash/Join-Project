@@ -5,7 +5,6 @@ import { SvgLoaderService } from './svg-loader.service';
 })
 export class InlineSvgDirective implements OnChanges {
   @Input('inlineSvg') url!: string;
-  /** Constructor initializes directive with element reference and SVG loader service */
   constructor(
     private el: ElementRef,
     private svgLoader: SvgLoaderService,

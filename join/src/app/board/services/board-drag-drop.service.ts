@@ -15,7 +15,6 @@ import { BoardTouchHandlerService } from './board-touch-handler.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardDragDropService {
-  /** Constructor initializes drag drop service with dependencies */
   constructor(
     private taskService: TaskService,
     private boardThumbnailService: BoardThumbnailService,
@@ -23,20 +22,14 @@ export class BoardDragDropService {
     private autoScroll: BoardAutoScrollService,
     private touchHandler: BoardTouchHandlerService
   ) {}
-  
-  /** Gets currently dragged task */
   get draggedTask(): Task | null { return this.dragState.draggedTask; }
 
-  /** Gets drag operation state */
   get isDraggingTask(): boolean { return this.dragState.isDraggingTask; }
 
-  /** Gets column being dragged over */
   get dragOverColumn(): TaskColumn | null { return this.dragState.dragOverColumn; }
 
-  /** Gets drag placeholder visibility */
   get dragPlaceholderVisible(): boolean { return this.dragState.dragPlaceholderVisible; }
 
-  /** Gets drag placeholder height */
   get dragPlaceholderHeight(): number { return this.dragState.dragPlaceholderHeight; }
   
   /**
