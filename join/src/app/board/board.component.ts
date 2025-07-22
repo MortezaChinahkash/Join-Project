@@ -71,6 +71,29 @@ export class BoardComponent implements OnInit, OnDestroy {
   boardColumns: any[];
   Math = Math;
   
+  /**
+   * Initializes the board component with all required services.
+   * 
+   * @param taskService - Service for task data operations
+   * @param dragDropService - Service for drag and drop functionality
+   * @param thumbnailService - Service for board thumbnail operations
+   * @param formService - Service for task form operations
+   * @param utilsService - Service for board utility functions
+   * @param dataService - Service for board data management
+   * @param touchDetectionService - Service for touch detection
+   * @param deleteConfirmationService - Service for delete confirmations
+   * @param taskEditOverlayService - Service for task editing overlay
+   * @param contactHelperService - Service for contact helper operations
+   * @param mobileTaskMoveService - Service for mobile task movement
+   * @param taskManagementService - Service for task management
+   * @param displayService - Service for display operations
+   * @param interactionService - Service for board interactions
+   * @param lifecycleService - Service for component lifecycle
+   * @param initializationService - Service for board initialization
+   * @param arrayManagementService - Service for array management
+   * @param eventHandlerService - Service for event handling
+   * @param delegateService - Service for delegating operations
+   */
   constructor(
     private taskService: TaskService,
     public dragDropService: BoardDragDropService,

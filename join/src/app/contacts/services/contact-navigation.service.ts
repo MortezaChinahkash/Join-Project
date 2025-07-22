@@ -15,6 +15,14 @@ import { ContactsFormService } from './contacts-form.service';
 @Injectable({ providedIn: 'root' })
 export class ContactNavigationService {
 
+  /**
+   * Initializes the contact navigation service with required dependencies.
+   * 
+   * @param stateService - Service for managing contact state
+   * @param displayService - Service for display operations
+   * @param uiService - Service for UI operations
+   * @param formService - Service for form operations
+   */
   constructor(
     private stateService: ContactsStateService,
     private displayService: ContactsDisplayService,

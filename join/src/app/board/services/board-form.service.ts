@@ -63,10 +63,13 @@ export class BoardFormService {
     this.formState.populateFormWithTask(task);
     this.contactSelectionService.setSelectedContactsByNames(task.assignedTo || [], allContacts);
     this.overlayService.openTaskEditOverlay(task);
-  }  /**
-   * Saves the current task.
+  }
+
+  /**
+   * Saves the current task form data.
+   * Validates form, builds task object, and either creates new task or updates existing one.
    * 
-   * @returns Promise<boolean> - Success status
+   * @returns Promise<boolean> - True if save was successful, false otherwise
    */
   async saveTask(): Promise<boolean> {
     if (!this.validateForm()) {
@@ -311,14 +314,14 @@ export class BoardFormService {
    * @returns Promise that resolves when operation completes
    */
   async onSubmit(updateCallback?: () => void): Promise<void> {
-    console.log('📝 FormService onSubmit called');
+
     const success = await this.saveTask();
-    console.log('💾 SaveTask result:', success);
+
     if (success && updateCallback) {
-      console.log('🔄 Calling updateCallback');
+
       updateCallback();
     }
-    console.log('✅ FormService onSubmit completed');
+
   }
 
   /**

@@ -15,6 +15,14 @@ import { BoardArrayManagementService } from './board-array-management.service';
 })
 export class BoardEventHandlerService {
   
+  /**
+   * Initializes the board event handler service with required dependencies.
+   * 
+   * @param interactionService - Service for handling board interactions
+   * @param mobileTaskMoveService - Service for mobile task movement
+   * @param taskManagementService - Service for task management operations
+   * @param arrayManagementService - Service for managing task arrays
+   */
   constructor(
     private interactionService: BoardInteractionService,
     private mobileTaskMoveService: MobileTaskMoveService,
@@ -120,49 +128,108 @@ export class BoardEventHandlerService {
   }
 
   // Column drag events delegation
+  /**
+   * Handles drag over events on board columns.
+   * 
+   * @param event - Drag event
+   * @param column - Target column being dragged over
+   */
   onColumnDragOver(event: DragEvent, column: TaskColumn): void {
     this.interactionService.handleColumnDragOver(event, column);
   }
 
+  /**
+   * Handles drag leave events on board columns.
+   * 
+   * @param event - Drag event
+   */
   onColumnDragLeave(event: DragEvent): void {
     this.interactionService.handleColumnDragLeave(event);
   }
 
+  /**
+   * Handles drop events on board columns.
+   * 
+   * @param event - Drag event
+   * @param column - Target column for the drop
+   */
   onColumnDrop(event: DragEvent, column: TaskColumn): void {
     this.interactionService.handleColumnDrop(event, column);
   }
 
   // Thumbnail events delegation
+  /**
+   * Handles click events on board thumbnail.
+   * 
+   * @param event - Mouse event
+   */
   onThumbnailClick(event: MouseEvent): void {
     this.interactionService.handleThumbnailClick(event);
   }
 
+  /**
+   * Handles touch start events on board thumbnail.
+   * 
+   * @param event - Touch event
+   */
   onThumbnailTouchStart(event: TouchEvent): void {
     this.interactionService.handleThumbnailTouchStart(event);
   }
 
   // Viewport events delegation
+  /**
+   * Handles mouse down events on board viewport.
+   * 
+   * @param event - Mouse event
+   */
   onViewportMouseDown(event: MouseEvent): void {
     this.interactionService.handleViewportMouseDown(event);
   }
 
+  /**
+   * Handles touch start events on board viewport.
+   * 
+   * @param event - Touch event
+   */
   onViewportTouchStart(event: TouchEvent): void {
     this.interactionService.handleViewportTouchStart(event);
   }
 
+  /**
+   * Handles click events on board viewport.
+   * 
+   * @param event - Mouse event
+   */
   onViewportClick(event: MouseEvent): void {
     this.interactionService.handleViewportClick(event);
   }
 
   // Mobile move events delegation
+  /**
+   * Handles mobile task move initiation.
+   * 
+   * @param event - Mouse or touch event
+   * @param task - Task to be moved
+   */
   onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void {
     this.mobileTaskMoveService.onMobileMoveTask(event, task);
   }
 
+  /**
+   * Handles mouse down events on mobile move button.
+   * 
+   * @param event - Mouse event
+   */
   onMobileMoveButtonMouseDown(event: MouseEvent): void {
     this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event);
   }
 
+  /**
+   * Handles touch start events on mobile move button.
+   * 
+   * @param event - Touch event
+   * @param task - Task associated with the button
+   */
   onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void {
     this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task);
   }

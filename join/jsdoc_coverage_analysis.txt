@@ -1,9 +1,9 @@
 JSDOC COVERAGE ANALYSIS REPORT
-Generated: 22.07.2025 11:10
+Generated: 22.07.2025 15:50
 ================================================================================
-Analyzing 108 TypeScript/JavaScript files for missing JSDoc...
+Analyzing 141 TypeScript/JavaScript files for missing JSDoc...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
-TypeScript files: 107
+TypeScript files: 140
 JavaScript files: 1
 Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
 
@@ -14,7 +14,7 @@ Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vsco
 === TOP 10 FILES WITH MOST MISSING JSDOC ===
 ================================================================================
 === OVERALL SUMMARY ===
-Files analyzed: 108
+Files analyzed: 141
 Files with missing JSDoc: 0
 Total methods missing JSDoc: 0
 Perfect! All methods have JSDoc documentation!

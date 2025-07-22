@@ -13,6 +13,13 @@ import { BoardDragElementService } from './board-drag-element.service';
 @Injectable({ providedIn: 'root' })
 export class BoardMouseEventService {
 
+  /**
+   * Initializes the mouse event service with required dependencies.
+   * 
+   * @param dragState - Service for managing drag state
+   * @param autoScroll - Service for auto-scroll functionality
+   * @param dragElement - Service for drag element operations
+   */
   constructor(
     private dragState: BoardDragStateService,
     private autoScroll: BoardAutoScrollService,

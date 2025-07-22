@@ -14,6 +14,12 @@ import { Task } from '../../interfaces/task.interface';
 @Injectable({ providedIn: 'root' })
 export class BoardFormContactService {
 
+  /**
+   * Initializes the form contact service with required dependencies.
+   * 
+   * @param contactSelectionService - Service for contact selection operations
+   * @param overlayService - Service for overlay management
+   */
   constructor(
     private contactSelectionService: BoardFormContactSelectionService,
     private overlayService: BoardFormOverlayService

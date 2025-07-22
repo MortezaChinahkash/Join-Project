@@ -177,7 +177,7 @@ export class BoardFormService {
    * @param task - Task to create
    */
   private async createTask(task: Task): Promise<void> {
-    console.log('Creating task:', task);
+
   }
 
   /**
@@ -186,7 +186,7 @@ export class BoardFormService {
    * @param task - Task to update
    */
   private async updateTask(task: Task): Promise<void> {
-    console.log('Updating task:', task);
+
   }
 
   /**

@@ -12,6 +12,12 @@ import { BoardDragAutoScrollService } from './board-drag-auto-scroll.service';
 })
 export class BoardDragTouchHandlerService {
 
+  /**
+   * Initializes the drag touch handler service with required dependencies.
+   * 
+   * @param dragState - Service for managing drag state
+   * @param autoScroll - Service for auto-scroll functionality during drag
+   */
   constructor(
     private dragState: BoardDragStateService,
     private autoScroll: BoardDragAutoScrollService

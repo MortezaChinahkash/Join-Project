@@ -1,5 +1,5 @@
 METHOD LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 15:26
+Generated: 22.07.2025 15:38
 ================================================================================
 Analyzing 141 TypeScript/JavaScript files for methods > 14 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
@@ -7,35 +7,11 @@ TypeScript files: 140
 JavaScript files: 1
 Excluded directories: node_modules, .git, dist, build, .angular, coverage
 
-File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-component-utils.service.ts
---------------------------------------------------------------------------------
-  Method: createColumnConfiguration (Line 57-88)
-     Code lines: 27 | Total lines: 32
-     Declaration: createColumnConfiguration(component: any): any[] {...
-
-File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop.service.ts
---------------------------------------------------------------------------------
-  Method: onTaskMouseDown (Line 76-94)
-     Code lines: 17 | Total lines: 19
-     Declaration: onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => voi...
-
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-simplified.service.ts
 --------------------------------------------------------------------------------
   Method: saveTask (Line 71-90)
      Code lines: 15 | Total lines: 20
      Declaration: async saveTask(): Promise<boolean> {...
-
-File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-display.service.ts
---------------------------------------------------------------------------------
-  Method: buildContactDisplayObject (Line 228-250)
-     Code lines: 22 | Total lines: 23
-     Declaration: private buildContactDisplayObject(contact: Contact): {...
-
-File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts.service.ts
---------------------------------------------------------------------------------
-  Method: handleOperationSuccess (Line 148-168)
-     Code lines: 19 | Total lines: 21
-     Declaration: private handleOperationSuccess(contact: Contact, operation: 'add' | 'u...
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
 --------------------------------------------------------------------------------
@@ -58,46 +34,30 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay
 ================================================================================
 === TOP 10 LONGEST METHODS ===
 ================================================================================
- 1. createColumnConfiguration (27 lines)
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-component-utils.service.ts
-    Line: 57-88
-
- 2. buildContactDisplayObject (22 lines)
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-display.service.ts
-    Line: 228-250
-
- 3. handleOperationSuccess (19 lines)
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts.service.ts
-    Line: 148-168
-
- 4. onTaskMouseDown (17 lines)
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop.service.ts
-    Line: 76-94
-
- 5. saveTask (15 lines)
+ 1. saveTask (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-simplified.service.ts
     Line: 71-90
 
- 6. getRightPosition (15 lines)
+ 2. getRightPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 262-279
 
- 7. getLeftPosition (15 lines)
+ 3. getLeftPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 284-301
 
- 8. getTopPosition (15 lines)
+ 4. getTopPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 306-323
 
- 9. getBottomPosition (15 lines)
+ 5. getBottomPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
     Line: 328-345
 
 === SUMMARY ===
 Files analyzed: 141
-Files with long methods: 6
-Total methods > 14 lines: 9
-Average length: 17.8 lines
-Longest method: createColumnConfiguration (27 lines)
+Files with long methods: 2
+Total methods > 14 lines: 5
+Average length: 15.0 lines
+Longest method: saveTask (15 lines)
 Consider refactoring methods longer than 20-25 lines

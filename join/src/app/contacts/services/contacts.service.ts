@@ -23,6 +23,18 @@ export class ContactsService implements OnDestroy {
   private selectedContact: Contact | null = null;
   private initializationCleanup?: () => void;
 
+  /**
+   * Initializes the contacts service with all required dependencies.
+   * 
+   * @param organizationService - Service for organizing contacts
+   * @param stateService - Service for managing contact state
+   * @param formService - Service for contact form operations
+   * @param crudService - Service for CRUD operations
+   * @param displayService - Service for display operations
+   * @param contactOperations - Service for contact operations
+   * @param contactInitialization - Service for contact initialization
+   * @param contactNavigation - Service for contact navigation
+   */
   constructor(
     private organizationService: ContactOrganizationService,
     private stateService: ContactsStateService,
