@@ -17,6 +17,9 @@ import { Contact } from '../../../contacts/services/contact-data.service';
 
 export class BoardFormService {
   taskForm: FormGroup;
+  /**
+   * Constructor initializes form service with form builder and related form services
+   */
   constructor(
     private fb: FormBuilder,
     private validationService: BoardFormValidationService,

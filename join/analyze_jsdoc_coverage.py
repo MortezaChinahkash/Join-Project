@@ -63,6 +63,35 @@ def is_method_declaration(stripped, lines, i):
     if '=>' in stripped:
         return False
     
+    # Skip variable declarations with method calls (const x = method(), let y = new Date(), etc.)
+    if (stripped.startswith('const ') or 
+        stripped.startswith('let ') or 
+        stripped.startswith('var ')) and '=' in stripped:
+        return False
+    
+    # Skip method calls that are part of variable assignments or return statements
+    if (stripped.startswith('return ') or 
+        stripped.startswith('const ') or 
+        stripped.startswith('let ') or 
+        stripped.startswith('var ') or
+        '= ' in stripped or
+        stripped.startswith('this.') or
+        'Math.' in stripped or
+        'console.' in stripped or
+        'document.' in stripped or
+        'window.' in stripped or
+        'localStorage.' in stripped or
+        'sessionStorage.' in stripped):
+        return False
+    
+    # Skip simple method calls (lines that only contain method invocations)
+    if ('(' in stripped and ')' in stripped and 
+        not stripped.endswith('{') and 
+        not stripped.endswith(':') and
+        not (i + 1 < len(lines) and lines[i + 1].strip() == '{')):
+        # This looks like a method call, not a declaration
+        return False
+    
     # Constructor
     if stripped.startswith('constructor'):
         return True
@@ -72,10 +101,7 @@ def is_method_declaration(stripped, lines, i):
         ((':' in stripped and ('{' in stripped or 
          (i + 1 < len(lines) and lines[i + 1].strip() == '{'))) or
          stripped.startswith('async ') or
-         stripped.startswith('function ') or
-         stripped.startswith('const ') or
-         stripped.startswith('let ') or
-         stripped.startswith('var '))):
+         stripped.startswith('function '))):
         return True
     
     # Angular lifecycle hooks

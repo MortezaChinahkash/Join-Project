@@ -55,6 +55,9 @@ import { CommonModule } from '@angular/common';
 })
 export class OnboardingTestComponent {
   showControls = !window.location.hostname.includes('production');
+  /**
+   * Constructor initializes onboarding test component with onboarding service
+   */
   constructor(private onboardingService: OnboardingService) {}
 
   /**

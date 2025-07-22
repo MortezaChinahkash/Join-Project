@@ -20,6 +20,9 @@ export class DeleteConfirmationService {
    * The task that is marked for deletion
    */
   taskToDelete: Task | null = null;
+  /**
+   * Constructor initializes delete confirmation service with task service dependency
+   */
   constructor(private taskService: TaskService) {}
 
   /**

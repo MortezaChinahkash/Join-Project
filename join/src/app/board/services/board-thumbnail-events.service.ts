@@ -17,6 +17,9 @@ export class BoardThumbnailEventsService {
   private dragStartX = 0;
   private dragStartScrollLeft = 0;
 
+  /**
+   * Constructor initializes thumbnail events service with DOM and calculations dependencies
+   */
   constructor(
     private domService: BoardThumbnailDomService,
     private calculationsService: BoardThumbnailCalculationsService

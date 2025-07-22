@@ -26,6 +26,9 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
   totalSteps = 4;
   highlightPosition = { top: '0px', left: '0px', width: '0px', height: '0px' };
   private subscriptions: Subscription[] = [];
+  /**
+   * Constructor initializes onboarding overlay with onboarding and auth services
+   */
   constructor(
     private onboardingService: OnboardingService,
     private authService: AuthService

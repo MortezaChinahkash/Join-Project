@@ -28,6 +28,9 @@ import { Task } from '../../interfaces/task.interface';
   providedIn: 'root'
 })
 export class BoardNavigationService {
+  /**
+   * Constructor initializes navigation service with route dependency
+   */
   constructor(private route: ActivatedRoute) {}
 
   /**

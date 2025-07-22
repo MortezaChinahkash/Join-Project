@@ -26,6 +26,9 @@ export class SummaryComponent implements OnInit, OnDestroy {
   private tasksSubscription?: Subscription;
   private tasks: Task[] = [];
   visible = false;
+  /**
+   * Constructor initializes summary component with auth, task, board data, router and welcome overlay services
+   */
   constructor(
     private authService: AuthService,
     private taskService: TaskService,
@@ -334,6 +337,11 @@ export class SummaryComponent implements OnInit, OnDestroy {
     return this.parseDueDate(nearestTask.dueDate!);
   }
 
+  /**
+   * Gets urgent tasks that have a valid due date (today or in the future).
+   * @returns Array of urgent tasks with valid due dates
+   * @private
+   */
   private getUrgentTasksWithValidDueDate() {
     const today = new Date();
     today.setHours(0, 0, 0, 0);

@@ -25,6 +25,7 @@ import { BoardThumbnailService } from './board-thumbnail.service';
   providedIn: 'root'
 })
 export class BoardInteractionService {
+  /** Constructor initializes interaction service with drag drop and thumbnail services */
   constructor(
     private dragDropService: BoardDragDropService,
     private thumbnailService: BoardThumbnailService

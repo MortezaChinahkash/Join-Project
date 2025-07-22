@@ -21,6 +21,9 @@ export class TaskEditOverlayService {
    * The task that is being edited
    */
   selectedTask: Task | null = null;
+  /**
+   * Constructor initializes task edit overlay service with form service dependency
+   */
   constructor(private formService: BoardFormService) {}
 
   /**

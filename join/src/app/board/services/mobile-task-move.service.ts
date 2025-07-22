@@ -32,6 +32,9 @@ export class MobileTaskMoveService {
   showMobileMoveOverlay: boolean = false;
   selectedTaskForMove: Task | null = null;
   overlayPosition = { top: 0, right: 0 };
+  /**
+   * Constructor initializes mobile task move service with task and mobile board dependencies
+   */
   constructor(
     private taskService: TaskService,
     private mobileService: BoardMobileService
