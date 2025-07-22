@@ -11,6 +11,38 @@ import { Contact } from '../../contacts/services/contact-data.service';
 })
 export class BoardComponentUtilsService {
 
+  /** Template for board column configurations */
+  private readonly columnTemplate = [
+    {
+      id: 'todo' as TaskColumn,
+      title: 'To Do',
+      taskProperty: 'todoTasks',
+      showAddButton: true,
+      emptyMessage: 'No tasks to do',
+    },
+    {
+      id: 'inprogress' as TaskColumn,
+      title: 'In Progress',
+      taskProperty: 'inProgressTasks',
+      showAddButton: true,
+      emptyMessage: 'No tasks in progress',
+    },
+    {
+      id: 'awaiting' as TaskColumn,
+      title: 'Awaiting feedback',
+      taskProperty: 'awaitingFeedbackTasks',
+      showAddButton: true,
+      emptyMessage: 'No tasks awaiting feedback',
+    },
+    {
+      id: 'done' as TaskColumn,
+      title: 'Done',
+      taskProperty: 'doneTasks',
+      showAddButton: false,
+      emptyMessage: 'No tasks done',
+    },
+  ];
+
   /**
    * Initializes task arrays for component.
    * @returns Empty task column structure
@@ -55,36 +87,13 @@ export class BoardComponentUtilsService {
    * @returns Column configuration array
    */
   createColumnConfiguration(component: any): any[] {
-    return [
-      {
-        id: 'todo' as TaskColumn,
-        title: 'To Do',
-        tasks: () => component.todoTasks,
-        showAddButton: true,
-        emptyMessage: 'No tasks to do',
-      },
-      {
-        id: 'inprogress' as TaskColumn,
-        title: 'In Progress',
-        tasks: () => component.inProgressTasks,
-        showAddButton: true,
-        emptyMessage: 'No tasks in progress',
-      },
-      {
-        id: 'awaiting' as TaskColumn,
-        title: 'Awaiting feedback',
-        tasks: () => component.awaitingFeedbackTasks,
-        showAddButton: true,
-        emptyMessage: 'No tasks awaiting feedback',
-      },
-      {
-        id: 'done' as TaskColumn,
-        title: 'Done',
-        tasks: () => component.doneTasks,
-        showAddButton: false,
-        emptyMessage: 'No tasks done',
-      },
-    ];
+    return this.columnTemplate.map(template => ({
+      id: template.id,
+      title: template.title,
+      tasks: () => component[template.taskProperty],
+      showAddButton: template.showAddButton,
+      emptyMessage: template.emptyMessage,
+    }));
   }
 
   /**
