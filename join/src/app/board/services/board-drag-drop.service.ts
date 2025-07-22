@@ -75,22 +75,72 @@ export class BoardDragDropService {
    */
   onTaskMouseDown(event: MouseEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
     return new Promise((resolve) => {
-      if (event.button !== 0) { 
-        resolve(false); 
-        return; 
+      if (!this.isValidMouseButton(event)) {
+        resolve(false);
+        return;
       }
-      const dragContext = this.mouseEvent.initializeMouseDragOperation(event, task);
-      const handlers = this.mouseEvent.createMouseEventHandlers(
-        event, 
-        task, 
-        onTaskUpdate, 
-        resolve, 
-        dragContext,
-        (clientX, clientY) => this.updateTaskDrag(clientX, clientY),
-        (onTaskUpdate) => this.finishTaskDrag(onTaskUpdate)
-      );
-      this.mouseEvent.attachMouseEventListeners(handlers.mouseMove, handlers.mouseUp);
+      this.initializeMouseDragHandlers(event, task, onTaskUpdate, resolve);
     });
+  }
+
+  /**
+   * Validates if the mouse button is valid for drag operations.
+   * 
+   * @param event - The mouse event
+   * @returns True if left mouse button, false otherwise
+   * @private
+   */
+  private isValidMouseButton(event: MouseEvent): boolean {
+    return event.button === 0;
+  }
+
+  /**
+   * Initializes mouse drag handlers and attaches event listeners.
+   * 
+   * @param event - The mouse event
+   * @param task - The task being dragged
+   * @param onTaskUpdate - Callback to update local task arrays
+   * @param resolve - Promise resolve function
+   * @private
+   */
+  private initializeMouseDragHandlers(
+    event: MouseEvent, 
+    task: Task, 
+    onTaskUpdate: () => void, 
+    resolve: (value: boolean) => void
+  ): void {
+    const dragContext = this.mouseEvent.initializeMouseDragOperation(event, task);
+    const handlers = this.createMouseHandlers(event, task, onTaskUpdate, resolve, dragContext);
+    this.mouseEvent.attachMouseEventListeners(handlers.mouseMove, handlers.mouseUp);
+  }
+
+  /**
+   * Creates mouse event handlers for drag operations.
+   * 
+   * @param event - The mouse event
+   * @param task - The task being dragged
+   * @param onTaskUpdate - Callback to update local task arrays
+   * @param resolve - Promise resolve function
+   * @param dragContext - Drag context from initialization
+   * @returns Mouse event handlers object
+   * @private
+   */
+  private createMouseHandlers(
+    event: MouseEvent,
+    task: Task,
+    onTaskUpdate: () => void,
+    resolve: (value: boolean) => void,
+    dragContext: any
+  ): { mouseMove: (e: MouseEvent) => void; mouseUp: () => void } {
+    return this.mouseEvent.createMouseEventHandlers(
+      event,
+      task,
+      onTaskUpdate,
+      resolve,
+      dragContext,
+      (clientX, clientY) => this.updateTaskDrag(clientX, clientY),
+      (onTaskUpdate) => this.finishTaskDrag(onTaskUpdate)
+    );
   }
 
   /**
