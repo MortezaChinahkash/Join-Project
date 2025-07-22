@@ -208,7 +208,9 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * Selects the current user and creates a contact-like object for display.
    */
   selectCurrentUser(): void {
-    this.navigationService.selectCurrentUser(() => {});
+    this.navigationService.selectCurrentUser((contact) => {
+      this.contactsService.selectContact(contact);
+    });
   }
 
   /**
