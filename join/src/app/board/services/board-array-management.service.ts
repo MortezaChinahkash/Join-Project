@@ -19,6 +19,7 @@ import { BoardTaskManagementService } from './board-task-management.service';
   providedIn: 'root'
 })
 export class BoardArrayManagementService {
+  /** Constructor initializes array management service with task management service */
   constructor(private taskManagementService: BoardTaskManagementService) {}
 
   /**

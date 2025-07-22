@@ -1,3 +1,4 @@
+// Task Details Overlay Styles
 .taskDetailsOverlay {
   position: fixed;
   top: 0;
@@ -350,5 +351,114 @@
   flex: 1;
   overflow-y: auto;
   padding: 0 40px 16px 40px;
-}
   
+  scrollbar-width: thin;
+  scrollbar-color: #d1d1d1 transparent;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background-color: #d1d1d1;
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+  }
+}
+
+.task-details-actions-fixed {
+  flex-shrink: 0;
+  padding: 16px 40px 32px 40px;
+}
+
+.task-details-actions-fixed {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  
+  .delete-btn,
+  .edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    img {
+      width: 24px;
+      height: 24px;
+    }
+    
+    &:hover {
+      background-color: #f5f5f5;
+      transform: scale(1.05);
+    }
+    
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+  
+  .delete-btn {
+    &:hover {
+      background-color: #ffe6e6;
+    }
+  }
+  
+  .edit-btn {
+    &:hover {
+      background-color: #e6f3ff;
+    }
+  }
+}
+
+.no-content-placeholder {
+  color: #999;
+  font-style: italic;
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .taskDetailsOverlay-content {
+    width: 95%;
+    height: 80vh;
+    margin: 20px;
+  }
+  
+  .task-details-header-fixed,
+  .task-details-scrollable-content,
+  .task-details-actions-fixed {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  
+  .task-details-title {
+    font-size: 1.5em;
+  }
+}
+
+@media (max-height: 900px) {
+  .task-details-header-fixed {
+    padding: 16px;
+  }
+  
+  .task-details-scrollable-content {
+    padding: 0px 16px 16px 16px;
+    margin-top: 20px;
+  }
+  
+  .task-details-actions-fixed {
+    padding: 16px;
+  }
+}

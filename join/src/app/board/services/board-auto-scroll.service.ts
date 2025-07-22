@@ -302,6 +302,7 @@ export class BoardAutoScrollService {
    * Finds fallback container when no specific container is found.
    */
   private findFallbackContainer(): HTMLElement | null {
+
     const wrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
     if (wrapper) return wrapper;
     
@@ -399,6 +400,7 @@ export class BoardAutoScrollService {
    * @returns Horizontal scrollable container or null
    */
   private findHorizontalScrollableContainer(): HTMLElement | null {
+
     const boardContainer = this.findHorizontalBoardContainer();
     if (boardContainer) return boardContainer;
     

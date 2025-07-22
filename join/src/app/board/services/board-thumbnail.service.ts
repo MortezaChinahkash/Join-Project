@@ -26,6 +26,9 @@ export class BoardThumbnailService {
   };
   isDragging = false;
 
+  /**
+   * Constructor initializes thumbnail service with DOM, calculations, and events dependencies
+   */
   constructor(
     private domService: BoardThumbnailDomService,
     private calculationsService: BoardThumbnailCalculationsService,

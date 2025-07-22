@@ -24,5 +24,17 @@
         height: 4em;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-}
 
+    /* === RESPONSIVE === */
+    @media screen and (max-width: 1000px) {
+        .main{
+            height: calc(100vh - 8em);
+        }        .page{
+            width: 100%;
+        }
+        .content{
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
+}

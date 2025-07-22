@@ -17,6 +17,9 @@ import { BoardFormContactService } from './form/board-form-contact.service';
 })
 export class BoardFormService {
   selectedTask: Task | null = null;
+  /**
+   * Constructor initializes form service with task and form management dependencies
+   */
   constructor(
     private taskService: TaskService,
     private formState: BoardFormStateService,

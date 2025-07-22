@@ -43,14 +43,14 @@ import { trigger, transition, style, animate } from '@angular/animations';
   animations: [
     trigger('slideInRight', [
       transition(':enter', [
+        /** Initial state for slide-in animation from right */
         style({ transform: 'translateX(100%)', opacity: 0 }),
-
+        /** Animation to slide element into view */
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
-
       ]),
       transition(':leave', [
+        /** Animation to slide element out of view to the right */
         animate('200ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(100%)', opacity: 0 }))
-
       ])
     ])
   ]
@@ -68,6 +68,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     {
       id: 'todo' as TaskColumn,
       title: 'To Do',
+      /** Returns todo tasks array */
       tasks: () => this.todoTasks,
       showAddButton: true,
       emptyMessage: 'No tasks to do',
@@ -75,6 +76,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     {
       id: 'inprogress' as TaskColumn,
       title: 'In Progress',
+      /** Returns in progress tasks array */
       tasks: () => this.inProgressTasks,
       showAddButton: true,
       emptyMessage: 'No tasks in progress',
@@ -82,6 +84,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     {
       id: 'awaiting' as TaskColumn,
       title: 'Awaiting feedback',
+      /** Returns awaiting feedback tasks array */
       tasks: () => this.awaitingFeedbackTasks,
       showAddButton: true,
       emptyMessage: 'No tasks awaiting feedback',
@@ -89,6 +92,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     {
       id: 'done' as TaskColumn,
       title: 'Done',
+      /** Returns done tasks array */
       tasks: () => this.doneTasks,
       showAddButton: false,
       emptyMessage: 'No tasks done',
@@ -333,42 +337,60 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
   }
 
+  /** Handles column drag over events */
   onColumnDragOver(event: DragEvent, column: TaskColumn): void { this.interactionService.handleColumnDragOver(event, column); }
 
+  /** Handles column drag leave events */
   onColumnDragLeave(event: DragEvent): void { this.interactionService.handleColumnDragLeave(event); }
 
+  /** Handles column drop events */
   onColumnDrop(event: DragEvent, column: TaskColumn): void { this.interactionService.handleColumnDrop(event, column); }
 
+  /** Handles thumbnail click events */
   onThumbnailClick(event: MouseEvent): void { this.interactionService.handleThumbnailClick(event); }
 
+  /** Handles thumbnail touch start events */
   onThumbnailTouchStart(event: TouchEvent): void { this.interactionService.handleThumbnailTouchStart(event); }
 
+  /** Handles viewport mouse down events */
   onViewportMouseDown(event: MouseEvent): void { this.interactionService.handleViewportMouseDown(event); }
 
+  /** Handles viewport touch start events */
   onViewportTouchStart(event: TouchEvent): void { this.interactionService.handleViewportTouchStart(event); }
 
+  /** Handles viewport click events */
   onViewportClick(event: MouseEvent): void { this.interactionService.handleViewportClick(event); }
 
+  /** Gets task progress percentage */
   getTaskProgress(task: Task): number { return this.displayService.getTaskProgress(task); }
 
+  /** Gets number of completed subtasks */
   getCompletedSubtasks(task: Task): number { return this.displayService.getCompletedSubtasks(task); }
 
+  /** Gets priority icon name for task priority */
   getPriorityIcon(priority: Task['priority']): string { return this.displayService.getPriorityIcon(priority); }
 
+  /** Gets filtered tasks based on search term */
   getFilteredTasks(tasks: Task[]): Task[] { return this.displayService.getFilteredTasks(tasks, this.searchTerm); }
 
+  /** Checks if there are no search results */
   get noSearchResults(): boolean {
     return this.displayService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
   }
 
+  /** Handles mobile task move events */
   onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveTask(event, task); }
 
+  /** Closes mobile move overlay */
   closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobileMoveOverlay(); }
 
+  /** Gets mobile move overlay visibility status */
   get showMobileMoveOverlay(): boolean { return this.mobileTaskMoveService.showMobileMoveOverlay; }
 
+  /** Gets mobile move overlay position */
   get overlayPosition(): { top: number; right: number } { return this.mobileTaskMoveService.overlayPosition; }
 
+  /** Gets selected task for mobile move */
   get selectedTaskForMove(): Task | null { return this.mobileTaskMoveService.selectedTaskForMove; }
 
   /**
@@ -383,14 +405,19 @@ export class BoardComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Gets previous column in workflow */
   getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getPreviousColumn(currentColumn); }
 
+  /** Gets next column in workflow */
   getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getNextColumn(currentColumn); }
 
+  /** Gets display name for column */
   getColumnDisplayName(column: TaskColumn): string { return this.mobileTaskMoveService.getColumnDisplayName(column); }
 
+  /** Handles mobile move button mouse down events */
   onMobileMoveButtonMouseDown(event: MouseEvent): void { this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event); }
 
+  /** Handles mobile move button touch start events */
   onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task); }
 
   /**
@@ -450,14 +477,19 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.assignTasksToColumns(updatedColumns);
   }
 
+  /** Gets displayed contacts for task */
   getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts); }
 
+  /** Checks if there are remaining contacts not displayed */
   hasRemainingContacts(assignedContacts: string[]): boolean { return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts); }
 
+  /** Gets count of remaining contacts not displayed */
   getRemainingContactsCount(assignedContacts: string[]): number { return this.contactHelperService.getRemainingContactsCount(assignedContacts, this.contacts); }
 
+  /** Gets initials for contact name */
   getInitials(name: string): string { return this.contactHelperService.getInitials(name); }
 
+  /** Gets color for contact initials */
   getInitialsColor(name: string): string { return this.contactHelperService.getInitialsColor(name); }
 
   /**

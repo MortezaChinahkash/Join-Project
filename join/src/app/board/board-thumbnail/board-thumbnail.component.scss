@@ -1,3 +1,4 @@
+// Board Thumbnail Component Styles
 .board-thumbnail {
   position: fixed;
   bottom: 20px;
@@ -152,6 +153,7 @@
   }
 }
 
+// Mobile responsive for thumbnail
 @media (max-width: 768px) {
   .board-thumbnail {
     width: 160px;

@@ -46,8 +46,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\board.compon
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-auto-scroll.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 463
-  Non-empty: 409 | Comments: 145 | Code: 264
+  Type: TypeScript | Total lines: 460
+  Non-empty: 404 | Comments: 140 | Code: 264
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
 --------------------------------------------------------------------------------
@@ -61,8 +61,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\boa
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-data.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 478
-  Non-empty: 438 | Comments: 207 | Code: 231
+  Type: TypeScript | Total lines: 491
+  Non-empty: 452 | Comments: 207 | Code: 245
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 --------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.co
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-drag-drop-refactored.service.ts
 
-10. board-form-data.service.ts (478 lines)
+10. board-form-data.service.ts (491 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form-data.service.ts
 

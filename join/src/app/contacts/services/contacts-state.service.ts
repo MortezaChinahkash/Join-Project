@@ -26,20 +26,29 @@ export class ContactsStateService {
   showMobileSingleContact$ = this.showMobileSingleContactSubject.asObservable();
   suppressAnimation$ = this.suppressAnimationSubject.asObservable();
   contactSuccessMessageText$ = this.contactSuccessMessageTextSubject.asObservable();
+  
+  /** Gets add contact overlay visibility state */
   get showAddContactOverlay(): boolean { return this.showAddContactOverlaySubject.value; }
 
+  /** Gets edit contact overlay visibility state */
   get showEditContactOverlay(): boolean { return this.showEditContactOverlaySubject.value; }
 
+  /** Gets mobile more menu visibility state */
   get showMobileMoreMenu(): boolean { return this.showMobileMoreMenuSubject.value; }
 
+  /** Gets contact success message overlay visibility state */
   get contactSuccessMessageOverlay(): boolean { return this.contactSuccessMessageOverlaySubject.value; }
 
+  /** Gets mobile view state */
   get isMobileView(): boolean { return this.isMobileViewSubject.value; }
 
+  /** Gets mobile single contact view state */
   get showMobileSingleContact(): boolean { return this.showMobileSingleContactSubject.value; }
 
+  /** Gets animation suppression state */
   get suppressAnimation(): boolean { return this.suppressAnimationSubject.value; }
 
+  /** Gets contact success message text */
   get contactSuccessMessageText(): string { return this.contactSuccessMessageTextSubject.value; }
 
   /**

@@ -66,6 +66,9 @@ export class OnboardingService {
       highlightNavItem: 'contacts'
     }
   ];
+  /**
+   * Constructor initializes onboarding service with router and auth service dependencies
+   */
   constructor(
     private router: Router,
     private authService: AuthService

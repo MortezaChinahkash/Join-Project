@@ -197,3 +197,16 @@ a:hover {
   }
 }
 
+/* Global placeholder styles - ensure all placeholders remain gray */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #d1d7db !important;
+}
+
+/* Error state should NOT change placeholder color */
+input.error::placeholder,
+textarea.error::placeholder,
+select.error::placeholder {
+  color: #d1d7db !important;
+}

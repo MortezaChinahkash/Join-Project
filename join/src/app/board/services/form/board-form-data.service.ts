@@ -284,27 +284,17 @@ export class BoardFormDataService {
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
     const errors: string[] = [];
-    if (!this.currentTask) {
-      errors.push('No task data available');
-      return { isValid: false, errors };
+    if (!this.currentTask) return { isValid: false, errors: ['No task data available'] };
+    
+    const requiredFields = ['title', 'description', 'category'] as const;
+    requiredFields.forEach(field => {
+      if (!this.currentTask![field]?.trim()) errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
+    });
+    
+    if (this.currentTask.dueDate && new Date(this.currentTask.dueDate) < new Date(new Date().setHours(0, 0, 0, 0))) {
+      errors.push('Due date cannot be in the past');
     }
-    if (!this.currentTask.title?.trim()) {
-      errors.push('Title is required');
-    }
-    if (!this.currentTask.description?.trim()) {
-      errors.push('Description is required');
-    }
-    if (!this.currentTask.category?.trim()) {
-      errors.push('Category is required');
-    }
-    if (this.currentTask.dueDate) {
-      const dueDate = new Date(this.currentTask.dueDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      if (dueDate < today) {
-        errors.push('Due date cannot be in the past');
-      }
-    }
+    
     return { isValid: errors.length === 0, errors };
   }
 
