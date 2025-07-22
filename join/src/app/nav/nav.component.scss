@@ -102,10 +102,8 @@
             margin-right: 0.5em;
         }
 
-        // Login section styles
         .login-section {
             width: 100%;
-            // padding: 75px 0px 50px 0px;
 
             display: flex;
             flex-direction: column;
@@ -154,116 +152,5 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-}
-
- /* === RESPONSIVE === */
-@media screen and (max-width: 1000px) {
-
-    :host{
-        width: 100%;
-        max-width: 100%;
-   
-        flex-direction: column-reverse;
-        justify-content: space-between;
-
-        .logoContainer{
-            display: none;
-        }
-
-        nav{
-            display: flex;
-            align-content: center;
-            flex-direction: column;
-            justify-content: center;
-
-            width: 100%;
-            max-width: 100%;
-            height: 10%;
-
-            margin: 0;
-
-            a{
-                font-size: 1em;
-
-                border-radius: 1em;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                white-space: nowrap;
-            }
-
-            ul{
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
-
-                margin: 0;
-
-                height: 4em;
-
-                li{
-                    width: 25%;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                }
-                li.active a{
-                    padding: 0.7rem 0.5rem;
-            }
-            }
-
-            .icon{
-                margin-right: 0em;
-                margin-bottom: 1em;
-            }
-
-            // Login section responsive styles
-            .login-section {
-                display: flex;
-                justify-content: center;
-                width: 100%;
-                height: 4em;
-                margin: 0;
-                padding: 0;
-
-                .login-btn {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    width: 25%;
-                    padding: 0.7rem 0.5rem;
-                    border-radius: 1em;
-                    white-space: nowrap;
-
-                    .login-icon {
-                        margin-right: 0;
-                        margin-bottom: 1em;
-                    }
-
-                    span {
-                        font-size: 1em;
-                    }
-                }
-            }
-
-        }
-
-        footer {
-            display: block;
-            z-index: 10;
-        }
-
-        nav {
-            z-index: 5; 
-        }
-
-        header {
-            z-index: 5; 
-        }
-
-    }
 }
 

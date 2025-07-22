@@ -51,7 +51,6 @@
           </div>
           <div class="more-contacts-dropdown" *ngIf="formService.hasMoreAssignedContacts()">
             <div class="dropdown-backdrop" 
-                 *ngIf="formService.showAssignedContactsDropdown" 
                  (click)="formService.showAssignedContactsDropdown = false">
             </div>
             <div class="dropdown-trigger" (click)="formService.toggleAssignedContactsDropdown()">
@@ -86,7 +85,6 @@
           </div>
           <div class="subtasks-list">
             <div class="subtask-item" 
-                 *ngFor="let subtask of selectedTask.subtasks; let i = index" 
                  (click)="toggleSubtask(i)">
               <div class="subtask-checkbox" [class.checked]="subtask.completed">
                 <img *ngIf="subtask.completed" 

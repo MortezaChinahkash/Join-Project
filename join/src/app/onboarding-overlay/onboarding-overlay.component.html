@@ -9,7 +9,6 @@
   <div class="onboarding-tooltip" 
        [ngStyle]="getTooltipPosition()"
        [class]="getArrowClass()"
-       *ngIf="currentStep">
     <div class="tooltip-header">
       <h3 class="tooltip-title">{{ currentStep.title }}</h3>
       <button class="close-btn" (click)="onClose()" aria-label="Close onboarding">
@@ -27,7 +26,6 @@
         <span class="step-counter">{{ currentStepNumber }} of {{ totalSteps }}</span>
         <div class="step-dots">
           <span class="dot" 
-                *ngFor="let step of [].constructor(totalSteps); let i = index"
                 [class.active]="i === currentStepNumber - 1">
           </span>
         </div>
@@ -38,7 +36,6 @@
           <button class="btn btn-secondary" 
                   (click)="onPrevious()" 
                   [disabled]="isFirstStep()"
-                  *ngIf="!isFirstStep()">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="15,18 9,12 15,6"></polyline>
             </svg>

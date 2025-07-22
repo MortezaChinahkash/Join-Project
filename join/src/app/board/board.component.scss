@@ -1,5 +1,3 @@
-// Board Component Main Styles
-// Import only styles needed by the board component itself
 @use './styles/header';
 @use './styles/board-layout';
 @use './styles/task-card';
@@ -7,7 +5,6 @@
 @use './styles/drag-and-drop';
 @use './styles/responsive';
 
-// Task details actions (shared between overlays)
 .task-details-actions,
 .task-details-actions-fixed {
   display: flex;
@@ -53,9 +50,7 @@
   }
 }
 
-// Removed duplicate taskEditOverlay styles - now in task-details-overlay component
 
-// Custom Flatpickr styling for Board overlays
 :host ::ng-deep .flatpickr-calendar {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -81,14 +76,12 @@
   }
 }
 
-// Responsive Design - 1000px und darunter
 @media (max-width: 1000px) {
   .component-title-bar {
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
     
-    // Erste Zeile: Titel und + Button
     .title-with-add-button {
       display: flex;
       justify-content: space-between;
@@ -100,7 +93,6 @@
       margin: 0;
     }
     
-    // Größerer Mobile Add Button mit CSS-basiertem dünnem +
     .mobile-add-button {
       display: flex;
       align-items: center;
@@ -115,10 +107,8 @@
       transition: background-color 0.2s ease;
       position: relative;
       
-      // Text "+" ausblenden
       font-size: 0;
       
-      // CSS-basiertes + Zeichen
       &::before,
       &::after {
         content: '';
@@ -127,7 +117,6 @@
         border-radius: 1px;
       }
       
-      // Horizontale Linie des +
       &::before {
         width: 32px;
         height: 2px;
@@ -136,7 +125,6 @@
         transform: translate(-50%, -50%);
       }
       
-      // Vertikale Linie des +
       &::after {
         width: 2px;
         height: 32px;
@@ -150,12 +138,10 @@
       }
     }
     
-    // Desktop Search & Add Button verstecken
     .search-add-box.desktop-only {
       display: none;
     }
     
-    // Mobile Search Box anzeigen
     .mobile-only.mobile-search-box {
       display: flex;
       width: 100%;
@@ -193,7 +179,6 @@
   }
 }
 
-// Für noch kleinere Bildschirme (768px und darunter)
 @media (max-width: 768px) {
   .component-title-bar {
     padding: 15px 20px;
@@ -217,29 +202,6 @@
   }
 }
 
-/* Wrapper für Input und Button */
-.add-subtask-input-wrapper {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-top: 8px;
-  position: relative;
-  margin-bottom: 16px;
-}
-
-/* Input-Feld */
-.add-subtask-input-wrapper .form-input {
-  flex: 1;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px 0 0 8px;
-  padding: 10px 16px;
-  font-size: 16px;
-  background: #fff;
-  outline: none;
-  transition: border 0.2s;
-  box-shadow: none;
-  width: 100%;
-  padding-right: 44px; /* Platz für das Plus-Icon */
   border-radius: 8px;
   border: 1px solid #e0e0e0;
   height: 40px;
@@ -247,101 +209,3 @@
   box-sizing: border-box;
 }
 
-/* Plus-Button */
-.add-subtask-input-wrapper .plus-btn {
-  position: absolute;
-  top: 50%;
-  right: 8px;
-  transform: translateY(-50%);
-  height: 28px;
-  width: 28px;
-  border: none;
-  background: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 0;
-}
-
-.add-subtask-input-wrapper .plus-btn img {
-  width: 20px;
-  height: 20px;
-  opacity: 0.6;
-}
-
-.add-subtask-input-wrapper .plus-btn:disabled img {
-  opacity: 0.3;
-}
-
-/* Optional: Fokus-Style */
-.add-subtask-input-wrapper .form-input:focus {
-  border-color: #5ba4cf;
-}
-
-// Removed duplicate taskEditOverlay styles
-
-.form-input.grayed {
-  background: #f4f4f4;
-  color: #b0b0b0;
-  border: 1px solid #e0e0e0;
-  cursor: not-allowed;
-}
-
-/* Neue Styles für die Subtask-Icons im Edit-Overlay */
-.subtask-input-actions {
-  position: absolute;
-  right: 24px; // Mehr Abstand vom rechten Rand
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 6px; // Weniger Abstand zwischen Icons
-  z-index: 2;
-  background: transparent;
-  height: 24px; // Begrenzte Höhe
-}
-
-.subtask-input-actions .remove-subtask-btn,
-.subtask-input-actions .save-subtask-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-}
-
-.subtask-input-actions img {
-  width: 16px !important;
-  height: 16px !important;
-  filter: brightness(0) saturate(100%) invert(35%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(60%) contrast(100%);
-  opacity: 0.7;
-}
-
-.subtask-divider {
-  width: 1px;
-  height: 16px; // Kleinere Höhe
-  background: #999;
-  margin: 0 2px; // Weniger Margin
-  display: inline-block;
-}
-
-// Global placeholder styles - ensure all placeholders are always gray
-input::placeholder,
-textarea::placeholder,
-.form-input::placeholder,
-.form-textarea::placeholder {
-  color: #d1d7db !important;
-}
-
-// Error state should NOT change placeholder color
-input.error::placeholder,
-textarea.error::placeholder,
-.form-input.error::placeholder,
-.form-textarea.error::placeholder {
-  color: #d1d7db !important;
-}

@@ -437,8 +437,6 @@ export class OnboardingOverlayComponent implements OnInit, OnDestroy, AfterViewI
    * Handles clicks on the overlay background.
    */
   private handleOverlayBackgroundClick(): void {
-    // Currently no action taken when clicking overlay background
-    // Could be extended to close onboarding or perform other actions
     return;
   }
 

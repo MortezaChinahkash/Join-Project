@@ -1,4 +1,3 @@
-// Template for environment configuration - DO NOT COMMIT REAL VALUES
 export const firebaseConfig = {
 
   apiKey: "AIzaSyAMajQkymTiHB35Z5gmSzy8ezCv432D87A",
@@ -25,7 +24,3 @@ export const environment = {
 };
 
 
-// Instructions:
-// 1. Copy this file to environment.ts
-// 2. Replace all "YOUR_*" values with your actual Firebase configuration
-// 3. Never commit the real environment.ts file to version control

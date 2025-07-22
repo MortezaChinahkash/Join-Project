@@ -629,7 +629,6 @@ export class BoardFormService {
    * @returns String result
    */
   getCategoryDisplayText(categoryValue: any): string {
-    // Handle both form object and direct value
     const category = (typeof categoryValue === 'string') ? categoryValue : categoryValue?.get?.('category')?.value;
     return category === 'technical' ? 'Technical Task' : 
            category === 'user-story' ? 'User Story' : 'Select Category';

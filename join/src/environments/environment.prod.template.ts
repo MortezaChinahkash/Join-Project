@@ -1,4 +1,3 @@
-// Template for production environment configuration - DO NOT COMMIT REAL VALUES
 export const environment = {
   production: true,
   firebase: {
@@ -13,7 +12,3 @@ export const environment = {
   }
 };
 
-// Instructions:
-// 1. Copy this file to environment.prod.ts
-// 2. Replace all "YOUR_*" values with your actual Firebase configuration
-// 3. Never commit the real environment.prod.ts file to version control

@@ -291,7 +291,6 @@ export class BoardAutoScrollService {
       return container;
     }
     
-    // Special case for board-scroll-wrapper (always return if exists)
     if (selector === '.board-scroll-wrapper' && container) {
       return container;
     }
@@ -303,11 +302,9 @@ export class BoardAutoScrollService {
    * Finds fallback container when no specific container is found.
    */
   private findFallbackContainer(): HTMLElement | null {
-    // Check board-scroll-wrapper separately
     const wrapper = document.querySelector('.board-scroll-wrapper') as HTMLElement;
     if (wrapper) return wrapper;
     
-    // Check body and documentElement
     if (this.canScrollVertically(document.body)) {
       return document.body;
     }
@@ -402,11 +399,9 @@ export class BoardAutoScrollService {
    * @returns Horizontal scrollable container or null
    */
   private findHorizontalScrollableContainer(): HTMLElement | null {
-    // Try specific board containers first
     const boardContainer = this.findHorizontalBoardContainer();
     if (boardContainer) return boardContainer;
     
-    // Fallback to document-level containers
     return this.findHorizontalDocumentContainer();
   }
 
