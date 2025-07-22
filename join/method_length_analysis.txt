@@ -1,5 +1,5 @@
 METHOD LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 10:57
+Generated: 22.07.2025 11:42
 ================================================================================
 Analyzing 108 TypeScript/JavaScript files for methods > 14 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
@@ -9,25 +9,25 @@ Excluded directories: node_modules, .git, dist, build, .angular, coverage
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-display.service.ts
 --------------------------------------------------------------------------------
-  Method: buildContactDisplayObject (Line 227-249)
+  Method: buildContactDisplayObject (Line 228-250)
      Code lines: 22 | Total lines: 23
      Declaration: private buildContactDisplayObject(contact: Contact): {...
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
 --------------------------------------------------------------------------------
-  Method: getRightPosition (Line 259-276)
+  Method: getRightPosition (Line 262-279)
      Code lines: 15 | Total lines: 18
      Declaration: private getRightPosition(rect: DOMRect, dimensions: any): { [key: stri...
 
-  Method: getLeftPosition (Line 281-298)
+  Method: getLeftPosition (Line 284-301)
      Code lines: 15 | Total lines: 18
      Declaration: private getLeftPosition(rect: DOMRect, dimensions: any): { [key: strin...
 
-  Method: getTopPosition (Line 303-320)
+  Method: getTopPosition (Line 306-323)
      Code lines: 15 | Total lines: 18
      Declaration: private getTopPosition(rect: DOMRect, dimensions: any): { [key: string...
 
-  Method: getBottomPosition (Line 325-342)
+  Method: getBottomPosition (Line 328-345)
      Code lines: 15 | Total lines: 18
      Declaration: private getBottomPosition(rect: DOMRect, dimensions: any): { [key: str...
 
@@ -36,23 +36,23 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay
 ================================================================================
  1. buildContactDisplayObject (22 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\contacts\services\contacts-display.service.ts
-    Line: 227-249
+    Line: 228-250
 
  2. getRightPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
-    Line: 259-276
+    Line: 262-279
 
  3. getLeftPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
-    Line: 281-298
+    Line: 284-301
 
  4. getTopPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
-    Line: 303-320
+    Line: 306-323
 
  5. getBottomPosition (15 lines)
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\onboarding-overlay\onboarding-overlay.component.ts
-    Line: 325-342
+    Line: 328-345
 
 === SUMMARY ===
 Files analyzed: 108

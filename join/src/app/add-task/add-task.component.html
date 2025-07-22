@@ -44,16 +44,16 @@
                   class="form-input date-input"
                   placeholder="mm/dd/yyyy"
                   flatpickr
-                  [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched || boardFormService.isDateInvalid('dueDate', taskForm)"
+                  [class.error]="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched || boardFormService.validationService.isDateInvalid(taskForm, 'dueDate')"
                   (change)="taskForm.get('dueDate')?.markAsTouched()">
                 <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
               </div>
               <div class="error-message">
-                <span *ngIf="getErrorMessage('dueDate') && !boardFormService.isDateInvalid('dueDate', taskForm); else dateErrorElse">
+                <span *ngIf="getErrorMessage('dueDate') && !boardFormService.validationService.isDateInvalid(taskForm, 'dueDate'); else dateErrorElse">
                   {{ getErrorMessage('dueDate') }}
                 </span>
                 <ng-template #dateErrorElse>
-                  <span *ngIf="boardFormService.isDateInvalid('dueDate', taskForm); else emptyDateSpan">
+                  <span *ngIf="boardFormService.validationService.isDateInvalid(taskForm, 'dueDate'); else emptyDateSpan">
                     The date cannot be in the past
                   </span>
                   <ng-template #emptyDateSpan><span>&nbsp;</span></ng-template>

@@ -1,12 +1,12 @@
 FILE LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 11:11
+Generated: 22.07.2025 11:59
 ================================================================================
-Analyzing 171 files for length > 400 lines...
+Analyzing 173 files for length > 400 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
 HTML files: 21
 SCSS files: 42
 JavaScript files: 1
-TypeScript files: 107
+TypeScript files: 109
 Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.html
@@ -66,8 +66,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\boa
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 896
-  Non-empty: 795 | Comments: 354 | Code: 441
+  Type: TypeScript | Total lines: 727
+  Non-empty: 644 | Comments: 299 | Code: 345
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-v2.service.ts
 --------------------------------------------------------------------------------
@@ -107,7 +107,7 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.co
 ================================================================================
 === TOP 10 LARGEST FILES ===
 ================================================================================
- 1. board-form.service.ts (896 lines)
+ 1. board-form.service.ts (727 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 
@@ -153,13 +153,13 @@ CSS: 0 files > 400 lines
 SCSS: 4 files > 400 lines (avg: 441.0, max: 464)
 SASS: 0 files > 400 lines
 JavaScript: 0 files > 400 lines
-TypeScript: 13 files > 400 lines (avg: 540.5, max: 896)
+TypeScript: 13 files > 400 lines (avg: 527.5, max: 727)
 
 === OVERALL SUMMARY ===
-Files analyzed: 171
+Files analyzed: 173
 Files over 400 lines: 19
-Average length of large files: 518.0 lines
-Largest file: board-form.service.ts (896 lines)
+Average length of large files: 509.1 lines
+Largest file: board-form.service.ts (727 lines)
 
 === RECOMMENDATIONS ===
 • Files > 500 lines: Consider splitting into multiple files

@@ -14,7 +14,7 @@
           id="edit-title" 
           formControlName="title" 
           class="form-input" 
-          [class.error]="formService.isFieldInvalid('title')" />
+          [class.error]="formService.validationService.isFieldInvalid(formService.taskForm, 'title')" />
       </div>
       
       <div class="form-group">
@@ -37,13 +37,13 @@
             placeholder="mm/dd/yyyy"
             flatpickr
             class="form-input date-input" 
-            [class.error]="formService.isFieldInvalid('dueDate') || formService.isDateInvalid('dueDate')" />
+            [class.error]="formService.validationService.isFieldInvalid(formService.taskForm, 'dueDate') || formService.validationService.isDateInvalid(formService.taskForm, 'dueDate')" />
           <img src="./assets/img/icon_calendar.svg" alt="Calendar" class="date-icon" />
         </div>
-        <div *ngIf="formService.isFieldInvalid('dueDate')" class="error-message">
+        <div *ngIf="formService.validationService.isFieldInvalid(formService.taskForm, 'dueDate')" class="error-message">
           Due date is required
         </div>
-        <div *ngIf="formService.isDateInvalid('dueDate')" class="error-message">
+        <div *ngIf="formService.validationService.isDateInvalid(formService.taskForm, 'dueDate')" class="error-message">
           The date cannot be in the past
         </div>
       </div>
@@ -54,22 +54,22 @@
           <button 
             type="button" 
             class="priority-btn urgent" 
-            [class.selected]="formService.selectedPriority === 'urgent'" 
-            (click)="formService.selectPriority('urgent')">
+            [class.selected]="formService.formState.getSelectedPriority() === 'urgent'" 
+            (click)="formService.formState.selectPriority('urgent')">
             Urgent <img src="./assets/img/icon_priority_urgent.svg" alt="Urgent" />
           </button>
           <button 
             type="button" 
             class="priority-btn medium" 
-            [class.selected]="formService.selectedPriority === 'medium'" 
-            (click)="formService.selectPriority('medium')">
+            [class.selected]="formService.formState.getSelectedPriority() === 'medium'" 
+            (click)="formService.formState.selectPriority('medium')">
             Medium <img src="./assets/img/icon_priority_medium.svg" alt="Medium" />
           </button>
           <button 
             type="button" 
             class="priority-btn low" 
-            [class.selected]="formService.selectedPriority === 'low'" 
-            (click)="formService.selectPriority('low')">
+            [class.selected]="formService.formState.getSelectedPriority() === 'low'" 
+            (click)="formService.formState.selectPriority('low')">
             Low <img src="./assets/img/icon_priority_low.svg" alt="Low" />
           </button>
         </div>

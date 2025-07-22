@@ -24,13 +24,13 @@ export class BoardFormService {
   /** Constructor initializes form builder and services */
   constructor(
     private fb: FormBuilder,
-    public validationService: BoardFormValidationService,
-    public overlayService: BoardFormOverlayService,
-    public contactSelectionService: BoardFormContactSelectionService,
-    public dataService: BoardFormDataService,
+    private validationService: BoardFormValidationService,
+    private overlayService: BoardFormOverlayService,
+    private contactSelectionService: BoardFormContactSelectionService,
+    private dataService: BoardFormDataService,
     private taskService: TaskService,
-    public taskOperations: BoardFormTaskOperationsService,
-    public formState: BoardFormStateService
+    private taskOperations: BoardFormTaskOperationsService,
+    private formState: BoardFormStateService
   ) {}
 
   /** Gets the task form from form state service */
@@ -220,28 +220,54 @@ export class BoardFormService {
     }
   }
 
+  /**
+   * Checks if fieldinvalid.
+   * @param fieldName - Fieldname parameter
+   * @returns Boolean result
+   */
+  isFieldInvalid(fieldName: string): boolean {
+    return this.validationService.isFieldInvalid(this.taskForm, fieldName);
+  }
+
+  /**
+   * Checks if dateinvalid.
+   * @param fieldName - Fieldname parameter
+   * @param form? - Form? parameter
+   * @returns Boolean result
+   */
+  isDateInvalid(fieldName: string, form?: any): boolean {
+    return this.validationService.isDateInvalid(form || this.taskForm, fieldName);
+  }
+
+  /**
+   * Gets fielderrormessage value.
+   * @param fieldName - Fieldname parameter
+   * @returns String result
+   */
+  getFieldErrorMessage(fieldName: string): string {
+    return this.validationService.getFieldErrorMessage(this.taskForm, fieldName);
+  }
+
   /** Gets currently selected contacts */
   get selectedContacts(): Contact[] {
     return this.contactSelectionService.selectedContacts;
   }
 
   /**
-   * Checks if contact is selected.
-   * 
-   * @param contact - Contact to check
-   * @returns True if contact is selected
-   */
-  isContactSelected(contact: Contact): boolean {
-    return this.contactSelectionService.isContactSelected(contact);
-  }
-
-  /**
-   * Gets selected contacts text.
-   * 
-   * @returns Selected contacts text
+   * Gets selectedcontactstext value.
+   * @returns String result
    */
   getSelectedContactsText(): string {
     return this.contactSelectionService.getSelectedContactsText();
+  }
+
+  /**
+   * Checks if contactselected.
+   * @param contact - Contact parameter
+   * @returns Boolean result
+   */
+  isContactSelected(contact: Contact): boolean {
+    return this.contactSelectionService.isContactSelected(contact);
   }
 
   /**
@@ -279,6 +305,22 @@ export class BoardFormService {
     this.contactSelectionService.toggleDropdown();
   }
 
+  /**
+   * Gets displayedassignedcontacts value.
+   * @returns String result
+   */
+  getDisplayedAssignedContacts(): string[] {
+    return this.contactSelectionService.getDisplayedAssignedContacts();
+  }
+
+  /**
+   * Checks if smoreassignedcontacts.
+   * @returns Boolean result
+   */
+  hasMoreAssignedContacts(): boolean {
+    return this.contactSelectionService.hasMoreAssignedContacts();
+  }
+
   /** Gets assigned contacts dropdown visibility state */
   get showAssignedContactsDropdown(): boolean {
     return this.contactSelectionService.showAssignedContactsDropdown;
@@ -297,46 +339,19 @@ export class BoardFormService {
   }
 
   /**
-   * Gets remaining assigned contacts count.
-   * 
-   * @returns Number of remaining contacts
+   * Gets remainingassignedcontactscount value.
+   * @returns Numeric result
    */
   getRemainingAssignedContactsCount(): number {
-    const task = this.selectedTask;
-    if (!task || !task.assignedTo || task.assignedTo.length <= 4) return 0;
-    return task.assignedTo.length - 4;
+    return this.contactSelectionService.getRemainingAssignedContactsCount();
   }
 
   /**
-   * Gets remaining assigned contacts.
-   * 
-   * @returns Array of remaining contact names
+   * Gets remainingassignedcontacts value.
+   * @returns String result
    */
   getRemainingAssignedContacts(): string[] {
-    const task = this.selectedTask;
-    if (!task || !task.assignedTo || task.assignedTo.length <= 4) return [];
-    return task.assignedTo.slice(4);
-  }
-
-  /**
-   * Gets displayed assigned contacts.
-   * 
-   * @returns Array of displayed contacts
-   */
-  getDisplayedAssignedContacts(): string[] {
-    const task = this.selectedTask;
-    if (!task || !task.assignedTo) return [];
-    return task.assignedTo.slice(0, 4);
-  }
-
-  /**
-   * Checks if there are more assigned contacts.
-   * 
-   * @returns True if more contacts exist
-   */
-  hasMoreAssignedContacts(): boolean {
-    const task = this.selectedTask;
-    return !!(task && task.assignedTo && task.assignedTo.length > 4);
+    return this.contactSelectionService.getRemainingAssignedContacts();
   }
 
   /** Gets add task overlay visibility state */
@@ -357,6 +372,36 @@ export class BoardFormService {
   /** Gets task editing state */
   get isEditingTask(): boolean {
     return this.overlayService.isEditingTask;
+  }
+
+  /**
+   * Handles openAddTaskOverlay functionality.
+   * @param column? - Column? parameter
+   */
+  openAddTaskOverlay(column?: any): void {
+    this.overlayService.openAddTaskOverlay(column);
+  }
+
+  /**
+   * Handles closeAddTaskOverlay functionality.
+   */
+  closeAddTaskOverlay(): void {
+    this.overlayService.closeAllOverlays();
+  }
+
+  /**
+   * Handles openTaskDetails functionality.
+   * @param task - Task parameter
+   */
+  openTaskDetails(task: Task): void {
+    this.overlayService.openTaskDetailsOverlay(task);
+  }
+
+  /**
+   * Handles closeTaskDetailsOverlay functionality.
+   */
+  closeTaskDetailsOverlay(): void {
+    this.overlayService.closeAllOverlays();
   }
 
   /**
@@ -388,6 +433,19 @@ export class BoardFormService {
     }
   }
 
+  /** Gets currently selected priority */
+  get selectedPriority(): string {
+    return this.formState.getSelectedPriority();
+  }
+
+  /**
+   * Handles selectPriority functionality.
+   * @param priority - Priority parameter
+   */
+  selectPriority(priority: string): void {
+    this.formState.selectPriority(priority);
+  }
+
   /**
    * Handles selectCategory functionality.
    * @param category - Category parameter
@@ -409,7 +467,7 @@ export class BoardFormService {
   }
 
   /**
-   * Closes category dropdown.
+   * Handles closeCategoryDropdown functionality.
    */
   closeCategoryDropdown(): void {
     this._isCategoryDropdownOpen = false;
@@ -461,6 +519,25 @@ export class BoardFormService {
   }
 
   /**
+   * Gets subtaskprogress value.
+   * @returns Numeric result
+   */
+  getSubtaskProgress(): number {
+    const subtasks = this.selectedTask?.subtasks || [];
+    if (subtasks.length === 0) return 0;
+    const completed = subtasks.filter(s => s.completed).length;
+    return Math.round((completed / subtasks.length) * 100);
+  }
+
+  /**
+   * Gets completedsubtaskscount value.
+   * @returns Numeric result
+   */
+  getCompletedSubtasksCount(): number {
+    return this.selectedTask?.subtasks?.filter(s => s.completed).length || 0;
+  }
+
+  /**
    * Handles submit events.
    * @param updateCallback? - Updatecallback? parameter
    * @returns Promise that resolves when operation completes
@@ -489,6 +566,49 @@ export class BoardFormService {
         updateCallback();
       }
     }
+  }
+
+  /**
+   * Opens the task form overlay.
+   * 
+   * @param mode - Overlay mode
+   */
+  openOverlay(mode: 'create' | 'edit' = 'create'): void {
+    if (mode === 'create') {
+      this.overlayService.openAddTaskOverlay();
+    } else {
+      const currentTask = this.getCurrentTask();
+      if (currentTask) {
+        this.overlayService.openTaskEditOverlay(currentTask);
+      }
+    }
+  }
+
+  /**
+   * Closes the task form overlay.
+   */
+  closeOverlay(): void {
+    this.overlayService.closeAllOverlays();
+  }
+
+  /**
+   * Checks if overlay is open.
+   * 
+   * @returns True if overlay is open
+   */
+  isOverlayOpen(): boolean {
+    return this.overlayService.isAnyOverlayOpen();
+  }
+
+  /**
+   * Gets current overlay mode.
+   * 
+   * @returns Current overlay mode
+   */
+  getOverlayMode(): 'create' | 'edit' | null {
+    if (this.overlayService.showAddTaskOverlay) return 'create';
+    if (this.overlayService.showTaskEditOverlay) return 'edit';
+    return null;
   }
 
   /**
@@ -603,26 +723,5 @@ export class BoardFormService {
     this.dataService.cleanup();
     this.contactSelectionService.cleanup();
     this.overlayService.cleanup();
-  }
-
-  /**
-   * Gets subtask progress percentage.
-   * 
-   * @returns Progress percentage
-   */
-  getSubtaskProgress(): number {
-    const subtasks = this.selectedTask?.subtasks || [];
-    if (subtasks.length === 0) return 0;
-    const completed = subtasks.filter(s => s.completed).length;
-    return Math.round((completed / subtasks.length) * 100);
-  }
-
-  /**
-   * Gets completed subtasks count.
-   * 
-   * @returns Number of completed subtasks
-   */
-  getCompletedSubtasksCount(): number {
-    return this.selectedTask?.subtasks?.filter(s => s.completed).length || 0;
   }
 }

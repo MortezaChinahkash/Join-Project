@@ -113,14 +113,14 @@ export class BoardTaskManagementService {
    * @param column - Target column for the new task
    */
   openAddTaskOverlay(column: TaskColumn = 'todo'): void {
-    this.formService.openAddTaskOverlay(column);
+    this.formService.overlayService.openAddTaskOverlay(column);
   }
 
   /**
    * Closes the add task overlay.
    */
   closeAddTaskOverlay(): void {
-    this.formService.closeAddTaskOverlay();
+    this.formService.overlayService.closeAllOverlays();
   }
 
   /**
@@ -128,14 +128,14 @@ export class BoardTaskManagementService {
    * @param task - Task to display details for
    */
   openTaskDetails(task: Task): void {
-    this.formService.openTaskDetails(task);
+    this.formService.overlayService.openTaskDetailsOverlay(task);
   }
 
   /**
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
-    this.formService.closeTaskDetailsOverlay();
+    this.formService.overlayService.closeAllOverlays();
   }
 
   /**
