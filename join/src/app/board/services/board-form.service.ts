@@ -20,6 +20,7 @@ export class BoardFormService {
   taskForm: FormGroup;
   private _isCategoryDropdownOpen: boolean = false;
   
+  /** Constructor initializes form builder and services */
   constructor(
     private fb: FormBuilder,
     private validationService: BoardFormValidationService,
@@ -408,6 +409,7 @@ export class BoardFormService {
     return this.validationService.getFieldErrorMessage(this.taskForm, fieldName);
   }
 
+  /** Gets currently selected contacts */
   get selectedContacts(): Contact[] {
     return this.contactSelectionService.selectedContacts;
   }
@@ -447,10 +449,12 @@ export class BoardFormService {
     this.contactSelectionService.setSelectedContactsByNames(contactNames, allContacts);
   }
 
+  /** Gets dropdown open state */
   get isDropdownOpen(): boolean {
     return this.contactSelectionService.isDropdownOpen;
   }
 
+  /** Sets dropdown open state */
   set isDropdownOpen(value: boolean) {
     this.contactSelectionService.isDropdownOpen = value;
   }
@@ -478,10 +482,12 @@ export class BoardFormService {
     return this.contactSelectionService.hasMoreAssignedContacts();
   }
 
+  /** Gets assigned contacts dropdown visibility state */
   get showAssignedContactsDropdown(): boolean {
     return this.contactSelectionService.showAssignedContactsDropdown;
   }
 
+  /** Sets assigned contacts dropdown visibility state */
   set showAssignedContactsDropdown(value: boolean) {
     this.contactSelectionService.showAssignedContactsDropdown = value;
   }
@@ -509,18 +515,22 @@ export class BoardFormService {
     return this.contactSelectionService.getRemainingAssignedContacts();
   }
 
+  /** Gets add task overlay visibility state */
   get showAddTaskOverlay(): boolean {
     return this.overlayService.showAddTaskOverlay;
   }
 
+  /** Gets task details overlay visibility state */
   get showTaskDetailsOverlay(): boolean {
     return this.overlayService.showTaskDetailsOverlay;
   }
 
+  /** Gets currently selected task */
   get selectedTask(): Task | null {
     return this.overlayService.selectedTask;
   }
 
+  /** Gets task editing state */
   get isEditingTask(): boolean {
     return this.overlayService.isEditingTask;
   }
@@ -584,6 +594,7 @@ export class BoardFormService {
     }
   }
 
+  /** Gets currently selected priority */
   get selectedPriority(): string {
     return this.taskForm.get('priority')?.value || 'medium';
   }
@@ -605,6 +616,7 @@ export class BoardFormService {
     this.taskForm.get('category')?.markAsTouched();
     this._isCategoryDropdownOpen = false;
   }
+  /** Gets category dropdown open state */
   get isCategoryDropdownOpen(): boolean {
     return this._isCategoryDropdownOpen;
   }
@@ -635,6 +647,7 @@ export class BoardFormService {
            category === 'user-story' ? 'User Story' : 'Select Category';
   }
 
+  /** Gets subtasks form array */
   get subtasksFormArray(): any {
     return this.taskForm.get('subtasks');
   }

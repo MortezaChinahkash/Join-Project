@@ -23,10 +23,10 @@ import { trigger, transition, style, animate } from '@angular/animations';
   animations: [
     trigger('slideInRight', [
       transition(':enter', [
+        /** Initial state for slide-in animation from right */
         style({ transform: 'translateX(100%)', opacity: 0 }),
-
+        /** Animation to slide element into view */
         animate('350ms cubic-bezier(.35,0,.25,1)', style({ transform: 'translateX(0)', opacity: 1 }))
-
       ])
     ])
   ]
