@@ -236,13 +236,38 @@ export class ContactsDisplayService {
     truncatedName: string;
     truncatedEmail: string;
   } {
+    const basicProperties = this.buildBasicContactProperties(contact);
+    const displayProperties = this.buildDisplayContactProperties(contact);
+    return { ...basicProperties, ...displayProperties };
+  }
+
+  /**
+   * Builds basic contact properties.
+   * 
+   * @param contact - Contact object
+   * @returns Basic contact properties
+   * @private
+   */
+  private buildBasicContactProperties(contact: Contact) {
     return {
       initials: this.getContactInitials(contact.name),
       name: contact.name,
       email: contact.email,
       phone: this.formatPhone(contact.phone),
       color: this.getContactColor(contact.name),
-      isCurrentUser: this.isCurrentUserContact(contact),
+      isCurrentUser: this.isCurrentUserContact(contact)
+    };
+  }
+
+  /**
+   * Builds display contact properties.
+   * 
+   * @param contact - Contact object
+   * @returns Display contact properties
+   * @private
+   */
+  private buildDisplayContactProperties(contact: Contact) {
+    return {
       displayName: this.getContactDisplayText(contact),
       truncatedName: this.getTruncatedName(contact.name),
       truncatedEmail: this.truncateEmail(contact.email)
