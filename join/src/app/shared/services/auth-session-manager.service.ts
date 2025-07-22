@@ -66,7 +66,7 @@ export class AuthSessionManagerService {
     try {
       localStorage.setItem(storageKey, JSON.stringify(user));
     } catch (error) {
-      // Silent error handling for storage issues
+      
     }
   }
 
