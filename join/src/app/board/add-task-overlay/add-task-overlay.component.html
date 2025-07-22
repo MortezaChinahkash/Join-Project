@@ -75,25 +75,25 @@
             <div class="form-group">
               <label for="assignedTo">Assigned to</label>
               <div class="custom-select-wrapper">
-                <div class="custom-select" (click)="formService.toggleDropdown()">
-                  <div class="selected-contacts" *ngIf="formService.selectedContacts.length > 0; else placeholder">
+                <div class="custom-select" (click)="formService.contactService.toggleDropdown()">
+                  <div class="selected-contacts" *ngIf="formService.contactService.selectedContacts.length > 0; else placeholder">
                     <div class="selected-contact-avatars">
-                      <div class="contact-avatar" *ngFor="let contact of formService.selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
-                      <div class="more-contacts" *ngIf="formService.selectedContacts.length > 4">+{{ formService.selectedContacts.length - 4 }}</div>
+                      <div class="contact-avatar" *ngFor="let contact of formService.contactService.selectedContacts.slice(0, 4)" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
+                      <div class="more-contacts" *ngIf="formService.contactService.selectedContacts.length > 4">+{{ formService.contactService.selectedContacts.length - 4 }}</div>
                     </div>
-                    <span class="selected-text">{{ formService.getSelectedContactsText() }}</span>
+                    <span class="selected-text">{{ formService.contactService.getSelectedContactsText() }}</span>
                   </div>
                   <ng-template #placeholder><span class="placeholder">Select contacts to assign</span></ng-template>
-                  <svg class="dropdown-arrow" [class.open]="formService.isDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <svg class="dropdown-arrow" [class.open]="formService.contactService.isDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
-                  <div class="dropdown-option" *ngFor="let contact of contacts" (click)="formService.toggleContactSelection(contact, $event)">
+                <div class="dropdown-options" *ngIf="formService.contactService.isDropdownOpen">
+                  <div class="dropdown-option" *ngFor="let contact of contacts" (click)="formService.contactService.toggleContactSelection(contact, $event)">
                     <div class="contact-avatar" [style.background-color]="getInitialsColor(contact.name)">{{ getInitials(contact.name) }}</div>
                     <span class="contact-name">{{ contact.name }}</span>
                     <div class="checkbox-wrapper">
-                      <input type="checkbox" [id]="'contact-' + contact.id" [checked]="formService.isContactSelected(contact)" readonly />
+                      <input type="checkbox" [id]="'contact-' + contact.id" [checked]="formService.contactService.isContactSelected(contact)" readonly />
                       <label [for]="'contact-' + contact.id" class="checkbox-label"></label>
                     </div>
                   </div>
@@ -108,20 +108,20 @@
               <div class="custom-select-wrapper category-select-wrapper">
                 <div class="custom-select" 
                      [class.error]="formService.validationService.isFieldInvalid(formService.taskForm, 'category')" 
-                     (click)="formService.toggleCategoryDropdown(); formService.taskForm.get('category')?.markAsTouched(); $event.stopPropagation()">
+                     (click)="categoryService.toggleCategoryDropdown(); formService.taskForm.get('category')?.markAsTouched(); $event.stopPropagation()">
                   <span class="selected-text" *ngIf="formService.taskForm.get('category')?.value; else categoryPlaceholder">
-                    {{ formService.getCategoryDisplayText(formService.taskForm.get('category')?.value) }}
+                    {{ categoryService.getCategoryDisplayText(formService.taskForm.get('category')?.value) }}
                   </span>
                   <ng-template #categoryPlaceholder><span class="placeholder">Select task category</span></ng-template>
-                  <svg class="dropdown-arrow" [class.open]="formService.isCategoryDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <svg class="dropdown-arrow" [class.open]="categoryService.isCategoryDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <div class="dropdown-options category-dropdown-options" *ngIf="formService.isCategoryDropdownOpen" (click)="$event.stopPropagation()">
-                  <div class="dropdown-option" (click)="formService.selectCategory('technical'); $event.stopPropagation()">
+                <div class="dropdown-options category-dropdown-options" *ngIf="categoryService.isCategoryDropdownOpen" (click)="$event.stopPropagation()">
+                  <div class="dropdown-option" (click)="categoryService.selectCategory('technical'); $event.stopPropagation()">
                     <span class="category-name">Technical Task</span>
                   </div>
-                  <div class="dropdown-option" (click)="formService.selectCategory('user-story'); $event.stopPropagation()">
+                  <div class="dropdown-option" (click)="categoryService.selectCategory('user-story'); $event.stopPropagation()">
                     <span class="category-name">User Story</span>
                   </div>
                 </div>

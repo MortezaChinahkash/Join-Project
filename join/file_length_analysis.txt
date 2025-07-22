@@ -1,12 +1,12 @@
 FILE LENGTH ANALYSIS REPORT
-Generated: 22.07.2025 11:59
+Generated: 22.07.2025 12:45
 ================================================================================
-Analyzing 173 files for length > 400 lines...
+Analyzing 174 files for length > 400 lines...
 Search directory: C:\Users\china\OneDrive\Desktop\Join2\Join\join
 HTML files: 21
 SCSS files: 42
 JavaScript files: 1
-TypeScript files: 109
+TypeScript files: 110
 Excluded directories: node_modules, .git, dist, build, .angular, coverage, .vscode, .idea
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\legal-notice\legal-notice.component.html
@@ -66,8 +66,8 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\boa
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 --------------------------------------------------------------------------------
-  Type: TypeScript | Total lines: 727
-  Non-empty: 644 | Comments: 299 | Code: 345
+  Type: TypeScript | Total lines: 628
+  Non-empty: 558 | Comments: 254 | Code: 304
 
 File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\form\board-form-v2.service.ts
 --------------------------------------------------------------------------------
@@ -107,13 +107,13 @@ File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\summary\summary.co
 ================================================================================
 === TOP 10 LARGEST FILES ===
 ================================================================================
- 1. board-form.service.ts (727 lines)
-    Type: TypeScript
-    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
-
- 2. auth.service.ts (656 lines)
+ 1. auth.service.ts (656 lines)
     Type: TypeScript
     File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\shared\services\auth.service.ts
+
+ 2. board-form.service.ts (628 lines)
+    Type: TypeScript
+    File: C:\Users\china\OneDrive\Desktop\Join2\Join\join\src\app\board\services\board-form.service.ts
 
  3. privacy-policy.component.html (577 lines)
     Type: HTML
@@ -153,13 +153,13 @@ CSS: 0 files > 400 lines
 SCSS: 4 files > 400 lines (avg: 441.0, max: 464)
 SASS: 0 files > 400 lines
 JavaScript: 0 files > 400 lines
-TypeScript: 13 files > 400 lines (avg: 527.5, max: 727)
+TypeScript: 13 files > 400 lines (avg: 519.9, max: 656)
 
 === OVERALL SUMMARY ===
-Files analyzed: 173
+Files analyzed: 174
 Files over 400 lines: 19
-Average length of large files: 509.1 lines
-Largest file: board-form.service.ts (727 lines)
+Average length of large files: 503.9 lines
+Largest file: auth.service.ts (656 lines)
 
 === RECOMMENDATIONS ===
 • Files > 500 lines: Consider splitting into multiple files

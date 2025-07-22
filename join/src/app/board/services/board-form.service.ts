@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BoardFormValidationService } from './board-form-validation.service';
 import { BoardFormOverlayService } from './board-form-overlay-v2.service';
 import { BoardFormContactSelectionService } from './board-form-contact-selection.service';
+import { BoardFormContactService } from './board-form-contact.service';
+import { BoardFormCategoryService } from './board-form-category.service';
 import { BoardFormDataService } from './board-form-data.service';
 import { BoardFormTaskOperationsService } from './board-form-task-operations.service';
 import { BoardFormStateService } from './board-form-state.service';
@@ -19,7 +21,6 @@ import { TaskService } from '../../shared/services/task.service';
 @Injectable({ providedIn: 'root' })
 
 export class BoardFormService {
-  private _isCategoryDropdownOpen: boolean = false;
   
   /** Constructor initializes form builder and services */
   constructor(
@@ -27,6 +28,8 @@ export class BoardFormService {
     public validationService: BoardFormValidationService,
     public overlayService: BoardFormOverlayService,
     public contactSelectionService: BoardFormContactSelectionService,
+    public contactService: BoardFormContactService,
+    public categoryService: BoardFormCategoryService,
     public dataService: BoardFormDataService,
     private taskService: TaskService,
     public taskOperations: BoardFormTaskOperationsService,
@@ -203,7 +206,7 @@ export class BoardFormService {
     this.resetForm();
     this.dataService.reset();
     this.overlayService.closeAllOverlays();
-    this.contactSelectionService.cleanup();
+    this.contactService.cleanup();
   }
 
   /**
@@ -218,125 +221,6 @@ export class BoardFormService {
     } else {
       this.closeForm();
     }
-  }
-
-  /** Gets currently selected contacts */
-  get selectedContacts(): Contact[] {
-    return this.contactSelectionService.selectedContacts;
-  }
-
-  /**
-   * Checks if contact is selected.
-   * 
-   * @param contact - Contact to check
-   * @returns True if contact is selected
-   */
-  isContactSelected(contact: Contact): boolean {
-    return this.contactSelectionService.isContactSelected(contact);
-  }
-
-  /**
-   * Gets selected contacts text.
-   * 
-   * @returns Selected contacts text
-   */
-  getSelectedContactsText(): string {
-    return this.contactSelectionService.getSelectedContactsText();
-  }
-
-  /**
-   * Toggles contactselection state.
-   * @param contact - Contact parameter
-   * @param event? - Event? parameter
-   */
-  toggleContactSelection(contact: Contact, event?: Event): void {
-    this.contactSelectionService.toggleContact(contact);
-  }
-
-  /**
-   * Sets selectedcontactsbynames value.
-   * @param contactNames - Contactnames parameter
-   * @param allContacts - Allcontacts parameter
-   */
-  setSelectedContactsByNames(contactNames: string[], allContacts: Contact[]): void {
-    this.contactSelectionService.setSelectedContactsByNames(contactNames, allContacts);
-  }
-
-  /** Gets dropdown open state */
-  get isDropdownOpen(): boolean {
-    return this.contactSelectionService.isDropdownOpen;
-  }
-
-  /** Sets dropdown open state */
-  set isDropdownOpen(value: boolean) {
-    this.contactSelectionService.isDropdownOpen = value;
-  }
-
-  /**
-   * Toggles dropdown state.
-   */
-  toggleDropdown(): void {
-    this.contactSelectionService.toggleDropdown();
-  }
-
-  /** Gets assigned contacts dropdown visibility state */
-  get showAssignedContactsDropdown(): boolean {
-    return this.contactSelectionService.showAssignedContactsDropdown;
-  }
-
-  /** Sets assigned contacts dropdown visibility state */
-  set showAssignedContactsDropdown(value: boolean) {
-    this.contactSelectionService.showAssignedContactsDropdown = value;
-  }
-
-  /**
-   * Toggles assignedcontactsdropdown state.
-   */
-  toggleAssignedContactsDropdown(): void {
-    this.contactSelectionService.toggleAssignedContactsDropdown();
-  }
-
-  /**
-   * Gets remaining assigned contacts count.
-   * 
-   * @returns Number of remaining contacts
-   */
-  getRemainingAssignedContactsCount(): number {
-    const task = this.selectedTask;
-    if (!task || !task.assignedTo || task.assignedTo.length <= 4) return 0;
-    return task.assignedTo.length - 4;
-  }
-
-  /**
-   * Gets remaining assigned contacts.
-   * 
-   * @returns Array of remaining contact names
-   */
-  getRemainingAssignedContacts(): string[] {
-    const task = this.selectedTask;
-    if (!task || !task.assignedTo || task.assignedTo.length <= 4) return [];
-    return task.assignedTo.slice(4);
-  }
-
-  /**
-   * Gets displayed assigned contacts.
-   * 
-   * @returns Array of displayed contacts
-   */
-  getDisplayedAssignedContacts(): string[] {
-    const task = this.selectedTask;
-    if (!task || !task.assignedTo) return [];
-    return task.assignedTo.slice(0, 4);
-  }
-
-  /**
-   * Checks if there are more assigned contacts.
-   * 
-   * @returns True if more contacts exist
-   */
-  hasMoreAssignedContacts(): boolean {
-    const task = this.selectedTask;
-    return !!(task && task.assignedTo && task.assignedTo.length > 4);
   }
 
   /** Gets add task overlay visibility state */
@@ -386,45 +270,6 @@ export class BoardFormService {
     if (success && onTaskUpdate) {
       onTaskUpdate();
     }
-  }
-
-  /**
-   * Handles selectCategory functionality.
-   * @param category - Category parameter
-   */
-  selectCategory(category: string): void {
-    this.formState.selectCategory(category);
-    this._isCategoryDropdownOpen = false;
-  }
-  /** Gets category dropdown open state */
-  get isCategoryDropdownOpen(): boolean {
-    return this._isCategoryDropdownOpen;
-  }
-
-  /**
-   * Toggles categorydropdown state.
-   */
-  toggleCategoryDropdown(): void {
-    this._isCategoryDropdownOpen = !this._isCategoryDropdownOpen;
-  }
-
-  /**
-   * Closes category dropdown.
-   */
-  closeCategoryDropdown(): void {
-    this._isCategoryDropdownOpen = false;
-  }
-
-  /**
-   * Gets categorydisplaytext value.
-   * @param categoryValue - Category value or form parameter
-   * @returns String result
-   */
-  getCategoryDisplayText(categoryValue: any): string {
-
-    const category = (typeof categoryValue === 'string') ? categoryValue : categoryValue?.get?.('category')?.value;
-    return category === 'technical' ? 'Technical Task' : 
-           category === 'user-story' ? 'User Story' : 'Select Category';
   }
 
   /** Gets subtasks form array */
@@ -489,47 +334,6 @@ export class BoardFormService {
         updateCallback();
       }
     }
-  }
-
-  /**
-   * Toggles contact selection.
-   * 
-   * @param contact - Contact to toggle
-   */
-  toggleContact(contact: Contact): void {
-    this.contactSelectionService.toggleContact(contact);
-  }
-
-  /**
-   * Gets selected contacts.
-   * 
-   * @returns Array of selected contacts
-   */
-  getSelectedContacts(): Contact[] {
-    return this.contactSelectionService.selectedContacts;
-  }
-
-  /**
-   * Opens contact dropdown.
-   */
-  openContactDropdown(): void {
-    this.contactSelectionService.openDropdown();
-  }
-
-  /**
-   * Closes contact dropdown.
-   */
-  closeContactDropdown(): void {
-    this.contactSelectionService.closeDropdown();
-  }
-
-  /**
-   * Checks if contact dropdown is open.
-   * 
-   * @returns True if dropdown is open
-   */
-  isContactDropdownOpen(): boolean {
-    return this.contactSelectionService.isDropdownOpen;
   }
 
   /**
@@ -601,7 +405,7 @@ export class BoardFormService {
    */
   cleanup(): void {
     this.dataService.cleanup();
-    this.contactSelectionService.cleanup();
+    this.contactService.cleanup();
     this.overlayService.cleanup();
   }
 

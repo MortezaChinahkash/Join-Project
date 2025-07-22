@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Contact } from '../../contacts/services/contact-data.service';
 import { TaskColumn } from '../../interfaces/task.interface';
 import { BoardFormService } from '../services/board-form.service';
+import { BoardFormContactService } from '../services/board-form-contact.service';
+import { BoardFormCategoryService } from '../services/board-form-category.service';
 import { BoardSubtaskService } from '../services/board-subtask.service';
 import { ContactHelperService } from '../../contacts/services/contact-helper.service';
 import { FlatpickrDirective } from '../../directives/flatpickr.directive';
@@ -58,6 +60,8 @@ export class AddTaskOverlayComponent implements OnDestroy {
   @Output() onSubmit = new EventEmitter<void>();
   constructor(
     public formService: BoardFormService,
+    public contactService: BoardFormContactService,
+    public categoryService: BoardFormCategoryService,
     public subtaskService: BoardSubtaskService,
     public contactHelperService: ContactHelperService
   ) {
@@ -74,7 +78,7 @@ export class AddTaskOverlayComponent implements OnDestroy {
    * Gets selected contacts from the form service
    */
   getSelectedContacts(contacts: Contact[]): Contact[] {
-    return contacts.filter(contact => this.formService.isContactSelected(contact));
+    return contacts.filter(contact => this.contactService.isContactSelected(contact));
   }
 
   /**
@@ -132,14 +136,14 @@ export class AddTaskOverlayComponent implements OnDestroy {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     
-    if (this.formService.isCategoryDropdownOpen) {
+    if (this.categoryService.isCategoryDropdownOpen) {
       const categoryDropdown = target.closest('.category-select-wrapper');
       if (!categoryDropdown) {
-        this.formService.closeCategoryDropdown();
+        this.categoryService.closeCategoryDropdown();
       }
     }
     
-    if (this.formService.isDropdownOpen) {
+    if (this.contactService.isDropdownOpen) {
       const contactsDropdown = target.closest('.custom-select-wrapper:not(.category-select-wrapper)');
       if (!contactsDropdown) {
       }

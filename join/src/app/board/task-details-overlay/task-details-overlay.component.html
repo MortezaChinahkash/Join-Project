@@ -43,23 +43,23 @@
       <div class="task-assigned-to">
         <h3>Assigned to:</h3>
         <div class="assigned-contacts" *ngIf="selectedTask.assignedTo && selectedTask.assignedTo.length > 0; else noContacts">
-          <div class="contact-item" *ngFor="let contactName of formService.getDisplayedAssignedContacts(); let i = index">
+          <div class="contact-item" *ngFor="let contactName of formService.contactService.getDisplayedAssignedContacts(); let i = index">
             <div class="avatar" [style.background-color]="getInitialsColor(contactName)">
               {{ getInitials(contactName) }}
             </div>
             <span class="contact-name">{{ contactName }}</span>
           </div>
-          <div class="more-contacts-dropdown" *ngIf="formService.hasMoreAssignedContacts()">
+          <div class="more-contacts-dropdown" *ngIf="formService.contactService.hasMoreAssignedContacts()">
             <div class="dropdown-backdrop" 
-                 *ngIf="formService.showAssignedContactsDropdown" 
-                 (click)="formService.showAssignedContactsDropdown = false">
+                 *ngIf="formService.contactService.showAssignedContactsDropdown" 
+                 (click)="formService.contactService.showAssignedContactsDropdown = false">
             </div>
-            <div class="dropdown-trigger" (click)="formService.toggleAssignedContactsDropdown()">
-              <span class="more-contacts-text">+{{ formService.getRemainingAssignedContactsCount() }} more</span>
-              <div class="dropdown-arrow" [class.open]="formService.showAssignedContactsDropdown">▼</div>
+            <div class="dropdown-trigger" (click)="formService.contactService.toggleAssignedContactsDropdown()">
+              <span class="more-contacts-text">+{{ formService.contactService.getRemainingAssignedContactsCount() }} more</span>
+              <div class="dropdown-arrow" [class.open]="formService.contactService.showAssignedContactsDropdown">▼</div>
             </div>
-            <div class="dropdown-options" *ngIf="formService.showAssignedContactsDropdown">
-              <div class="contact-item dropdown-contact" *ngFor="let contactName of formService.getRemainingAssignedContacts()">
+            <div class="dropdown-options" *ngIf="formService.contactService.showAssignedContactsDropdown">
+              <div class="contact-item dropdown-contact" *ngFor="let contactName of formService.contactService.getRemainingAssignedContacts()">
                 <div class="avatar" [style.background-color]="getInitialsColor(contactName)">
                   {{ getInitials(contactName) }}
                 </div>

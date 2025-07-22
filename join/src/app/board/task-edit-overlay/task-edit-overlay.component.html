@@ -78,29 +78,29 @@
       <div class="form-group">
         <label>Assigned to</label>
         <div class="contacts-dropdown">
-          <div class="dropdown-trigger" (click)="formService.toggleDropdown()">
-            <span *ngIf="formService.selectedContacts.length === 0">
+          <div class="dropdown-trigger" (click)="formService.contactService.toggleDropdown()">
+            <span *ngIf="formService.contactService.selectedContacts.length === 0">
               Select contacts to assign
             </span>
-            <span *ngIf="formService.selectedContacts.length > 0">
-              {{ formService.selectedContacts.length }} contact(s) selected
+            <span *ngIf="formService.contactService.selectedContacts.length > 0">
+              {{ formService.contactService.selectedContacts.length }} contact(s) selected
             </span>
-            <svg class="dropdown-arrow" [class.open]="formService.isDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <svg class="dropdown-arrow" [class.open]="formService.contactService.isDropdownOpen" width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
-          <div class="dropdown-options" *ngIf="formService.isDropdownOpen">
+          <div class="dropdown-options" *ngIf="formService.contactService.isDropdownOpen">
             <div 
               class="contact-option" 
               *ngFor="let contact of contacts" 
-              (click)="formService.toggleContactSelection(contact, $event)">
-              <div class="contact-checkbox" [class.checked]="formService.isContactSelected(contact)">
+              (click)="formService.contactService.toggleContactSelection(contact, $event)">
+              <div class="contact-checkbox" [class.checked]="formService.contactService.isContactSelected(contact)">
                 <img 
-                  *ngIf="formService.isContactSelected(contact)" 
+                  *ngIf="formService.contactService.isContactSelected(contact)" 
                   src="./assets/img/icon_checkbox_checked.svg" 
                   alt="Checked" />
                 <img 
-                  *ngIf="!formService.isContactSelected(contact)" 
+                  *ngIf="!formService.contactService.isContactSelected(contact)" 
                   src="./assets/img/icon_checkbox_unchecked.svg" 
                   alt="Unchecked" />
               </div>
