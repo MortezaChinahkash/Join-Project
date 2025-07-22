@@ -128,98 +128,204 @@ export class SummaryComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Gets a greeting message based on the current time of day.
+   * 
+   * @returns Time-based greeting string
+   */
   getTimeBasedGreeting(): string {
     return this.summaryStatisticsService.getTimeBasedGreeting();
   }
 
+  /**
+   * Gets the current date formatted as a string.
+   * 
+   * @returns Formatted current date
+   */
   getCurrentDate(): string {
     return this.summaryStatisticsService.getCurrentDate();
   }
 
+  /**
+   * Gets the current year.
+   * 
+   * @returns Current year as number
+   */
   getCurrentYear(): number {
     return this.summaryStatisticsService.getCurrentYear();
   }
 
+  /**
+   * Gets the current month name.
+   * 
+   * @returns Current month as string
+   */
   getCurrentMonth(): string {
     return this.summaryStatisticsService.getCurrentMonth();
   }
 
+  /**
+   * Gets the current day of the month.
+   * 
+   * @returns Current day as number
+   */
   getCurrentDay(): number {
     return this.summaryStatisticsService.getCurrentDay();
   }
 
+  /**
+   * Navigates to the main board view.
+   */
   navigateToBoard(): void {
     this.summaryStatisticsService.navigateToBoard();
   }
 
+  /**
+   * Navigates to the board filtered to show only todo tasks.
+   */
   navigateToTodoTasks(): void {
     this.summaryStatisticsService.navigateToTodoTasks();
   }
 
+  /**
+   * Navigates to the board filtered to show only completed tasks.
+   */
   navigateToDoneTasks(): void {
     this.summaryStatisticsService.navigateToDoneTasks();
   }
 
+  /**
+   * Navigates to the board to show all tasks.
+   */
   navigateToTasksInBoard(): void {
     this.summaryStatisticsService.navigateToTasksInBoard();
   }
 
+  /**
+   * Navigates to the board filtered to show only in-progress tasks.
+   */
   navigateToTasksInProgress(): void {
     this.summaryStatisticsService.navigateToTasksInProgress();
   }
 
+  /**
+   * Navigates to the board filtered to show only awaiting feedback tasks.
+   */
   navigateToAwaitingTasks(): void {
     this.summaryStatisticsService.navigateToAwaitingTasks();
   }
 
+  /**
+   * Gets the total count of open (non-completed) tasks.
+   * 
+   * @returns Number of open tasks
+   */
   getOpenTasksCount(): number {
     return this.summaryStatisticsService.getOpenTasksCount();
   }
 
+  /**
+   * Gets the count of tasks currently in progress.
+   * 
+   * @returns Number of in-progress tasks
+   */
   getInProgressTasksCount(): number {
     return this.summaryStatisticsService.getInProgressTasksCount();
   }
 
+  /**
+   * Gets the count of tasks awaiting feedback.
+   * 
+   * @returns Number of awaiting feedback tasks
+   */
   getAwaitingTasksCount(): number {
     return this.summaryStatisticsService.getAwaitingTasksCount();
   }
 
+  /**
+   * Gets the count of todo tasks.
+   * 
+   * @returns Number of todo tasks
+   */
   getToDoTasksCount(): number {
     return this.summaryStatisticsService.getToDoTasksCount();
   }
 
+  /**
+   * Gets the count of completed tasks.
+   * 
+   * @returns Number of done tasks
+   */
   getDoneTasksCount(): number {
     return this.summaryStatisticsService.getDoneTasksCount();
   }
 
+  /**
+   * Gets the count of urgent tasks due today.
+   * 
+   * @returns Number of urgent tasks due today
+   */
   getUrgentTasksDueToday(): number {
     return this.summaryStatisticsService.getUrgentTasksDueToday();
   }
 
+  /**
+   * Gets the total count of urgent priority tasks.
+   * 
+   * @returns Number of urgent tasks
+   */
   getUrgentTasksCount(): number {
     return this.summaryStatisticsService.getUrgentTasksCount();
   }
 
+  /**
+   * Gets the deadline of the nearest urgent task.
+   * 
+   * @returns Date of nearest urgent deadline or null if none
+   */
   getNearestUrgentTaskDeadline(): Date | null {
     return this.summaryStatisticsService.getNearestUrgentTaskDeadline();
   }
 
+  /**
+   * Gets the month name of the nearest urgent task deadline.
+   * 
+   * @returns Month name string
+   */
   getUrgentDeadlineMonth(): string {
     return this.summaryStatisticsService.getUrgentDeadlineMonth();
   }
 
+  /**
+   * Gets the day of the nearest urgent task deadline.
+   * 
+   * @returns Day as number
+   */
   getUrgentDeadlineDay(): number {
     return this.summaryStatisticsService.getUrgentDeadlineDay();
   }
 
+  /**
+   * Gets the year of the nearest urgent task deadline.
+   * 
+   * @returns Year as number
+   */
   getUrgentDeadlineYear(): number {
     return this.summaryStatisticsService.getUrgentDeadlineYear();
   }
 
+  /**
+   * Gets formatted deadline text for display.
+   * 
+   * @returns Formatted deadline text
+   */
   getDeadlineText(): string {
     return this.summaryStatisticsService.getDeadlineText();
   }
 
+  /**
+   * Navigates to the board and highlights the nearest urgent task.
+   */
   navigateToNearestUrgentTask(): void {
     this.summaryStatisticsService.navigateToNearestUrgentTask();
   }

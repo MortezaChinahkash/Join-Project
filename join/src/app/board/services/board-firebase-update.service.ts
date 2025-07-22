@@ -12,6 +12,12 @@ import { BoardDragStateService } from './board-drag-state.service';
 @Injectable({ providedIn: 'root' })
 export class BoardFirebaseUpdateService {
 
+  /**
+   * Initializes the Firebase update service with required dependencies.
+   * 
+   * @param taskService - Service for task data operations
+   * @param dragState - Service for managing drag state
+   */
   constructor(
     private taskService: TaskService,
     private dragState: BoardDragStateService

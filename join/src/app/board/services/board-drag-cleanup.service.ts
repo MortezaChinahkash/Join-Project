@@ -11,6 +11,12 @@ import { BoardAutoScrollService } from './board-auto-scroll.service';
 @Injectable({ providedIn: 'root' })
 export class BoardDragCleanupService {
 
+  /**
+   * Initializes the drag cleanup service with required dependencies.
+   * 
+   * @param dragState - Service for managing drag state
+   * @param autoScroll - Service for auto-scroll functionality
+   */
   constructor(
     private dragState: BoardDragStateService,
     private autoScroll: BoardAutoScrollService

@@ -18,6 +18,12 @@ export class SummaryStatisticsService {
   private tasks: Task[] = [];
   private tasksSubscription?: Subscription;
 
+  /**
+   * Initializes the summary statistics service with required dependencies.
+   * 
+   * @param router - Angular router for navigation
+   * @param boardDataService - Service for board data operations
+   */
   constructor(
     private router: Router,
     private boardDataService: BoardDataService

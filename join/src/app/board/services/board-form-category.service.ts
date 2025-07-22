@@ -12,6 +12,11 @@ import { BoardFormStateService } from './board-form-state.service';
 export class BoardFormCategoryService {
   private _isCategoryDropdownOpen: boolean = false;
 
+  /**
+   * Initializes the form category service with required dependencies.
+   * 
+   * @param formState - Service for managing form state
+   */
   constructor(
     private formState: BoardFormStateService
   ) {}
