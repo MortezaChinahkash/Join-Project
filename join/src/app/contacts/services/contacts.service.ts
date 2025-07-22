@@ -531,7 +531,6 @@ export class ContactsService implements OnDestroy {
     this.resizeCleanup?.();
     this.stateService.cleanup();
     this.formService.cleanup();
-    this.crudService.cleanup();
     this.displayService.cleanup();
   }
 }
