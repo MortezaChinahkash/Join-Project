@@ -22,6 +22,9 @@ import { BoardInteractionService } from './services/board-interaction.service';
 import { BoardLifecycleService } from './services/board-lifecycle.service';
 import { BoardInitializationService } from './services/board-initialization.service';
 import { BoardArrayManagementService } from './services/board-array-management.service';
+import { BoardEventHandlerService } from './services/board-event-handler.service';
+import { BoardStateService } from './services/board-state.service';
+import { BoardComponentUtilsService } from './services/board-component-utils.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
 import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.component';
@@ -64,40 +67,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   awaitingFeedbackTasks: Task[] = [];
   doneTasks: Task[] = [];
   tasks: Task[] = [];
-  boardColumns = [
-    {
-      id: 'todo' as TaskColumn,
-      title: 'To Do',
-      /** Returns todo tasks array */
-      tasks: () => this.todoTasks,
-      showAddButton: true,
-      emptyMessage: 'No tasks to do',
-    },
-    {
-      id: 'inprogress' as TaskColumn,
-      title: 'In Progress',
-      /** Returns in progress tasks array */
-      tasks: () => this.inProgressTasks,
-      showAddButton: true,
-      emptyMessage: 'No tasks in progress',
-    },
-    {
-      id: 'awaiting' as TaskColumn,
-      title: 'Awaiting feedback',
-      /** Returns awaiting feedback tasks array */
-      tasks: () => this.awaitingFeedbackTasks,
-      showAddButton: true,
-      emptyMessage: 'No tasks awaiting feedback',
-    },
-    {
-      id: 'done' as TaskColumn,
-      title: 'Done',
-      /** Returns done tasks array */
-      tasks: () => this.doneTasks,
-      showAddButton: false,
-      emptyMessage: 'No tasks done',
-    },
-  ];
+  boardColumns: any[];
   Math = Math;
   /**
    * Initializes the board component with all required services.
@@ -130,9 +100,13 @@ export class BoardComponent implements OnInit, OnDestroy {
     public lifecycleService: BoardLifecycleService,
     public initializationService: BoardInitializationService,
     public arrayManagementService: BoardArrayManagementService,
+    public eventHandlerService: BoardEventHandlerService,
+    public stateService: BoardStateService,
+    public componentUtilsService: BoardComponentUtilsService,
     private route: ActivatedRoute
   ) {
     this.initializeLocalArrays();
+    this.boardColumns = this.componentUtilsService.createColumnConfiguration(this);
   }
 
   /** Angular lifecycle hook that runs after component initialization. */
@@ -140,16 +114,13 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Angular lifecycle hook - component initialization.
    */
   ngOnInit(): void {
-    this.initializationService.initializeComponent(
+    this.stateService.initializeComponent(
       (contacts) => { this.contacts = contacts; },
-
       (tasks) => {
         this.tasks = tasks;
         this.distributeTasksToColumns();
       },
-
       () => {}
-
     );
   }
 
@@ -160,21 +131,17 @@ export class BoardComponent implements OnInit, OnDestroy {
   private distributeTasksToColumns(): void {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
     const assigned = this.arrayManagementService.assignTasksToColumns(distributed);
-    this.assignTasksToColumns(assigned);
-    setTimeout(() => this.handleQueryParams(), 50);
-  }
-
-  /** Assigns distributed tasks to component arrays. */
-  private assignTasksToColumns(distributed: {
-    todoTasks: Task[];
-    inProgressTasks: Task[];
-    awaitingFeedbackTasks: Task[];
-    doneTasks: Task[];
-  }): void {
-    this.todoTasks = distributed.todoTasks;
-    this.inProgressTasks = distributed.inProgressTasks;
-    this.awaitingFeedbackTasks = distributed.awaitingFeedbackTasks;
-    this.doneTasks = distributed.doneTasks;
+    this.componentUtilsService.assignTasksToComponentColumns(assigned, this);
+    setTimeout(() => this.componentUtilsService.handleComponentQueryParams(
+      {
+        todoTasks: this.todoTasks,
+        inProgressTasks: this.inProgressTasks,
+        awaitingFeedbackTasks: this.awaitingFeedbackTasks,
+        doneTasks: this.doneTasks
+      },
+      (task: Task) => this.openTaskDetails(task),
+      this.lifecycleService
+    ), 50);
   }
 
   /** Initializes local task arrays from the task service. */
@@ -182,20 +149,16 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Handles initializeLocalArrays functionality.
    */
   private initializeLocalArrays(): void {
-    const initialized = this.initializationService.initializeTaskArrays();
-    this.assignTasksToColumns(initialized);
+    const initialized = this.componentUtilsService.initializeLocalArrays();
+    this.componentUtilsService.assignTasksToComponentColumns(initialized, this);
   }
 
   /** Updates task arrays after task changes. */
-  /**
-   * Updates taskarrays.
-   */
   private updateTaskArrays(): void {
-    this.arrayManagementService.updateTaskArrays(
+    this.stateService.updateTaskArrays(
       this.tasks,
       this.formService.selectedTask,
       (updatedTasks) => { this.tasks = updatedTasks; },
-
       () => this.distributeTasksToColumns()
     );
   }
@@ -322,8 +285,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @returns Promise that resolves when operation completes
    */
   async onTaskMouseDown(event: MouseEvent, task: Task): Promise<void> {
-    const wasDragged = await this.interactionService.handleTaskMouseDown(event, task, () => this.updateTaskArrays());
-    if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
+    return this.eventHandlerService.handleTaskMouseDown(event, task, () => this.updateTaskArrays(), () => this.openTaskDetails(task));
   }
 
   /**
@@ -333,8 +295,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @returns Promise that resolves when operation completes
    */
   async onTaskTouchStart(event: TouchEvent, task: Task): Promise<void> {
-    const wasDragged = await this.interactionService.handleTaskTouchStart(event, task, () => this.updateTaskArrays());
-    if (!wasDragged) setTimeout(() => this.openTaskDetails(task), 0);
+    return this.eventHandlerService.handleTaskTouchStart(event, task, () => this.updateTaskArrays(), () => this.openTaskDetails(task));
   }
 
   /** Handles column drag over events */
@@ -474,7 +435,7 @@ export class BoardComponent implements OnInit, OnDestroy {
         doneTasks: this.doneTasks
       }
     );
-    this.assignTasksToColumns(updatedColumns);
+    this.componentUtilsService.assignTasksToComponentColumns(updatedColumns, this);
   }
 
   /** Gets displayed contacts for task */
