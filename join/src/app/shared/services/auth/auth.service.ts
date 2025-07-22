@@ -244,7 +244,6 @@ export class AuthService {
    */
   private startSessionMonitoring(): void {
     this.authSession.startSessionCheck(() => {
-      console.log('Session expired, logging out automatically');
       this.logout();
     });
   }
