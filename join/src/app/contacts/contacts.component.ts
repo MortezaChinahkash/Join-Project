@@ -6,6 +6,11 @@ import { Subscription } from 'rxjs';
 import { InlineSvgDirective } from '../inline-svg.directive';
 import { Contact } from './services/contact-data.service';
 import { ContactsService } from './services/contacts.service';
+import { ContactHelperService } from './services/contact-helper.service';
+import { ContactsStateService } from './services/contacts-state.service';
+import { ContactsFormService } from './services/contacts-form.service';
+import { ContactsDisplayService } from './services/contacts-display.service';
+import { ContactNavigationService } from './services/contact-navigation.service';
 /**
  * Refactored component for managing contacts with full CRUD operations.
  * Uses specialized services for better separation of concerns and maintainability.
@@ -54,11 +59,23 @@ export class ContactsComponent implements OnInit, OnDestroy {
   contactSuccessMessageText$!: any;
   private subscriptions: Subscription[] = [];
   /**
-   * Initializes the contacts component with the main contacts service.
+   * Initializes the contacts component with specialized services.
    * 
    * @param contactsService - Main contacts orchestrator service
+   * @param contactHelper - Helper service for contact utilities
+   * @param stateService - State management service
+   * @param formService - Form management service
+   * @param displayService - Display and utility service
+   * @param navigationService - Navigation and interaction service
    */
-  constructor(private contactsService: ContactsService) {
+  constructor(
+    private contactsService: ContactsService,
+    private contactHelper: ContactHelperService,
+    private stateService: ContactsStateService,
+    private formService: ContactsFormService,
+    private displayService: ContactsDisplayService,
+    private navigationService: ContactNavigationService
+  ) {
     this.initializeObservables();
   }
 
@@ -66,14 +83,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * Initializes service observables for template binding.
    */
   private initializeObservables(): void {
-    this.showAddContactOverlay$ = this.contactsService.showAddContactOverlay$;
-    this.showEditContactOverlay$ = this.contactsService.showEditContactOverlay$;
-    this.showMobileMoreMenu$ = this.contactsService.showMobileMoreMenu$;
-    this.contactSuccessMessageOverlay$ = this.contactsService.contactSuccessMessageOverlay$;
-    this.isMobileView$ = this.contactsService.isMobileView$;
-    this.showMobileSingleContact$ = this.contactsService.showMobileSingleContact$;
-    this.suppressAnimation$ = this.contactsService.suppressAnimation$;
-    this.contactSuccessMessageText$ = this.contactsService.contactSuccessMessageText$;
+    this.showAddContactOverlay$ = this.stateService.showAddContactOverlay$;
+    this.showEditContactOverlay$ = this.stateService.showEditContactOverlay$;
+    this.showMobileMoreMenu$ = this.stateService.showMobileMoreMenu$;
+    this.contactSuccessMessageOverlay$ = this.stateService.contactSuccessMessageOverlay$;
+    this.isMobileView$ = this.stateService.isMobileView$;
+    this.showMobileSingleContact$ = this.stateService.showMobileSingleContact$;
+    this.suppressAnimation$ = this.stateService.suppressAnimation$;
+    this.contactSuccessMessageText$ = this.stateService.contactSuccessMessageText$;
   }
 
   /**
@@ -101,44 +118,44 @@ export class ContactsComponent implements OnInit, OnDestroy {
   get selectedContact(): Contact | null { return this.contactsService.currentContact; }
 
   /** Gets add contact form */
-  get addContactForm(): FormGroup { return this.contactsService.getContactForm(); }
+  get addContactForm(): FormGroup { return this.formService.getForm(); }
 
   /** Gets add contact overlay visibility */
-  get showAddContactOverlay(): boolean { return this.contactsService.showAddContactOverlay; }
+  get showAddContactOverlay(): boolean { return this.stateService.showAddContactOverlay; }
 
   /** Gets edit contact overlay visibility */
-  get showEditContactOverlay(): boolean { return this.contactsService.showEditContactOverlay; }
+  get showEditContactOverlay(): boolean { return this.stateService.showEditContactOverlay; }
 
   /** Gets mobile more menu visibility */
-  get showMobileMoreMenu(): boolean { return this.contactsService.showMobileMoreMenu; }
+  get showMobileMoreMenu(): boolean { return this.stateService.showMobileMoreMenu; }
 
   /** Gets contact success message overlay visibility */
-  get contactSuccessMessageOverlay(): boolean { return this.contactsService.contactSuccessMessageOverlay; }
+  get contactSuccessMessageOverlay(): boolean { return this.stateService.contactSuccessMessageOverlay; }
 
   /** Gets mobile view state */
-  get isMobileView(): boolean { return this.contactsService.isMobileView; }
+  get isMobileView(): boolean { return this.stateService.isMobileView; }
 
   /** Gets mobile single contact view state */
-  get showMobileSingleContact(): boolean { return this.contactsService.showMobileSingleContact; }
+  get showMobileSingleContact(): boolean { return this.stateService.showMobileSingleContact; }
 
   /** Gets animation suppression state */
-  get suppressAnimation(): boolean { return this.contactsService.suppressAnimation; }
+  get suppressAnimation(): boolean { return this.stateService.suppressAnimation; }
 
   /** Gets contact success message text */
-  get contactSuccessMessageText(): string { return this.contactsService.contactSuccessMessageText; }
+  get contactSuccessMessageText(): string { return this.stateService.contactSuccessMessageText; }
 
   /**
    * Opens the add contact overlay.
    */
   openAddContactOverlay(): void {
-    this.contactsService.openAddContactOverlay();
+    this.navigationService.openAddContactOverlay(() => {});
   }
 
   /**
    * Closes the add contact overlay.
    */
   closeAddContactOverlay(): void {
-    this.contactsService.closeAddContactOverlay();
+    this.navigationService.closeAddContactOverlay();
   }
 
   /**
@@ -147,14 +164,14 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @param contact - Contact to edit
    */
   openEditContactOverlay(contact: Contact): void {
-    this.contactsService.openEditContactOverlay(contact);
+    this.navigationService.openEditContactOverlay(contact, () => {});
   }
 
   /**
    * Closes edit contact overlay.
    */
   closeEditContactOverlay(): void {
-    this.contactsService.closeEditContactOverlay();
+    this.navigationService.closeEditContactOverlay();
   }
 
   /**
@@ -191,42 +208,42 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * Selects the current user and creates a contact-like object for display.
    */
   selectCurrentUser(): void {
-    this.contactsService.selectCurrentUser();
+    this.navigationService.selectCurrentUser(() => {});
   }
 
   /**
    * Navigates back to contact list on mobile.
    */
   backToList(): void {
-    this.contactsService.backToList();
+    this.navigationService.backToList(() => {});
   }
 
   /**
    * Handles FAB button click based on current state.
    */
   handleFabClick(): void {
-    this.contactsService.handleFabClick();
+    this.navigationService.handleFabClick(() => {}, () => {});
   }
 
   /**
    * Opens mobile more menu.
    */
   openMoreMenu(): void {
-    this.contactsService.openMoreMenu();
+    this.navigationService.openMoreMenu(() => {});
   }
 
   /**
    * Closes mobile more menu.
    */
   closeMoreMenu(): void {
-    this.contactsService.closeMoreMenu();
+    this.navigationService.closeMoreMenu();
   }
 
   /**
    * Updates mobile view status and responsive state.
    */
   updateMobileViewStatus(): void {
-    this.contactsService.updateMobileViewStatus();
+    this.navigationService.updateMobileViewStatus();
   }
 
   /**
@@ -236,7 +253,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Initials string
    */
   getInitials(name: string): string {
-    return this.contactsService.getInitials(name);
+    return this.contactHelper.getInitials(name);
   }
 
   /**
@@ -246,7 +263,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Hex color string
    */
   getInitialsColor(name: string): string {
-    return this.contactsService.getInitialsColor(name);
+    return this.contactHelper.getInitialsColor(name);
   }
 
   /**
@@ -256,7 +273,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Truncated name with ellipsis or original name
    */
   getTruncatedName(name: string): string {
-    return this.contactsService.getTruncatedName(name);
+    return this.displayService.getTruncatedName(name);
   }
 
   /**
@@ -266,7 +283,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns True if name is longer than 25 characters
    */
   isLongName(name: string): boolean {
-    return this.contactsService.isLongName(name);
+    return this.displayService.isLongName(name);
   }
 
   /**
@@ -276,7 +293,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Truncated email or original if short enough
    */
   truncateEmail(email: string): string {
-    return this.contactsService.truncateEmail(email);
+    return this.displayService.truncateEmail(email);
   }
 
   /**
@@ -285,7 +302,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Current user or null
    */
   getCurrentUser() {
-    return this.contactsService.getCurrentUser();
+    return this.displayService.getCurrentUser();
   }
 
   /**
@@ -294,7 +311,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Display name or email
    */
   getCurrentUserDisplayName(): string {
-    return this.contactsService.getCurrentUserDisplayName();
+    return this.displayService.getCurrentUserDisplayName();
   }
 
   /**
@@ -304,7 +321,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns True if field has errors and is touched
    */
   hasFieldError(fieldName: string): boolean {
-    return this.contactsService.hasFieldError(fieldName);
+    return this.formService.hasFieldError(fieldName);
   }
 
   /**
@@ -314,7 +331,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Error message or empty string
    */
   getFieldError(fieldName: string): string {
-    return this.contactsService.getFieldError(fieldName);
+    return this.formService.getFieldError(fieldName);
   }
 
   /**
@@ -324,7 +341,7 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Contact initials
    */
   static getInitials(name: string): string {
-    return ContactsService.getInitials(name);
+    return ContactHelperService.prototype.getInitials(name);
   }
 
   /**
@@ -334,6 +351,6 @@ export class ContactsComponent implements OnInit, OnDestroy {
    * @returns Hex color string
    */
   static getInitialsColor(name: string): string {
-    return ContactsService.getInitialsColor(name);
+    return ContactHelperService.prototype.getInitialsColor(name);
   }
 }
