@@ -5,6 +5,7 @@ import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signO
 import { WelcomeOverlayService } from './welcome-overlay.service';
 import { AuthUtilsService } from './auth-utils.service';
 import { AuthSessionManagerService } from './auth-session-manager.service';
+import { AuthRegistrationService } from './auth-registration.service';
 
 export interface User {
   id: string;
@@ -34,6 +35,7 @@ export class AuthService implements OnDestroy {
   private injector = inject(Injector);
   private authUtils = inject(AuthUtilsService);
   private sessionManager = inject(AuthSessionManagerService);
+  private registrationService = inject(AuthRegistrationService);
   /**
    * Constructor initializes auth service with router, Firebase auth, and welcome overlay service
    */
@@ -201,9 +203,9 @@ export class AuthService implements OnDestroy {
    */
   async register(name: string, email: string, password: string): Promise<User> {
     try {
-      const userCredential = await this.createFirebaseUser(email, password);
-      await this.updateFirebaseUserProfile(userCredential.user, name);
-      const user = this.prepareRegisteredUser(userCredential.user, name);
+      const userCredential = await this.registrationService.createFirebaseUser(email, password);
+      await this.registrationService.updateFirebaseUserProfile(userCredential.user, name);
+      const user = this.registrationService.prepareRegisteredUser(userCredential.user, name, (fu) => this.authUtils.mapFirebaseUserToUser(fu));
       this.finalizeRegistration(user);
       return user;
     } catch (error: any) {
@@ -212,75 +214,14 @@ export class AuthService implements OnDestroy {
   }
 
   /**
-   * Creates a new Firebase user account.
-   * @param email - User's email address
-   * @param password - User's password
-   * @returns Firebase user credential
-   * @private
-   */
-  private async createFirebaseUser(email: string, password: string): Promise<any> {
-    return await runInInjectionContext(this.injector, () => 
-      createUserWithEmailAndPassword(this.auth, email, password)
-    );
-  }
-
-  /**
-   * Updates Firebase user profile with display name.
-   * @param firebaseUser - Firebase user object
-   * @param name - User's display name
-   * @private
-   */
-  private async updateFirebaseUserProfile(firebaseUser: FirebaseUser, name: string): Promise<void> {
-    await runInInjectionContext(this.injector, () => 
-      updateProfile(firebaseUser, {
-        displayName: name.trim()
-      })
-    );
-  }
-
-  /**
-   * Prepares user object for registered user.
-   * @param firebaseUser - Firebase user object
-   * @param name - User's display name
-   * @returns Prepared user object
-   * @private
-   */
-  private prepareRegisteredUser(firebaseUser: FirebaseUser, name: string): User {
-    const user = this.authUtils.mapFirebaseUserToUser(firebaseUser);
-    user.name = name.trim();
-    user.loginTimestamp = Date.now();
-    return user;
-  }
-
-  /**
    * Finalizes user registration with storage and event dispatch.
    * @param user - Registered user object
    * @private
    */
   private finalizeRegistration(user: User): void {
-    this.setNewUserFlag();
+    this.registrationService.setNewUserFlag();
     this.setCurrentUser(user);
-    this.scheduleRegistrationEvent();
-  }
-
-  /**
-   * Sets new user flag in localStorage.
-   * @private
-   */
-  private setNewUserFlag(): void {
-    localStorage.setItem('join_new_user', 'true');
-    console.log('AuthService: New user flag set in localStorage');
-  }
-
-  /**
-   * Schedules user registration event dispatch.
-   * @private
-   */
-  private scheduleRegistrationEvent(): void {
-    setTimeout(() => {
-      console.log('AuthService: Dispatching user-registered event');
-      window.dispatchEvent(new CustomEvent('user-registered'));
-    }, 500);
+    this.registrationService.scheduleRegistrationEvent();
   }
 
   /**
