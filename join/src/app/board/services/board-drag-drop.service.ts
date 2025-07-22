@@ -9,6 +9,8 @@ import { BoardDragValidationService } from './board-drag-validation.service';
 import { BoardDragCalculationService } from './board-drag-calculation.service';
 import { BoardColumnDetectionService } from './board-column-detection.service';
 import { BoardDragElementService } from './board-drag-element.service';
+import { BoardFirebaseUpdateService } from './board-firebase-update.service';
+import { BoardColumnEventService } from './board-column-event.service';
 /**
  * Main service for handling drag & drop functionality in the board component.
  * Orchestrates task dragging, column detection, and visual feedback for both desktop and mobile.
@@ -29,7 +31,9 @@ export class BoardDragDropService {
     private dragValidation: BoardDragValidationService,
     private dragCalculation: BoardDragCalculationService,
     private columnDetection: BoardColumnDetectionService,
-    private dragElement: BoardDragElementService
+    private dragElement: BoardDragElementService,
+    private firebaseUpdate: BoardFirebaseUpdateService,
+    private columnEvent: BoardColumnEventService
   ) {}
   
   /** Gets currently dragged task */
@@ -361,53 +365,7 @@ export class BoardDragDropService {
     }
     const oldColumn = this.dragState.draggedTask!.column;
     const newColumn = this.dragState.dragOverColumn!;
-    this.processTaskColumnChange(oldColumn, newColumn, onTaskUpdate);
-  }
-
-  /**
-   * Processes taskcolumnchange.
-   * @param oldColumn - Oldcolumn parameter
-   * @param newColumn - Newcolumn parameter
-   * @param onTaskUpdate - Ontaskupdate parameter
-   */
-  private processTaskColumnChange(oldColumn: TaskColumn, newColumn: TaskColumn, onTaskUpdate: () => void): void {
-    if (oldColumn !== newColumn) {
-      this.updateTaskColumn(newColumn);
-      this.updateTaskInFirebase(oldColumn);
-    }
-    onTaskUpdate();
-  }
-
-  /**
-   * Updates taskcolumn.
-   * @param newColumn - Newcolumn parameter
-   */
-  private updateTaskColumn(newColumn: TaskColumn): void {
-    this.dragState.draggedTask!.column = newColumn;
-  }
-
-  /**
-   * Updates taskinfirebase.
-   * @param oldColumn - Oldcolumn parameter
-   */
-  private updateTaskInFirebase(oldColumn: TaskColumn): void {
-    if (this.dragState.draggedTask!.id) {
-      this.taskService.updateTaskInFirebase(this.dragState.draggedTask!)
-        .then(() => {        })
-
-        .catch((error) => {
-          this.handleFirebaseUpdateError(error, oldColumn);
-        });
-    }
-  }
-  /**
-   * Handles firebaseupdateerror.
-   * @param error - Error parameter
-   * @param oldColumn - Oldcolumn parameter
-   */
-  private handleFirebaseUpdateError(error: any, oldColumn: TaskColumn): void {
-    console.error('Error updating task in Firebase:', error);
-    this.dragState.draggedTask!.column = oldColumn;
+    this.firebaseUpdate.processTaskColumnChange(oldColumn, newColumn, onTaskUpdate);
   }
 
   /**
@@ -417,8 +375,7 @@ export class BoardDragDropService {
    * @param column - Target column
    */
   onColumnDragOver(event: DragEvent, column: TaskColumn): void {
-    event.preventDefault();
-    this.dragState.setDragOverColumn(column);
+    this.columnEvent.onColumnDragOver(event, column);
   }
 
   /**
@@ -427,12 +384,7 @@ export class BoardDragDropService {
    * @param event - Drag event
    */
   onColumnDragLeave(event: DragEvent): void {
-    if (!event.relatedTarget || !event.currentTarget) return;
-    const currentTarget = event.currentTarget as HTMLElement;
-    const relatedTarget = event.relatedTarget as HTMLElement;
-    if (!currentTarget.contains(relatedTarget)) {
-      this.dragState.setDragOverColumn(null);
-    }
+    this.columnEvent.onColumnDragLeave(event);
   }
 
   /**
@@ -442,10 +394,7 @@ export class BoardDragDropService {
    * @param column - Target column
    */
   onColumnDrop(event: DragEvent, column: TaskColumn): void {
-    event.preventDefault();
-    if (this.dragState.draggedTask) {
-      this.dragState.setDragOverColumn(column);
-    }
+    this.columnEvent.onColumnDrop(event, column);
   }
 
   /**
