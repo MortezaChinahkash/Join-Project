@@ -134,7 +134,6 @@ export class BoardThumbnailService {
         }, 100);
       });
       
-      // Initialize with multiple attempts
       setTimeout(() => this.updateScrollPosition(), 100);
       setTimeout(() => this.updateScrollPosition(), 500);
       setTimeout(() => this.updateScrollPosition(), 1000);
