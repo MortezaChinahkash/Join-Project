@@ -251,7 +251,6 @@ export class AuthService implements OnDestroy {
       );
       this.router.navigate(['/auth']);
     } catch (error) {
-      console.error('Logout error:', error);
       throw new Error('Logout failed');
     }
   }

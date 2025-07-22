@@ -66,7 +66,7 @@ export class AuthSessionManagerService {
     try {
       localStorage.setItem(storageKey, JSON.stringify(user));
     } catch (error) {
-      console.error('Error saving user to storage:', error);
+      // Silent error handling for storage issues
     }
   }
 
@@ -80,7 +80,6 @@ export class AuthSessionManagerService {
       const userData = localStorage.getItem(storageKey);
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
-      console.error('Error loading user from storage:', error);
       localStorage.removeItem(storageKey);
       return null;
     }

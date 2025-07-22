@@ -60,7 +60,6 @@ export class AuthRegistrationService {
    */
   setNewUserFlag(): void {
     localStorage.setItem('join_new_user', 'true');
-    console.log('AuthService: New user flag set in localStorage');
   }
 
   /**
@@ -68,7 +67,6 @@ export class AuthRegistrationService {
    */
   scheduleRegistrationEvent(): void {
     setTimeout(() => {
-      console.log('AuthService: Dispatching user-registered event');
       window.dispatchEvent(new CustomEvent('user-registered'));
     }, 500);
   }

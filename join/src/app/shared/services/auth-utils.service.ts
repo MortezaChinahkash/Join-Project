@@ -20,7 +20,6 @@ export class AuthUtilsService {
    * Handles authentication errors and returns user-friendly messages.
    */
   handleAuthError(error: any): Error {
-    console.error('Auth error:', error);
     return this.createUserFriendlyError(error.code);
   }
 
@@ -164,7 +163,6 @@ export class AuthUtilsService {
    * @private
    */
   handleProfileUpdateError(error: any): never {
-    console.error('Error updating user profile:', error);
     throw new Error('Failed to update user profile');
   }
 
