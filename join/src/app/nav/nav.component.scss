@@ -102,10 +102,8 @@
             margin-right: 0.5em;
         }
 
-        // Login section styles
         .login-section {
             width: 100%;
-            // padding: 75px 0px 50px 0px;
 
             display: flex;
             flex-direction: column;
@@ -156,7 +154,6 @@
 
 }
 
- /* === RESPONSIVE === */
 @media screen and (max-width: 1000px) {
 
     :host{
@@ -219,7 +216,6 @@
                 margin-bottom: 1em;
             }
 
-            // Login section responsive styles
             .login-section {
                 display: flex;
                 justify-content: center;
