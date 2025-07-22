@@ -284,7 +284,6 @@ export class BoardFormDataService {
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
     if (!this.currentTask) return { isValid: false, errors: ['No task data available'] };
-    
     const errors = ['title', 'description', 'category']
       .filter(field => !this.currentTask![field as keyof Task]?.toString().trim())
       .map(field => `${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
@@ -292,7 +291,6 @@ export class BoardFormDataService {
     if (this.currentTask.dueDate && new Date(this.currentTask.dueDate) < new Date(new Date().setHours(0, 0, 0, 0))) {
       errors.push('Due date cannot be in the past');
     }
-    
     return { isValid: errors.length === 0, errors };
   }
 
