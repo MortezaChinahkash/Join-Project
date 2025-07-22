@@ -25,6 +25,7 @@ import { BoardArrayManagementService } from './services/board-array-management.s
 import { BoardEventHandlerService } from './services/board-event-handler.service';
 import { BoardStateService } from './services/board-state.service';
 import { BoardComponentUtilsService } from './services/board-component-utils.service';
+import { BoardDelegateService } from './services/board-delegate.service';
 import { DeleteConfirmationComponent } from './delete-confirmation/delete-confirmation.component';
 import { TaskEditOverlayComponent } from './task-edit-overlay/task-edit-overlay.component';
 import { AddTaskOverlayComponent } from './add-task-overlay/add-task-overlay.component';
@@ -69,19 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   tasks: Task[] = [];
   boardColumns: any[];
   Math = Math;
-  /**
-   * Initializes the board component with all required services.
-   *
-   * @param taskService - Service for managing task data operations
-   * @param dragDropService - Service for handling drag & drop functionality
-   * @param thumbnailService - Service for thumbnail navigation
-   * @param formService - Service for form management
-   * @param utilsService - Service for utility functions
-   * @param dataService - Service for data loading and organization
-   * @param mobileService - Service for mobile interactions
-   * @param subtaskService - Service for subtask management
-   * @param touchDetectionService - Service for touch device detection
-   */
+  
   constructor(
     private taskService: TaskService,
     public dragDropService: BoardDragDropService,
@@ -103,16 +92,14 @@ export class BoardComponent implements OnInit, OnDestroy {
     public eventHandlerService: BoardEventHandlerService,
     public stateService: BoardStateService,
     public componentUtilsService: BoardComponentUtilsService,
+    public delegateService: BoardDelegateService,
     private route: ActivatedRoute
   ) {
     this.initializeLocalArrays();
     this.boardColumns = this.componentUtilsService.createColumnConfiguration(this);
   }
 
-  /** Angular lifecycle hook that runs after component initialization. */
-  /**
-   * Angular lifecycle hook - component initialization.
-   */
+  /** Angular lifecycle hook - component initialization. */
   ngOnInit(): void {
     this.stateService.initializeComponent(
       (contacts) => { this.contacts = contacts; },
@@ -125,9 +112,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Distributes tasks into appropriate columns and sorts by priority. */
-  /**
-   * Handles distributeTasksToColumns functionality.
-   */
   private distributeTasksToColumns(): void {
     const distributed = this.initializationService.distributeAndSortTasks(this.tasks);
     const assigned = this.arrayManagementService.assignTasksToColumns(distributed);
@@ -145,9 +129,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Initializes local task arrays from the task service. */
-  /**
-   * Handles initializeLocalArrays functionality.
-   */
   private initializeLocalArrays(): void {
     const initialized = this.componentUtilsService.initializeLocalArrays();
     this.componentUtilsService.assignTasksToComponentColumns(initialized, this);
@@ -167,26 +148,21 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @param column - Target column for the new task
    */
   openAddTaskOverlay(column: TaskColumn = 'todo'): void {
-    this.taskManagementService.openAddTaskOverlay(column);
+    this.delegateService.openAddTaskOverlay(column);
   }
 
   /**
    * Closes the add task overlay.
    */
   closeAddTaskOverlay(): void {
-    this.taskManagementService.closeAddTaskOverlay();
+    this.delegateService.closeAddTaskOverlay();
   }
 
   /**
    * Submits the task form and updates local arrays.
    */
   async onSubmit(): Promise<void> {
-    console.log('🎯 Board onSubmit called');
-    await this.taskManagementService.submitTaskForm(() => {
-      console.log('🔄 Reinitializing local arrays');
-      this.initializeLocalArrays();
-    });
-    console.log('✅ Board onSubmit completed');
+    await this.delegateService.submitTaskForm(() => this.initializeLocalArrays());
   }
 
   /**
@@ -194,49 +170,49 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @param task - Task to display details for
    */
   openTaskDetails(task: Task): void {
-    this.taskManagementService.openTaskDetails(task);
+    this.delegateService.openTaskDetails(task);
   }
 
   /**
    * Closes the task details overlay.
    */
   closeTaskDetailsOverlay(): void {
-    this.taskManagementService.closeTaskDetailsOverlay();
+    this.delegateService.closeTaskDetailsOverlay();
   }
 
   /**
    * Enters edit mode for the selected task.
    */
   editTask(): void {
-    this.taskManagementService.editTask(this.contacts);
+    this.delegateService.editTask(this.contacts);
   }
 
   /**
    * Cancels task editing and reverts changes.
    */
   cancelEditTask(): void {
-    this.taskManagementService.cancelEditTask();
+    this.delegateService.cancelEditTask();
   }
 
   /**
    * Saves task changes and updates arrays.
    */
   async saveTaskChanges(): Promise<void> {
-    await this.taskManagementService.saveTaskChanges(() => this.updateTaskArrays());
+    await this.delegateService.saveTaskChanges(() => this.updateTaskArrays());
   }
 
   /**
    * Deletes the selected task and updates arrays.
    */
   async deleteTask(): Promise<void> {
-    await this.taskManagementService.deleteTask();
+    await this.delegateService.deleteTask();
   }
 
   /**
    * Confirms task deletion and updates arrays.
    */
   async confirmDeleteTask(): Promise<void> {
-    await this.taskManagementService.confirmDeleteTask(() => {
+    await this.delegateService.confirmDeleteTask(() => {
       this.tasks = this.taskManagementService.removeTaskToDeleteFromArray(this.tasks);
       this.distributeTasksToColumns();
       this.taskManagementService.closeTaskDetailsOverlay();
@@ -247,7 +223,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Closes the delete confirmation dialog.
    */
   closeDeleteConfirmation(): void {
-    this.taskManagementService.closeDeleteConfirmation();
+    this.delegateService.closeDeleteConfirmation();
   }
 
   /**
@@ -255,26 +231,15 @@ export class BoardComponent implements OnInit, OnDestroy {
    * @param subtaskIndex - Index of the subtask to toggle
    */
   async toggleSubtask(subtaskIndex: number): Promise<void> {
-    await this.taskManagementService.toggleSubtask(subtaskIndex, () =>
-      this.updateTaskArrays()
-    );
+    await this.delegateService.toggleSubtask(subtaskIndex, () => this.updateTaskArrays());
   }
 
   /** Safely truncates text to a maximum length. */
-  /**
-   * Handles truncate functionality.
-   * @param text - Text parameter
-   * @param limit - Limit parameter
-   * @returns String result
-   */
   truncate(text: string | null | undefined, limit: number = 200): string {
-    return this.displayService.truncateText(text, limit);
+    return this.delegateService.truncate(text, limit);
   }
 
   /** Handles search input changes for task filtering. */
-  /**
-   * Handles searchchange events.
-   */
   onSearchChange(): void {
   }
 
@@ -323,69 +288,65 @@ export class BoardComponent implements OnInit, OnDestroy {
   onViewportClick(event: MouseEvent): void { this.interactionService.handleViewportClick(event); }
 
   /** Gets task progress percentage */
-  getTaskProgress(task: Task): number { return this.displayService.getTaskProgress(task); }
+  getTaskProgress(task: Task): number { return this.delegateService.getTaskProgress(task); }
 
   /** Gets number of completed subtasks */
-  getCompletedSubtasks(task: Task): number { return this.displayService.getCompletedSubtasks(task); }
+  getCompletedSubtasks(task: Task): number { return this.delegateService.getCompletedSubtasks(task); }
 
   /** Gets priority icon name for task priority */
-  getPriorityIcon(priority: Task['priority']): string { return this.displayService.getPriorityIcon(priority); }
+  getPriorityIcon(priority: Task['priority']): string { return this.delegateService.getPriorityIcon(priority); }
 
   /** Gets filtered tasks based on search term */
-  getFilteredTasks(tasks: Task[]): Task[] { return this.displayService.getFilteredTasks(tasks, this.searchTerm); }
+  getFilteredTasks(tasks: Task[]): Task[] { return this.delegateService.getFilteredTasks(tasks, this.searchTerm); }
 
   /** Checks if there are no search results */
   get noSearchResults(): boolean {
-    return this.displayService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
+    return this.delegateService.hasNoSearchResults(this.searchTerm, this.todoTasks, this.inProgressTasks, this.awaitingFeedbackTasks, this.doneTasks);
   }
 
   /** Handles mobile task move events */
-  onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveTask(event, task); }
+  onMobileMoveTask(event: MouseEvent | TouchEvent, task: Task): void { this.delegateService.onMobileMoveTask(event, task); }
 
   /** Closes mobile move overlay */
-  closeMobileMoveOverlay(): void { this.mobileTaskMoveService.closeMobileMoveOverlay(); }
+  closeMobileMoveOverlay(): void { this.delegateService.closeMobileMoveOverlay(); }
 
   /** Gets mobile move overlay visibility status */
-  get showMobileMoveOverlay(): boolean { return this.mobileTaskMoveService.showMobileMoveOverlay; }
+  get showMobileMoveOverlay(): boolean { return this.delegateService.showMobileMoveOverlay; }
 
   /** Gets mobile move overlay position */
-  get overlayPosition(): { top: number; right: number } { return this.mobileTaskMoveService.overlayPosition; }
+  get overlayPosition(): { top: number; right: number } { return this.delegateService.overlayPosition; }
 
   /** Gets selected task for mobile move */
-  get selectedTaskForMove(): Task | null { return this.mobileTaskMoveService.selectedTaskForMove; }
+  get selectedTaskForMove(): Task | null { return this.delegateService.selectedTaskForMove; }
 
-  /**
-   * Gets currenttaskcolumn value.
-   * @param task - Task parameter
-   * @returns TaskColumn | null
-   */
+  /** Gets current task column */
   getCurrentTaskColumn(task: Task): TaskColumn | null {
-    return this.mobileTaskMoveService.getCurrentTaskColumn(task, {
+    return this.delegateService.getCurrentTaskColumn(task, {
       todoTasks: this.todoTasks, inProgressTasks: this.inProgressTasks,
       awaitingFeedbackTasks: this.awaitingFeedbackTasks, doneTasks: this.doneTasks
     });
   }
 
   /** Gets previous column in workflow */
-  getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getPreviousColumn(currentColumn); }
+  getPreviousColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.delegateService.getPreviousColumn(currentColumn); }
 
   /** Gets next column in workflow */
-  getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.mobileTaskMoveService.getNextColumn(currentColumn); }
+  getNextColumn(currentColumn: TaskColumn | null): TaskColumn | null { return this.delegateService.getNextColumn(currentColumn); }
 
   /** Gets display name for column */
-  getColumnDisplayName(column: TaskColumn): string { return this.mobileTaskMoveService.getColumnDisplayName(column); }
+  getColumnDisplayName(column: TaskColumn): string { return this.delegateService.getColumnDisplayName(column); }
 
   /** Handles mobile move button mouse down events */
-  onMobileMoveButtonMouseDown(event: MouseEvent): void { this.mobileTaskMoveService.onMobileMoveButtonMouseDown(event); }
+  onMobileMoveButtonMouseDown(event: MouseEvent): void { this.delegateService.onMobileMoveButtonMouseDown(event); }
 
   /** Handles mobile move button touch start events */
-  onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { this.mobileTaskMoveService.onMobileMoveButtonTouchStart(event, task); }
+  onMobileMoveButtonTouchStart(event: TouchEvent, task: Task): void { this.delegateService.onMobileMoveButtonTouchStart(event, task); }
 
   /**
    * Moves selected task to previous column.
    */
   moveTaskToPreviousColumn(): void {
-    this.mobileTaskMoveService.moveTaskToPreviousColumn(
+    this.delegateService.moveTaskToPreviousColumn(
       {
         todoTasks: this.todoTasks,
         inProgressTasks: this.inProgressTasks,
@@ -395,7 +356,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => {
         this.handleTaskMove(task, fromColumn, toColumn);
       }
-
     );
   }
 
@@ -403,7 +363,7 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Moves selected task to next column.
    */
   moveTaskToNextColumn(): void {
-    this.mobileTaskMoveService.moveTaskToNextColumn(
+    this.delegateService.moveTaskToNextColumn(
       {
         todoTasks: this.todoTasks,
         inProgressTasks: this.inProgressTasks,
@@ -413,7 +373,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       (task: Task, fromColumn: TaskColumn | null, toColumn: TaskColumn) => {
         this.handleTaskMove(task, fromColumn, toColumn);
       }
-
     );
   }
 
@@ -439,35 +398,20 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   /** Gets displayed contacts for task */
-  getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.contactHelperService.getDisplayedContacts(assignedContacts, this.contacts); }
+  getDisplayedContacts(assignedContacts: string[]): Contact[] { return this.delegateService.getDisplayedContacts(assignedContacts, this.contacts); }
 
   /** Checks if there are remaining contacts not displayed */
-  hasRemainingContacts(assignedContacts: string[]): boolean { return this.contactHelperService.hasRemainingContacts(assignedContacts, this.contacts); }
+  hasRemainingContacts(assignedContacts: string[]): boolean { return this.delegateService.hasRemainingContacts(assignedContacts, this.contacts); }
 
   /** Gets count of remaining contacts not displayed */
-  getRemainingContactsCount(assignedContacts: string[]): number { return this.contactHelperService.getRemainingContactsCount(assignedContacts, this.contacts); }
+  getRemainingContactsCount(assignedContacts: string[]): number { return this.delegateService.getRemainingContactsCount(assignedContacts, this.contacts); }
 
   /** Gets initials for contact name */
-  getInitials(name: string): string { return this.contactHelperService.getInitials(name); }
+  getInitials(name: string): string { return this.delegateService.getInitials(name); }
 
   /** Gets color for contact initials */
-  getInitialsColor(name: string): string { return this.contactHelperService.getInitialsColor(name); }
+  getInitialsColor(name: string): string { return this.delegateService.getInitialsColor(name); }
 
-  /**
-   * Handles query parameters to open specific tasks or apply filters.
-   */
-  private handleQueryParams(): void {
-    this.lifecycleService.handleQueryParams(
-      {
-        todoTasks: this.todoTasks,
-        inProgressTasks: this.inProgressTasks,
-        awaitingFeedbackTasks: this.awaitingFeedbackTasks,
-        doneTasks: this.doneTasks
-      },
-      (task: Task) => this.openTaskDetails(task)
-    );
-  }
-  
   /**
    * Angular lifecycle hook that runs when component is destroyed.
    */
@@ -479,9 +423,6 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Host listener for window blur event to restore board scroll wrapper.
    */
   @HostListener('window:blur')
-  /**
-   * Handles windowblur events.
-   */
   onWindowBlur(): void {
     this.dragDropService.emergencyCleanup();
   }
@@ -490,9 +431,6 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Host listener for escape key to cancel drag and restore board scroll wrapper.
    */
   @HostListener('document:keydown.escape')
-  /**
-   * Handles escapekey events.
-   */
   onEscapeKey(): void {
     this.dragDropService.emergencyCleanup();
   }
@@ -501,9 +439,6 @@ export class BoardComponent implements OnInit, OnDestroy {
    * Host listener for visibility change to restore board scroll wrapper.
    */
   @HostListener('document:visibilitychange')
-  /**
-   * Handles visibilitychange events.
-   */
   onVisibilityChange(): void {
     if (document.hidden) {
       this.dragDropService.emergencyCleanup();
