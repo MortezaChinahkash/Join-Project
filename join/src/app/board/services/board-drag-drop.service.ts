@@ -12,6 +12,7 @@ import { BoardDragElementService } from './board-drag-element.service';
 import { BoardFirebaseUpdateService } from './board-firebase-update.service';
 import { BoardColumnEventService } from './board-column-event.service';
 import { BoardDragCleanupService } from './board-drag-cleanup.service';
+import { BoardMouseEventService } from './board-mouse-event.service';
 /**
  * Main service for handling drag & drop functionality in the board component.
  * Orchestrates task dragging, column detection, and visual feedback for both desktop and mobile.
@@ -35,7 +36,8 @@ export class BoardDragDropService {
     private dragElement: BoardDragElementService,
     private firebaseUpdate: BoardFirebaseUpdateService,
     private columnEvent: BoardColumnEventService,
-    private dragCleanup: BoardDragCleanupService
+    private dragCleanup: BoardDragCleanupService,
+    private mouseEvent: BoardMouseEventService
   ) {}
   
   /** Gets currently dragged task */
@@ -77,181 +79,18 @@ export class BoardDragDropService {
         resolve(false); 
         return; 
       }
-      const dragContext = this.initializeMouseDragOperation(event, task);
-      const handlers = this.createMouseEventHandlers(event, task, onTaskUpdate, resolve, dragContext);
-      this.attachMouseEventListeners(handlers.mouseMove, handlers.mouseUp);
+      const dragContext = this.mouseEvent.initializeMouseDragOperation(event, task);
+      const handlers = this.mouseEvent.createMouseEventHandlers(
+        event, 
+        task, 
+        onTaskUpdate, 
+        resolve, 
+        dragContext,
+        (clientX, clientY) => this.updateTaskDrag(clientX, clientY),
+        (onTaskUpdate) => this.finishTaskDrag(onTaskUpdate)
+      );
+      this.mouseEvent.attachMouseEventListeners(handlers.mouseMove, handlers.mouseUp);
     });
-  }
-
-  /**
-   * Initializes mouse drag operation and sets up initial state.
-   * 
-   * @param event - The mouse event from the task element
-   * @param task - The task object to be dragged
-   * @returns Object containing drag context variables
-   * @private
-   */
-  private initializeMouseDragOperation(event: MouseEvent, task: Task): { hasMoved: boolean; dragStarted: boolean } {
-    this.dragState.setMousePressed(event.clientX, event.clientY);
-    const dragContext = { hasMoved: false, dragStarted: false };
-    this.setupMouseDragDelayTimer(event, task, dragContext);
-    return dragContext;
-  }
-
-  /**
-   * Sets up the mouse drag delay timer to prevent accidental drags.
-   * 
-   * @param event - The mouse event from the task element
-   * @param task - The task object to be dragged
-   * @param dragContext - The drag context containing movement state
-   * @private
-   */
-  private setupMouseDragDelayTimer(event: MouseEvent, task: Task, dragContext: { hasMoved: boolean; dragStarted: boolean }): void {
-    this.dragState.dragDelayTimeout = setTimeout(() => {
-      if (this.dragState.isMousePressed && !dragContext.hasMoved) {
-        this.startTaskDrag(event.clientX, event.clientY, task, event.target as HTMLElement);
-        dragContext.dragStarted = true;
-      }
-    }, this.dragState.dragDelay);
-  }
-
-  /**
-   * Creates mouse event handlers for drag operations.
-   * 
-   * @param event - The original mouse event
-   * @param task - The task object being dragged
-   * @param onTaskUpdate - Callback to update local task arrays
-   * @param resolve - Promise resolve function
-   * @param dragContext - The drag context containing movement state
-   * @returns Object containing event handler functions
-   * @private
-   */
-  private createMouseEventHandlers(event: MouseEvent, task: Task, onTaskUpdate: () => void, resolve: (value: boolean) => void, dragContext: { hasMoved: boolean; dragStarted: boolean }): { mouseMove: (e: MouseEvent) => void; mouseUp: () => void } {
-    const mouseMove = this.createMouseMoveEventHandler(event, task, dragContext);
-    const mouseUp = this.createMouseUpEventHandler(onTaskUpdate, resolve, mouseMove, dragContext);
-    return { mouseMove, mouseUp };
-  }
-
-  /**
-   * Creates the mouse move event handler.
-   * 
-   * @param event - The original mouse event
-   * @param task - The task object being dragged
-   * @param dragContext - The drag context containing movement state
-   * @returns Mouse move event handler function
-   * @private
-   */
-  private createMouseMoveEventHandler(event: MouseEvent, task: Task, dragContext: { hasMoved: boolean; dragStarted: boolean }): (e: MouseEvent) => void {
-    return (e: MouseEvent) => {
-      if (!this.dragState.isMousePressed) return;
-      this.processMouseMovement(e, event, task, dragContext);
-      this.handleActiveMouseDrag(e);
-    };
-  }
-
-  /**
-   * Processes mouse movement and handles drag threshold detection.
-   * 
-   * @param e - The current mouse event
-   * @param originalEvent - The original mouse down event
-   * @param task - The task object being dragged
-   * @param dragContext - The drag context containing movement state
-   * @private
-   */
-  private processMouseMovement(e: MouseEvent, originalEvent: MouseEvent, task: Task, dragContext: { hasMoved: boolean; dragStarted: boolean }): void {
-    if (this.dragState.exceedsDragThreshold(e.clientX, e.clientY)) {
-      dragContext.hasMoved = true;
-      if (!dragContext.dragStarted && !this.dragState.isDraggingTask) {
-        this.initiateThresholdDrag(e, originalEvent, task, dragContext);
-      }
-    }
-  }
-
-  /**
-   * Initiates drag when movement threshold is exceeded.
-   * 
-   * @param e - The current mouse event
-   * @param originalEvent - The original mouse down event
-   * @param task - The task object being dragged
-   * @param dragContext - The drag context containing movement state
-   * @private
-   */
-  private initiateThresholdDrag(e: MouseEvent, originalEvent: MouseEvent, task: Task, dragContext: { hasMoved: boolean; dragStarted: boolean }): void {
-    this.dragState.clearTimeouts();
-    this.startTaskDrag(e.clientX, e.clientY, task, originalEvent.target as HTMLElement);
-    dragContext.dragStarted = true;
-  }
-
-  /**
-   * Handles active mouse drag operations.
-   * 
-   * @param e - The current mouse event
-   * @private
-   */
-  private handleActiveMouseDrag(e: MouseEvent): void {
-    if (this.dragState.isDraggingTask) {
-      this.autoScroll.emergencyAutoScroll(e);
-      this.updateTaskDrag(e.clientX, e.clientY);
-    }
-  }
-
-  /**
-   * Creates the mouse up event handler.
-   * 
-   * @param onTaskUpdate - Callback to update local task arrays
-   * @param resolve - Promise resolve function
-   * @param handleMouseMove - The mouse move handler to remove
-   * @param dragContext - The drag context containing movement state
-   * @returns Mouse up event handler function
-   * @private
-   */
-  private createMouseUpEventHandler(onTaskUpdate: () => void, resolve: (value: boolean) => void, handleMouseMove: (e: MouseEvent) => void, dragContext: { hasMoved: boolean; dragStarted: boolean }): () => void {
-    const handleMouseUp = () => {
-      this.cleanupMouseEventListeners(handleMouseMove, handleMouseUp);
-      this.finalizeMouseDragOperation(onTaskUpdate, resolve, dragContext);
-    };
-    return handleMouseUp;
-  }
-
-  /**
-   * Finalizes mouse drag operation and resolves promise.
-   * 
-   * @param onTaskUpdate - Callback to update local task arrays
-   * @param resolve - Promise resolve function
-   * @param dragContext - The drag context containing movement state
-   * @private
-   */
-  private finalizeMouseDragOperation(onTaskUpdate: () => void, resolve: (value: boolean) => void, dragContext: { hasMoved: boolean; dragStarted: boolean }): void {
-    this.dragState.isMousePressed = false;
-    this.dragState.clearTimeouts();
-    if (this.dragState.isDraggingTask) {
-      this.finishTaskDrag(onTaskUpdate);
-    }
-    resolve(dragContext.dragStarted);
-  }
-
-  /**
-   * Attaches mouse event listeners to the document.
-   * 
-   * @param handleMouseMove - Mouse move handler function
-   * @param handleMouseUp - Mouse up handler function
-   * @private
-   */
-  private attachMouseEventListeners(handleMouseMove: (e: MouseEvent) => void, handleMouseUp: () => void): void {
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }
-
-  /**
-   * Removes mouse event listeners from the document.
-   * 
-   * @param handleMouseMove - Mouse move handler function
-   * @param handleMouseUp - Mouse up handler function
-   * @private
-   */
-  private cleanupMouseEventListeners(handleMouseMove: (e: MouseEvent) => void, handleMouseUp: () => void): void {
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
   }
 
   /**
@@ -265,24 +104,6 @@ export class BoardDragDropService {
    */
   onTaskTouchStart(event: TouchEvent, task: Task, onTaskUpdate: () => void): Promise<boolean> {
     return this.touchHandler.onTaskTouchStart(event, task, onTaskUpdate);
-  }
-
-  /**
-   * Starts task drag operation for desktop.
-   * 
-   * @param clientX - Mouse X position
-   * @param clientY - Mouse Y position
-   * @param task - Task being dragged
-   * @param targetElement - Target element
-   */
-  private startTaskDrag(clientX: number, clientY: number, task: Task, targetElement: HTMLElement): void {
-    this.dragState.startDrag(task, clientX, clientY);
-    this.dragElement.createDragElement(task, targetElement, clientX, clientY);
-    const taskElement = targetElement.closest('.task-card') as HTMLElement;
-    if (taskElement) {
-      taskElement.style.opacity = '0.5';
-    }
-    this.dragState.setPlaceholder(false, 0);
   }
 
   /**
