@@ -283,13 +283,11 @@ export class BoardFormDataService {
    * @returns Validation result with errors
    */
   validateTaskData(): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
     if (!this.currentTask) return { isValid: false, errors: ['No task data available'] };
     
-    const requiredFields = ['title', 'description', 'category'] as const;
-    requiredFields.forEach(field => {
-      if (!this.currentTask![field]?.trim()) errors.push(`${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
-    });
+    const errors = ['title', 'description', 'category']
+      .filter(field => !this.currentTask![field as keyof Task]?.toString().trim())
+      .map(field => `${field.charAt(0).toUpperCase() + field.slice(1)} is required`);
     
     if (this.currentTask.dueDate && new Date(this.currentTask.dueDate) < new Date(new Date().setHours(0, 0, 0, 0))) {
       errors.push('Due date cannot be in the past');
