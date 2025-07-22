@@ -1,0 +1,75 @@
+// Task Content Components
+.task-details-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 24px;
+  
+  h3 {
+    font-size: 20px;
+    font-weight: 400;
+    color: #2A3647;
+    margin: 0 0 8px 0;
+  }
+  
+  p, span {
+    font-size: 16px;
+    color: #2A3647;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+.task-description p {
+  background-color: #f6f7f8;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.priority-display {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  
+  .priority-icon {
+    width: 20px;
+    height: 20px;
+    transition: filter 0.2s ease;
+  }
+  
+  .priority-text {
+    font-weight: 400;
+  }
+}
+
+.task-priority[data-priority="urgent"] .priority-icon {
+  filter: brightness(0) saturate(100%) invert(35%) sepia(96%) saturate(6444%) hue-rotate(16deg) brightness(98%) contrast(105%);
+}
+
+.task-priority[data-priority="medium"] .priority-icon {
+  filter: brightness(0) saturate(100%) invert(64%) sepia(96%) saturate(1582%) hue-rotate(14deg) brightness(101%) contrast(104%);
+}
+
+.task-priority[data-priority="low"] .priority-icon {
+  filter: brightness(0) saturate(100%) invert(75%) sepia(77%) saturate(458%) hue-rotate(64deg) brightness(95%) contrast(87%);
+}
+
+.task-due-date {
+  margin-bottom: 24px;
+}
+
+.task-assigned-to {
+  margin-bottom: 24px;
+}
+
+.task-priority {
+  margin-bottom: 24px;
+}
+
+.no-content-placeholder {
+  color: #999;
+  font-style: italic;
+  font-size: 16px;
+}

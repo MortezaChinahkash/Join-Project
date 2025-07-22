@@ -1,0 +1,123 @@
+// Assigned Contacts Components
+.assigned-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 400;
+      color: white;
+    }
+    
+    .contact-name {
+      font-size: 16px;
+      color: #2A3647;
+    }
+  }
+  
+  .more-contacts-dropdown {
+    position: relative;
+    
+    .dropdown-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 999;
+      background: transparent;
+    }
+    
+    .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background-color: #f6f7f8;
+      border: 1px solid #d1d7db;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #e8e9ea;
+      }
+      
+      .more-contacts-text {
+        font-size: 16px;
+        color: #2A3647;
+        font-weight: 500;
+      }
+      
+      .dropdown-arrow {
+        font-size: 12px;
+        color: #666;
+        transition: transform 0.2s ease;
+        
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    
+    .dropdown-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #d1d1d1;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      max-height: 200px;
+      overflow-y: auto;
+      
+      .dropdown-contact {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+        transition: background-color 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        
+        .avatar {
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          font-weight: 400;
+          color: white;
+        }
+        
+        .contact-name {
+          font-size: 19px;
+          color: #2A3647;
+        }
+        
+        &:hover {
+          background-color: #f6f7f8;
+        }
+        
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+  }
+}
