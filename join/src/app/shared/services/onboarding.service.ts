@@ -77,7 +77,6 @@ export class OnboardingService {
     (window as any).startOnboarding = () => this.manualStartOnboarding();
     
     window.addEventListener('user-registered', () => {
-      console.log('OnboardingService: user-registered event received');
       this.triggerNewUserOnboarding();
     });
   }
@@ -97,7 +96,6 @@ export class OnboardingService {
    * Checks if onboarding should be shown and starts it if needed.
    */
   private checkAndStartOnboarding(): void {
-    console.log('OnboardingService: checkAndStartOnboarding called, isAuthenticated:', this.authService.isAuthenticated);
     if (!this.authService.isAuthenticated) {
       return;
     }
@@ -115,7 +113,6 @@ export class OnboardingService {
   private processOnboardingConditions(): void {
     const isCompleted = localStorage.getItem(this.ONBOARDING_COMPLETED_KEY);
     const isNewUser = localStorage.getItem('join_new_user');
-    console.log('OnboardingService: checking conditions - isCompleted:', isCompleted, 'isNewUser:', isNewUser);
     
     if (isNewUser) {
       this.handleNewUserOnboarding();
@@ -128,7 +125,6 @@ export class OnboardingService {
    * @private
    */
   private handleNewUserOnboarding(): void {
-    console.log('OnboardingService: New user detected, resetting onboarding completion status');
     this.clearNewUserFlags();
     this.scheduleOnboardingStart();
   }
@@ -158,13 +154,11 @@ export class OnboardingService {
    * Starts the onboarding tour.
    */
   public startOnboarding(): void {
-    console.log('OnboardingService: startOnboarding called, isAuthenticated:', this.authService.isAuthenticated);
     if (!this.authService.isAuthenticated) {
       return;
     }
     this.currentStepSubject.next(0);
     this.showOnboardingSubject.next(true);
-    console.log('OnboardingService: onboarding started, showOnboarding set to true');
     const firstStep = this.onboardingSteps[0];
     this.router.navigate([firstStep.route]);
   }
@@ -277,7 +271,6 @@ export class OnboardingService {
    * Triggers onboarding check for new users (called after registration).
    */
   public triggerNewUserOnboarding(): void {
-    console.log('OnboardingService: triggerNewUserOnboarding called');
     setTimeout(() => {
       this.checkAndStartOnboarding();
     }, 1500);
