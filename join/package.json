@@ -4,7 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:protected": "ng serve --port 4200",
     "build": "ng build",
+    "build:secure": "powershell -ExecutionPolicy Bypass -File build-secure.ps1",
+    "build:prod": "ng build --configuration production --aot --build-optimizer",
+    "build:prod:secure": "npm run build:prod && npm run build:secure",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

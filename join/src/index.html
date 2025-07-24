@@ -31,6 +31,17 @@
     }
   }(window.location))
 </script>
+
+<!-- Browser Security Script - nur in Production -->
+<script>
+  if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    // Lade Browser-Security Script nur in Production
+    const script = document.createElement('script');
+    script.src = './assets/js/browser-security.js';
+    script.async = true;
+    document.head.appendChild(script);
+  }
+</script>
 </head>
 <body>
   <app-root></app-root>

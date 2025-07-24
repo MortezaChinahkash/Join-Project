@@ -20,8 +20,18 @@ export const firebaseConfig = {
 };
 
 export const environment = {
-  production: true, // Set to true for production builds
-  firebase: firebaseConfig
+  production: false, // Development mode
+  firebase: firebaseConfig,
+  security: {
+    enableConsoleProtection: true, // Auch in Development aktivieren
+    enableDevToolsDetection: false, // DevTools bleiben erlaubt
+    enableKeyboardBlocking: false, // Keyboard-Shortcuts bleiben erlaubt
+    enableRightClickBlocking: false, // Rechtsklick bleibt erlaubt
+    enableSourceProtection: false, // Source-Anzeige bleibt erlaubt
+    enableScreenshotProtection: false, // Screenshots bleiben erlaubt
+    redirectOnDevTools: false,
+    devToolsRedirectUrl: '/unauthorized'
+  }
 };
 
 
